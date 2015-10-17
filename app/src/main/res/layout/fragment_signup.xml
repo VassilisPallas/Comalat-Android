@@ -1,0 +1,90 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="org.sakaiproject.sakai.SignupFragment">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <EditText
+                android:id="@+id/user_id_edittext"
+                android:layout_width="180dp"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="20dp"
+                android:hint="User Id *" />
+
+            <EditText
+                android:id="@+id/first_name_edittext"
+                android:layout_width="180dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/user_id_edittext"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="20dp"
+                android:hint="First Name" />
+
+            <EditText
+                android:id="@+id/last_name_edittext"
+                android:layout_width="180dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/first_name_edittext"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="20dp"
+                android:hint="Last Name" />
+
+            <EditText
+                android:id="@+id/email_edittext"
+                android:layout_width="180dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/last_name_edittext"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="20dp"
+                android:hint="Email" />
+
+            <EditText
+                android:id="@+id/password_edittext"
+                android:layout_width="180dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/email_edittext"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="20dp"
+                android:hint="Password *" />
+
+            <EditText
+                android:id="@+id/confirm_password_edittext"
+                android:layout_width="180dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/password_edittext"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="20dp"
+                android:hint="Confirm Password *" />
+
+            <EditText
+                android:id="@+id/type_edittext"
+                android:layout_width="180dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/confirm_password_edittext"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="20dp"
+                android:hint="type" />
+
+            <Button
+                android:id="@+id/signup_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/type_edittext"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="20dp"
+                android:text="Create Account" />
+
+        </RelativeLayout>
+
+    </ScrollView>
+
+</FrameLayout>

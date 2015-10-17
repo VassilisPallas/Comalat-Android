@@ -1,0 +1,55 @@
+<resources>
+    <!-- application's data-->
+    <string name="action_settings">Settings</string>
+    <string name="app_name">Sakai</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="title_activity_user">UserActivity</string>
+
+    <!-- server's url for connection-->
+    <string name="url">http://141.99.248.86:8089/direct/</string>
+
+    <!-- Message of the day -->
+    <string name="message_of_the_day">Message Of The Day</string>
+    <string name="motd">New COMALAT Language Training Courses available! Search for the Joinable Site in the Membership Area.</string>
+
+    <!-- Welcome -->
+    <string name="welcome_title">Welcome!</string>
+    <string name="welcome_to_sakai">Welcome to Sakai</string>
+    <string name="welcome_message">Welcome to the Sakai Demo. The Demo configuration was created as a way to let you get an instance of Sakai up and running quickly and easily. For more information about installing a Sakai solution appropriate for production needs please read the readme files, and visit the Sakai website at sakaiproject.org, and the Sakai Developer\'s site at collab.sakaiproject.org.</string>
+
+    <!-- main navigation drawer's data-->
+    <string name="welcome">Welcome</string>
+    <string name="about">About</string>
+    <string name="features">Features</string>
+    <string name="site_browser">Site Browser</string>
+    <string name="training">Training</string>
+    <string name="acknowledgements">Acknowledgements</string>
+    <string name="help">Help</string>
+    <string name="login">Login</string>
+    <string name="new_user">New User</string>
+    <string name="reset_password">Reset Password</string>
+    <string name="other">Other</string>
+
+    <!-- user navigation drawer's data-->
+    <string name="dashboard">Dashboard</string>
+    <string name="home">Home</string>
+    <string name="profile">Profile</string>
+    <string name="membership">Membership</string>
+    <string name="schedule">Schedule</string>
+    <string name="resources">Resources</string>
+    <string name="announcements">Announcements</string>
+    <string name="worksite_setup">Worksite Setup</string>
+    <string name="preferences">Preferences</string>
+    <string name="account">Account</string>
+    <string name="logout">Logout</string>
+
+    <!-- AlertDialog -->
+    <string name="logout_message">Are you sure you want to log out?</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
+
+<!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>

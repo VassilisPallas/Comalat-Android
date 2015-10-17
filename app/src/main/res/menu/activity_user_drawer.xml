@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/dashboard"
+            android:checked="true"
+            android:icon="@android:drawable/ic_menu_camera"
+            android:title="@string/dashboard" />
+        <item
+            android:id="@+id/home"
+            android:icon="@mipmap/ic_home_black"
+            android:title="@string/home" />
+        <item
+            android:id="@+id/profile"
+            android:icon="@mipmap/ic_person_black"
+            android:title="@string/profile" />
+        <item
+            android:id="@+id/membership"
+            android:icon="@mipmap/ic_group_black"
+            android:title="@string/membership" />
+        <item
+            android:id="@+id/schedule"
+            android:icon="@mipmap/ic_today_black"
+            android:title="@string/schedule" />
+        <item
+            android:id="@+id/resources"
+            android:icon="@mipmap/ic_folder_black"
+            android:title="@string/resources" />
+        <item
+            android:id="@+id/announcements"
+            android:icon="@mipmap/ic_announcement_black"
+            android:title="@string/announcements" />
+        <item
+            android:id="@+id/worksite_setup"
+            android:icon="@android:drawable/ic_menu_manage"
+            android:title="@string/worksite_setup" />
+        <item
+            android:id="@+id/preferences"
+            android:icon="@mipmap/ic_settings_black"
+            android:title="@string/preferences" />
+        <item
+            android:id="@+id/account"
+            android:icon="@mipmap/ic_person_black"
+            android:title="@string/account" />
+    </group>
+
+    <item android:title="@string/other">
+        <menu>
+            <item
+                android:id="@+id/logout"
+                android:icon="@mipmap/ic_power_settings_new_black"
+                android:title="@string/logout" />
+            <item
+                android:id="@+id/user_help"
+                android:icon="@mipmap/ic_help_black"
+                android:title="@string/help" />
+        </menu>
+    </item>
+</menu>

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/welcome"
+            android:checked="true"
+            android:icon="@mipmap/ic_home_black"
+            android:title="@string/welcome" />
+        <item
+            android:id="@+id/about"
+            android:icon="@mipmap/ic_public_black"
+            android:title="@string/about" />
+        <item
+            android:id="@+id/features"
+            android:icon="@mipmap/ic_public_black"
+            android:title="@string/features" />
+        <item
+            android:id="@+id/site_browser"
+            android:icon="@mipmap/ic_public_black"
+            android:title="@string/site_browser" />
+        <item
+            android:id="@+id/training"
+            android:icon="@mipmap/ic_public_black"
+            android:title="@string/training" />
+        <item
+            android:id="@+id/acknowledgements"
+            android:icon="@mipmap/ic_public_black"
+            android:title="@string/acknowledgements" />
+        <item
+            android:id="@+id/login"
+            android:icon="@mipmap/ic_person_black"
+            android:title="@string/login" />
+        <item
+            android:id="@+id/new_user"
+            android:icon="@mipmap/ic_person_black"
+            android:title="@string/new_user" />
+        <item
+            android:id="@+id/reset_password"
+            android:icon="@mipmap/ic_person_black"
+            android:title="@string/reset_password" />
+
+    </group>
+
+    <item android:title="@string/other">
+        <menu>
+            <item
+                android:id="@+id/help"
+                android:icon="@mipmap/ic_help_black"
+                android:title="@string/help" />
+        </menu>
+    </item>
+
+</menu>
