@@ -8,28 +8,24 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.sakaiproject.api.motd.MessageOfTheDay;
+import org.sakaiproject.api.online.motd.MessageOfTheDay;
 import org.sakaiproject.api.time.Time;
-import org.sakaiproject.api.user.data.UserData;
-import org.sakaiproject.api.user.data.UserProfileData;
-import org.sakaiproject.api.user.data.UserSessionData;
+import org.sakaiproject.api.online.user.data.UserData;
+import org.sakaiproject.api.online.user.data.UserProfileData;
+import org.sakaiproject.api.online.user.data.UserSessionData;
 
 /**
  * Created by vasilis on 10/13/15.
+ * This is the json parser for every response from the server
  */
 public class JsonParser {
-
-    private UserSessionData userSessionData;
-    private UserData userData;
-    private UserProfileData userProfileData;
-    private MessageOfTheDay messageOfTheDay;
 
     public JsonParser() {
     }
 
     public UserSessionData parseLoginResult(String result) {
 
-        userSessionData = new UserSessionData();
+        UserSessionData userSessionData = new UserSessionData();
 
         try {
             JSONObject obj = new JSONObject(result);
@@ -58,7 +54,7 @@ public class JsonParser {
 
     public UserData parseUserDataJson(String result) {
 
-        userData = new UserData();
+        UserData userData = new UserData();
 
         try {
             JSONObject obj = new JSONObject(result);
@@ -104,7 +100,7 @@ public class JsonParser {
 
     public UserProfileData parseUserProfileDataJson(String result) {
 
-        userProfileData = new UserProfileData();
+        UserProfileData userProfileData = new UserProfileData();
 
         try {
 
@@ -160,7 +156,7 @@ public class JsonParser {
     }
 
     public MessageOfTheDay parseMotdJson(String result) {
-        messageOfTheDay = new MessageOfTheDay();
+        MessageOfTheDay messageOfTheDay = new MessageOfTheDay();
         List<String> messagesList = new ArrayList<>();
         List<String> siteUrlsList = new ArrayList<>();
 
@@ -183,4 +179,5 @@ public class JsonParser {
 
         return messageOfTheDay;
     }
+
 }

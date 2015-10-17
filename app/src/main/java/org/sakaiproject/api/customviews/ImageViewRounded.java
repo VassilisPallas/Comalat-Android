@@ -15,6 +15,7 @@ import android.widget.ImageView;
 
 /**
  * Created by vasilis on 10/16/15.
+ * This is the rounded imageview for the user's profile image
  */
 public class ImageViewRounded extends ImageView {
 

@@ -1,4 +1,4 @@
-package org.sakaiproject.api.motd;
+package org.sakaiproject.api.online.motd;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
@@ -12,19 +12,21 @@ import java.net.URL;
 import java.util.List;
 
 import org.sakaiproject.api.json.JsonParser;
+import org.sakaiproject.api.online.connection.ConnectionParams;
 
 /**
  * Created by vasilis on 10/16/15.
+ * Get the message of the day for the welcome screen
  */
 public class MessageOfTheDay {
 
-    private URL url;
-    private HttpURLConnection con;
     private InputStream inputStream;
     private JsonParser jsonParse;
+    private ConnectionParams connection;
 
     public MessageOfTheDay() {
         jsonParse = new JsonParser();
+        connection = new ConnectionParams();
     }
 
     private List<String> message;
@@ -53,42 +55,19 @@ public class MessageOfTheDay {
 
     public void getMessageOfTheDay(String url) {
         try {
-            CookieManager cookieManager = new CookieManager();
-            CookieHandler.setDefault(cookieManager);
+            connection.openConnection(url, "GET", true, null);
 
-            this.url = new URL(url);
-            con = (HttpURLConnection) this.url.openConnection();
-            con.setRequestProperty("Accept", "application/json");
-            con.setRequestMethod("GET");
-            con.setConnectTimeout(5000);
-            con.setReadTimeout(10000);
-
-            con.connect();
-
-            Integer status = con.getResponseCode();
+            Integer status = connection.getResponseCode();
             if (status >= 200 && status < 300) {
-                inputStream = new BufferedInputStream(con.getInputStream());
-                String mothJson = readStream(inputStream);
+                inputStream = new BufferedInputStream(connection.getInputStream());
+                String mothJson = connection.readStream(inputStream);
                 inputStream.close();
                 messageOfTheDay = jsonParse.parseMotdJson(mothJson);
             }
         } catch (IOException e) {
             e.printStackTrace();
+        } finally {
+            connection.closeConnection();
         }
-    }
-
-    private String readStream(InputStream inputStream) throws IOException {
-        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
-        String line = "";
-        String result = "";
-
-        while ((line = bufferedReader.readLine()) != null) {
-            result += line;
-        }
-
-        if (inputStream != null)
-            inputStream.close();
-
-        return result;
     }
 }

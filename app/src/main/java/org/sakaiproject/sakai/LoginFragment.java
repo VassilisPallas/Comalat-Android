@@ -14,10 +14,10 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import org.sakaiproject.api.user.data.UserData;
-import org.sakaiproject.api.user.data.UserProfileData;
-import org.sakaiproject.api.user.data.UserSessionData;
-import org.sakaiproject.api.user.login.Login;
+import org.sakaiproject.api.online.user.data.UserData;
+import org.sakaiproject.api.online.user.data.UserProfileData;
+import org.sakaiproject.api.online.user.data.UserSessionData;
+import org.sakaiproject.api.online.user.login.Login;
 
 
 public class LoginFragment extends Fragment implements View.OnClickListener {
@@ -95,7 +95,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         protected void onPostExecute(Integer integer) {
             super.onPostExecute(integer);
             progressBar.setVisibility(View.GONE);
-            if (integer == 1) {
+            if (integer == 1) /* connection completed */ {
                 userData = login.getUserData();
                 userSessionData = login.getUserSessionData();
                 userProfileData = login.getUserProfileData();
@@ -106,7 +106,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
                 i.putExtra("user_image", userImage);
                 startActivity(i);
                 getActivity().finish();
-            } else {
+            } else /* connection failed */ {
                 Toast.makeText(getContext(), "Invalid login", Toast.LENGTH_SHORT).show();
                 clearEditTexts();
             }

@@ -1,4 +1,4 @@
-package org.sakaiproject.api.user.data;
+package org.sakaiproject.api.online.user.data;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -10,6 +10,7 @@ import java.util.Date;
  */
 @SuppressWarnings("serial") //with this annotation we are going to hide compiler warning
 public class UserProfileData implements Serializable {
+
     private String academicProfileUrl;
     private String birthday;
     private String birthdayDisplay;

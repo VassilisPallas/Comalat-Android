@@ -1,4 +1,4 @@
-package org.sakaiproject.api.user.data;
+package org.sakaiproject.api.online.user.data;
 
 
 import java.io.Serializable;
@@ -15,7 +15,7 @@ public class UserSessionData implements Serializable {
     private String attributes;
     private Integer creationTime;
     private Integer currentTime;
-    private String id;
+    private String id; /* the session id */
     private Integer lastAccessedTime;
     private Integer maxInactiveInterval;
     private String userEid;

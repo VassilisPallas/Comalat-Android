@@ -9,7 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
-import org.sakaiproject.api.motd.MessageOfTheDay;
+import org.sakaiproject.api.online.motd.MessageOfTheDay;
 
 
 /**
