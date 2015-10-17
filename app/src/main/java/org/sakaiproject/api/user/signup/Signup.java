@@ -6,4 +6,5 @@ package org.sakaiproject.api.user.signup;
  */
 public class Signup {
 
+
 }

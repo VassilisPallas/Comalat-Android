@@ -28,7 +28,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
     private ProgressBar progressBar;
 
     private Login login;
-    private UserData user;
+    private UserData userData;
     private UserSessionData userSessionData;
     private UserProfileData userProfileData;
 
@@ -96,7 +96,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
             super.onPostExecute(integer);
             progressBar.setVisibility(View.GONE);
             if (integer == 1) {
-                user = login.getUserData();
+                userData = login.getUserData();
                 userSessionData = login.getUserSessionData();
                 userProfileData = login.getUserProfileData();
                 Bitmap userImage = login.getBitmap();

@@ -10,9 +10,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
-import java.net.CookieHandler;
-import java.net.CookieManager;
-import java.net.HttpURLConnection;;
+import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 
@@ -68,9 +66,6 @@ public class Login {
 
     public Integer loginConnection(String... params) {
         try {
-            CookieManager cookieManager = new CookieManager();
-            CookieHandler.setDefault(cookieManager);
-
             url = new URL(params[0]);
             con = (HttpURLConnection) url.openConnection();
             con.setDoOutput(true);
