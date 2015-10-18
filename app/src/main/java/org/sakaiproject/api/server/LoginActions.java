@@ -1,4 +1,4 @@
-package org.sakaiproject.api;
+package org.sakaiproject.api.server;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -16,7 +16,7 @@ import java.io.InputStreamReader;
 /**
  * Created by vasilis on 10/18/15.
  */
-public class Actions {
+public class LoginActions {
 
     /**
      * Convert InputStream to String
@@ -82,6 +82,14 @@ public class Actions {
         return new String(bytes);
     }
 
+    /**
+     * save image to internal storage
+     *
+     * @param context
+     * @param bitmap    the bitmap for save
+     * @param imageName the name for the image
+     * @throws IOException
+     */
     public static void saveImage(Context context, Bitmap bitmap, String imageName) throws IOException {
         File path = context.getFilesDir();
 
@@ -94,6 +102,13 @@ public class Actions {
 
     }
 
+    /**
+     * get image from internal storage
+     *
+     * @param context
+     * @param name    the name for the image
+     * @throws IOException
+     */
     public static Bitmap getImage(Context context, String name) throws FileNotFoundException {
         File path = context.getFilesDir();
         File f = new File(path, name + ".jpg");
@@ -101,5 +116,4 @@ public class Actions {
 
         return b;
     }
-
 }

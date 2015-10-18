@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.sakaiproject.api.online.motd.MessageOfTheDay;
+import org.sakaiproject.api.motd.OnlineMessageOfTheDay;
 import org.sakaiproject.api.time.Time;
 import org.sakaiproject.api.user.data.UserData;
 import org.sakaiproject.api.user.data.UserProfileData;
@@ -155,8 +155,8 @@ public class JsonParser {
         return userProfileData;
     }
 
-    public MessageOfTheDay parseMotdJson(String result) {
-        MessageOfTheDay messageOfTheDay = new MessageOfTheDay();
+    public OnlineMessageOfTheDay parseMotdJson(String result) {
+        OnlineMessageOfTheDay onlineMessageOfTheDay = new OnlineMessageOfTheDay();
         List<String> messagesList = new ArrayList<>();
         List<String> siteUrlsList = new ArrayList<>();
 
@@ -170,14 +170,14 @@ public class JsonParser {
                 siteUrlsList.add(obj.optString("motdUrl"));
             }
 
-            messageOfTheDay.setMessage(messagesList);
-            messageOfTheDay.setSiteUrl(siteUrlsList);
+            onlineMessageOfTheDay.setMessage(messagesList);
+            onlineMessageOfTheDay.setSiteUrl(siteUrlsList);
 
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
-        return messageOfTheDay;
+        return onlineMessageOfTheDay;
     }
 
 }

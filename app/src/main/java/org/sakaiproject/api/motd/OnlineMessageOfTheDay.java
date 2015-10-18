@@ -1,32 +1,32 @@
-package org.sakaiproject.api.online.motd;
+package org.sakaiproject.api.motd;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 
-import org.sakaiproject.api.Actions;
+import org.sakaiproject.api.server.LoginActions;
 import org.sakaiproject.api.json.JsonParser;
-import org.sakaiproject.api.online.connection.ConnectionParams;
+import org.sakaiproject.api.server.ConnectionParams;
 
 /**
  * Created by vasilis on 10/16/15.
  * Get the message of the day for the welcome screen
  */
-public class MessageOfTheDay {
+public class OnlineMessageOfTheDay {
 
     private InputStream inputStream;
     private JsonParser jsonParse;
     private ConnectionParams connection;
 
-    public MessageOfTheDay() {
+    public OnlineMessageOfTheDay() {
         jsonParse = new JsonParser();
         connection = new ConnectionParams();
     }
 
     private List<String> message;
     private List<String> siteUrl;
-    private MessageOfTheDay messageOfTheDay = this;
+    private OnlineMessageOfTheDay onlineMessageOfTheDay = this;
 
     public List<String> getMessage() {
         return message;
@@ -36,8 +36,8 @@ public class MessageOfTheDay {
         return siteUrl;
     }
 
-    public MessageOfTheDay getMessageOfTheDayObj() {
-        return messageOfTheDay;
+    public OnlineMessageOfTheDay getMessageOfTheDayObj() {
+        return onlineMessageOfTheDay;
     }
 
     public void setSiteUrl(List<String> siteUrl) {
@@ -55,9 +55,9 @@ public class MessageOfTheDay {
             Integer status = connection.getResponseCode();
             if (status >= 200 && status < 300) {
                 inputStream = new BufferedInputStream(connection.getInputStream());
-                String mothJson = Actions.readJsonStream(inputStream);
+                String mothJson = LoginActions.readJsonStream(inputStream);
                 inputStream.close();
-                messageOfTheDay = jsonParse.parseMotdJson(mothJson);
+                onlineMessageOfTheDay = jsonParse.parseMotdJson(mothJson);
             }
         } catch (IOException e) {
             e.printStackTrace();

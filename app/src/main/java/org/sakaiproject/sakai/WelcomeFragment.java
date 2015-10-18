@@ -4,15 +4,13 @@ package org.sakaiproject.sakai;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
 import org.sakaiproject.api.internet.NetWork;
-import org.sakaiproject.api.online.motd.MessageOfTheDay;
+import org.sakaiproject.api.motd.OnlineMessageOfTheDay;
 
 
 /**
@@ -21,7 +19,7 @@ import org.sakaiproject.api.online.motd.MessageOfTheDay;
 public class WelcomeFragment extends Fragment {
 
     private ProgressBar progressBar;
-    private MessageOfTheDay messageOfTheDay;
+    private OnlineMessageOfTheDay onlineMessageOfTheDay;
 
     public WelcomeFragment() {
     }
@@ -32,7 +30,7 @@ public class WelcomeFragment extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_welcome, container, false);
         findViewsById(v);
-        messageOfTheDay = new MessageOfTheDay();
+        onlineMessageOfTheDay = new OnlineMessageOfTheDay();
         new MotdAsync(getResources().getString(R.string.url) + "announcement/motd.json").execute();
         return v;
     }
@@ -59,8 +57,8 @@ public class WelcomeFragment extends Fragment {
         protected Integer doInBackground(Void... params) {
 
             if (NetWork.getConnectionEstablished()) {
-                messageOfTheDay.getMessageOfTheDay(url);
-                messageOfTheDay = messageOfTheDay.getMessageOfTheDayObj();
+                onlineMessageOfTheDay.getMessageOfTheDay(url);
+                onlineMessageOfTheDay = onlineMessageOfTheDay.getMessageOfTheDayObj();
             }
             return null;
         }

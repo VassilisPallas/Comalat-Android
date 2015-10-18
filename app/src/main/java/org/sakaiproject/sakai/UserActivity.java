@@ -48,7 +48,7 @@ public class UserActivity extends AppCompatActivity
 
         displayNameTextView.setText(userProfileData.getDisplayName());
         emailTextView.setText(userProfileData.getEmail());
-        userImage.setImageBitmap((Bitmap) getIntent().getParcelableExtra("user_image"));
+        userImage.setImageBitmap((Bitmap) getIntent().getParcelableExtra("user_thumbnail_image"));
     }
 
     public void findViewsById() {

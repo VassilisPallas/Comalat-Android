@@ -1,4 +1,4 @@
-package org.sakaiproject.api.online.login;
+package org.sakaiproject.api.login;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -9,9 +9,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URLEncoder;
 
-import org.sakaiproject.api.Actions;
+import org.sakaiproject.api.server.LoginActions;
 import org.sakaiproject.api.json.JsonParser;
-import org.sakaiproject.api.online.connection.ConnectionParams;
+import org.sakaiproject.api.server.ConnectionParams;
 import org.sakaiproject.api.user.data.UserData;
 import org.sakaiproject.api.user.data.UserProfileData;
 import org.sakaiproject.api.user.data.UserSessionData;
@@ -20,13 +20,12 @@ import org.sakaiproject.sakai.R;
 /**
  * Created by vasilis on 10/12/15.
  */
-public class Login {
+public class OnlineLogin implements ILogin {
 
     private UserSessionData userSessionData;
     private UserData userData;
     private UserProfileData userProfileData;
     private JsonParser jsonParse;
-
     private Bitmap userImage, userThumbnailImage;
     private InputStream inputStream;
     private String sessionId;
@@ -36,7 +35,7 @@ public class Login {
     private Context context;
     private ConnectionParams connection;
 
-    public Login(Context context) {
+    public OnlineLogin(Context context) {
         this.context = context;
         userData = new UserData();
         userSessionData = new UserSessionData();
@@ -45,27 +44,34 @@ public class Login {
         connection = new ConnectionParams();
     }
 
+
+    @Override
     public UserSessionData getUserSessionData() {
         return userSessionData;
     }
 
+    @Override
     public UserData getUserData() {
         return userData;
     }
 
+    @Override
     public UserProfileData getUserProfileData() {
         return userProfileData;
     }
 
-    public Bitmap getUserImage() {
+    @Override
+    public Bitmap getImage() {
         return userImage;
     }
 
-    public Bitmap getUserThumbnailImage() {
+    @Override
+    public Bitmap getThumbnailImage() {
         return userThumbnailImage;
     }
 
-    public Integer loginConnection(String... params) {
+    @Override
+    public LoginType login(String... params) {
         try {
             String data = "_username=" + URLEncoder.encode(params[1], "UTF-8");
             data += "&";
@@ -76,14 +82,14 @@ public class Login {
             Integer status = connection.getResponseCode();
             if (status >= 200 && status < 300) {
                 inputStream = new BufferedInputStream(connection.getInputStream());
-                sessionId = Actions.readJsonStream(inputStream);
+                sessionId = LoginActions.readJsonStream(inputStream);
                 inputStream.close();
                 getLoginJson(context.getResources().getString(R.string.url) + "session/" + sessionId + ".json");
                 getUserDataJson(context.getResources().getString(R.string.url) + "user/" + userSessionData.getUserEid() + ".json");
                 getUserProfileDataJson(context.getResources().getString(R.string.url) + "profile/" + userSessionData.getUserEid() + ".json");
                 userImage = getUserImage(userProfileData.getImageUrl());
                 userThumbnailImage = getUserThumbnailImage(userProfileData.getImageThumbUrl());
-                return 1;
+                return LoginType.LOGIN_WITH_INTERNET;
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -91,20 +97,21 @@ public class Login {
             connection.closeConnection();
         }
 
-        return 0;
+        return LoginType.INVALID_ARGUMENTS;
     }
 
-    private void getLoginJson(String jsonUrl) {
+    @Override
+    public void getLoginJson(String... params) throws IOException {
         try {
-            connection.openConnection(jsonUrl, "GET", true, null);
+            connection.openConnection(params[0], "GET", true, null);
 
             Integer status = connection.getResponseCode();
             if (status >= 200 && status < 300) {
                 inputStream = new BufferedInputStream(connection.getInputStream());
-                loginJson = Actions.readJsonStream(inputStream);
+                loginJson = LoginActions.readJsonStream(inputStream);
                 inputStream.close();
                 userSessionData = jsonParse.parseLoginResult(loginJson);
-                Actions.writeJsonFile(context, loginJson, "loginJson");
+                LoginActions.writeJsonFile(context, loginJson, "loginJson");
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -113,17 +120,18 @@ public class Login {
         }
     }
 
-    private void getUserDataJson(String jsonUrl) {
+    @Override
+    public void getUserDataJson(String... params) throws IOException {
         try {
-            connection.openConnection(jsonUrl, "GET", true, null);
+            connection.openConnection(params[0], "GET", true, null);
 
             Integer status = connection.getResponseCode();
             if (status >= 200 && status < 300) {
                 inputStream = new BufferedInputStream(connection.getInputStream());
-                userDataJson = Actions.readJsonStream(inputStream);
+                userDataJson = LoginActions.readJsonStream(inputStream);
                 inputStream.close();
                 userData = jsonParse.parseUserDataJson(userDataJson);
-                Actions.writeJsonFile(context, userDataJson, "fullUserDataJson");
+                LoginActions.writeJsonFile(context, userDataJson, "fullUserDataJson");
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -132,17 +140,18 @@ public class Login {
         }
     }
 
-    private void getUserProfileDataJson(String jsonUrl) {
+    @Override
+    public void getUserProfileDataJson(String... params) throws IOException {
         try {
-            connection.openConnection(jsonUrl, "GET", true, null);
+            connection.openConnection(params[0], "GET", true, null);
 
             Integer status = connection.getResponseCode();
             if (status >= 200 && status < 300) {
                 inputStream = new BufferedInputStream(connection.getInputStream());
-                userProfileDataJson = Actions.readJsonStream(inputStream);
+                userProfileDataJson = LoginActions.readJsonStream(inputStream);
                 inputStream.close();
                 userProfileData = jsonParse.parseUserProfileDataJson(userProfileDataJson);
-                Actions.writeJsonFile(context, userProfileDataJson, "userProfileDataJson");
+                LoginActions.writeJsonFile(context, userProfileDataJson, "userProfileDataJson");
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -151,16 +160,17 @@ public class Login {
         }
     }
 
-    private Bitmap getUserImage(String url) {
+    @Override
+    public Bitmap getUserImage(String... params) {
         Bitmap bitmap = null;
         try {
-            connection.openConnection(url, "GET", false, null);
+            connection.openConnection(params[0], "GET", false, null);
 
             Integer status = connection.getResponseCode();
             if (status >= 200 && status < 300) {
                 InputStream inputStream = new BufferedInputStream(connection.getInputStream());
                 bitmap = BitmapFactory.decodeStream(inputStream);
-                Actions.saveImage(context, bitmap, "user_image");
+                LoginActions.saveImage(context, bitmap, "user_image");
             }
 
         } catch (IOException e) {
@@ -171,16 +181,17 @@ public class Login {
         return bitmap;
     }
 
-    private Bitmap getUserThumbnailImage(String url) {
+    @Override
+    public Bitmap getUserThumbnailImage(String... params) {
         Bitmap bitmap = null;
         try {
-            connection.openConnection(url, "GET", false, null);
+            connection.openConnection(params[0], "GET", false, null);
 
             Integer status = connection.getResponseCode();
             if (status >= 200 && status < 300) {
                 InputStream inputStream = new BufferedInputStream(connection.getInputStream());
                 bitmap = BitmapFactory.decodeStream(inputStream);
-                Actions.saveImage(context, bitmap, "user_thumbnail_image");
+                LoginActions.saveImage(context, bitmap, "user_thumbnail_image");
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -189,5 +200,4 @@ public class Login {
         }
         return bitmap;
     }
-
 }

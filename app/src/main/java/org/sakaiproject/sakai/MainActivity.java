@@ -115,7 +115,7 @@ public class MainActivity extends AppCompatActivity
                 break;
             case R.id.login:
                 LoginFragment loginFragment = new LoginFragment();
-                selectFragment(loginFragment, R.id.content_frame, "Login");
+                selectFragment(loginFragment, R.id.content_frame, "OnlineLogin");
                 break;
             case R.id.new_user:
                 SignupFragment signupFragment = new SignupFragment();
