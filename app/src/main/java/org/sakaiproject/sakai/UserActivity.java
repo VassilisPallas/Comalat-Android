@@ -17,7 +17,7 @@ import android.view.MenuItem;
 import android.widget.TextView;
 
 import org.sakaiproject.api.customviews.ImageViewRounded;
-import org.sakaiproject.api.online.user.data.UserProfileData;
+import org.sakaiproject.api.user.data.UserProfileData;
 
 public class UserActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {

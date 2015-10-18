@@ -10,9 +10,9 @@ import java.util.List;
 
 import org.sakaiproject.api.online.motd.MessageOfTheDay;
 import org.sakaiproject.api.time.Time;
-import org.sakaiproject.api.online.user.data.UserData;
-import org.sakaiproject.api.online.user.data.UserProfileData;
-import org.sakaiproject.api.online.user.data.UserSessionData;
+import org.sakaiproject.api.user.data.UserData;
+import org.sakaiproject.api.user.data.UserProfileData;
+import org.sakaiproject.api.user.data.UserSessionData;
 
 /**
  * Created by vasilis on 10/13/15.

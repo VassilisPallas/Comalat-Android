@@ -73,26 +73,4 @@ public class ConnectionParams {
         return con.getInputStream();
     }
 
-    /**
-     * Convert InputStream to String
-     *
-     * @param inputStream the stream for convertion
-     * @return the converted String
-     * @throws IOException
-     */
-    public String readStream(InputStream inputStream) throws IOException {
-        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
-        String line = "";
-        String result = "";
-
-        while ((line = bufferedReader.readLine()) != null) {
-            result += line;
-        }
-
-        if (inputStream != null)
-            inputStream.close();
-
-        return result;
-    }
-
 }

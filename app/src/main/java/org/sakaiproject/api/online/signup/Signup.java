@@ -1,4 +1,4 @@
-package org.sakaiproject.api.online.user.signup;
+package org.sakaiproject.api.online.signup;
 
 /**
  * Created by vasilis on 10/17/15.

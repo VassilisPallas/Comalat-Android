@@ -1,16 +1,11 @@
 package org.sakaiproject.api.online.motd;
 
 import java.io.BufferedInputStream;
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.CookieHandler;
-import java.net.CookieManager;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.List;
 
+import org.sakaiproject.api.Actions;
 import org.sakaiproject.api.json.JsonParser;
 import org.sakaiproject.api.online.connection.ConnectionParams;
 
@@ -60,7 +55,7 @@ public class MessageOfTheDay {
             Integer status = connection.getResponseCode();
             if (status >= 200 && status < 300) {
                 inputStream = new BufferedInputStream(connection.getInputStream());
-                String mothJson = connection.readStream(inputStream);
+                String mothJson = Actions.readJsonStream(inputStream);
                 inputStream.close();
                 messageOfTheDay = jsonParse.parseMotdJson(mothJson);
             }

@@ -2,6 +2,7 @@ package org.sakaiproject.sakai;
 
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -14,10 +15,11 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import org.sakaiproject.api.online.user.data.UserData;
-import org.sakaiproject.api.online.user.data.UserProfileData;
-import org.sakaiproject.api.online.user.data.UserSessionData;
-import org.sakaiproject.api.online.user.login.Login;
+import org.sakaiproject.api.cryptography.PasswordService;
+import org.sakaiproject.api.internet.NetWork;
+import org.sakaiproject.api.user.data.UserData;
+import org.sakaiproject.api.user.data.UserProfileData;
+import org.sakaiproject.api.user.data.UserSessionData;
 
 
 public class LoginFragment extends Fragment implements View.OnClickListener {
@@ -27,7 +29,8 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
     private String url;
     private ProgressBar progressBar;
 
-    private Login login;
+    private org.sakaiproject.api.online.login.Login onlineLogin;
+    private org.sakaiproject.api.offline.login.Login offlineLogin;
     private UserData userData;
     private UserSessionData userSessionData;
     private UserProfileData userProfileData;
@@ -64,7 +67,8 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         switch (v.getId()) {
             case R.id.loginButton:
                 url = getResources().getString(R.string.url) + "session";
-                login = new Login(getContext());
+                onlineLogin = new org.sakaiproject.api.online.login.Login(getContext());
+                offlineLogin = new org.sakaiproject.api.offline.login.Login(getContext());
                 new LoginAsync(url, usernameEditText.getText().toString(), passwordEditText.getText().toString()).execute();
                 break;
         }
@@ -88,24 +92,60 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
 
         @Override
         protected Integer doInBackground(Void... params) {
-            return login.loginConnection(url, username, password);
+
+            if (NetWork.getConnectionEstablished()) {
+                return onlineLogin.loginConnection(url, username, password);
+            }
+            return offlineLogin.login(username, password);
         }
 
         @Override
         protected void onPostExecute(Integer integer) {
             super.onPostExecute(integer);
             progressBar.setVisibility(View.GONE);
-            if (integer == 1) /* connection completed */ {
-                userData = login.getUserData();
-                userSessionData = login.getUserSessionData();
-                userProfileData = login.getUserProfileData();
-                Bitmap userImage = login.getBitmap();
+
+
+            if (integer == 1) /* connection completed with internet */ {
+
+
+                PasswordService passwordService = new PasswordService();
+
+                SharedPreferences.Editor editor = getActivity().getSharedPreferences("user_data", getActivity().MODE_PRIVATE).edit();
+                editor.putString("user_id", username);
+                editor.putString("password", passwordService.encrypt(password));
+                editor.commit();
+
+                userData = onlineLogin.getUserData();
+                userSessionData = onlineLogin.getUserSessionData();
+                userProfileData = onlineLogin.getUserProfileData();
+                Bitmap userImage = onlineLogin.getUserImage();
+                Bitmap userThumbnailImage = onlineLogin.getUserThumbnailImage();
                 clearEditTexts();
                 Intent i = new Intent(getContext(), UserActivity.class);
                 i.putExtra("user_data", userProfileData);
                 i.putExtra("user_image", userImage);
+                i.putExtra("user_thumbnail_image", userThumbnailImage);
                 startActivity(i);
                 getActivity().finish();
+            } else if (integer == 2) /* connection completed without internet */ {
+
+
+                userData = offlineLogin.getUserData();
+                userSessionData = offlineLogin.getUserSessionData();
+                userProfileData = offlineLogin.getUserProfileData();
+
+                Bitmap userImage = offlineLogin.getUserImage();
+                Bitmap userThumbnailImage = offlineLogin.getUserThumbnailImage();
+                clearEditTexts();
+                Intent i = new Intent(getContext(), UserActivity.class);
+                i.putExtra("user_data", userProfileData);
+                i.putExtra("user_image", userImage);
+                i.putExtra("user_thumbnail_image", userThumbnailImage);
+                startActivity(i);
+                getActivity().finish();
+
+            } else if (integer == 3) {
+                Toast.makeText(getContext(), "You have never login again!\nTo login without internet\nyou have to access at least\none time with internet connection", Toast.LENGTH_LONG).show();
             } else /* connection failed */ {
                 Toast.makeText(getContext(), "Invalid login", Toast.LENGTH_SHORT).show();
                 clearEditTexts();

@@ -14,9 +14,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import org.sakaiproject.api.internet.NetWork;
-import org.sakaiproject.api.internet.NetWorkTypes;
-import org.sakaiproject.api.internet.NetworkReceiver;
 
+import java.io.File;
 import java.net.CookieHandler;
 import java.net.CookieManager;
 
