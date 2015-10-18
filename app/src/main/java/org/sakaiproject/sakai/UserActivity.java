@@ -85,7 +85,7 @@ public class UserActivity extends AppCompatActivity
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            logout();
+            finish();
         }
     }
 

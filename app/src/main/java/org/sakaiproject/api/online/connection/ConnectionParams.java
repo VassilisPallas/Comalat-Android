@@ -18,7 +18,15 @@ public class ConnectionParams {
     private HttpURLConnection con;
     private OutputStreamWriter wr;
 
-    public void openConnection(String url, String method /* CRUD */, boolean accept /* if accepts response */, String data /* the data for the output stream */) {
+    /**
+     * open the connection to the server
+     *
+     * @param url    the url for the connection
+     * @param method the method (POST, GET, PUT, DELETE)
+     * @param accept true if accepts response (json), false if doesn't
+     * @param data   the data for the output stream, null if it doesn't send request
+     */
+    public void openConnection(String url, String method, boolean accept, String data) {
         try {
             this.url = new URL(url);
             con = (HttpURLConnection) this.url.openConnection();
@@ -65,6 +73,13 @@ public class ConnectionParams {
         return con.getInputStream();
     }
 
+    /**
+     * Convert InputStream to String
+     *
+     * @param inputStream the stream for convertion
+     * @return the converted String
+     * @throws IOException
+     */
     public String readStream(InputStream inputStream) throws IOException {
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
         String line = "";

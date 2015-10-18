@@ -4,11 +4,14 @@ package org.sakaiproject.sakai;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
+import org.sakaiproject.api.internet.NetWork;
 import org.sakaiproject.api.online.motd.MessageOfTheDay;
 
 
@@ -54,8 +57,11 @@ public class WelcomeFragment extends Fragment {
 
         @Override
         protected Integer doInBackground(Void... params) {
-            messageOfTheDay.getMessageOfTheDay(url);
-            messageOfTheDay = messageOfTheDay.getMessageOfTheDayObj();
+
+            if (NetWork.getConnectionEstablished()) {
+                messageOfTheDay.getMessageOfTheDay(url);
+                messageOfTheDay = messageOfTheDay.getMessageOfTheDayObj();
+            }
             return null;
         }
 
@@ -63,7 +69,6 @@ public class WelcomeFragment extends Fragment {
         protected void onPostExecute(Integer number) {
             super.onPostExecute(number);
             progressBar.setVisibility(View.GONE);
-
         }
     }
 

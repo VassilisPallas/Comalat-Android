@@ -9,14 +9,21 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import org.sakaiproject.api.internet.NetWork;
+import org.sakaiproject.api.internet.NetWorkTypes;
+import org.sakaiproject.api.internet.NetworkReceiver;
 
 import java.net.CookieHandler;
 import java.net.CookieManager;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    private boolean isConnected = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +50,7 @@ public class MainActivity extends AppCompatActivity
         CookieManager cookieManager = new CookieManager();
         CookieHandler.setDefault(cookieManager);
 
+        NetWork.isConnected(this);
     }
 
     @Override
@@ -122,4 +130,5 @@ public class MainActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
 }

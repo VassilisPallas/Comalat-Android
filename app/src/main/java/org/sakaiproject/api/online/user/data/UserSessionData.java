@@ -15,7 +15,7 @@ public class UserSessionData implements Serializable {
     private String attributes;
     private Integer creationTime;
     private Integer currentTime;
-    private String id; /* the session id */
+    private String sessionId;
     private Integer lastAccessedTime;
     private Integer maxInactiveInterval;
     private String userEid;
@@ -41,7 +41,7 @@ public class UserSessionData implements Serializable {
     }
 
     public String getSessionID() {
-        return id;
+        return sessionId;
     }
 
     public Integer getLastAccessedTime() {
@@ -89,7 +89,7 @@ public class UserSessionData implements Serializable {
     }
 
     public void setSessionID(String sessionID) {
-        this.id = sessionID;
+        this.sessionId = sessionID;
     }
 
     public void setLastAccessedTime(Integer lastAccessedTime) {
