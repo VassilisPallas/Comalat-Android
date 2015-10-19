@@ -1,4 +1,5 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -10,19 +11,20 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:padding="16dp">
 
             <EditText
                 android:id="@+id/user_id_edittext"
-                android:layout_width="180dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="20dp"
-                android:hint="User Id *" />
+                android:hint="User Id (required)" />
 
             <EditText
                 android:id="@+id/first_name_edittext"
-                android:layout_width="180dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/user_id_edittext"
                 android:layout_centerHorizontal="true"
@@ -31,7 +33,7 @@
 
             <EditText
                 android:id="@+id/last_name_edittext"
-                android:layout_width="180dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/first_name_edittext"
                 android:layout_centerHorizontal="true"
@@ -40,7 +42,7 @@
 
             <EditText
                 android:id="@+id/email_edittext"
-                android:layout_width="180dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/last_name_edittext"
                 android:layout_centerHorizontal="true"
@@ -49,39 +51,54 @@
 
             <EditText
                 android:id="@+id/password_edittext"
-                android:layout_width="180dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/email_edittext"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="20dp"
-                android:hint="Password *" />
+                android:hint="Password (required)" />
 
             <EditText
                 android:id="@+id/confirm_password_edittext"
-                android:layout_width="180dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/password_edittext"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="20dp"
-                android:hint="Confirm Password *" />
+                android:hint="Confirm Password (required)" />
 
             <EditText
                 android:id="@+id/type_edittext"
-                android:layout_width="180dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/confirm_password_edittext"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="20dp"
-                android:hint="type" />
+                android:enabled="false"
+                android:hint="type: registered" />
 
-            <Button
-                android:id="@+id/signup_button"
-                android:layout_width="wrap_content"
+            <com.balysv.materialripple.MaterialRippleLayout
+                android:id="@+id/ripple"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/type_edittext"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="20dp"
-                android:text="Create Account" />
+                app:mrl_rippleAlpha="0.2"
+                app:mrl_rippleColor="#f5f5f5"
+                app:mrl_rippleDelayClick="false"
+                app:mrl_rippleHover="true"
+                app:mrl_rippleOverlay="true">
+
+                <Button
+                    android:id="@+id/signup_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#0083AF"
+                    android:text="Create Account"
+                    android:textColor="#FFF" />
+
+            </com.balysv.materialripple.MaterialRippleLayout>
 
         </RelativeLayout>
 

@@ -9,7 +9,7 @@ import java.net.URL;
 /**
  * Created by vasilis on 10/17/15.
  */
-public class ConnectionParams {
+public class Connection {
     private URL url;
     private HttpURLConnection con;
     private OutputStreamWriter wr;
@@ -39,8 +39,8 @@ public class ConnectionParams {
             }
 
             // set the loginConnection timeout to 5 seconds and the read timeout to 10 seconds
-            con.setConnectTimeout(5000);
-            con.setReadTimeout(10000);
+//            con.setConnectTimeout(5000);
+//            con.setReadTimeout(10000);
 
 
             if (method.equalsIgnoreCase("POST") && (data != null || !data.isEmpty())) {

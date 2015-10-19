@@ -3,6 +3,7 @@ package org.sakaiproject.sakai;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
@@ -66,6 +67,10 @@ public class UserActivity extends AppCompatActivity
 
         adb.setPositiveButton(getResources().getString(R.string.ok), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
+
+                SharedPreferences.Editor editor = getSharedPreferences("user_logout", MODE_PRIVATE).edit();
+                editor.putBoolean("has_logged_out", true);
+                editor.commit();
 
                 Intent i = new Intent(getApplication(), MainActivity.class);
                 startActivity(i);

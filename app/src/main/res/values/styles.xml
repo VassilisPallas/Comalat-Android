@@ -5,7 +5,7 @@
         <!-- Customize your theme here. -->
         <item name="colorPrimary">#0083AF</item>
         <item name="colorPrimaryDark">#046a8c</item>
-        <item name="colorAccent">#166984</item>
+        <item name="colorAccent">#0083AF</item>
     </style>
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
@@ -14,4 +14,7 @@
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+    <style name="SplashProgressBar" parent="Widget.AppCompat.ProgressBar">
+        <item name="colorAccent">#ffffff</item>
+    </style>
 </resources>

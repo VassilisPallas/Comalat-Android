@@ -4,8 +4,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 
-import org.sakaiproject.api.server.LoginActions;
-import org.sakaiproject.api.cryptography.PasswordService;
+import org.sakaiproject.api.server.Actions;
+import org.sakaiproject.api.cryptography.PasswordEncryption;
 import org.sakaiproject.api.json.JsonParser;
 import org.sakaiproject.api.user.data.UserData;
 import org.sakaiproject.api.user.data.UserProfileData;
@@ -22,7 +22,7 @@ public class OfflineLogin implements ILogin {
     private UserData userData;
     private UserProfileData userProfileData;
     private JsonParser jsonParse;
-    private PasswordService passwordService;
+    private PasswordEncryption passwordEncryption;
     private Bitmap userImage, userThumbnailImage;
     private String loginJson;
     private String userDataJson;
@@ -35,7 +35,7 @@ public class OfflineLogin implements ILogin {
         userSessionData = new UserSessionData();
         userProfileData = new UserProfileData();
         jsonParse = new JsonParser();
-        passwordService = new PasswordService();
+        passwordEncryption = new PasswordEncryption();
     }
 
     @Override
@@ -68,7 +68,7 @@ public class OfflineLogin implements ILogin {
         SharedPreferences prefs = context.getSharedPreferences("user_data", context.MODE_PRIVATE);
         try {
             if (prefs.getString("user_id", null) != null && prefs.getString("password", null) != null) {
-                if (prefs.getString("user_id", null).equals(params[0]) && passwordService.check(params[1], prefs.getString("password", null))) {
+                if (prefs.getString("user_id", null).equals(params[0]) && params[1].equals(passwordEncryption.decrypt(prefs.getString("password", null)))) {
                     getLoginJson();
                     getUserDataJson();
                     getUserProfileDataJson();
@@ -86,30 +86,30 @@ public class OfflineLogin implements ILogin {
 
     @Override
     public void getLoginJson(String... params) throws IOException {
-        loginJson = LoginActions.readJsonFile(context, "loginJson");
+        loginJson = Actions.readJsonFile(context, "loginJson");
         userSessionData = jsonParse.parseLoginResult(loginJson);
     }
 
     @Override
     public void getUserDataJson(String... params) throws IOException {
-        userDataJson = LoginActions.readJsonFile(context, "fullUserDataJson");
+        userDataJson = Actions.readJsonFile(context, "fullUserDataJson");
         userData = jsonParse.parseUserDataJson(userDataJson);
     }
 
     @Override
     public void getUserProfileDataJson(String... params) throws IOException {
-        userProfileDataJson = LoginActions.readJsonFile(context, "userProfileDataJson");
+        userProfileDataJson = Actions.readJsonFile(context, "userProfileDataJson");
         userProfileData = jsonParse.parseUserProfileDataJson(userProfileDataJson);
     }
 
     @Override
     public Bitmap getUserImage(String... params) throws FileNotFoundException {
-        return LoginActions.getImage(context, "user_image");
+        return Actions.getImage(context, "user_image");
     }
 
     @Override
     public Bitmap getUserThumbnailImage(String... params) throws FileNotFoundException {
-        return LoginActions.getImage(context, "user_thumbnail_image");
+        return Actions.getImage(context, "user_thumbnail_image");
     }
 
 }

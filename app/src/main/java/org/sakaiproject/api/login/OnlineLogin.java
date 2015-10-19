@@ -9,9 +9,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URLEncoder;
 
-import org.sakaiproject.api.server.LoginActions;
+import org.sakaiproject.api.server.Actions;
 import org.sakaiproject.api.json.JsonParser;
-import org.sakaiproject.api.server.ConnectionParams;
+import org.sakaiproject.api.server.Connection;
 import org.sakaiproject.api.user.data.UserData;
 import org.sakaiproject.api.user.data.UserProfileData;
 import org.sakaiproject.api.user.data.UserSessionData;
@@ -33,7 +33,7 @@ public class OnlineLogin implements ILogin {
     private String userDataJson;
     private String userProfileDataJson;
     private Context context;
-    private ConnectionParams connection;
+    private Connection connection;
 
     public OnlineLogin(Context context) {
         this.context = context;
@@ -41,7 +41,7 @@ public class OnlineLogin implements ILogin {
         userSessionData = new UserSessionData();
         userProfileData = new UserProfileData();
         jsonParse = new JsonParser();
-        connection = new ConnectionParams();
+        connection = new Connection();
     }
 
 
@@ -82,7 +82,7 @@ public class OnlineLogin implements ILogin {
             Integer status = connection.getResponseCode();
             if (status >= 200 && status < 300) {
                 inputStream = new BufferedInputStream(connection.getInputStream());
-                sessionId = LoginActions.readJsonStream(inputStream);
+                sessionId = Actions.readJsonStream(inputStream);
                 inputStream.close();
                 getLoginJson(context.getResources().getString(R.string.url) + "session/" + sessionId + ".json");
                 getUserDataJson(context.getResources().getString(R.string.url) + "user/" + userSessionData.getUserEid() + ".json");
@@ -108,10 +108,10 @@ public class OnlineLogin implements ILogin {
             Integer status = connection.getResponseCode();
             if (status >= 200 && status < 300) {
                 inputStream = new BufferedInputStream(connection.getInputStream());
-                loginJson = LoginActions.readJsonStream(inputStream);
+                loginJson = Actions.readJsonStream(inputStream);
                 inputStream.close();
                 userSessionData = jsonParse.parseLoginResult(loginJson);
-                LoginActions.writeJsonFile(context, loginJson, "loginJson");
+                Actions.writeJsonFile(context, loginJson, "loginJson");
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -128,10 +128,10 @@ public class OnlineLogin implements ILogin {
             Integer status = connection.getResponseCode();
             if (status >= 200 && status < 300) {
                 inputStream = new BufferedInputStream(connection.getInputStream());
-                userDataJson = LoginActions.readJsonStream(inputStream);
+                userDataJson = Actions.readJsonStream(inputStream);
                 inputStream.close();
                 userData = jsonParse.parseUserDataJson(userDataJson);
-                LoginActions.writeJsonFile(context, userDataJson, "fullUserDataJson");
+                Actions.writeJsonFile(context, userDataJson, "fullUserDataJson");
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -148,10 +148,10 @@ public class OnlineLogin implements ILogin {
             Integer status = connection.getResponseCode();
             if (status >= 200 && status < 300) {
                 inputStream = new BufferedInputStream(connection.getInputStream());
-                userProfileDataJson = LoginActions.readJsonStream(inputStream);
+                userProfileDataJson = Actions.readJsonStream(inputStream);
                 inputStream.close();
                 userProfileData = jsonParse.parseUserProfileDataJson(userProfileDataJson);
-                LoginActions.writeJsonFile(context, userProfileDataJson, "userProfileDataJson");
+                Actions.writeJsonFile(context, userProfileDataJson, "userProfileDataJson");
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -170,7 +170,7 @@ public class OnlineLogin implements ILogin {
             if (status >= 200 && status < 300) {
                 InputStream inputStream = new BufferedInputStream(connection.getInputStream());
                 bitmap = BitmapFactory.decodeStream(inputStream);
-                LoginActions.saveImage(context, bitmap, "user_image");
+                Actions.saveImage(context, bitmap, "user_image");
             }
 
         } catch (IOException e) {
@@ -191,7 +191,7 @@ public class OnlineLogin implements ILogin {
             if (status >= 200 && status < 300) {
                 InputStream inputStream = new BufferedInputStream(connection.getInputStream());
                 bitmap = BitmapFactory.decodeStream(inputStream);
-                LoginActions.saveImage(context, bitmap, "user_thumbnail_image");
+                Actions.saveImage(context, bitmap, "user_thumbnail_image");
             }
         } catch (IOException e) {
             e.printStackTrace();

@@ -16,7 +16,7 @@ import java.io.InputStreamReader;
 /**
  * Created by vasilis on 10/18/15.
  */
-public class LoginActions {
+public class Actions {
 
     /**
      * Convert InputStream to String

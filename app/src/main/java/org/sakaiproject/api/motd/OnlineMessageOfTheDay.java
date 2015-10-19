@@ -5,9 +5,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 
-import org.sakaiproject.api.server.LoginActions;
+import org.sakaiproject.api.server.Actions;
 import org.sakaiproject.api.json.JsonParser;
-import org.sakaiproject.api.server.ConnectionParams;
+import org.sakaiproject.api.server.Connection;
 
 /**
  * Created by vasilis on 10/16/15.
@@ -17,11 +17,11 @@ public class OnlineMessageOfTheDay {
 
     private InputStream inputStream;
     private JsonParser jsonParse;
-    private ConnectionParams connection;
+    private Connection connection;
 
     public OnlineMessageOfTheDay() {
         jsonParse = new JsonParser();
-        connection = new ConnectionParams();
+        connection = new Connection();
     }
 
     private List<String> message;
@@ -55,7 +55,7 @@ public class OnlineMessageOfTheDay {
             Integer status = connection.getResponseCode();
             if (status >= 200 && status < 300) {
                 inputStream = new BufferedInputStream(connection.getInputStream());
-                String mothJson = LoginActions.readJsonStream(inputStream);
+                String mothJson = Actions.readJsonStream(inputStream);
                 inputStream.close();
                 onlineMessageOfTheDay = jsonParse.parseMotdJson(mothJson);
             }
