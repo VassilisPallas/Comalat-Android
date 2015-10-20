@@ -38,9 +38,9 @@ public class Connection {
                 con.setRequestMethod("GET");
             }
 
-            // set the loginConnection timeout to 5 seconds and the read timeout to 10 seconds
-//            con.setConnectTimeout(5000);
-//            con.setReadTimeout(10000);
+            // set loginConnection timeout and read timeout to 10 seconds
+            con.setConnectTimeout(10000);
+            con.setReadTimeout(10000);
 
 
             if (method.equalsIgnoreCase("POST") && (data != null || !data.isEmpty())) {

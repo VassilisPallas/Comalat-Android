@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -116,6 +118,13 @@ public class UserActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
+    public void selectFragment(Fragment f, int id, String title) {
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.replace(id, f);
+        fragmentTransaction.commit();
+        setTitle(title);
+    }
+
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -130,6 +139,8 @@ public class UserActivity extends AppCompatActivity
             case R.id.membership:
                 break;
             case R.id.schedule:
+                ScheduleFragment scheduleFragment = new ScheduleFragment();
+                selectFragment(scheduleFragment, R.id.user_frame, "Schedule");
                 break;
             case R.id.resources:
                 break;
@@ -145,6 +156,8 @@ public class UserActivity extends AppCompatActivity
                 logout();
                 break;
             case R.id.user_help:
+                WebViewFragment webViewFragment = new WebViewFragment();
+                selectFragment(webViewFragment, R.id.user_frame, "Help");
                 break;
         }
 

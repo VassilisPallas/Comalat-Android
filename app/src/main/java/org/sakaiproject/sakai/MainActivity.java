@@ -102,6 +102,8 @@ public class MainActivity extends AppCompatActivity
             case R.id.acknowledgements:
                 break;
             case R.id.help:
+                WebViewFragment webViewFragment = new WebViewFragment();
+                selectFragment(webViewFragment, R.id.content_frame, "Help");
                 break;
             case R.id.login:
                 LoginFragment loginFragment = new LoginFragment();

@@ -1,0 +1,206 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="org.sakaiproject.sakai.ScheduleFragment">
+
+    <ProgressBar
+        android:id="@+id/schedule_progressbar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="gone" />
+
+    <LinearLayout
+        android:id="@+id/calendar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#343434"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/header"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="#046a8c"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:padding="10dp">
+
+
+                <com.balysv.materialripple.MaterialRippleLayout
+                    android:id="@+id/previous_button_ripple"
+                    android:layout_width="45dp"
+                    android:layout_height="45dp"
+                    app:mrl_rippleAlpha="0.2"
+                    app:mrl_rippleColor="#f5f5f5"
+                    app:mrl_rippleDelayClick="false"
+                    app:mrl_rippleHover="true"
+                    app:mrl_rippleOverlay="true"
+                    app:mrl_rippleRoundedCorners="@dimen/fab_margin">
+
+                    <FrameLayout
+                        android:id="@+id/ib_prev"
+                        android:layout_width="45dp"
+                        android:layout_height="45dp"
+                        android:clickable="true">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:src="@mipmap/ic_arrow_left_white" />
+
+                    </FrameLayout>
+
+                </com.balysv.materialripple.MaterialRippleLayout>
+
+                <FrameLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+
+                    <TextView
+                        android:id="@+id/tv_month"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="January"
+                        android:textColor="#ffffff"
+                        android:textSize="18dp"
+                        android:textStyle="bold" />
+
+                </FrameLayout>
+
+                <com.balysv.materialripple.MaterialRippleLayout
+                    android:id="@+id/next_button_ripple"
+                    android:layout_width="45dp"
+                    android:layout_height="45dp"
+                    app:mrl_rippleAlpha="0.2"
+                    app:mrl_rippleColor="#f5f5f5"
+                    app:mrl_rippleDelayClick="false"
+                    app:mrl_rippleHover="true"
+                    app:mrl_rippleOverlay="true"
+                    app:mrl_rippleRoundedCorners="@dimen/fab_margin">
+
+                    <FrameLayout
+                        android:id="@+id/Ib_next"
+                        android:layout_width="45dp"
+                        android:layout_height="45dp"
+                        android:clickable="true">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:src="@mipmap/ic_arrow_right_white" />
+
+                    </FrameLayout>
+
+                </com.balysv.materialripple.MaterialRippleLayout>
+
+            </LinearLayout>
+
+            <TableRow
+                android:id="@+id/tableRow1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#046a8c"
+                android:paddingBottom="5dp"
+                android:paddingLeft="2dp"
+                android:paddingRight="2dp"
+                android:paddingTop="6dp">
+
+                <TextView
+                    android:id="@+id/TextView06"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="S"
+                    android:textColor="#ffffff" />
+
+                <TextView
+                    android:id="@+id/TextView05"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="M"
+                    android:textColor="#ffffff" />
+
+                <TextView
+                    android:id="@+id/TextView04"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="T"
+                    android:textColor="#ffffff" />
+
+                <TextView
+                    android:id="@+id/TextView03"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="W"
+                    android:textColor="#ffffff" />
+
+                <TextView
+                    android:id="@+id/TextView02"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="T"
+                    android:textColor="#ffffff" />
+
+                <TextView
+                    android:id="@+id/TextView01"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="F"
+                    android:textColor="#ffffff" />
+
+                <TextView
+                    android:id="@+id/textView1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="S"
+                    android:textColor="#ffffff" />
+
+            </TableRow>
+
+            <GridView
+                android:id="@+id/gv_calendar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#00000000"
+                android:cacheColorHint="#80000000"
+                android:gravity="center"
+                android:listSelector="@android:color/transparent"
+                android:numColumns="7"
+                android:padding="2dp"
+                android:stretchMode="columnWidth"
+                android:textAlignment="gravity">
+
+            </GridView>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</FrameLayout>

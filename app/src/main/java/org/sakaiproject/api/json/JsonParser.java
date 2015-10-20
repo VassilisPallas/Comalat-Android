@@ -11,8 +11,10 @@ import java.util.List;
 import org.sakaiproject.api.motd.OnlineMessageOfTheDay;
 import org.sakaiproject.api.time.Time;
 import org.sakaiproject.api.user.data.UserData;
+import org.sakaiproject.api.user.data.UserEvents;
 import org.sakaiproject.api.user.data.UserProfileData;
 import org.sakaiproject.api.user.data.UserSessionData;
+import org.sakaiproject.sakai.UserActivity;
 
 /**
  * Created by vasilis on 10/13/15.
@@ -180,4 +182,43 @@ public class JsonParser {
         return onlineMessageOfTheDay;
     }
 
+    public List<UserEvents> parseUserEventJson(String result) {
+        List<UserEvents> userEventsList = new ArrayList<>();
+
+        try {
+            JSONObject jsonObject = new JSONObject(result);
+            JSONArray collections = jsonObject.getJSONArray("calendar_collection");
+
+            for (int i = 0; i < collections.length(); i++) {
+                JSONObject obj = collections.optJSONObject(i);
+
+                UserEvents userEvents = new UserEvents();
+
+                JSONObject firstTimeJson = obj.getJSONObject("firstTime");
+
+                userEvents.setCreator(obj.optString("creator"));
+                userEvents.setDuration(obj.optInt("duration"));
+                userEvents.setEventId(obj.optString("eventId"));
+                userEvents.setFirstTime(new Time(firstTimeJson.optString("display"), new Date(Long.parseLong(firstTimeJson.optString("time")))));
+                userEvents.setReference(obj.optString("reference"));
+                userEvents.setSiteName(obj.optString("siteName"));
+                userEvents.setTitle(obj.optString("title"));
+                userEvents.setType(obj.optString("type"));
+                userEvents.setEntityReference(obj.optString("entityReference"));
+                userEvents.setEntityURL(obj.optString("entityURL"));
+                userEvents.setEntityTitle(obj.optString("entityTitle"));
+
+                userEvents.setEventTime();
+
+                userEventsList.add(userEvents);
+            }
+
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+
+        return userEventsList;
+    }
 }
