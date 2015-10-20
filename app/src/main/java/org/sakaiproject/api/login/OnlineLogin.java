@@ -9,9 +9,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URLEncoder;
 
-import org.sakaiproject.api.server.Actions;
+import org.sakaiproject.api.general.Actions;
 import org.sakaiproject.api.json.JsonParser;
-import org.sakaiproject.api.server.Connection;
+import org.sakaiproject.api.general.Connection;
 import org.sakaiproject.api.user.data.UserData;
 import org.sakaiproject.api.user.data.UserProfileData;
 import org.sakaiproject.api.user.data.UserSessionData;

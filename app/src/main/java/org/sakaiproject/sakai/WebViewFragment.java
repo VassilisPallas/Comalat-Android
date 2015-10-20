@@ -30,6 +30,7 @@ public class WebViewFragment extends Fragment {
         webView = (WebView) v.findViewById(R.id.webview);
         webView.getSettings().setJavaScriptEnabled(true);
         webView.loadUrl("http://141.99.248.86:8089/portal/help/main");
+
         // Inflate the layout for this fragment
         return v;
     }

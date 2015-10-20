@@ -2,10 +2,9 @@ package org.sakaiproject.api.events;
 
 import android.content.Context;
 
-import org.sakaiproject.api.customviews.calendar.CalendarCollection;
 import org.sakaiproject.api.json.JsonParser;
-import org.sakaiproject.api.server.Actions;
-import org.sakaiproject.api.server.Connection;
+import org.sakaiproject.api.general.Actions;
+import org.sakaiproject.api.general.Connection;
 import org.sakaiproject.api.user.data.UserEvents;
 
 import java.io.BufferedInputStream;

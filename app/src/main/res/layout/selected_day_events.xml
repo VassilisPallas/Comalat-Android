@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_gravity="left"
+    android:background="#ffffff"
+    android:orientation="horizontal">
+
+    <com.balysv.materialripple.MaterialRippleLayout
+        android:id="@+id/selected_day_events_recycle_ripple"
+        app:mrl_rippleAlpha="0.2"
+        app:mrl_rippleColor="#808080"
+        app:mrl_rippleDelayClick="false"
+        app:mrl_rippleHover="true"
+        app:mrl_rippleOverlay="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:padding="8dp"
+            android:gravity="left">
+
+            <ImageView
+                android:id="@+id/activity_type_event"
+                android:layout_width="30dp"
+                android:layout_height="25dp"
+                android:scaleType="fitCenter"
+                android:src="@mipmap/ic_person_black" />
+
+            <TextView
+                android:id="@+id/tv_event"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/activity_type_event"
+                android:padding="3dp"
+                android:text="TextView"
+                android:textColor="#000000"
+                android:textSize="16dp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tv_time"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_event"
+                android:layout_gravity="center"
+                android:padding="4dp"
+                android:text="TextView" />
+
+        </RelativeLayout>
+
+    </com.balysv.materialripple.MaterialRippleLayout>
+
+</LinearLayout>

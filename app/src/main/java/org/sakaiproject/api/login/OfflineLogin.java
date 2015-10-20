@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 
-import org.sakaiproject.api.server.Actions;
+import org.sakaiproject.api.general.Actions;
 import org.sakaiproject.api.cryptography.PasswordEncryption;
 import org.sakaiproject.api.json.JsonParser;
 import org.sakaiproject.api.user.data.UserData;

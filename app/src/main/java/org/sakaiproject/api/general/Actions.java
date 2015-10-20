@@ -1,4 +1,4 @@
-package org.sakaiproject.api.server;
+package org.sakaiproject.api.general;
 
 import android.content.Context;
 import android.graphics.Bitmap;

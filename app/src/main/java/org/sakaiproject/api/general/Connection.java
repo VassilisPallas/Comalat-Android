@@ -1,4 +1,4 @@
-package org.sakaiproject.api.server;
+package org.sakaiproject.api.general;
 
 import java.io.IOException;
 import java.io.InputStream;

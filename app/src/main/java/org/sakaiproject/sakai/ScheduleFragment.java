@@ -4,6 +4,8 @@ package org.sakaiproject.sakai;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +17,7 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import org.sakaiproject.api.customviews.adapters.SelectedDayEventsAdapter;
 import org.sakaiproject.api.customviews.calendar.CalendarAdapter;
 import org.sakaiproject.api.customviews.calendar.CalendarCollection;
 import org.sakaiproject.api.events.OnlineEvents;
@@ -22,6 +25,7 @@ import org.sakaiproject.api.internet.NetWork;
 import org.sakaiproject.api.user.data.UserEvents;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.List;
 
@@ -39,6 +43,11 @@ public class ScheduleFragment extends Fragment {
     private LinearLayout calendar;
     private ProgressBar progressBar;
 
+    private RecyclerView mRecyclerView;
+    private RecyclerView.Adapter mAdapter;
+    private RecyclerView.LayoutManager mLayoutManager;
+
+
     public ScheduleFragment() {
         // Required empty public constructor
     }
@@ -49,6 +58,16 @@ public class ScheduleFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         View v = inflater.inflate(R.layout.fragment_schedule, container, false);
+
+        mRecyclerView = (RecyclerView) v.findViewById(R.id.selected_day_events_recycle);
+
+        // use this setting to improve performance if you know that changes
+        // in content do not change the layout size of the RecyclerView
+        mRecyclerView.setHasFixedSize(true);
+
+        // use a linear layout manager
+        mLayoutManager = new LinearLayoutManager(getContext());
+        mRecyclerView.setLayoutManager(mLayoutManager);
 
 
         cal_month = (GregorianCalendar) GregorianCalendar.getInstance();
@@ -109,7 +128,10 @@ public class ScheduleFragment extends Fragment {
                 }
                 ((CalendarAdapter) parent.getAdapter()).setSelected(v, position);
 
-                ((CalendarAdapter) parent.getAdapter()).getPositionList(selectedGridDate, ScheduleFragment.this);
+                mAdapter = new SelectedDayEventsAdapter(((CalendarAdapter) parent.getAdapter()).getPositionList(selectedGridDate));
+                mAdapter.notifyDataSetChanged();
+                mRecyclerView.setAdapter(mAdapter);
+
             }
 
         });
@@ -183,6 +205,8 @@ public class ScheduleFragment extends Fragment {
         protected void onPostExecute(List<UserEvents> userEvents) {
             super.onPostExecute(userEvents);
 
+            cal_adapter.setEvents(userEvents);
+
             for (UserEvents event : userEvents) {
                 CalendarCollection.date_collection_arr.add(new CalendarCollection(event.getEventTime(), event.getTitle()));
             }
@@ -191,6 +215,5 @@ public class ScheduleFragment extends Fragment {
             progressBar.setVisibility(View.GONE);
         }
     }
-
 
 }

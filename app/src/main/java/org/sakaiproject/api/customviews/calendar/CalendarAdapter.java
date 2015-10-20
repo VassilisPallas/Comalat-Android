@@ -12,6 +12,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.sakaiproject.api.user.data.UserEvents;
 import org.sakaiproject.sakai.R;
 
 import java.text.DateFormat;
@@ -120,7 +121,6 @@ public class CalendarAdapter extends BaseAdapter {
 
 
         if (day_string.get(position).equals(curentDateString)) {
-
             v.setBackgroundColor(Color.parseColor("#0083AF"));
         } else {
             v.setBackgroundColor(Color.parseColor("#343434"));
@@ -164,13 +164,10 @@ public class CalendarAdapter extends BaseAdapter {
         int len = day_string.size();
         if (len > pos) {
             if (day_string.get(pos).equals(curentDateString)) {
-                view.setBackgroundColor(Color.parseColor("#036a8c"));
+                view.setBackgroundColor(Color.parseColor("#0083AF"));
             } else {
-
                 previousView = view;
-
             }
-
         }
 
 
@@ -232,6 +229,7 @@ public class CalendarAdapter extends BaseAdapter {
     public void setEventView(View v, int pos, TextView txt) {
 
         int len = CalendarCollection.date_collection_arr.size();
+
         for (int i = 0; i < len; i++) {
             CalendarCollection cal_obj = CalendarCollection.date_collection_arr.get(i);
             String date = cal_obj.date;
@@ -247,38 +245,26 @@ public class CalendarAdapter extends BaseAdapter {
             }
         }
 
-
     }
 
+    private List<UserEvents> userEvents;
 
-    public void getPositionList(String date, final Fragment fragment) {
+    public void setEvents(List<UserEvents> userEvents) {
+        this.userEvents = userEvents;
+    }
 
-        int len = CalendarCollection.date_collection_arr.size();
+    public List<UserEvents> getPositionList(String date) {
+
+        List<UserEvents> todayEvents = new ArrayList<>();
+
+        int len = userEvents.size();
         for (int i = 0; i < len; i++) {
-            CalendarCollection cal_collection = CalendarCollection.date_collection_arr.get(i);
-            String event_date = cal_collection.date;
-
-            String event_message = cal_collection.event_message;
-
-            if (date.equals(event_date)) {
-
-                Toast.makeText(context, "You have event on this date: " + event_date, Toast.LENGTH_LONG).show();
-                new AlertDialog.Builder(context)
-                        .setIcon(android.R.drawable.ic_dialog_alert)
-                        .setTitle("Date: " + event_date)
-                        .setMessage("Event: " + event_message)
-                        .setPositiveButton("OK", new android.content.DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                fragment.getActivity().finish();
-                            }
-                        }).show();
-                break;
-            } else {
-
-
+            UserEvents event = userEvents.get(i);
+            if (event.getEventTime().equals(date)) {
+                todayEvents.add(event);
             }
         }
 
-
+        return todayEvents;
     }
 }
