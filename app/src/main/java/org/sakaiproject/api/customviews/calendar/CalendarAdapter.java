@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,6 +32,7 @@ public class CalendarAdapter extends BaseAdapter {
 
     private java.util.Calendar month;
     public GregorianCalendar pmonth;
+    private List<UserEvents> userEvents;
     /**
      * calendar instance for previous month for getting complete view
      */
@@ -63,6 +65,7 @@ public class CalendarAdapter extends BaseAdapter {
         this.items = new ArrayList<String>();
         df = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
         curentDateString = df.format(selectedDate.getTime());
+
         refreshDays();
 
     }
@@ -239,7 +242,6 @@ public class CalendarAdapter extends BaseAdapter {
                 if (day_string.get(pos).equals(date)) {
                     v.setBackgroundColor(Color.parseColor("#343434"));
                     v.setBackgroundResource(R.mipmap.ic_event_blue);
-
                     txt.setTextColor(Color.WHITE);
                 }
             }
@@ -247,11 +249,10 @@ public class CalendarAdapter extends BaseAdapter {
 
     }
 
-    private List<UserEvents> userEvents;
-
     public void setEvents(List<UserEvents> userEvents) {
         this.userEvents = userEvents;
     }
+
 
     public List<UserEvents> getPositionList(String date) {
 

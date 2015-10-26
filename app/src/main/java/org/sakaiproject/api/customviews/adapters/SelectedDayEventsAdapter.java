@@ -49,7 +49,9 @@ public class SelectedDayEventsAdapter extends RecyclerView.Adapter<SelectedDayEv
 
     @Override
     public int getItemCount() {
-        return userEventsList.size();
+        if (userEventsList != null)
+            return userEventsList.size();
+        return 0;
     }
 
     // Provide a reference to the views for each data item

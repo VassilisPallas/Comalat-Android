@@ -2,6 +2,7 @@ package org.sakaiproject.api.events;
 
 import android.content.Context;
 
+import org.sakaiproject.api.general.ConnectionType;
 import org.sakaiproject.api.json.JsonParser;
 import org.sakaiproject.api.general.Actions;
 import org.sakaiproject.api.general.Connection;
@@ -27,7 +28,7 @@ public class OnlineEvents {
 
     public OnlineEvents(Context context) {
         this.context = context;
-        connection = new Connection();
+        connection = Connection.getInstance();
         userEvents = new ArrayList<>();
         jsonParse = new JsonParser();
     }
@@ -37,7 +38,7 @@ public class OnlineEvents {
     }
 
     public void getUserEvents(String url) throws IOException {
-        connection.openConnection(url, "GET", true, null);
+        connection.openConnection(url, ConnectionType.GET, true, false, null);
         Integer status = connection.getResponseCode();
         if (status >= 200 && status < 300) {
             inputStream = new BufferedInputStream(connection.getInputStream());

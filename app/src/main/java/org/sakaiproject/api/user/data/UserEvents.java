@@ -1,6 +1,7 @@
 package org.sakaiproject.api.user.data;
 
 import org.sakaiproject.api.time.Time;
+import org.sakaiproject.api.user.data.events.RecurrenceRule;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

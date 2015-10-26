@@ -6,6 +6,7 @@ import java.io.InputStream;
 import java.util.List;
 
 import org.sakaiproject.api.general.Actions;
+import org.sakaiproject.api.general.ConnectionType;
 import org.sakaiproject.api.json.JsonParser;
 import org.sakaiproject.api.general.Connection;
 
@@ -21,7 +22,7 @@ public class OnlineMessageOfTheDay {
 
     public OnlineMessageOfTheDay() {
         jsonParse = new JsonParser();
-        connection = new Connection();
+        connection = Connection.getInstance();
     }
 
     private List<String> message;
@@ -50,7 +51,7 @@ public class OnlineMessageOfTheDay {
 
     public void getMessageOfTheDay(String url) {
         try {
-            connection.openConnection(url, "GET", true, null);
+            connection.openConnection(url, ConnectionType.GET, true, false, null);
 
             Integer status = connection.getResponseCode();
             if (status >= 200 && status < 300) {

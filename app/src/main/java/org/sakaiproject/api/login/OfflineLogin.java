@@ -7,9 +7,8 @@ import android.graphics.Bitmap;
 import org.sakaiproject.api.general.Actions;
 import org.sakaiproject.api.cryptography.PasswordEncryption;
 import org.sakaiproject.api.json.JsonParser;
-import org.sakaiproject.api.user.data.UserData;
-import org.sakaiproject.api.user.data.UserProfileData;
-import org.sakaiproject.api.user.data.UserSessionData;
+import org.sakaiproject.api.user.data.Profile;
+import org.sakaiproject.api.user.data.User;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -18,9 +17,9 @@ import java.io.IOException;
  * Created by vasilis on 10/18/15.
  */
 public class OfflineLogin implements ILogin {
-    private UserSessionData userSessionData;
-    private UserData userData;
-    private UserProfileData userProfileData;
+
+    private User user;
+    private Profile profile;
     private JsonParser jsonParse;
     private PasswordEncryption passwordEncryption;
     private Bitmap userImage, userThumbnailImage;
@@ -31,26 +30,20 @@ public class OfflineLogin implements ILogin {
 
     public OfflineLogin(Context context) {
         this.context = context;
-        userData = new UserData();
-        userSessionData = new UserSessionData();
-        userProfileData = new UserProfileData();
+        user = User.getInstance();
+        profile = Profile.getInstance();
         jsonParse = new JsonParser();
         passwordEncryption = new PasswordEncryption();
     }
 
     @Override
-    public UserSessionData getUserSessionData() {
-        return userSessionData;
+    public User getUser() {
+        return user;
     }
 
     @Override
-    public UserData getUserData() {
-        return userData;
-    }
-
-    @Override
-    public UserProfileData getUserProfileData() {
-        return userProfileData;
+    public Profile getProfile() {
+        return profile;
     }
 
     @Override
@@ -68,7 +61,7 @@ public class OfflineLogin implements ILogin {
         SharedPreferences prefs = context.getSharedPreferences("user_data", context.MODE_PRIVATE);
         try {
             if (prefs.getString("user_id", null) != null && prefs.getString("password", null) != null) {
-                if (prefs.getString("user_id", null).equals(params[0]) && params[1].equals(passwordEncryption.decrypt(prefs.getString("password", null)))) {
+                if (prefs.getString("user_id", null).equals(params[0]) && passwordEncryption.check(params[1], prefs.getString("password", null))) {
                     getLoginJson();
                     getUserDataJson();
                     getUserProfileDataJson();
@@ -87,19 +80,19 @@ public class OfflineLogin implements ILogin {
     @Override
     public void getLoginJson(String... params) throws IOException {
         loginJson = Actions.readJsonFile(context, "loginJson");
-        userSessionData = jsonParse.parseLoginResult(loginJson);
+        jsonParse.parseLoginResult(loginJson);
     }
 
     @Override
     public void getUserDataJson(String... params) throws IOException {
         userDataJson = Actions.readJsonFile(context, "fullUserDataJson");
-        userData = jsonParse.parseUserDataJson(userDataJson);
+        jsonParse.parseUserDataJson(userDataJson);
     }
 
     @Override
     public void getUserProfileDataJson(String... params) throws IOException {
         userProfileDataJson = Actions.readJsonFile(context, "userProfileDataJson");
-        userProfileData = jsonParse.parseUserProfileDataJson(userProfileDataJson);
+        jsonParse.parseUserProfileDataJson(userProfileDataJson);
     }
 
     @Override

@@ -18,16 +18,22 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.sakaiproject.api.customviews.ImageViewRounded;
-import org.sakaiproject.api.user.data.UserProfileData;
+import org.sakaiproject.api.general.Connection;
+import org.sakaiproject.api.internet.NetWork;
+import org.sakaiproject.api.logout.Logout;
+import org.sakaiproject.api.user.data.Profile;
+import org.sakaiproject.api.user.data.User;
 
 public class UserActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private TextView displayNameTextView, emailTextView;
     private ImageViewRounded userImage;
-    private UserProfileData userProfileData;
+    private Profile profile;
+    private User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,11 +53,13 @@ public class UserActivity extends AppCompatActivity
 
         findViewsById();
 
-        userProfileData = (UserProfileData) getIntent().getSerializableExtra("user_data");
-
-        displayNameTextView.setText(userProfileData.getDisplayName());
-        emailTextView.setText(userProfileData.getEmail());
+        profile = Profile.getInstance();
+        user = User.getInstance();
+        displayNameTextView.setText(profile.getDisplayName());
+        emailTextView.setText(user.getEmail());
         userImage.setImageBitmap((Bitmap) getIntent().getParcelableExtra("user_thumbnail_image"));
+
+
     }
 
     public void findViewsById() {
@@ -70,13 +78,34 @@ public class UserActivity extends AppCompatActivity
         adb.setPositiveButton(getResources().getString(R.string.ok), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
 
-                SharedPreferences.Editor editor = getSharedPreferences("user_logout", MODE_PRIVATE).edit();
-                editor.putBoolean("has_logged_out", true);
-                editor.commit();
+                Thread thread = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (NetWork.getConnectionEstablished()) {
+                            try {
+                                Logout logout = new Logout();
+                                if (logout.logout("http://141.99.248.86:8089/direct/session/" + Connection.getSessionId()) == 1) {
+                                    Intent i = new Intent(getApplication(), MainActivity.class);
+                                    startActivity(i);
+                                    finish();
+                                }
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        } else {
+                            Intent i = new Intent(getApplication(), MainActivity.class);
+                            startActivity(i);
+                            finish();
+                        }
 
-                Intent i = new Intent(getApplication(), MainActivity.class);
-                startActivity(i);
-                finish();
+                    }
+                });
+
+                thread.start();
+
+                user = User.nullInstance();
+                profile = Profile.nullInstance();
+
             }
         });
 
@@ -92,7 +121,7 @@ public class UserActivity extends AppCompatActivity
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            finish();
+            logout();
         }
     }
 

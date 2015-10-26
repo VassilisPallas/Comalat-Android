@@ -2,9 +2,8 @@ package org.sakaiproject.api.login;
 
 import android.graphics.Bitmap;
 
-import org.sakaiproject.api.user.data.UserData;
-import org.sakaiproject.api.user.data.UserProfileData;
-import org.sakaiproject.api.user.data.UserSessionData;
+import org.sakaiproject.api.user.data.Profile;
+import org.sakaiproject.api.user.data.User;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -18,17 +17,13 @@ public interface ILogin {
     /**
      * @return the userSessionData object
      */
-    UserSessionData getUserSessionData();
+    User getUser();
 
     /**
      * @return the UserData object
      */
-    UserData getUserData();
+    Profile getProfile();
 
-    /**
-     * @return the UserProfileData object
-     */
-    UserProfileData getUserProfileData();
 
     /**
      * @return the user's profile image

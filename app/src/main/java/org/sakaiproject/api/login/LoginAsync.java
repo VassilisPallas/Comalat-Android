@@ -14,9 +14,6 @@ import android.widget.Toast;
 
 import org.sakaiproject.api.cryptography.PasswordEncryption;
 import org.sakaiproject.api.internet.NetWork;
-import org.sakaiproject.api.user.data.UserData;
-import org.sakaiproject.api.user.data.UserProfileData;
-import org.sakaiproject.api.user.data.UserSessionData;
 import org.sakaiproject.sakai.LoginFragment;
 import org.sakaiproject.sakai.R;
 import org.sakaiproject.sakai.UserActivity;
@@ -31,9 +28,7 @@ public class LoginAsync extends AsyncTask<Void, Void, LoginType> {
     private OnlineLogin onlineOnlineLogin;
     private OfflineLogin offlineOfflineLogin;
 
-    private UserData userData;
-    private UserSessionData userSessionData;
-    private UserProfileData userProfileData;
+
     private Context context;
     private Activity activity;
     private Fragment loginFragment = null;
@@ -66,6 +61,7 @@ public class LoginAsync extends AsyncTask<Void, Void, LoginType> {
     private void clearEditTexts() {
         usernameEditText.setText("");
         passwordEditText.setText("");
+        usernameEditText.requestFocus();
     }
 
     @Override
@@ -107,17 +103,10 @@ public class LoginAsync extends AsyncTask<Void, Void, LoginType> {
             editor.putString("password", passwordEncryption.encrypt(password));
             editor.commit();
 
-            userData = onlineOnlineLogin.getUserData();
-            userSessionData = onlineOnlineLogin.getUserSessionData();
-            userProfileData = onlineOnlineLogin.getUserProfileData();
             userImage = onlineOnlineLogin.getImage();
             userThumbnailImage = onlineOnlineLogin.getThumbnailImage();
 
         } else if (type == LoginType.LOGIN_WITHOUT_INTERNET) /* connection completed without internet */ {
-
-            userData = offlineOfflineLogin.getUserData();
-            userSessionData = offlineOfflineLogin.getUserSessionData();
-            userProfileData = offlineOfflineLogin.getUserProfileData();
 
             userImage = offlineOfflineLogin.getImage();
             userThumbnailImage = offlineOfflineLogin.getThumbnailImage();
@@ -139,12 +128,11 @@ public class LoginAsync extends AsyncTask<Void, Void, LoginType> {
         if (loginFragment != null && loginFragment instanceof LoginFragment)
             clearEditTexts();
 
-        SharedPreferences.Editor editor = context.getSharedPreferences("user_logout", context.MODE_PRIVATE).edit();
+        SharedPreferences.Editor editor = context.getSharedPreferences("user_data", context.MODE_PRIVATE).edit();
         editor.putBoolean("has_logged_out", false);
         editor.commit();
 
         Intent i = new Intent(context, UserActivity.class);
-        i.putExtra("user_data", userProfileData);
         i.putExtra("user_image", userImage);
         i.putExtra("user_thumbnail_image", userThumbnailImage);
         i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

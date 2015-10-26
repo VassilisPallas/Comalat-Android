@@ -1,20 +1,23 @@
 package org.sakaiproject.api.login;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.util.Log;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URLEncoder;
 
+import org.sakaiproject.api.cryptography.PasswordEncryption;
 import org.sakaiproject.api.general.Actions;
+import org.sakaiproject.api.general.ConnectionType;
 import org.sakaiproject.api.json.JsonParser;
 import org.sakaiproject.api.general.Connection;
-import org.sakaiproject.api.user.data.UserData;
-import org.sakaiproject.api.user.data.UserProfileData;
-import org.sakaiproject.api.user.data.UserSessionData;
+import org.sakaiproject.api.user.data.Profile;
+import org.sakaiproject.api.user.data.User;
 import org.sakaiproject.sakai.R;
 
 /**
@@ -22,9 +25,8 @@ import org.sakaiproject.sakai.R;
  */
 public class OnlineLogin implements ILogin {
 
-    private UserSessionData userSessionData;
-    private UserData userData;
-    private UserProfileData userProfileData;
+    private User user;
+    private Profile profile;
     private JsonParser jsonParse;
     private Bitmap userImage, userThumbnailImage;
     private InputStream inputStream;
@@ -34,30 +36,25 @@ public class OnlineLogin implements ILogin {
     private String userProfileDataJson;
     private Context context;
     private Connection connection;
+    private PasswordEncryption passwordEncryption;
 
     public OnlineLogin(Context context) {
         this.context = context;
-        userData = new UserData();
-        userSessionData = new UserSessionData();
-        userProfileData = new UserProfileData();
         jsonParse = new JsonParser();
-        connection = new Connection();
-    }
-
-
-    @Override
-    public UserSessionData getUserSessionData() {
-        return userSessionData;
+        connection = Connection.getInstance();
+        user = User.getInstance();
+        profile = Profile.getInstance();
+        passwordEncryption = new PasswordEncryption();
     }
 
     @Override
-    public UserData getUserData() {
-        return userData;
+    public User getUser() {
+        return user;
     }
 
     @Override
-    public UserProfileData getUserProfileData() {
-        return userProfileData;
+    public Profile getProfile() {
+        return profile;
     }
 
     @Override
@@ -77,20 +74,27 @@ public class OnlineLogin implements ILogin {
             data += "&";
             data += "_password=" + URLEncoder.encode(params[2], "UTF-8");
 
-            connection.openConnection(params[0], "POST", false, data);
+            connection.openConnection(params[0], ConnectionType.POST, false, false, data);
 
             Integer status = connection.getResponseCode();
             if (status >= 200 && status < 300) {
                 inputStream = new BufferedInputStream(connection.getInputStream());
                 sessionId = Actions.readJsonStream(inputStream);
                 inputStream.close();
+
+                SharedPreferences.Editor editor = context.getSharedPreferences("user_data", context.MODE_PRIVATE).edit();
+                editor.putString("session_id", sessionId);
+                editor.commit();
                 getLoginJson(context.getResources().getString(R.string.url) + "session/" + sessionId + ".json");
-                getUserDataJson(context.getResources().getString(R.string.url) + "user/" + userSessionData.getUserEid() + ".json");
-                getUserProfileDataJson(context.getResources().getString(R.string.url) + "profile/" + userSessionData.getUserEid() + ".json");
-                userImage = getUserImage(userProfileData.getImageUrl());
-                userThumbnailImage = getUserThumbnailImage(userProfileData.getImageThumbUrl());
-                return LoginType.LOGIN_WITH_INTERNET;
+                putSession(context.getResources().getString(R.string.url) + "session/" + sessionId + ".json", loginJson);
+                getUserDataJson(context.getResources().getString(R.string.url) + "user/" + user.getUserEid() + ".json");
+                getUserProfileDataJson(context.getResources().getString(R.string.url) + "profile/" + user.getUserEid() + ".json");
+                userImage = getUserImage(profile.getImageUrl());
+                userThumbnailImage = getUserThumbnailImage(profile.getImageThumbUrl());
             }
+
+            connection.setSessionId(sessionId);
+            return LoginType.LOGIN_WITH_INTERNET;
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
@@ -100,17 +104,27 @@ public class OnlineLogin implements ILogin {
         return LoginType.INVALID_ARGUMENTS;
     }
 
+    public void putSession(String url, String sessionId) throws IOException {
+        connection.openConnection(url, ConnectionType.PUT, false, true, sessionId);
+        Integer status = connection.getResponseCode();
+
+        if (status >= 200 && status < 300)
+            Log.i("session", "stored");
+        else
+            Log.i("session", "didn't stored");
+    }
+
     @Override
     public void getLoginJson(String... params) throws IOException {
         try {
-            connection.openConnection(params[0], "GET", true, null);
+            connection.openConnection(params[0], ConnectionType.GET, true, false, null);
 
             Integer status = connection.getResponseCode();
             if (status >= 200 && status < 300) {
                 inputStream = new BufferedInputStream(connection.getInputStream());
                 loginJson = Actions.readJsonStream(inputStream);
                 inputStream.close();
-                userSessionData = jsonParse.parseLoginResult(loginJson);
+                jsonParse.parseLoginResult(loginJson);
                 Actions.writeJsonFile(context, loginJson, "loginJson");
             }
         } catch (IOException e) {
@@ -123,14 +137,14 @@ public class OnlineLogin implements ILogin {
     @Override
     public void getUserDataJson(String... params) throws IOException {
         try {
-            connection.openConnection(params[0], "GET", true, null);
+            connection.openConnection(params[0], ConnectionType.GET, true, false, null);
 
             Integer status = connection.getResponseCode();
             if (status >= 200 && status < 300) {
                 inputStream = new BufferedInputStream(connection.getInputStream());
                 userDataJson = Actions.readJsonStream(inputStream);
                 inputStream.close();
-                userData = jsonParse.parseUserDataJson(userDataJson);
+                jsonParse.parseUserDataJson(userDataJson);
                 Actions.writeJsonFile(context, userDataJson, "fullUserDataJson");
             }
         } catch (IOException e) {
@@ -143,14 +157,14 @@ public class OnlineLogin implements ILogin {
     @Override
     public void getUserProfileDataJson(String... params) throws IOException {
         try {
-            connection.openConnection(params[0], "GET", true, null);
+            connection.openConnection(params[0], ConnectionType.GET, true, false, null);
 
             Integer status = connection.getResponseCode();
             if (status >= 200 && status < 300) {
                 inputStream = new BufferedInputStream(connection.getInputStream());
                 userProfileDataJson = Actions.readJsonStream(inputStream);
                 inputStream.close();
-                userProfileData = jsonParse.parseUserProfileDataJson(userProfileDataJson);
+                jsonParse.parseUserProfileDataJson(userProfileDataJson);
                 Actions.writeJsonFile(context, userProfileDataJson, "userProfileDataJson");
             }
         } catch (IOException e) {
@@ -164,7 +178,7 @@ public class OnlineLogin implements ILogin {
     public Bitmap getUserImage(String... params) {
         Bitmap bitmap = null;
         try {
-            connection.openConnection(params[0], "GET", false, null);
+            connection.openConnection(params[0], ConnectionType.GET, false, false, null);
 
             Integer status = connection.getResponseCode();
             if (status >= 200 && status < 300) {
@@ -185,7 +199,7 @@ public class OnlineLogin implements ILogin {
     public Bitmap getUserThumbnailImage(String... params) {
         Bitmap bitmap = null;
         try {
-            connection.openConnection(params[0], "GET", false, null);
+            connection.openConnection(params[0], ConnectionType.GET, false, false, null);
 
             Integer status = connection.getResponseCode();
             if (status >= 200 && status < 300) {

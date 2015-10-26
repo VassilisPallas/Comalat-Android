@@ -8,6 +8,9 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -16,6 +19,7 @@ import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.sakaiproject.api.customviews.adapters.SelectedDayEventsAdapter;
 import org.sakaiproject.api.customviews.calendar.CalendarAdapter;
@@ -136,6 +140,7 @@ public class ScheduleFragment extends Fragment {
 
         });
 
+
         onlineEvents = new OnlineEvents(getContext());
         new EventsAsync().execute();
 
@@ -143,6 +148,25 @@ public class ScheduleFragment extends Fragment {
         return v;
     }
 
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.user, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_refresh:
+                Toast.makeText(getContext(), "pressed", Toast.LENGTH_SHORT).show();
+                new EventsAsync().execute();
+                return true;
+            default:
+                break;
+        }
+        return false;
+    }
 
     protected void setNextMonth() {
         if (cal_month.get(GregorianCalendar.MONTH) == cal_month
@@ -153,7 +177,6 @@ public class ScheduleFragment extends Fragment {
             cal_month.set(GregorianCalendar.MONTH,
                     cal_month.get(GregorianCalendar.MONTH) + 1);
         }
-
     }
 
     protected void setPreviousMonth() {
