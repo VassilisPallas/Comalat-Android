@@ -31,10 +31,9 @@ public class User {
         return instance;
     }
 
-    public static synchronized User nullInstance() {
+    public static synchronized void nullInstance() {
         if (instance != null)
             instance = null;
-        return instance;
     }
 
     public static synchronized Date getCreatedDate() {

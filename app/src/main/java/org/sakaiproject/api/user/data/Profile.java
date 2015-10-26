@@ -51,10 +51,9 @@ public class Profile {
         return instance;
     }
 
-    public static synchronized Profile nullInstance() {
+    public static synchronized void nullInstance() {
         if (instance != null)
             instance = null;
-        return instance;
     }
 
     public static synchronized String getAcademicProfileUrl() {

@@ -71,7 +71,7 @@ public class UserActivity extends AppCompatActivity
     private void logout() {
 
         // other constructor -> (this, R.attr.theme);
-        AlertDialog.Builder adb = new AlertDialog.Builder(this);
+        AlertDialog.Builder adb = new AlertDialog.Builder(getSupportActionBar().getThemedContext());
 
         adb.setTitle(getResources().getString(R.string.logout_message));
 
@@ -97,14 +97,10 @@ public class UserActivity extends AppCompatActivity
                             startActivity(i);
                             finish();
                         }
-
                     }
                 });
 
                 thread.start();
-
-                user = User.nullInstance();
-                profile = Profile.nullInstance();
 
             }
         });

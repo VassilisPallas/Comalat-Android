@@ -26,8 +26,6 @@ public class Connection {
 
 
     private Connection() {
-        CookieManager cookieManager = new CookieManager();
-        CookieHandler.setDefault(cookieManager);
     }
 
     public static synchronized Connection getInstance() {
@@ -39,6 +37,11 @@ public class Connection {
     public static synchronized void setSessionId(String id) {
         if (sessionId == null)
             sessionId = id;
+    }
+
+    public static synchronized void nullSessionId() {
+        if (sessionId != null)
+            sessionId = null;
     }
 
     public static synchronized String getSessionId() {

@@ -81,20 +81,16 @@ public class OnlineLogin implements ILogin {
                 inputStream = new BufferedInputStream(connection.getInputStream());
                 sessionId = Actions.readJsonStream(inputStream);
                 inputStream.close();
-
-                SharedPreferences.Editor editor = context.getSharedPreferences("user_data", context.MODE_PRIVATE).edit();
-                editor.putString("session_id", sessionId);
-                editor.commit();
+                connection.setSessionId(sessionId);
                 getLoginJson(context.getResources().getString(R.string.url) + "session/" + sessionId + ".json");
                 putSession(context.getResources().getString(R.string.url) + "session/" + sessionId + ".json", loginJson);
                 getUserDataJson(context.getResources().getString(R.string.url) + "user/" + user.getUserEid() + ".json");
                 getUserProfileDataJson(context.getResources().getString(R.string.url) + "profile/" + user.getUserEid() + ".json");
                 userImage = getUserImage(profile.getImageUrl());
                 userThumbnailImage = getUserThumbnailImage(profile.getImageThumbUrl());
-            }
 
-            connection.setSessionId(sessionId);
-            return LoginType.LOGIN_WITH_INTERNET;
+                return LoginType.LOGIN_WITH_INTERNET;
+            }
         } catch (IOException e) {
             e.printStackTrace();
         } finally {

@@ -12,7 +12,13 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import org.sakaiproject.api.general.Connection;
 import org.sakaiproject.api.internet.NetWork;
+import org.sakaiproject.api.user.data.Profile;
+import org.sakaiproject.api.user.data.User;
+
+import java.net.CookieHandler;
+import java.net.CookieManager;
 
 
 public class MainActivity extends AppCompatActivity
@@ -44,6 +50,13 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         NetWork.isConnected(this);
+
+        CookieManager cookieManager = new CookieManager();
+        CookieHandler.setDefault(cookieManager);
+
+        User.nullInstance();
+        Profile.nullInstance();
+        Connection.nullSessionId();
     }
 
     @Override
