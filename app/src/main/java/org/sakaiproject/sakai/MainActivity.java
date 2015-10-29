@@ -1,5 +1,8 @@
 package org.sakaiproject.sakai;
 
+import android.app.Dialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -7,6 +10,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -14,6 +18,7 @@ import android.view.MenuItem;
 
 import org.sakaiproject.api.general.Connection;
 import org.sakaiproject.api.internet.NetWork;
+import org.sakaiproject.api.logout.Logout;
 import org.sakaiproject.api.user.data.Profile;
 import org.sakaiproject.api.user.data.User;
 
@@ -51,12 +56,17 @@ public class MainActivity extends AppCompatActivity
 
         NetWork.isConnected(this);
 
-        CookieManager cookieManager = new CookieManager();
-        CookieHandler.setDefault(cookieManager);
 
-        User.nullInstance();
-        Profile.nullInstance();
-        Connection.nullSessionId();
+        if (getIntent().getBooleanExtra("session_expired", false)) {
+            AlertDialog.Builder adb = new AlertDialog.Builder(getSupportActionBar().getThemedContext());
+
+            adb.setTitle(getResources().getString(R.string.session_expired));
+
+            adb.setPositiveButton(getResources().getString(R.string.ok), null);
+
+            Dialog d = adb.show();
+        }
+
     }
 
     @Override
@@ -65,8 +75,15 @@ public class MainActivity extends AppCompatActivity
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            closeApp();
         }
+    }
+
+    public void closeApp() {
+        Intent intent = new Intent(Intent.ACTION_MAIN);
+        intent.addCategory(Intent.CATEGORY_HOME);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
     }
 
     @Override

@@ -68,7 +68,6 @@ public class JsonParser {
             user.setModifiedTime(new Time(modifiedTimeJson.optString("display"), new Date(Long.parseLong(modifiedTimeJson.optString("time")))));
             user.setLastName(obj.optString("lastName"));
             user.setType(obj.optString("type"));
-            // props - > Map
         } catch (JSONException e) {
             e.printStackTrace();
         }

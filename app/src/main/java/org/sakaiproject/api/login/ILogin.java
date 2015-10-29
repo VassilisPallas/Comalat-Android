@@ -1,10 +1,6 @@
 package org.sakaiproject.api.login;
 
 import android.graphics.Bitmap;
-
-import org.sakaiproject.api.user.data.Profile;
-import org.sakaiproject.api.user.data.User;
-
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
@@ -13,27 +9,6 @@ import java.io.IOException;
  * The methods for the login connection with or without internet connection
  */
 public interface ILogin {
-
-    /**
-     * @return the userSessionData object
-     */
-    User getUser();
-
-    /**
-     * @return the UserData object
-     */
-    Profile getProfile();
-
-
-    /**
-     * @return the user's profile image
-     */
-    Bitmap getImage();
-
-    /**
-     * @return the user's thumbnail profile image
-     */
-    Bitmap getThumbnailImage();
 
     /**
      * @param params for login with internet connection params[0] = url, params[1] = user_id, params[2] = password,
@@ -75,7 +50,7 @@ public interface ILogin {
      * @param params for login with internet connection params[0] = imageUrl
      *               for login without internet connection nothing
      */
-    Bitmap getUserImage(String... params) throws FileNotFoundException;
+    void getUserImage(String... params) throws FileNotFoundException;
 
     /**
      * get user's profile thumbnail image
@@ -83,5 +58,5 @@ public interface ILogin {
      * @param params for login with internet connection params[0] = imageUrl
      *               for login without internet connection nothing
      */
-    Bitmap getUserThumbnailImage(String... params) throws FileNotFoundException;
+    void getUserThumbnailImage(String... params) throws FileNotFoundException;
 }

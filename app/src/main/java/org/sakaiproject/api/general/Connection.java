@@ -11,7 +11,7 @@ import java.net.URL;
 /**
  * Created by vasilis on 10/17/15.
  * Singleton class for Connection
- * also stores the session id
+ * also stores ome useful session values
  */
 public class Connection {
     private static Connection instance = null;
@@ -26,6 +26,8 @@ public class Connection {
 
 
     private Connection() {
+        CookieManager cookieManager = new CookieManager();
+        CookieHandler.setDefault(cookieManager);
     }
 
     public static synchronized Connection getInstance() {
@@ -96,7 +98,6 @@ public class Connection {
 
             switch (method) {
                 case POST:
-                    con.setDoOutput(true);
                     con.setRequestMethod("POST");
                     break;
                 case GET:
@@ -118,6 +119,9 @@ public class Connection {
 
 
             if ((method == ConnectionType.POST || method == ConnectionType.PUT) && (data != null || !data.isEmpty())) {
+                con.setDoOutput(true);
+                con.setChunkedStreamingMode(0);
+
                 wr = new OutputStreamWriter(con.getOutputStream());
                 wr.write(data);
                 wr.flush();

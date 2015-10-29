@@ -22,7 +22,6 @@ public class OfflineLogin implements ILogin {
     private Profile profile;
     private JsonParser jsonParse;
     private PasswordEncryption passwordEncryption;
-    private Bitmap userImage, userThumbnailImage;
     private String loginJson;
     private String userDataJson;
     private String userProfileDataJson;
@@ -37,26 +36,6 @@ public class OfflineLogin implements ILogin {
     }
 
     @Override
-    public User getUser() {
-        return user;
-    }
-
-    @Override
-    public Profile getProfile() {
-        return profile;
-    }
-
-    @Override
-    public Bitmap getImage() {
-        return userImage;
-    }
-
-    @Override
-    public Bitmap getThumbnailImage() {
-        return userThumbnailImage;
-    }
-
-    @Override
     public LoginType login(String... params) {
         SharedPreferences prefs = context.getSharedPreferences("user_data", context.MODE_PRIVATE);
         try {
@@ -65,8 +44,6 @@ public class OfflineLogin implements ILogin {
                     getLoginJson();
                     getUserDataJson();
                     getUserProfileDataJson();
-                    userImage = getUserImage();
-                    userThumbnailImage = getUserThumbnailImage();
                     return LoginType.LOGIN_WITHOUT_INTERNET;
                 }
             } else
@@ -96,13 +73,13 @@ public class OfflineLogin implements ILogin {
     }
 
     @Override
-    public Bitmap getUserImage(String... params) throws FileNotFoundException {
-        return Actions.getImage(context, "user_image");
+    public void getUserImage(String... params) throws FileNotFoundException {
+        throw new UnsupportedOperationException();
     }
 
     @Override
-    public Bitmap getUserThumbnailImage(String... params) throws FileNotFoundException {
-        return Actions.getImage(context, "user_thumbnail_image");
+    public void getUserThumbnailImage(String... params) throws FileNotFoundException {
+        throw new UnsupportedOperationException();
     }
 
 }

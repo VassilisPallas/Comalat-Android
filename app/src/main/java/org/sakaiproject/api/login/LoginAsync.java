@@ -103,16 +103,9 @@ public class LoginAsync extends AsyncTask<Void, Void, LoginType> {
             editor.putString("password", passwordEncryption.encrypt(password));
             editor.commit();
 
-            userImage = onlineOnlineLogin.getImage();
-            userThumbnailImage = onlineOnlineLogin.getThumbnailImage();
-
         } else if (type == LoginType.LOGIN_WITHOUT_INTERNET) /* connection completed without internet */ {
 
-            userImage = offlineOfflineLogin.getImage();
-            userThumbnailImage = offlineOfflineLogin.getThumbnailImage();
-
-
-        } else if (type == LoginType.FIRST_TIME_LOGIN_WITHOUT_INTERNET) /* if the user tries for the very first time to login without internet connection */ {
+        } else if (type == LoginType.FIRST_TIME_LOGIN_WITHOUT_INTERNET) /* if the user tries to login without internet connection for the first time */ {
             Toast.makeText(context, "You have never login again!\nTo login without internet\nyou have to access at least\none time with internet connection", Toast.LENGTH_LONG).show();
             if (loginFragment != null && loginFragment instanceof LoginFragment)
                 clearEditTexts();
@@ -128,13 +121,7 @@ public class LoginAsync extends AsyncTask<Void, Void, LoginType> {
         if (loginFragment != null && loginFragment instanceof LoginFragment)
             clearEditTexts();
 
-        SharedPreferences.Editor editor = context.getSharedPreferences("user_data", context.MODE_PRIVATE).edit();
-        editor.putBoolean("has_logged_out", false);
-        editor.commit();
-
         Intent i = new Intent(context, UserActivity.class);
-        i.putExtra("user_image", userImage);
-        i.putExtra("user_thumbnail_image", userThumbnailImage);
         i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(i);
         activity.finish();

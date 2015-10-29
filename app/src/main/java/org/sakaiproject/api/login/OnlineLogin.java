@@ -1,17 +1,16 @@
 package org.sakaiproject.api.login;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Log;
 
 import java.io.BufferedInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URLEncoder;
 
-import org.sakaiproject.api.cryptography.PasswordEncryption;
 import org.sakaiproject.api.general.Actions;
 import org.sakaiproject.api.general.ConnectionType;
 import org.sakaiproject.api.json.JsonParser;
@@ -28,7 +27,6 @@ public class OnlineLogin implements ILogin {
     private User user;
     private Profile profile;
     private JsonParser jsonParse;
-    private Bitmap userImage, userThumbnailImage;
     private InputStream inputStream;
     private String sessionId;
     private String loginJson;
@@ -36,7 +34,6 @@ public class OnlineLogin implements ILogin {
     private String userProfileDataJson;
     private Context context;
     private Connection connection;
-    private PasswordEncryption passwordEncryption;
 
     public OnlineLogin(Context context) {
         this.context = context;
@@ -44,27 +41,6 @@ public class OnlineLogin implements ILogin {
         connection = Connection.getInstance();
         user = User.getInstance();
         profile = Profile.getInstance();
-        passwordEncryption = new PasswordEncryption();
-    }
-
-    @Override
-    public User getUser() {
-        return user;
-    }
-
-    @Override
-    public Profile getProfile() {
-        return profile;
-    }
-
-    @Override
-    public Bitmap getImage() {
-        return userImage;
-    }
-
-    @Override
-    public Bitmap getThumbnailImage() {
-        return userThumbnailImage;
     }
 
     @Override
@@ -83,11 +59,10 @@ public class OnlineLogin implements ILogin {
                 inputStream.close();
                 connection.setSessionId(sessionId);
                 getLoginJson(context.getResources().getString(R.string.url) + "session/" + sessionId + ".json");
-                putSession(context.getResources().getString(R.string.url) + "session/" + sessionId + ".json", loginJson);
                 getUserDataJson(context.getResources().getString(R.string.url) + "user/" + user.getUserEid() + ".json");
                 getUserProfileDataJson(context.getResources().getString(R.string.url) + "profile/" + user.getUserEid() + ".json");
-                userImage = getUserImage(profile.getImageUrl());
-                userThumbnailImage = getUserThumbnailImage(profile.getImageThumbUrl());
+                getUserImage(profile.getImageUrl());
+                getUserThumbnailImage(profile.getImageThumbUrl());
 
                 return LoginType.LOGIN_WITH_INTERNET;
             }
@@ -98,16 +73,6 @@ public class OnlineLogin implements ILogin {
         }
 
         return LoginType.INVALID_ARGUMENTS;
-    }
-
-    public void putSession(String url, String sessionId) throws IOException {
-        connection.openConnection(url, ConnectionType.PUT, false, true, sessionId);
-        Integer status = connection.getResponseCode();
-
-        if (status >= 200 && status < 300)
-            Log.i("session", "stored");
-        else
-            Log.i("session", "didn't stored");
     }
 
     @Override
@@ -171,7 +136,7 @@ public class OnlineLogin implements ILogin {
     }
 
     @Override
-    public Bitmap getUserImage(String... params) {
+    public void getUserImage(String... params) {
         Bitmap bitmap = null;
         try {
             connection.openConnection(params[0], ConnectionType.GET, false, false, null);
@@ -188,11 +153,10 @@ public class OnlineLogin implements ILogin {
         } finally {
             connection.closeConnection();
         }
-        return bitmap;
     }
 
     @Override
-    public Bitmap getUserThumbnailImage(String... params) {
+    public void getUserThumbnailImage(String... params) {
         Bitmap bitmap = null;
         try {
             connection.openConnection(params[0], ConnectionType.GET, false, false, null);
@@ -208,6 +172,6 @@ public class OnlineLogin implements ILogin {
         } finally {
             connection.closeConnection();
         }
-        return bitmap;
     }
+
 }

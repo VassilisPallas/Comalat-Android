@@ -1,7 +1,5 @@
 package org.sakaiproject.api.logout;
 
-import android.util.Log;
-
 import org.sakaiproject.api.general.Connection;
 import org.sakaiproject.api.general.ConnectionType;
 

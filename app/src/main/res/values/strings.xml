@@ -46,6 +46,7 @@
 
     <!-- AlertDialog -->
     <string name="logout_message">Are you sure you want to log out?</string>
+    <string name="session_expired">Your session has been expired.\nPlease login again</string>
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
 
