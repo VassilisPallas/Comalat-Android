@@ -13,6 +13,12 @@ public class NetWork {
 
     private static boolean connectionEstablished = false;
 
+    /**
+     * get the internet connection of the device
+     *
+     * @param context
+     * @return the type of internet connection
+     */
     private static NetWorkTypes getNetwork(Context context) {
         ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo info = cm.getActiveNetworkInfo();
@@ -51,6 +57,12 @@ public class NetWork {
         return NetWorkTypes.UNKNOWN;
     }
 
+    /**
+     * check if device is connected on the internet
+     *
+     * @param context
+     * @return true if is connected, false if isn't
+     */
     public static boolean isConnected(Context context) {
         NetWorkTypes netWorkType;
         netWorkType = getNetwork(context);
@@ -62,6 +74,9 @@ public class NetWork {
         return connectionEstablished;
     }
 
+    /**
+     * @return the boolean that tells if there is connection on the internet
+     */
     public static boolean getConnectionEstablished() {
         return connectionEstablished;
     }

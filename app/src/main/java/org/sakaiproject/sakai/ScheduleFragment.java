@@ -62,6 +62,7 @@ public class ScheduleFragment extends Fragment {
 
         View v = inflater.inflate(R.layout.fragment_schedule, container, false);
 
+        // the view for the event on the selected day
         mRecyclerView = (RecyclerView) v.findViewById(R.id.selected_day_events_recycle);
 
         // use this setting to improve performance if you know that changes
@@ -144,11 +145,6 @@ public class ScheduleFragment extends Fragment {
             @Override
             public void onItemClick(View view, int position) {
                 UserEvents selectedEvent = OnlineEvents.getUserEventsList().get(position);
-//                FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-//                EventInfoFragment info = new EventInfoFragment().setSelectedEvent(selectedEvent);
-//                fragmentTransaction.replace(R.id.event_frame, info);
-//                fragmentTransaction.commit();
-
 
                 FragmentManager fm = getFragmentManager();
                 EventInfoFragment dialogFragment = new EventInfoFragment().setSelectedEvent(selectedEvent);
@@ -180,8 +176,6 @@ public class ScheduleFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_refresh:
-                Toast.makeText(getContext(), "pressed", Toast.LENGTH_SHORT).show();
-                new EventsAsync().execute();
                 return true;
             default:
                 break;

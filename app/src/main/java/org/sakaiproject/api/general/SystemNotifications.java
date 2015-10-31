@@ -1,4 +1,4 @@
-package org.sakaiproject.api;
+package org.sakaiproject.api.general;
 
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -23,14 +23,12 @@ public class SystemNotifications {
         this.context = context;
     }
 
-    public static NotificationManager getNotificationManager() {
-        return notificationManager;
-    }
-
-    public static void setNotificationManager(NotificationManager notificationManager) {
-        SystemNotifications.notificationManager = notificationManager;
-    }
-
+    /**
+     * notification for session expiration
+     * when the app is in idle mode for 15 minuted, this
+     * notification warns the user that in 15 minutes the session
+     * will expire.
+     */
     public void showSessionNotification() {
         // define sound URI, the sound to be played when there's a notification
         Uri soundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
@@ -53,6 +51,11 @@ public class SystemNotifications {
         notification.flags = Notification.FLAG_AUTO_CANCEL;
 
         notificationManager.notify(0, notification);
+    }
+
+    public static void cancel(int index) {
+        if (notificationManager != null)
+            notificationManager.cancel(index);
     }
 
 }

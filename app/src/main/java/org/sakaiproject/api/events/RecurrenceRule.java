@@ -6,6 +6,7 @@ import java.io.Serializable;
 
 /**
  * Created by vasilis on 10/30/15.
+ * Recurrence of the event
  */
 public class RecurrenceRule implements Serializable {
     private int count;

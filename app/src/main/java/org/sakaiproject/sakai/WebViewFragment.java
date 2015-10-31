@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 
 
 /**
@@ -34,6 +35,5 @@ public class WebViewFragment extends Fragment {
         // Inflate the layout for this fragment
         return v;
     }
-
 
 }

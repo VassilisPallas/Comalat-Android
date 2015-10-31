@@ -1,7 +1,6 @@
 package org.sakaiproject.sakai;
 
 import android.app.Dialog;
-import android.app.NotificationManager;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
@@ -24,7 +23,7 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import org.sakaiproject.api.SystemNotifications;
+import org.sakaiproject.api.general.SystemNotifications;
 import org.sakaiproject.api.customviews.ImageViewRounded;
 import org.sakaiproject.api.general.Actions;
 import org.sakaiproject.api.general.Connection;
@@ -68,6 +67,9 @@ public class UserActivity extends AppCompatActivity
 
         findViewsById();
 
+        /* if device is connected on the internet that means that the user made login with internet connection,
+           so the thread for the idle mode will start
+        */
         if (NetWork.getConnectionEstablished()) {
             waiter = Waiter.getInstance();
             waiter.stop = false;
@@ -79,8 +81,10 @@ public class UserActivity extends AppCompatActivity
             if (waiter.getState() == Thread.State.NEW)
                 waiter.start();
 
+            // if the message for the session id is visible
             if (waiter.isMessageVisible()) {
                 connection = Connection.getInstance();
+                // if the session has expired, the session id will be null, so the user will go to MainActivity
                 if (connection.getSessionId() == null) {
                     waiter.stop = true;
                     Intent i = new Intent(this, MainActivity.class);
@@ -310,8 +314,7 @@ public class UserActivity extends AppCompatActivity
         if (NetWork.getConnectionEstablished()) {
             waiter.setActivityIsVisible(true);
             waiter.touch();
-            if (SystemNotifications.getNotificationManager() != null)
-                SystemNotifications.getNotificationManager().cancel(0);
+            SystemNotifications.cancel(0);
         }
         Log.i("visible", "true");
     }

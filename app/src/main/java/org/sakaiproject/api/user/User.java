@@ -36,91 +36,91 @@ public class User {
             instance = null;
     }
 
-    public static synchronized Date getCreatedDate() {
+    public static Date getCreatedDate() {
         return createdDate;
     }
 
-    public static synchronized Time getCreatedTime() {
+    public static Time getCreatedTime() {
         return createdTime;
     }
 
-    public static synchronized String getUserEid() {
+    public static String getUserEid() {
         return userEid;
     }
 
-    public static synchronized String getUserId() {
+    public static String getUserId() {
         return userId;
     }
 
-    public static synchronized String getEmail() {
+    public static String getEmail() {
         return email;
     }
 
-    public static synchronized String getFirstName() {
+    public static String getFirstName() {
         return firstName;
     }
 
-    public static synchronized String getLastName() {
+    public static String getLastName() {
         return lastName;
     }
 
-    public static synchronized String getType() {
+    public static String getType() {
         return type;
     }
 
-    public static synchronized String getSortName() {
+    public static String getSortName() {
         return sortName;
     }
 
-    public static synchronized Date getModifiedDate() {
+    public static Date getModifiedDate() {
         return modifiedDate;
     }
 
-    public static synchronized Time getModifiedTime() {
+    public static Time getModifiedTime() {
         return modifiedTime;
     }
 
-    public static synchronized void setModifiedDate(Date modifiedDate) {
+    public static void setModifiedDate(Date modifiedDate) {
         User.modifiedDate = modifiedDate;
     }
 
-    public static synchronized void setModifiedTime(Time modifiedTime) {
+    public static void setModifiedTime(Time modifiedTime) {
         User.modifiedTime = modifiedTime;
     }
 
-    public static synchronized void setCreatedDate(Date createdDate) {
+    public static void setCreatedDate(Date createdDate) {
         User.createdDate = createdDate;
     }
 
-    public static synchronized void setCreatedTime(Time createdTime) {
+    public static void setCreatedTime(Time createdTime) {
         User.createdTime = createdTime;
     }
 
-    public static synchronized void setUserEid(String userEid) {
+    public static void setUserEid(String userEid) {
         User.userEid = userEid;
     }
 
-    public static synchronized void setUserId(String userId) {
+    public static void setUserId(String userId) {
         User.userId = userId;
     }
 
-    public static synchronized void setEmail(String email) {
+    public static void setEmail(String email) {
         User.email = email;
     }
 
-    public static synchronized void setFirstName(String firstName) {
+    public static void setFirstName(String firstName) {
         User.firstName = firstName;
     }
 
-    public static synchronized void setLastName(String lastName) {
+    public static void setLastName(String lastName) {
         User.lastName = lastName;
     }
 
-    public static synchronized void setType(String type) {
+    public static void setType(String type) {
         User.type = type;
     }
 
-    public static synchronized void setSortName() {
+    public static void setSortName() {
         User.sortName = User.lastName + ", " + User.firstName;
     }
 }

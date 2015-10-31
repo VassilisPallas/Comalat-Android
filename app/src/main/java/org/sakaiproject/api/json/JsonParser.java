@@ -14,10 +14,13 @@ import org.sakaiproject.api.events.OnlineEvents;
 import org.sakaiproject.api.general.Connection;
 import org.sakaiproject.api.motd.OnlineMessageOfTheDay;
 import org.sakaiproject.api.time.Time;
+import org.sakaiproject.api.user.profile.DateOfBirth;
 import org.sakaiproject.api.user.profile.Profile;
 import org.sakaiproject.api.user.User;
 import org.sakaiproject.api.user.UserEvents;
 import org.sakaiproject.api.events.RecurrenceRule;
+import org.sakaiproject.api.user.profile.ProfileStatus;
+import org.sakaiproject.api.user.profile.SocialNetworkingInfo;
 
 /**
  * Created by vasilis on 10/13/15.
@@ -35,6 +38,12 @@ public class JsonParser {
         profile = Profile.getInstance();
     }
 
+    /**
+     * parse the session json
+     * http://141.99.248.86:8089/direct/session/sessionId.json"
+     *
+     * @param result the response json
+     */
     public void parseLoginResult(String result) {
 
         try {
@@ -51,6 +60,12 @@ public class JsonParser {
         }
     }
 
+    /**
+     * parse the user data json
+     * http://141.99.248.86:8089/direct/user/userEid.json
+     *
+     * @param result the response json
+     */
     public void parseUserDataJson(String result) {
 
         try {
@@ -77,6 +92,12 @@ public class JsonParser {
         }
     }
 
+    /**
+     * parse the user profile data json
+     * http://141.99.248.86:8089/direct/profile/userEid.json
+     *
+     * @param result the response json
+     */
     public void parseUserProfileDataJson(String result) {
 
         try {
@@ -87,10 +108,26 @@ public class JsonParser {
             profile.setBirthdayDisplay(obj.optString("birthdayDisplay"));
             profile.setBusinessBiography(obj.optString("businessBiography"));
             profile.setCourse(obj.optString("course"));
-//            if (!obj.optString("dateOfBirth").equals("null"))
-//                profile.setDateOfBirth(new Date(Long.parseLong(obj.optString("dateOfBirth"))));
-//            else
-//                profile.setDateOfBirth(new Date(0));
+
+
+            if (!obj.isNull("dateOfBirth")) {
+                JSONObject dateOfBirthObj = obj.getJSONObject("dateOfBirth");
+                int date;
+                int day;
+                int month;
+                long time;
+                int timezoneOffset;
+                int year;
+
+                date = dateOfBirthObj.optInt("date");
+                day = dateOfBirthObj.optInt("day");
+                month = dateOfBirthObj.optInt("month");
+                time = dateOfBirthObj.optInt("time");
+                timezoneOffset = dateOfBirthObj.optInt("timezoneOffset");
+                year = dateOfBirthObj.optInt("year");
+
+                profile.setDateOfBirth(new DateOfBirth(date, day, month, time, timezoneOffset, year));
+            }
 
             profile.setDepartment(obj.optString("department"));
             profile.setDisplayName(obj.optString("displayName"));
@@ -116,16 +153,59 @@ public class JsonParser {
             profile.setWorkphone(obj.optString("workphone"));
             profile.setLocked(obj.optBoolean("locked"));
 
+            JSONObject socialInfoObj = obj.getJSONObject("socialInfo");
+            String fb = "", linkedIn = "", mySpace = "", skype = "", twitter = "";
+            if (!socialInfoObj.isNull("facebookUrl")) {
+                fb = socialInfoObj.optString("socialInfoObj");
+            }
+
+            if (!socialInfoObj.isNull("linkedinUrl")) {
+                linkedIn = socialInfoObj.optString("linkedinUrl");
+            }
+
+            if (!socialInfoObj.isNull("myspaceUrl")) {
+                mySpace = socialInfoObj.optString("myspaceUrl");
+            }
+
+            if (!socialInfoObj.isNull("skypeUsername")) {
+                skype = socialInfoObj.optString("skypeUsername");
+            }
+
+            if (!socialInfoObj.isNull("twitterUrl")) {
+                twitter = socialInfoObj.optString("twitterUrl");
+            }
+            profile.setSocialInfo(new SocialNetworkingInfo(fb, linkedIn, mySpace, skype, twitter));
+
+
+            if (!obj.isNull("status")) {
+                JSONObject statusObj = obj.getJSONObject("status");
+                Date dateAdded;
+                String dateFormatted;
+                String message;
+
+                dateAdded = new Date(statusObj.optInt("dateAdded"));
+                dateFormatted = statusObj.optString("dateFormatted");
+                message = statusObj.optString("message");
+
+                profile.setStatus(new ProfileStatus(message, dateAdded, dateFormatted));
+            }
+
+
             // companyProfiles -> List
             // props -> Map
-            // socialInfo -> SocialNetworkingInfo
-            // status -> ProfileStatus
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
     }
 
+    /**
+     * parse the message of the day json
+     * http://141.99.248.86:8089/direct/announcement/motd.json
+     *
+     * @param result the response json
+     * @return
+     */
     public OnlineMessageOfTheDay parseMotdJson(String result) {
         OnlineMessageOfTheDay onlineMessageOfTheDay = new OnlineMessageOfTheDay();
         List<String> messagesList = new ArrayList<>();
@@ -151,6 +231,12 @@ public class JsonParser {
         return onlineMessageOfTheDay;
     }
 
+    /**
+     * parse user's events json
+     * http://141.99.248.86:8089/direct/calendar/my.json
+     *
+     * @param result the response json
+     */
     public void parseUserEventJson(String result) {
 
         try {
@@ -186,6 +272,13 @@ public class JsonParser {
 
     }
 
+    /**
+     * parse user's event's info json
+     * http://141.99.248.86:8089/direct/calendar/event/~owner/eventId.json
+     *
+     * @param result the response json
+     * @param index  the index of the event on the List
+     */
     public void parseUserEventInfoJson(String result, int index) {
         try {
 

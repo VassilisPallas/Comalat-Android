@@ -57,6 +57,12 @@ public class SelectedDayEventsAdapter extends RecyclerView.Adapter<SelectedDayEv
         return 0;
     }
 
+    /**
+     * get the image for the event type
+     *
+     * @param eventType the type of the event
+     * @return the image from the resources as bitmap
+     */
     public Bitmap imageByType(String eventType) {
         Bitmap bitmap = null;
         switch (eventType) {

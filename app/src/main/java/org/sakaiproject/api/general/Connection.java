@@ -22,6 +22,7 @@ public class Connection {
     private static String sessionId = null;
     private static Integer creationTime;
     private static Integer lastAccessedTime;
+    // max seconds the session can be idle before automatic invalidation
     private static Integer maxInactiveInterval;
 
 
@@ -113,7 +114,7 @@ public class Connection {
                     throw new IllegalArgumentException("Not valid type");
             }
 
-            // set loginConnection timeout and read timeout to 10 seconds
+            // set connection timeout and read timeout to 10 seconds
             con.setConnectTimeout(10000);
             con.setReadTimeout(10000);
 

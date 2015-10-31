@@ -49,6 +49,9 @@ public class MainActivity extends AppCompatActivity
         NetWork.isConnected(this);
 
 
+        /* if the user press on the session notification but the session has expired
+           the user will get that dialog message
+        */
         if (getIntent().getBooleanExtra("session_expired", false)) {
             AlertDialog.Builder adb = new AlertDialog.Builder(getSupportActionBar().getThemedContext());
 

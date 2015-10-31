@@ -1,4 +1,4 @@
-package org.sakaiproject.api.user.profile.sns;
+package org.sakaiproject.api.user.profile;
 
 import java.io.Serializable;
 
@@ -12,13 +12,17 @@ public class SocialNetworkingInfo implements Serializable {
     private String myspaceUrl;
     private String skypeUsername;
     private String twitterUrl;
-    private String userUuid;
 
-    private static final long serialVersionUID = 1L;
+    public SocialNetworkingInfo() {
 
+    }
 
-    public SocialNetworkingInfo(String userUuid) {
-        this.userUuid = userUuid;
+    public SocialNetworkingInfo(String facebookUrl, String linkedinUrl, String myspaceUrl, String skypeUsername, String twitterUrl) {
+        this.facebookUrl = facebookUrl;
+        this.linkedinUrl = linkedinUrl;
+        this.myspaceUrl = myspaceUrl;
+        this.skypeUsername = skypeUsername;
+        this.twitterUrl = twitterUrl;
     }
 
     public String getFacebookUrl() {

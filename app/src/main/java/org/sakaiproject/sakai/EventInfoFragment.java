@@ -26,9 +26,14 @@ public class EventInfoFragment extends DialogFragment {
     private LinearLayout attachmentLinear;
 
     public EventInfoFragment() {
-        // Required empty public constructor
     }
 
+    /**
+     * get the selected event from activity
+     *
+     * @param selectedEvent the user's events
+     * @return the fragment with the data
+     */
     public EventInfoFragment setSelectedEvent(UserEvents selectedEvent) {
         EventInfoFragment info = new EventInfoFragment();
         Bundle b = new Bundle();
@@ -45,6 +50,7 @@ public class EventInfoFragment extends DialogFragment {
 
         selectedEvent = (UserEvents) getArguments().getSerializable("event");
 
+        // disable the title bar
         getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
 
         findViewsById(v);
@@ -73,6 +79,7 @@ public class EventInfoFragment extends DialogFragment {
             attachmentLinear = (LinearLayout) v.findViewById(R.id.attachments_linear);
             attachmentLinear.setVisibility(View.VISIBLE);
 
+            // add attachments to the attachment linear layout on the fly
             for (int i = 0; i < selectedEvent.getAttachmentNames().size(); i++) {
                 View currentAttachment = attachmentLinear.inflate(getActivity(), R.layout.attachment_row, null);
 
@@ -105,6 +112,7 @@ public class EventInfoFragment extends DialogFragment {
         site.setText(selectedEvent.getSiteName());
 
 
+        // if the owner of the event is the user show his data
         if (User.getUserId().equals(selectedEvent.getCreator())) {
             owner = (TextView) v.findViewById(R.id.event_owner);
             owner.setText(User.getFirstName() + " " + User.getLastName());

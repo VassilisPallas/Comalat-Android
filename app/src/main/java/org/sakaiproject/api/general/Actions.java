@@ -120,6 +120,12 @@ public class Actions {
         return b;
     }
 
+    /**
+     * get the file type of the attachment
+     *
+     * @param file the name of the file
+     * @return an enum of file type
+     */
     public static AttachmentType getAttachmentType(String file) {
 
         if (file.charAt(file.length() - 4) == '.' || file.charAt(file.length() - 5) == '.') {
@@ -218,11 +224,18 @@ public class Actions {
         return AttachmentType.URL;
     }
 
+    /**
+     * get the image for the file from resources as a bitmap
+     *
+     * @param context the Application context
+     * @param name the file name
+     * @return the image as bitmap
+     */
     public static Bitmap getAttachmentTypeImage(Context context, String name) {
         Bitmap image;
         switch (getAttachmentType(name)) {
             case URL:
-                return BitmapFactory.decodeResource(context.getResources(), R.mipmap.ic_http_black);
+                return BitmapFactory.decodeResource(context.getResources(), R.mipmap.ic_public_black);
             case AUDIO:
                 return BitmapFactory.decodeResource(context.getResources(), R.mipmap.ic_audiotrack_black);
             case VIDEO:
