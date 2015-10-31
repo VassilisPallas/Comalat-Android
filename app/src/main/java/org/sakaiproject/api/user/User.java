@@ -1,4 +1,4 @@
-package org.sakaiproject.api.user.data;
+package org.sakaiproject.api.user;
 
 import org.sakaiproject.api.time.Time;
 

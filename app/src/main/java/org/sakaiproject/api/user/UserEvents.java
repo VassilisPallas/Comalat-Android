@@ -1,29 +1,38 @@
-package org.sakaiproject.api.user.data;
+package org.sakaiproject.api.user;
 
 import org.sakaiproject.api.time.Time;
-import org.sakaiproject.api.user.data.events.RecurrenceRule;
+import org.sakaiproject.api.events.RecurrenceRule;
 
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
  * Created by vasilis on 10/20/15.
  */
-public class UserEvents {
+public class UserEvents implements Serializable {
     private String creator;
     private long duration;
     private String eventId;
     private Time firstTime;
-    //private RecurrenceRule recurrenceRule;
-    private String reference;
+    private RecurrenceRule recurrenceRule;
     private String siteName;
     private String title;
     private String type;
-    private String entityReference;
-    private String entityURL;
-    private String entityTitle;
+    private List<String> attachments = new ArrayList<>();
+    private String description;
 
-    private String eventTime;
+    private Time lastTime;
+
+    private String location;
+
+    private String eventWholeDate;
+
+    private String eventDate;
+
+    private String timeDuration;
 
     public UserEvents() {
     }
@@ -44,10 +53,6 @@ public class UserEvents {
         return firstTime;
     }
 
-    public String getReference() {
-        return reference;
-    }
-
     public String getSiteName() {
         return siteName;
     }
@@ -60,20 +65,63 @@ public class UserEvents {
         return type;
     }
 
-    public String getEntityReference() {
-        return entityReference;
+    public String getDescription() {
+        return description;
     }
 
-    public String getEntityURL() {
-        return entityURL;
+    public Time getLastTime() {
+        return lastTime;
     }
 
-    public String getEntityTitle() {
-        return entityTitle;
+    public String getLocation() {
+        return location;
     }
 
-    public String getEventTime() {
-        return eventTime;
+    public String getEventWholeDate() {
+        return eventWholeDate;
+    }
+
+    public String getEventDate() {
+        return eventDate;
+    }
+
+    public String getTimeDuration() {
+        return timeDuration;
+    }
+
+    public RecurrenceRule getRecurrenceRule() {
+        return recurrenceRule;
+    }
+
+    public List<String> getAttachments() {
+        return attachments;
+    }
+
+    public List<String> getAttachmentNames() {
+
+        List<String> names = new ArrayList<>();
+
+        for (int i = 0; i < attachments.size(); i++) {
+
+            String name = attachments.get(i).substring(attachments.get(i).lastIndexOf('/') + 1).toLowerCase();
+
+            if (name.startsWith("http")) {
+//                name = name.replaceAll("%3A|%3a", ":");
+//                name = name.replaceAll("_", "/");
+                name = "click to open url";
+            }
+
+            names.add(name);
+        }
+        return names;
+    }
+
+    public void setAttachments(List<String> attachments) {
+        this.attachments = attachments;
+    }
+
+    public void setRecurrenceRule(RecurrenceRule recurrenceRule) {
+        this.recurrenceRule = recurrenceRule;
     }
 
     public void setCreator(String creator) {
@@ -92,10 +140,6 @@ public class UserEvents {
         this.firstTime = firstTime;
     }
 
-    public void setReference(String reference) {
-        this.reference = reference;
-    }
-
     public void setSiteName(String siteName) {
         this.siteName = siteName;
     }
@@ -108,19 +152,19 @@ public class UserEvents {
         this.type = type;
     }
 
-    public void setEntityReference(String entityReference) {
-        this.entityReference = entityReference;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
-    public void setEntityURL(String entityURL) {
-        this.entityURL = entityURL;
+    public void setLastTime(Time lastTime) {
+        this.lastTime = lastTime;
     }
 
-    public void setEntityTitle(String entityTitle) {
-        this.entityTitle = entityTitle;
+    public void setLocation(String location) {
+        this.location = location;
     }
 
-    public void setEventTime() {
+    public void setEventWholeDate() {
 
         String day = "", month = "", year = "";
 
@@ -128,7 +172,7 @@ public class UserEvents {
         String split[] = wholeTime.split(",");
 
         // Delete hour eg 15:00 am
-        String strForYear = split[1].replaceAll("(\\d+:\\d+ (am|pm))+", " ");
+        String strForYear = split[1].replaceAll("(\\d+:\\d+ (am|pm))+", "");
 
         Pattern dayPattern = Pattern.compile("\\d+");
         Pattern monthPattern = Pattern.compile("[a-zA-z]+");
@@ -154,7 +198,24 @@ public class UserEvents {
 
         day = day.length() > 1 ? day : "0" + day;
 
-        eventTime = year + "-" + monthNum + "-" + day;
+        eventWholeDate = year + "-" + monthNum + "-" + day;
+    }
+
+    public void setEventDate() {
+        String wholeTime = firstTime.getDisplay();
+        eventDate = wholeTime.replaceAll("( \\d+:\\d+ (am|pm))+", "");
+    }
+
+    public void setTimeDuration() {
+        String start = firstTime.getDisplay();
+        String end = lastTime.getDisplay();
+        String firstSplit[] = start.split(",");
+        String lastSplit[] = end.split(",");
+
+        start = firstSplit[1].replaceAll(" (\\d{4}) ", "");
+        end = lastSplit[1].replaceAll(" (\\d{4}) ", "");
+
+        timeDuration = start + " - " + end;
     }
 
     public String matchMonth(String month) {

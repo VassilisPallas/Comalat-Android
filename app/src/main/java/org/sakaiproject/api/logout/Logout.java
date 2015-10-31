@@ -25,6 +25,8 @@ public class Logout {
             }
         } catch (IOException e) {
             e.printStackTrace();
+        } finally {
+            connection.closeConnection();
         }
         return 0;
     }

@@ -54,7 +54,7 @@
                 android:layout_height="wrap_content"
                 android:background="#0083AF"
                 android:padding="10dp"
-                android:text="Keep my session"
+                android:text="Keep my session active"
                 android:textColor="#FFF" />
 
         </com.balysv.materialripple.MaterialRippleLayout>

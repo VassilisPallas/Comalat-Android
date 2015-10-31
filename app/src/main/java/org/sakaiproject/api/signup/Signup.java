@@ -65,6 +65,8 @@ public class Signup {
             }
         } catch (IOException e) {
             e.printStackTrace();
+        } finally {
+            connection.closeConnection();
         }
         return false;
     }
@@ -80,6 +82,8 @@ public class Signup {
 
         } catch (IOException e) {
             e.printStackTrace();
+        } finally {
+            connection.closeConnection();
         }
         return false;
     }

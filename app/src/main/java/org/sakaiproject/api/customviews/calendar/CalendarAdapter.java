@@ -1,19 +1,18 @@
 package org.sakaiproject.api.customviews.calendar;
 
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.graphics.Color;
-import android.support.v4.app.Fragment;
-import android.util.Log;
+import android.graphics.Typeface;
+import android.text.SpannableString;
+import android.text.style.StyleSpan;
+import android.text.style.UnderlineSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import org.sakaiproject.api.user.data.UserEvents;
+import org.sakaiproject.api.user.UserEvents;
 import org.sakaiproject.sakai.R;
 
 import java.text.DateFormat;
@@ -241,7 +240,10 @@ public class CalendarAdapter extends BaseAdapter {
 
                 if (day_string.get(pos).equals(date)) {
                     v.setBackgroundColor(Color.parseColor("#343434"));
-                    v.setBackgroundResource(R.mipmap.ic_event_blue);
+                    SpannableString spanString = new SpannableString(txt.getText());
+                    spanString.setSpan(new UnderlineSpan(), 0, spanString.length(), 0);
+                    spanString.setSpan(new StyleSpan(Typeface.ITALIC), 0, spanString.length(), 0);
+                    txt.setText(spanString);
                     txt.setTextColor(Color.WHITE);
                 }
             }
@@ -261,7 +263,7 @@ public class CalendarAdapter extends BaseAdapter {
         int len = userEvents.size();
         for (int i = 0; i < len; i++) {
             UserEvents event = userEvents.get(i);
-            if (event.getEventTime().equals(date)) {
+            if (event.getEventWholeDate().equals(date)) {
                 todayEvents.add(event);
             }
         }

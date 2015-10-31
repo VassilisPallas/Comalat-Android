@@ -1,7 +1,6 @@
 package org.sakaiproject.sakai;
 
 import android.app.Dialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -16,14 +15,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import org.sakaiproject.api.general.Connection;
 import org.sakaiproject.api.internet.NetWork;
-import org.sakaiproject.api.logout.Logout;
-import org.sakaiproject.api.user.data.Profile;
-import org.sakaiproject.api.user.data.User;
-
-import java.net.CookieHandler;
-import java.net.CookieManager;
 
 
 public class MainActivity extends AppCompatActivity
@@ -141,7 +133,7 @@ public class MainActivity extends AppCompatActivity
                 break;
             case R.id.login:
                 LoginFragment loginFragment = new LoginFragment();
-                selectFragment(loginFragment, R.id.content_frame, "OnlineLogin");
+                selectFragment(loginFragment, R.id.content_frame, "Login");
                 break;
             case R.id.new_user:
                 SignupFragment signupFragment = new SignupFragment();

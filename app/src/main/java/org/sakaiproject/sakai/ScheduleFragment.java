@@ -4,9 +4,9 @@ package org.sakaiproject.sakai;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -21,15 +21,14 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.sakaiproject.api.customviews.RecyclerItemClickListener;
 import org.sakaiproject.api.customviews.adapters.SelectedDayEventsAdapter;
 import org.sakaiproject.api.customviews.calendar.CalendarAdapter;
 import org.sakaiproject.api.customviews.calendar.CalendarCollection;
 import org.sakaiproject.api.events.OnlineEvents;
 import org.sakaiproject.api.internet.NetWork;
-import org.sakaiproject.api.user.data.UserEvents;
+import org.sakaiproject.api.user.UserEvents;
 
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.List;
 
@@ -132,7 +131,7 @@ public class ScheduleFragment extends Fragment {
                 }
                 ((CalendarAdapter) parent.getAdapter()).setSelected(v, position);
 
-                mAdapter = new SelectedDayEventsAdapter(((CalendarAdapter) parent.getAdapter()).getPositionList(selectedGridDate));
+                mAdapter = new SelectedDayEventsAdapter(getContext(), ((CalendarAdapter) parent.getAdapter()).getPositionList(selectedGridDate));
                 mAdapter.notifyDataSetChanged();
                 mRecyclerView.setAdapter(mAdapter);
 
@@ -140,6 +139,28 @@ public class ScheduleFragment extends Fragment {
 
         });
 
+
+        mRecyclerView.addOnItemTouchListener(new RecyclerItemClickListener(getContext(), mRecyclerView, new RecyclerItemClickListener.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                UserEvents selectedEvent = OnlineEvents.getUserEventsList().get(position);
+//                FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+//                EventInfoFragment info = new EventInfoFragment().setSelectedEvent(selectedEvent);
+//                fragmentTransaction.replace(R.id.event_frame, info);
+//                fragmentTransaction.commit();
+
+
+                FragmentManager fm = getFragmentManager();
+                EventInfoFragment dialogFragment = new EventInfoFragment().setSelectedEvent(selectedEvent);
+                dialogFragment.show(fm, "Event Info");
+
+            }
+
+            @Override
+            public void onItemLongClick(View view, int position) {
+
+            }
+        }));
 
         onlineEvents = new OnlineEvents(getContext());
         new EventsAsync().execute();
@@ -212,13 +233,8 @@ public class ScheduleFragment extends Fragment {
 
             if (NetWork.getConnectionEstablished()) {
                 String url = getContext().getResources().getString(R.string.url) + "calendar/my.json";
-                try {
-                    onlineEvents.getUserEvents(url);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                onlineEvents.getUserEvents(url);
             }
-            //offlineEvents.login(username, password);
 
             return onlineEvents.getUserEventsList();
         }
@@ -231,7 +247,7 @@ public class ScheduleFragment extends Fragment {
             cal_adapter.setEvents(userEvents);
 
             for (UserEvents event : userEvents) {
-                CalendarCollection.date_collection_arr.add(new CalendarCollection(event.getEventTime(), event.getTitle()));
+                CalendarCollection.date_collection_arr.add(new CalendarCollection(event.getEventWholeDate(), event.getTitle()));
             }
 
             calendar.setVisibility(View.VISIBLE);

@@ -22,17 +22,25 @@ public class RefreshSession {
         connection = Connection.getInstance();
     }
 
-    public void putSession(String url) throws IOException {
+    public void putSession(String url) {
 
-        String loginJson = Actions.readJsonFile(context, "loginJson");
+        try {
+            String loginJson = Actions.readJsonFile(context, "loginJson");
 
-        connection.openConnection(url, ConnectionType.PUT, false, true, loginJson);
-        Integer status = connection.getResponseCode();
+            connection.openConnection(url, ConnectionType.PUT, false, true, loginJson);
+            Integer status = connection.getResponseCode();
 
-        if (status >= 200 && status < 300)
-            Log.i("session", "stored");
-        else
-            Log.i("session", "didn't stored");
+            if (status >= 200 && status < 300)
+                Log.i("session", "stored");
+            else
+                Log.i("session", "didn't stored");
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            connection.closeConnection();
+        }
+
+
     }
 
 }

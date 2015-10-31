@@ -4,6 +4,8 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
+import org.sakaiproject.sakai.R;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -12,6 +14,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.URL;
 
 /**
  * Created by vasilis on 10/18/15.
@@ -115,5 +118,126 @@ public class Actions {
         Bitmap b = BitmapFactory.decodeStream(new FileInputStream(f));
 
         return b;
+    }
+
+    public static AttachmentType getAttachmentType(String file) {
+
+        if (file.charAt(file.length() - 4) == '.' || file.charAt(file.length() - 5) == '.') {
+
+            String extension = file.substring(file.lastIndexOf('.') + 1).toLowerCase();
+
+            switch (extension.toLowerCase()) {
+                case "txt":
+                case "srt":
+                case "rtf":
+                case "nfo":
+                case "html":
+                case "css":
+                case "xml":
+                case "json":
+                    return AttachmentType.TXT;
+                case "pdf":
+                    return AttachmentType.PDF;
+                case "doc":
+                case "dot":
+                case "docx":
+                case "docm":
+                case "dotx":
+                case "dotm":
+                case "docb":
+                    return AttachmentType.WORD;
+                case "xls":
+                case "xlt":
+                case "xlm":
+                case "xlsx":
+                case "xlsm":
+                case "xltx":
+                case "xltm":
+                case "xlsb":
+                case "xla":
+                case "xlam":
+                case "xll":
+                case "xlw":
+                    return AttachmentType.EXCEL;
+                case "ppt":
+                case "pot":
+                case "pps":
+                case "pptx":
+                case "pptm":
+                case "potx":
+                case "potm":
+                case "ppam":
+                case "ppsx":
+                case "ppsm":
+                case "sldx":
+                case "sldm":
+                    return AttachmentType.POWERPOINT;
+                case "wma":
+                case "wav":
+                case "mp3":
+                case "mid":
+                case "m4a":
+                    return AttachmentType.AUDIO;
+                case "gif":
+                case "jpeg":
+                case "jpg":
+                case "jif":
+                case "jfif":
+                case "jp2":
+                case "jpx":
+                case "j2k":
+                case "j2c":
+                case "fpx":
+                case "png":
+                case "dng":
+                    return AttachmentType.IMAGE;
+                case "mkv":
+                case "flv":
+                case "ogv":
+                case "ogg":
+                case "avi":
+                case "mov":
+                case "wmv":
+                case "mp4":
+                case "m4p":
+                case "m4v":
+                case "mpg":
+                case "mp2":
+                case "mpeg":
+                case "raw":
+                    return AttachmentType.VIDEO;
+                case "rar":
+                case "zip":
+                case "tar":
+                    return AttachmentType.ZIP;
+                default:
+                    return AttachmentType.UNKwOWN;
+            }
+
+        }
+        return AttachmentType.URL;
+    }
+
+    public static Bitmap getAttachmentTypeImage(Context context, String name) {
+        Bitmap image;
+        switch (getAttachmentType(name)) {
+            case URL:
+                return BitmapFactory.decodeResource(context.getResources(), R.mipmap.ic_http_black);
+            case AUDIO:
+                return BitmapFactory.decodeResource(context.getResources(), R.mipmap.ic_audiotrack_black);
+            case VIDEO:
+                return BitmapFactory.decodeResource(context.getResources(), R.mipmap.ic_videocam_black);
+            case IMAGE:
+                return BitmapFactory.decodeResource(context.getResources(), R.mipmap.ic_image_black);
+            case ZIP:
+            case WORD:
+            case TXT:
+            case POWERPOINT:
+            case PDF:
+            case EXCEL:
+            case UNKwOWN:
+                return BitmapFactory.decodeResource(context.getResources(), R.mipmap.ic_insert_drive_file_black);
+        }
+        return null;
     }
 }

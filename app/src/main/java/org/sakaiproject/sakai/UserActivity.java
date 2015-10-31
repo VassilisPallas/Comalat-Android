@@ -1,10 +1,10 @@
 package org.sakaiproject.sakai;
 
 import android.app.Dialog;
+import android.app.NotificationManager;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -20,10 +20,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import org.sakaiproject.api.SystemNotifications;
 import org.sakaiproject.api.customviews.ImageViewRounded;
 import org.sakaiproject.api.general.Actions;
 import org.sakaiproject.api.general.Connection;
@@ -31,8 +32,8 @@ import org.sakaiproject.api.internet.NetWork;
 import org.sakaiproject.api.logout.Logout;
 import org.sakaiproject.api.session.RefreshSession;
 import org.sakaiproject.api.session.Waiter;
-import org.sakaiproject.api.user.data.Profile;
-import org.sakaiproject.api.user.data.User;
+import org.sakaiproject.api.user.profile.Profile;
+import org.sakaiproject.api.user.User;
 
 import java.io.FileNotFoundException;
 
@@ -47,6 +48,7 @@ public class UserActivity extends AppCompatActivity
     private User user;
     private Waiter waiter;  //Thread which controls idle time
     private Connection connection = Connection.getInstance();
+    private ProgressBar syncProgressbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -141,6 +143,9 @@ public class UserActivity extends AppCompatActivity
         sessionMessageTextView = (TextView) findViewById(R.id.session_message_textview);
         sessionMessageRelative = (RelativeLayout) findViewById(R.id.session_message);
         keepSessionButton = (Button) findViewById(R.id.keep_session_button);
+        syncProgressbar = (ProgressBar) findViewById(R.id.sync_progress);
+
+        syncProgressbar.getIndeterminateDrawable().setColorFilter(Color.parseColor("#FFFFFF"), android.graphics.PorterDuff.Mode.MULTIPLY);
     }
 
     private void logout() {
@@ -210,7 +215,7 @@ public class UserActivity extends AppCompatActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.user, menu);
-        return true;
+        return false;
     }
 
     @Override
@@ -290,7 +295,6 @@ public class UserActivity extends AppCompatActivity
         }
     }
 
-
     @Override
     protected void onPause() {
         super.onPause();
@@ -306,7 +310,10 @@ public class UserActivity extends AppCompatActivity
         if (NetWork.getConnectionEstablished()) {
             waiter.setActivityIsVisible(true);
             waiter.touch();
+            if (SystemNotifications.getNotificationManager() != null)
+                SystemNotifications.getNotificationManager().cancel(0);
         }
         Log.i("visible", "true");
     }
+
 }

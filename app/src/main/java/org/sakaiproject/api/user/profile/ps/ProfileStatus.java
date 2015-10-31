@@ -1,4 +1,4 @@
-package org.sakaiproject.api.user.data.ps;
+package org.sakaiproject.api.user.profile.ps;
 
 import java.io.Serializable;
 import java.util.Date;

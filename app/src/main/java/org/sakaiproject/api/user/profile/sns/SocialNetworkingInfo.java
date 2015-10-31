@@ -1,4 +1,4 @@
-package org.sakaiproject.api.user.data.sns;
+package org.sakaiproject.api.user.profile.sns;
 
 import java.io.Serializable;
 

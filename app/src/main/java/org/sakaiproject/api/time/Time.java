@@ -1,11 +1,12 @@
 package org.sakaiproject.api.time;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * Created by vasilis on 10/14/15.
  */
-public class Time {
+public class Time implements Serializable {
     private String display;
     private Date time;
 

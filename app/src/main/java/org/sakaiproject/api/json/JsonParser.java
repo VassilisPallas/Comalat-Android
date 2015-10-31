@@ -1,5 +1,7 @@
 package org.sakaiproject.api.json;
 
+import android.util.Log;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -8,12 +10,14 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.sakaiproject.api.events.OnlineEvents;
 import org.sakaiproject.api.general.Connection;
 import org.sakaiproject.api.motd.OnlineMessageOfTheDay;
 import org.sakaiproject.api.time.Time;
-import org.sakaiproject.api.user.data.Profile;
-import org.sakaiproject.api.user.data.User;
-import org.sakaiproject.api.user.data.UserEvents;
+import org.sakaiproject.api.user.profile.Profile;
+import org.sakaiproject.api.user.User;
+import org.sakaiproject.api.user.UserEvents;
+import org.sakaiproject.api.events.RecurrenceRule;
 
 /**
  * Created by vasilis on 10/13/15.
@@ -147,8 +151,7 @@ public class JsonParser {
         return onlineMessageOfTheDay;
     }
 
-    public List<UserEvents> parseUserEventJson(String result) {
-        List<UserEvents> userEventsList = new ArrayList<>();
+    public void parseUserEventJson(String result) {
 
         try {
             JSONObject jsonObject = new JSONObject(result);
@@ -165,25 +168,67 @@ public class JsonParser {
                 userEvents.setDuration(obj.optInt("duration"));
                 userEvents.setEventId(obj.optString("eventId"));
                 userEvents.setFirstTime(new Time(firstTimeJson.optString("display"), new Date(Long.parseLong(firstTimeJson.optString("time")))));
-                userEvents.setReference(obj.optString("reference"));
                 userEvents.setSiteName(obj.optString("siteName"));
                 userEvents.setTitle(obj.optString("title"));
                 userEvents.setType(obj.optString("type"));
-                userEvents.setEntityReference(obj.optString("entityReference"));
-                userEvents.setEntityURL(obj.optString("entityURL"));
-                userEvents.setEntityTitle(obj.optString("entityTitle"));
 
-                userEvents.setEventTime();
+                userEvents.setEventDate();
+                userEvents.setEventWholeDate();
 
-                userEventsList.add(userEvents);
+
+                OnlineEvents.getUserEventsList().add(userEvents);
             }
-
 
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
 
-        return userEventsList;
+    }
+
+    public void parseUserEventInfoJson(String result, int index) {
+        try {
+
+            JSONObject obj = new JSONObject(result);
+            JSONObject lastTimeJson = obj.getJSONObject("lastTime");
+
+            OnlineEvents.getUserEventsList().get(index).setDescription(obj.optString("description"));
+            OnlineEvents.getUserEventsList().get(index).setLastTime(new Time(lastTimeJson.optString("display"), new Date(Long.parseLong(lastTimeJson.optString("time")))));
+            OnlineEvents.getUserEventsList().get(index).setLocation(obj.optString("location"));
+
+            if (obj.has("recurrenceRule")) {
+                JSONObject recurrenceRuleObj = obj.getJSONObject("recurrenceRule");
+
+                int count = recurrenceRuleObj.optInt("count");
+                String frequency = recurrenceRuleObj.optString("frequency");
+                String frequencyDescription = recurrenceRuleObj.optString("frequencyDescription");
+                int interval = recurrenceRuleObj.optInt("interval");
+                Time until = null;
+                OnlineEvents.getUserEventsList().get(index).setRecurrenceRule(new RecurrenceRule(count, frequency, frequencyDescription, interval, until));
+                if (!recurrenceRuleObj.isNull("until")) {
+                    JSONObject untilRuleObj = recurrenceRuleObj.getJSONObject("until");
+                    until = new Time(untilRuleObj.optString("display"), new Date(Long.parseLong(untilRuleObj.optString("time"))));
+                    OnlineEvents.getUserEventsList().get(index).getRecurrenceRule().setUntil(until);
+                    OnlineEvents.getUserEventsList().get(index).getRecurrenceRule().setEndDate();
+                }
+
+            }
+
+            if (obj.has("attachments")) {
+                JSONArray attachments = obj.getJSONArray("attachments");
+
+                for (int i = 0; i < attachments.length(); i++) {
+                    JSONObject attachment = attachments.optJSONObject(i);
+                    OnlineEvents.getUserEventsList().get(index).getAttachments().add(attachment.optString("url"));
+                    Log.i("url", attachment.optString("url"));
+                }
+            }
+
+
+            OnlineEvents.getUserEventsList().get(index).setTimeDuration();
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 }

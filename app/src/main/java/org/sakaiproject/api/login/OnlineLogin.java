@@ -3,10 +3,8 @@ package org.sakaiproject.api.login;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.util.Log;
 
 import java.io.BufferedInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URLEncoder;
@@ -15,8 +13,8 @@ import org.sakaiproject.api.general.Actions;
 import org.sakaiproject.api.general.ConnectionType;
 import org.sakaiproject.api.json.JsonParser;
 import org.sakaiproject.api.general.Connection;
-import org.sakaiproject.api.user.data.Profile;
-import org.sakaiproject.api.user.data.User;
+import org.sakaiproject.api.user.profile.Profile;
+import org.sakaiproject.api.user.User;
 import org.sakaiproject.sakai.R;
 
 /**

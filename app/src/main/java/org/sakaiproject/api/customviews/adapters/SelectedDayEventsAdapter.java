@@ -1,5 +1,8 @@
 package org.sakaiproject.api.customviews.adapters;
 
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,7 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import org.sakaiproject.api.user.data.UserEvents;
+import org.sakaiproject.api.user.UserEvents;
 import org.sakaiproject.sakai.R;
 
 import java.util.List;
@@ -18,8 +21,10 @@ import java.util.List;
 public class SelectedDayEventsAdapter extends RecyclerView.Adapter<SelectedDayEventsAdapter.ViewHolder> {
 
     List<UserEvents> userEventsList;
+    private Context context;
 
-    public SelectedDayEventsAdapter(List<UserEvents> userEventsList) {
+    public SelectedDayEventsAdapter(Context context, List<UserEvents> userEventsList) {
+        this.context = context;
         this.userEventsList = userEventsList;
     }
 
@@ -40,11 +45,9 @@ public class SelectedDayEventsAdapter extends RecyclerView.Adapter<SelectedDayEv
     @Override
     public void onBindViewHolder(SelectedDayEventsAdapter.ViewHolder holder, int position) {
 
-        // - get element from your dataset at this position
-        // - replace the contents of the view with that element
         holder.eventTitle.setText(userEventsList.get(position).getTitle());
-        holder.eventTime.setText(userEventsList.get(position).getEventTime());
-
+        holder.eventTime.setText(userEventsList.get(position).getEventWholeDate());
+        holder.activity_type.setImageBitmap(imageByType(userEventsList.get(position).getType()));
     }
 
     @Override
@@ -52,6 +55,79 @@ public class SelectedDayEventsAdapter extends RecyclerView.Adapter<SelectedDayEv
         if (userEventsList != null)
             return userEventsList.size();
         return 0;
+    }
+
+    public Bitmap imageByType(String eventType) {
+        Bitmap bitmap = null;
+        switch (eventType) {
+            case "Academic Calendar":
+                bitmap = BitmapFactory.decodeResource(context.getResources(),
+                        R.drawable.academic_calendar);
+                break;
+            case "Class section - Lecture":
+                bitmap = BitmapFactory.decodeResource(context.getResources(),
+                        R.drawable.class_section_lecture);
+                break;
+            case "Exam":
+                bitmap = BitmapFactory.decodeResource(context.getResources(),
+                        R.drawable.exam);
+                break;
+            case "Web Assignment":
+                bitmap = BitmapFactory.decodeResource(context.getResources(),
+                        R.drawable.web_assignment);
+                break;
+            case "Activity":
+                bitmap = BitmapFactory.decodeResource(context.getResources(),
+                        R.drawable.activity);
+                break;
+            case "Class section - Small Group":
+                bitmap = BitmapFactory.decodeResource(context.getResources(),
+                        R.drawable.class_section_small_group);
+                break;
+            case "Meeting":
+                bitmap = BitmapFactory.decodeResource(context.getResources(),
+                        R.drawable.meeting);
+                break;
+            case "Cancellation":
+                bitmap = BitmapFactory.decodeResource(context.getResources(),
+                        R.drawable.cancellation);
+                break;
+            case "Class session":
+                bitmap = BitmapFactory.decodeResource(context.getResources(),
+                        R.drawable.class_session);
+                break;
+            case "Multidisciplinary Conference":
+                bitmap = BitmapFactory.decodeResource(context.getResources(),
+                        R.drawable.multidisciplinary_conference);
+                break;
+            case "Class section - Discussion":
+                bitmap = BitmapFactory.decodeResource(context.getResources(),
+                        R.drawable.class_section_discussion);
+                break;
+            case "Computer Session":
+                bitmap = BitmapFactory.decodeResource(context.getResources(),
+                        R.drawable.computer_session);
+                break;
+            case "Quiz":
+                bitmap = BitmapFactory.decodeResource(context.getResources(),
+                        R.drawable.quiz);
+                break;
+            case "Class section - Lab":
+                bitmap = BitmapFactory.decodeResource(context.getResources(),
+                        R.drawable.class_section_lab);
+                break;
+            case "Deadline":
+                bitmap = BitmapFactory.decodeResource(context.getResources(),
+                        R.drawable.deadline);
+                break;
+            case "Special event":
+                bitmap = BitmapFactory.decodeResource(context.getResources(),
+                        R.drawable.special_event);
+                break;
+            default:
+                break;
+        }
+        return bitmap;
     }
 
     // Provide a reference to the views for each data item
