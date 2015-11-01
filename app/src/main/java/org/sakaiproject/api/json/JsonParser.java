@@ -24,7 +24,7 @@ import org.sakaiproject.api.user.profile.SocialNetworkingInfo;
 
 /**
  * Created by vasilis on 10/13/15.
- * This is the json parser for every response from the server
+ * This is the json parser for every json response from the server
  */
 public class JsonParser {
 
@@ -40,7 +40,7 @@ public class JsonParser {
 
     /**
      * parse the session json
-     * http://141.99.248.86:8089/direct/session/sessionId.json"
+     * http://141.99.248.86:8089/direct/session/sessionId.json
      *
      * @param result the response json
      */
@@ -49,11 +49,11 @@ public class JsonParser {
         try {
             JSONObject obj = new JSONObject(result);
 
-            con.setCreationTime(obj.optInt("creationTime"));
-            con.setLastAccessedTime(obj.optInt("lastAccessedTime"));
-            con.setMaxInactiveInterval(obj.optInt("maxInactiveInterval"));
-            user.setUserEid(obj.optString("userEid"));
-            user.setUserId(obj.optString("userId"));
+            con.setCreationTime(obj.getInt("creationTime"));
+            con.setLastAccessedTime(obj.getInt("lastAccessedTime"));
+            con.setMaxInactiveInterval(obj.getInt("maxInactiveInterval"));
+            user.setUserEid(obj.getString("userEid"));
+            user.setUserId(obj.getString("userId"));
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -73,20 +73,20 @@ public class JsonParser {
             JSONObject createdTimeJson = obj.getJSONObject("createdTime");
             JSONObject modifiedTimeJson = obj.getJSONObject("modifiedTime");
 
-            if (!obj.optString("createdDate").equals("null"))
-                user.setCreatedDate(new Date(Long.parseLong(obj.optString("createdDate"))));
+            if (!obj.getString("createdDate").equals("null"))
+                user.setCreatedDate(new Date(Long.parseLong(obj.getString("createdDate"))));
             else
                 user.setCreatedDate(new Date(0));
-            user.setCreatedTime(new Time(createdTimeJson.optString("display"), new Date(Long.parseLong(createdTimeJson.optString("time")))));
-            user.setEmail(obj.optString("email"));
+            user.setCreatedTime(new Time(createdTimeJson.getString("display"), new Date(Long.parseLong(createdTimeJson.getString("time")))));
+            user.setEmail(obj.getString("email"));
             user.setFirstName(obj.getString("firstName"));
-            if (!obj.optString("modifiedDate").equals("null"))
-                user.setModifiedDate(new Date(Long.parseLong(obj.optString("modifiedDate"))));
+            if (!obj.getString("modifiedDate").equals("null"))
+                user.setModifiedDate(new Date(Long.parseLong(obj.getString("modifiedDate"))));
             else
                 user.setModifiedDate(new Date(0));
-            user.setModifiedTime(new Time(modifiedTimeJson.optString("display"), new Date(Long.parseLong(modifiedTimeJson.optString("time")))));
-            user.setLastName(obj.optString("lastName"));
-            user.setType(obj.optString("type"));
+            user.setModifiedTime(new Time(modifiedTimeJson.getString("display"), new Date(Long.parseLong(modifiedTimeJson.getString("time")))));
+            user.setLastName(obj.getString("lastName"));
+            user.setType(obj.getString("type"));
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -103,11 +103,11 @@ public class JsonParser {
         try {
 
             JSONObject obj = new JSONObject(result);
-            profile.setAcademicProfileUrl(obj.optString("academicProfileUrl"));
-            profile.setBirthday(obj.optString("birthday"));
-            profile.setBirthdayDisplay(obj.optString("birthdayDisplay"));
-            profile.setBusinessBiography(obj.optString("businessBiography"));
-            profile.setCourse(obj.optString("course"));
+            profile.setAcademicProfileUrl(obj.getString("academicProfileUrl"));
+            profile.setBirthday(obj.getString("birthday"));
+            profile.setBirthdayDisplay(obj.getString("birthdayDisplay"));
+            profile.setBusinessBiography(obj.getString("businessBiography"));
+            profile.setCourse(obj.getString("course"));
 
 
             if (!obj.isNull("dateOfBirth")) {
@@ -119,63 +119,65 @@ public class JsonParser {
                 int timezoneOffset;
                 int year;
 
-                date = dateOfBirthObj.optInt("date");
-                day = dateOfBirthObj.optInt("day");
-                month = dateOfBirthObj.optInt("month");
-                time = dateOfBirthObj.optInt("time");
-                timezoneOffset = dateOfBirthObj.optInt("timezoneOffset");
-                year = dateOfBirthObj.optInt("year");
+                date = dateOfBirthObj.getInt("date");
+                day = dateOfBirthObj.getInt("day");
+                month = dateOfBirthObj.getInt("month");
+                time = dateOfBirthObj.getInt("time");
+                timezoneOffset = dateOfBirthObj.getInt("timezoneOffset");
+                year = dateOfBirthObj.getInt("year");
 
                 profile.setDateOfBirth(new DateOfBirth(date, day, month, time, timezoneOffset, year));
             }
 
-            profile.setDepartment(obj.optString("department"));
-            profile.setDisplayName(obj.optString("displayName"));
-            profile.setFacsimile(obj.optString("facsimile"));
-            profile.setFavouriteBooks(obj.optString("favouriteBooks"));
-            profile.setFavouriteMovies(obj.optString("favouriteMovies"));
-            profile.setFavouriteQuotes(obj.optString("favouriteQuotes"));
-            profile.setFavouriteTvShows(obj.optString("favouriteTvShows"));
-            profile.setHomepage(obj.optString("homepage"));
-            profile.setHomephone(obj.optString("homephone"));
-            profile.setImageThumbUrl(obj.optString("imageThumbUrl"));
-            profile.setImageUrl(obj.optString("imageUrl"));
-            profile.setMobilephone(obj.optString("mobilephone"));
-            profile.setNickname(obj.optString("nickname"));
-            profile.setPersonalSummary(obj.optString("personalSummary"));
-            profile.setPosition(obj.optString("position"));
-            profile.setPublications(obj.optString("publications"));
-            profile.setRoom(obj.optString("room"));
-            profile.setSchool(obj.optString("school"));
-            profile.setStaffProfile(obj.optString("staffProfile"));
-            profile.setSubjects(obj.optString("subjects"));
-            profile.setUniversityProfileUrl(obj.optString("universityProfileUrl"));
-            profile.setWorkphone(obj.optString("workphone"));
-            profile.setLocked(obj.optBoolean("locked"));
+            profile.setDepartment(obj.getString("department"));
+            profile.setDisplayName(obj.getString("displayName"));
+            profile.setFacsimile(obj.getString("facsimile"));
+            profile.setFavouriteBooks(obj.getString("favouriteBooks"));
+            profile.setFavouriteMovies(obj.getString("favouriteMovies"));
+            profile.setFavouriteQuotes(obj.getString("favouriteQuotes"));
+            profile.setFavouriteTvShows(obj.getString("favouriteTvShows"));
+            profile.setHomepage(obj.getString("homepage"));
+            profile.setHomephone(obj.getString("homephone"));
+            profile.setImageThumbUrl(obj.getString("imageThumbUrl"));
+            profile.setImageUrl(obj.getString("imageUrl"));
+            profile.setMobilephone(obj.getString("mobilephone"));
+            profile.setNickname(obj.getString("nickname"));
+            profile.setPersonalSummary(obj.getString("personalSummary"));
+            profile.setPosition(obj.getString("position"));
+            profile.setPublications(obj.getString("publications"));
+            profile.setRoom(obj.getString("room"));
+            profile.setSchool(obj.getString("school"));
+            profile.setStaffProfile(obj.getString("staffProfile"));
+            profile.setSubjects(obj.getString("subjects"));
+            profile.setUniversityProfileUrl(obj.getString("universityProfileUrl"));
+            profile.setWorkphone(obj.getString("workphone"));
+            profile.setLocked(obj.getBoolean("locked"));
 
-            JSONObject socialInfoObj = obj.getJSONObject("socialInfo");
-            String fb = "", linkedIn = "", mySpace = "", skype = "", twitter = "";
-            if (!socialInfoObj.isNull("facebookUrl")) {
-                fb = socialInfoObj.optString("socialInfoObj");
+
+            if (!obj.isNull("socialInfo")) {
+                JSONObject socialInfoObj = obj.getJSONObject("socialInfo");
+                String fb = "", linkedIn = "", mySpace = "", skype = "", twitter = "";
+                if (!socialInfoObj.isNull("facebookUrl")) {
+                    fb = socialInfoObj.getString("facebookUrl");
+                }
+
+                if (!socialInfoObj.isNull("linkedinUrl")) {
+                    linkedIn = socialInfoObj.getString("linkedinUrl");
+                }
+
+                if (!socialInfoObj.isNull("myspaceUrl")) {
+                    mySpace = socialInfoObj.getString("myspaceUrl");
+                }
+
+                if (!socialInfoObj.isNull("skypeUsername")) {
+                    skype = socialInfoObj.getString("skypeUsername");
+                }
+
+                if (!socialInfoObj.isNull("twitterUrl")) {
+                    twitter = socialInfoObj.getString("twitterUrl");
+                }
+                profile.setSocialInfo(new SocialNetworkingInfo(fb, linkedIn, mySpace, skype, twitter));
             }
-
-            if (!socialInfoObj.isNull("linkedinUrl")) {
-                linkedIn = socialInfoObj.optString("linkedinUrl");
-            }
-
-            if (!socialInfoObj.isNull("myspaceUrl")) {
-                mySpace = socialInfoObj.optString("myspaceUrl");
-            }
-
-            if (!socialInfoObj.isNull("skypeUsername")) {
-                skype = socialInfoObj.optString("skypeUsername");
-            }
-
-            if (!socialInfoObj.isNull("twitterUrl")) {
-                twitter = socialInfoObj.optString("twitterUrl");
-            }
-            profile.setSocialInfo(new SocialNetworkingInfo(fb, linkedIn, mySpace, skype, twitter));
-
 
             if (!obj.isNull("status")) {
                 JSONObject statusObj = obj.getJSONObject("status");
@@ -183,9 +185,9 @@ public class JsonParser {
                 String dateFormatted;
                 String message;
 
-                dateAdded = new Date(statusObj.optInt("dateAdded"));
-                dateFormatted = statusObj.optString("dateFormatted");
-                message = statusObj.optString("message");
+                dateAdded = new Date(statusObj.getInt("dateAdded"));
+                dateFormatted = statusObj.getString("dateFormatted");
+                message = statusObj.getString("message");
 
                 profile.setStatus(new ProfileStatus(message, dateAdded, dateFormatted));
             }
@@ -216,9 +218,9 @@ public class JsonParser {
 
             JSONArray messages = jsonObject.getJSONArray("announcement_collection");
             for (int i = 0; i < messages.length(); i++) {
-                JSONObject obj = messages.optJSONObject(i);
-                messagesList.add(obj.optString("motdBody"));
-                siteUrlsList.add(obj.optString("motdUrl"));
+                JSONObject obj = messages.getJSONObject(i);
+                messagesList.add(obj.getString("motdBody"));
+                siteUrlsList.add(obj.getString("motdUrl"));
             }
 
             onlineMessageOfTheDay.setMessage(messagesList);
@@ -244,19 +246,19 @@ public class JsonParser {
             JSONArray collections = jsonObject.getJSONArray("calendar_collection");
 
             for (int i = 0; i < collections.length(); i++) {
-                JSONObject obj = collections.optJSONObject(i);
+                JSONObject obj = collections.getJSONObject(i);
 
                 UserEvents userEvents = new UserEvents();
 
                 JSONObject firstTimeJson = obj.getJSONObject("firstTime");
 
-                userEvents.setCreator(obj.optString("creator"));
-                userEvents.setDuration(obj.optInt("duration"));
-                userEvents.setEventId(obj.optString("eventId"));
-                userEvents.setFirstTime(new Time(firstTimeJson.optString("display"), new Date(Long.parseLong(firstTimeJson.optString("time")))));
-                userEvents.setSiteName(obj.optString("siteName"));
-                userEvents.setTitle(obj.optString("title"));
-                userEvents.setType(obj.optString("type"));
+                userEvents.setCreator(obj.getString("creator"));
+                userEvents.setDuration(obj.getInt("duration"));
+                userEvents.setEventId(obj.getString("eventId"));
+                userEvents.setFirstTime(new Time(firstTimeJson.getString("display"), new Date(Long.parseLong(firstTimeJson.getString("time")))));
+                userEvents.setSiteName(obj.getString("siteName"));
+                userEvents.setTitle(obj.getString("title"));
+                userEvents.setType(obj.getString("type"));
 
                 userEvents.setEventDate();
                 userEvents.setEventWholeDate();
@@ -285,22 +287,22 @@ public class JsonParser {
             JSONObject obj = new JSONObject(result);
             JSONObject lastTimeJson = obj.getJSONObject("lastTime");
 
-            OnlineEvents.getUserEventsList().get(index).setDescription(obj.optString("description"));
-            OnlineEvents.getUserEventsList().get(index).setLastTime(new Time(lastTimeJson.optString("display"), new Date(Long.parseLong(lastTimeJson.optString("time")))));
-            OnlineEvents.getUserEventsList().get(index).setLocation(obj.optString("location"));
+            OnlineEvents.getUserEventsList().get(index).setDescription(obj.getString("description"));
+            OnlineEvents.getUserEventsList().get(index).setLastTime(new Time(lastTimeJson.getString("display"), new Date(Long.parseLong(lastTimeJson.getString("time")))));
+            OnlineEvents.getUserEventsList().get(index).setLocation(obj.getString("location"));
 
             if (obj.has("recurrenceRule")) {
                 JSONObject recurrenceRuleObj = obj.getJSONObject("recurrenceRule");
 
-                int count = recurrenceRuleObj.optInt("count");
-                String frequency = recurrenceRuleObj.optString("frequency");
-                String frequencyDescription = recurrenceRuleObj.optString("frequencyDescription");
-                int interval = recurrenceRuleObj.optInt("interval");
+                int count = recurrenceRuleObj.getInt("count");
+                String frequency = recurrenceRuleObj.getString("frequency");
+                String frequencyDescription = recurrenceRuleObj.getString("frequencyDescription");
+                int interval = recurrenceRuleObj.getInt("interval");
                 Time until = null;
                 OnlineEvents.getUserEventsList().get(index).setRecurrenceRule(new RecurrenceRule(count, frequency, frequencyDescription, interval, until));
                 if (!recurrenceRuleObj.isNull("until")) {
                     JSONObject untilRuleObj = recurrenceRuleObj.getJSONObject("until");
-                    until = new Time(untilRuleObj.optString("display"), new Date(Long.parseLong(untilRuleObj.optString("time"))));
+                    until = new Time(untilRuleObj.getString("display"), new Date(Long.parseLong(untilRuleObj.getString("time"))));
                     OnlineEvents.getUserEventsList().get(index).getRecurrenceRule().setUntil(until);
                     OnlineEvents.getUserEventsList().get(index).getRecurrenceRule().setEndDate();
                 }
@@ -311,9 +313,9 @@ public class JsonParser {
                 JSONArray attachments = obj.getJSONArray("attachments");
 
                 for (int i = 0; i < attachments.length(); i++) {
-                    JSONObject attachment = attachments.optJSONObject(i);
-                    OnlineEvents.getUserEventsList().get(index).getAttachments().add(attachment.optString("url"));
-                    Log.i("url", attachment.optString("url"));
+                    JSONObject attachment = attachments.getJSONObject(i);
+                    OnlineEvents.getUserEventsList().get(index).getAttachments().add(attachment.getString("url"));
+                    Log.i("url", attachment.getString("url"));
                 }
             }
 

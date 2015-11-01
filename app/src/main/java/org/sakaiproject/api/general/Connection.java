@@ -147,4 +147,8 @@ public class Connection {
         return con.getInputStream();
     }
 
+    public InputStream getErrorStream() {
+        return con.getErrorStream();
+    }
+
 }

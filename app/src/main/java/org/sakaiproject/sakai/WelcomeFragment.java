@@ -4,6 +4,7 @@ package org.sakaiproject.sakai;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.JsonWriter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,6 +31,7 @@ public class WelcomeFragment extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_welcome, container, false);
         findViewsById(v);
+
         onlineMessageOfTheDay = new OnlineMessageOfTheDay();
         new MotdAsync(getResources().getString(R.string.url) + "announcement/motd.json").execute();
         return v;

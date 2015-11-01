@@ -35,6 +35,7 @@
                 android:layout_below="@+id/loginUsername_EditText"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="20dp"
+                android:fontFamily="sans-serif"
                 android:hint="Enter your password"
                 android:inputType="textPassword"
                 android:singleLine="true" />

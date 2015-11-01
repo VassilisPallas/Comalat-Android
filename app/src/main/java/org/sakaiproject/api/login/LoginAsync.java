@@ -31,31 +31,24 @@ public class LoginAsync extends AsyncTask<Void, Void, LoginType> {
 
     private Context context;
     private Activity activity;
-    private Fragment loginFragment = null;
+    private Fragment fragment = null;
 
     private ProgressBar progressBar;
     private EditText usernameEditText, passwordEditText;
 
     public LoginAsync(Fragment fragment, String url, String username, String password) {
-        loginFragment = fragment;
-        context = loginFragment.getContext();
-        activity = loginFragment.getActivity();
+        this.fragment = fragment;
+        context = this.fragment.getContext();
+        activity = this.fragment.getActivity();
         this.url = url;
         this.username = username;
         this.password = password;
 
-
-        progressBar = (ProgressBar) activity.findViewById(R.id.loginProgressBar);
-        usernameEditText = (EditText) activity.findViewById(R.id.loginUsername_EditText);
-        passwordEditText = (EditText) activity.findViewById(R.id.loginPassword_EditText);
-    }
-
-    public LoginAsync(Activity activity, String url, String username, String password) {
-        this.activity = activity;
-        context = activity.getApplication();
-        this.url = url;
-        this.username = username;
-        this.password = password;
+        if (fragment != null && fragment instanceof LoginFragment) {
+            progressBar = (ProgressBar) activity.findViewById(R.id.loginProgressBar);
+            usernameEditText = (EditText) activity.findViewById(R.id.loginUsername_EditText);
+            passwordEditText = (EditText) activity.findViewById(R.id.loginPassword_EditText);
+        }
     }
 
     private void clearEditTexts() {
@@ -68,7 +61,7 @@ public class LoginAsync extends AsyncTask<Void, Void, LoginType> {
     protected void onPreExecute() {
         super.onPreExecute();
 
-        if (loginFragment != null && loginFragment instanceof LoginFragment)
+        if (fragment != null && fragment instanceof LoginFragment)
             progressBar.setVisibility(View.VISIBLE);
     }
 
@@ -88,11 +81,8 @@ public class LoginAsync extends AsyncTask<Void, Void, LoginType> {
     protected void onPostExecute(LoginType type) {
         super.onPostExecute(type);
 
-        if (loginFragment != null && loginFragment instanceof LoginFragment)
+        if (fragment != null && fragment instanceof LoginFragment)
             progressBar.setVisibility(View.GONE);
-
-        Bitmap userImage = null;
-        Bitmap userThumbnailImage = null;
 
         if (type == LoginType.LOGIN_WITH_INTERNET) /* connection completed with internet */ {
 
@@ -107,18 +97,18 @@ public class LoginAsync extends AsyncTask<Void, Void, LoginType> {
 
         } else if (type == LoginType.FIRST_TIME_LOGIN_WITHOUT_INTERNET) /* if the user tries to login without internet connection for the first time */ {
             Toast.makeText(context, "You have never login again!\nTo login without internet\nyou have to access at least\none time with internet connection", Toast.LENGTH_LONG).show();
-            if (loginFragment != null && loginFragment instanceof LoginFragment)
+            if (fragment != null && fragment instanceof LoginFragment)
                 clearEditTexts();
             return;
         } else /* connection failed */ {
             Toast.makeText(context, "Invalid login", Toast.LENGTH_SHORT).show();
-            if (loginFragment != null && loginFragment instanceof LoginFragment)
+            if (fragment != null && fragment instanceof LoginFragment)
                 clearEditTexts();
             return;
         }
 
 
-        if (loginFragment != null && loginFragment instanceof LoginFragment)
+        if (fragment != null && fragment instanceof LoginFragment)
             clearEditTexts();
 
         Intent i = new Intent(context, UserActivity.class);

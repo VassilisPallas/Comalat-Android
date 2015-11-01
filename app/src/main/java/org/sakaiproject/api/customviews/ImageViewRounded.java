@@ -54,7 +54,8 @@ public class ImageViewRounded extends ImageView {
             mScaledBitmap = fullSizeBitmap;
         } else {
             mScaledBitmap = Bitmap.createScaledBitmap(fullSizeBitmap,
-                    scaledWidth, scaledHeight, true /* filter */);
+                    scaledWidth, scaledHeight, false /* filter */);
+
         }
 
         Bitmap circleBitmap = getCircledBitmap(mScaledBitmap);

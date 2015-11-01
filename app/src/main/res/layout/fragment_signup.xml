@@ -10,76 +10,135 @@
         android:layout_height="wrap_content">
 
         <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:padding="16dp">
+            android:id="@+id/signup_edittexts_relative"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:paddingBottom="10dp">
 
-            <EditText
-                android:id="@+id/user_id_edittext"
-                android:layout_width="match_parent"
+
+            <RelativeLayout
+                android:id="@+id/user_eid_relative"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="20dp"
-                android:hint="User Id (required)" />
+                android:layout_marginTop="10dp">
+
+                <EditText
+                    android:id="@+id/user_id_edittext"
+                    android:layout_width="250dp"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:hint="User Id *" />
+
+
+                <ProgressBar
+                    android:id="@+id/user_exists_progressbar"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@+id/user_id_edittext"
+                    android:visibility="gone" />
+
+                <ImageView
+                    android:id="@+id/user_exists_imageview"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@+id/user_id_edittext"
+                    android:visibility="invisible" />
+
+            </RelativeLayout>
 
             <EditText
                 android:id="@+id/first_name_edittext"
-                android:layout_width="match_parent"
+                android:layout_width="250dp"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/user_id_edittext"
-                android:layout_centerHorizontal="true"
+                android:layout_below="@+id/user_eid_relative"
                 android:layout_marginTop="20dp"
                 android:hint="First Name" />
 
             <EditText
                 android:id="@+id/last_name_edittext"
-                android:layout_width="match_parent"
+                android:layout_width="250dp"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/first_name_edittext"
-                android:layout_centerHorizontal="true"
                 android:layout_marginTop="20dp"
                 android:hint="Last Name" />
 
-            <EditText
-                android:id="@+id/email_edittext"
-                android:layout_width="match_parent"
+            <RelativeLayout
+                android:id="@+id/user_email_relative"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/last_name_edittext"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="20dp"
-                android:hint="Email" />
+                android:layout_marginTop="20dp">
+
+                <EditText
+                    android:id="@+id/email_edittext"
+                    android:layout_width="250dp"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:hint="Email" />
+
+                <ImageView
+                    android:id="@+id/email_validation_imageview"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@+id/email_edittext"
+                    android:scaleType="fitCenter"
+                    android:visibility="gone" />
+            </RelativeLayout>
+
 
             <EditText
                 android:id="@+id/password_edittext"
-                android:layout_width="match_parent"
+                android:layout_width="250dp"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/email_edittext"
-                android:layout_centerHorizontal="true"
+                android:layout_below="@+id/user_email_relative"
                 android:layout_marginTop="20dp"
-                android:hint="Password (required)" />
+                android:fontFamily="sans-serif"
+                android:hint="Password *"
+                android:inputType="textPassword" />
 
-            <EditText
-                android:id="@+id/confirm_password_edittext"
-                android:layout_width="match_parent"
+
+            <RelativeLayout
+                android:id="@+id/user_confirm_password_relative"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/password_edittext"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="20dp"
-                android:hint="Confirm Password (required)" />
+                android:layout_marginTop="20dp">
+
+                <EditText
+                    android:id="@+id/confirm_password_edittext"
+                    android:layout_width="250dp"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif"
+                    android:hint="Confirm Password *"
+                    android:inputType="textPassword" />
+
+                <ImageView
+                    android:id="@+id/password_equals_imageview"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@+id/confirm_password_edittext"
+                    android:visibility="gone" />
+            </RelativeLayout>
+
 
             <EditText
                 android:id="@+id/type_edittext"
-                android:layout_width="match_parent"
+                android:layout_width="250dp"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/confirm_password_edittext"
-                android:layout_centerHorizontal="true"
+                android:layout_below="@+id/user_confirm_password_relative"
                 android:layout_marginTop="20dp"
                 android:enabled="false"
                 android:hint="type: registered" />
 
             <com.balysv.materialripple.MaterialRippleLayout
                 android:id="@+id/ripple"
-                android:layout_width="match_parent"
+                android:layout_width="250dp"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/type_edittext"
                 android:layout_centerHorizontal="true"
@@ -92,13 +151,22 @@
 
                 <Button
                     android:id="@+id/signup_button"
-                    android:layout_width="match_parent"
+                    android:layout_width="250dp"
                     android:layout_height="wrap_content"
-                    android:background="#0083AF"
+                    android:background="@drawable/signup_button_style"
+                    android:enabled="false"
                     android:text="Create Account"
                     android:textColor="#FFF" />
 
             </com.balysv.materialripple.MaterialRippleLayout>
+
+            <ProgressBar
+                android:id="@+id/signup_progess"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:visibility="gone" />
 
         </RelativeLayout>
 
