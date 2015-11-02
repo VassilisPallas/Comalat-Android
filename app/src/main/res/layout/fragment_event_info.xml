@@ -60,8 +60,8 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/description_txt"
                     android:layout_marginTop="10dp"
-                    android:visibility="gone"
-                    android:text="Attachments" />
+                    android:text="Attachments"
+                    android:visibility="gone" />
 
                 <TextView
                     android:id="@+id/frequency_txt"
@@ -112,8 +112,7 @@
                     android:layout_below="@+id/event_title"
                     android:layout_marginLeft="80dp"
                     android:layout_marginTop="10dp"
-                    android:layout_toRightOf="@id/date_txt"
-                    android:text="Oct 20, 2015" />
+                    android:layout_toRightOf="@id/date_txt" />
 
                 <TextView
                     android:id="@+id/event_time"
@@ -122,8 +121,7 @@
                     android:layout_below="@+id/date_txt"
                     android:layout_marginLeft="77dp"
                     android:layout_marginTop="10dp"
-                    android:layout_toRightOf="@+id/time_txt"
-                    android:text="5:00 am - 8:10 am CET " />
+                    android:layout_toRightOf="@+id/time_txt" />
 
 
                 <TextView
@@ -133,8 +131,7 @@
                     android:layout_below="@+id/time_txt"
                     android:layout_marginLeft="40dp"
                     android:layout_marginTop="10dp"
-                    android:layout_toRightOf="@+id/description_txt"
-                    android:text="description message" />
+                    android:layout_toRightOf="@+id/description_txt" />
 
                 <LinearLayout
                     android:id="@+id/attachments_linear"
@@ -156,8 +153,7 @@
                     android:layout_below="@id/attachments_linear"
                     android:layout_marginLeft="47dp"
                     android:layout_marginTop="10dp"
-                    android:layout_toRightOf="@+id/frequency_txt"
-                    android:text="Activity occurs once" />
+                    android:layout_toRightOf="@+id/frequency_txt" />
 
                 <TextView
                     android:id="@+id/event_type"
@@ -166,8 +162,7 @@
                     android:layout_below="@+id/event_frequency"
                     android:layout_marginLeft="43dp"
                     android:layout_marginTop="10dp"
-                    android:layout_toRightOf="@+id/type_txt"
-                    android:text="Activity" />
+                    android:layout_toRightOf="@+id/type_txt" />
 
                 <TextView
                     android:id="@+id/event_owner"
@@ -176,8 +171,7 @@
                     android:layout_below="@+id/type_txt"
                     android:layout_marginLeft="73dp"
                     android:layout_marginTop="10dp"
-                    android:layout_toRightOf="@+id/owner_txt"
-                    android:text="Vasilis Pallas" />
+                    android:layout_toRightOf="@+id/owner_txt" />
 
                 <TextView
                     android:id="@+id/event_site"
@@ -186,8 +180,7 @@
                     android:layout_below="@+id/owner_txt"
                     android:layout_marginLeft="90dp"
                     android:layout_marginTop="10dp"
-                    android:layout_toRightOf="@+id/site_txt"
-                    android:text="My Workspace" />
+                    android:layout_toRightOf="@+id/site_txt" />
 
                 <TextView
                     android:id="@+id/event_from_site"
@@ -196,8 +189,7 @@
                     android:layout_below="@id/site_txt"
                     android:layout_marginLeft="55dp"
                     android:layout_marginTop="10dp"
-                    android:layout_toRightOf="@+id/from_site_txt"
-                    android:text="Vasilis Pallas\'s site (~5f74956a-184b-409d-a54a-4bdb607a8797)" />
+                    android:layout_toRightOf="@+id/from_site_txt" />
 
             </RelativeLayout>
 

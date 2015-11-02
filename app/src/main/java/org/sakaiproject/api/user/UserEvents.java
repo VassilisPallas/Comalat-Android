@@ -13,6 +13,7 @@ import java.util.regex.Pattern;
  * Created by vasilis on 10/20/15.
  */
 public class UserEvents implements Serializable {
+
     private String creator;
     private long duration;
     private String eventId;

@@ -29,6 +29,7 @@ import org.sakaiproject.api.events.OnlineEvents;
 import org.sakaiproject.api.internet.NetWork;
 import org.sakaiproject.api.user.UserEvents;
 
+import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.List;
 
@@ -50,6 +51,7 @@ public class ScheduleFragment extends Fragment {
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
 
+    private String selectedDate;
 
     public ScheduleFragment() {
         // Required empty public constructor
@@ -132,6 +134,8 @@ public class ScheduleFragment extends Fragment {
                 }
                 ((CalendarAdapter) parent.getAdapter()).setSelected(v, position);
 
+                selectedDate = selectedGridDate;
+
                 mAdapter = new SelectedDayEventsAdapter(getContext(), ((CalendarAdapter) parent.getAdapter()).getPositionList(selectedGridDate));
                 mAdapter.notifyDataSetChanged();
                 mRecyclerView.setAdapter(mAdapter);
@@ -144,7 +148,17 @@ public class ScheduleFragment extends Fragment {
         mRecyclerView.addOnItemTouchListener(new RecyclerItemClickListener(getContext(), mRecyclerView, new RecyclerItemClickListener.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                UserEvents selectedEvent = OnlineEvents.getUserEventsList().get(position);
+
+
+                List<UserEvents> todayEvents = new ArrayList<>();
+
+                for (UserEvents ue : OnlineEvents.getUserEventsList()) {
+                    if (ue.getEventWholeDate().equals(selectedDate)) {
+                        todayEvents.add(ue);
+                    }
+                }
+
+                UserEvents selectedEvent = todayEvents.get(position);
 
                 FragmentManager fm = getFragmentManager();
                 EventInfoFragment dialogFragment = new EventInfoFragment().setSelectedEvent(selectedEvent);
