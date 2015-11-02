@@ -61,7 +61,6 @@ public class OnlineEvents {
                         url = context.getResources().getString(R.string.url) + "calendar/event/~" + owner + "/" + eventId + ".json";
                     } else {
 
-                        //http://141.99.248.86:8089/direct/profile/0318e9f5-cc0d-42cc-a759-d56315295521.json
                         // get event's creator user id
                         connection.openConnection(context.getResources().getString(R.string.url) + "profile/" + userEvents.get(i).getCreator() + ".json", ConnectionType.GET, true, false, null);
                         status = connection.getResponseCode();
