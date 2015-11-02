@@ -35,6 +35,12 @@ public class UserEvents implements Serializable {
 
     private String timeDuration;
 
+    private String reference;
+
+    private String siteId;
+
+    private String creatorUserId;
+
     public UserEvents() {
     }
 
@@ -115,6 +121,30 @@ public class UserEvents implements Serializable {
             names.add(name);
         }
         return names;
+    }
+
+    public String getReference() {
+        return reference;
+    }
+
+    public String getSiteId() {
+        return siteId;
+    }
+
+    public String getCreatorUserId() {
+        return creatorUserId;
+    }
+
+    public void setCreatorUserId(String creatorUserId) {
+        this.creatorUserId = creatorUserId;
+    }
+
+    public void setSiteId(String siteId) {
+        this.siteId = siteId;
+    }
+
+    public void setReference(String reference) {
+        this.reference = reference;
     }
 
     public void setAttachments(List<String> attachments) {

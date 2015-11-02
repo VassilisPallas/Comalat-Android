@@ -19,7 +19,6 @@ import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import org.sakaiproject.api.customviews.RecyclerItemClickListener;
 import org.sakaiproject.api.customviews.adapters.SelectedDayEventsAdapter;

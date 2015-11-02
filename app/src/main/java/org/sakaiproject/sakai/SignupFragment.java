@@ -248,6 +248,13 @@ public class SignupFragment extends Fragment {
         }
     }
 
+    private Bitmap selectValidationImage(boolean correct) {
+        if (correct) {
+            return BitmapFactory.decodeResource(getResources(), R.mipmap.ic_check_circle);
+        }
+        return BitmapFactory.decodeResource(getResources(), R.mipmap.ic_cancel);
+    }
+
     private class SignupAsync extends AsyncTask<Void, Void, Boolean> {
 
         private String url, eid, fname, lname, mail, pass;
@@ -283,13 +290,6 @@ public class SignupFragment extends Fragment {
             }
             signupProgressBar.setVisibility(View.GONE);
         }
-    }
-
-    private Bitmap selectValidationImage(boolean correct) {
-        if (correct) {
-            return BitmapFactory.decodeResource(getResources(), R.mipmap.ic_check_circle);
-        }
-        return BitmapFactory.decodeResource(getResources(), R.mipmap.ic_cancel);
     }
 
     private class EidExistsAsync extends AsyncTask<Void, Void, Boolean> {

@@ -58,6 +58,9 @@ public class JsonParser {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
+        // attributeName
+        // attribute
     }
 
     /**
@@ -259,7 +262,7 @@ public class JsonParser {
                 userEvents.setSiteName(obj.getString("siteName"));
                 userEvents.setTitle(obj.getString("title"));
                 userEvents.setType(obj.getString("type"));
-
+                userEvents.setReference(obj.getString("reference"));
                 userEvents.setEventDate();
                 userEvents.setEventWholeDate();
 
@@ -291,7 +294,7 @@ public class JsonParser {
             OnlineEvents.getUserEventsList().get(index).setLastTime(new Time(lastTimeJson.getString("display"), new Date(Long.parseLong(lastTimeJson.getString("time")))));
             OnlineEvents.getUserEventsList().get(index).setLocation(obj.getString("location"));
 
-            if (obj.has("recurrenceRule")) {
+            if (obj.has("recurrenceRule") && !obj.isNull("recurrenceRule")) {
                 JSONObject recurrenceRuleObj = obj.getJSONObject("recurrenceRule");
 
                 int count = recurrenceRuleObj.getInt("count");
@@ -322,6 +325,16 @@ public class JsonParser {
 
             OnlineEvents.getUserEventsList().get(index).setTimeDuration();
 
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    public void getEventCreatorUserId(String result, int index) {
+        try {
+            JSONObject obj = new JSONObject(result);
+            OnlineEvents.getUserEventsList().get(index).setCreatorUserId(obj.getString("displayName"));
         } catch (JSONException e) {
             e.printStackTrace();
         }

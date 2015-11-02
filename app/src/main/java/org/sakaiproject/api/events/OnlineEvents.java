@@ -6,6 +6,7 @@ import org.sakaiproject.api.general.ConnectionType;
 import org.sakaiproject.api.json.JsonParser;
 import org.sakaiproject.api.general.Actions;
 import org.sakaiproject.api.general.Connection;
+import org.sakaiproject.api.user.User;
 import org.sakaiproject.api.user.UserEvents;
 import org.sakaiproject.sakai.R;
 
@@ -55,7 +56,27 @@ public class OnlineEvents {
                 for (int i = 0; i < userEvents.size(); i++) {
                     String owner = userEvents.get(i).getCreator();
                     String eventId = userEvents.get(i).getEventId();
-                    String url = context.getResources().getString(R.string.url) + "calendar/event/~" + owner + "/" + eventId + ".json";
+                    String url;
+                    if (owner.equals(User.getUserId())) {
+                        url = context.getResources().getString(R.string.url) + "calendar/event/~" + owner + "/" + eventId + ".json";
+                    } else {
+
+                        //http://141.99.248.86:8089/direct/profile/0318e9f5-cc0d-42cc-a759-d56315295521.json
+                        // get event's creator user id
+                        connection.openConnection(context.getResources().getString(R.string.url) + "profile/" + userEvents.get(i).getCreator() + ".json", ConnectionType.GET, true, false, null);
+                        status = connection.getResponseCode();
+                        if (status >= 200 && status < 300) {
+                            inputStream = new BufferedInputStream(connection.getInputStream());
+                            String response = Actions.readJsonStream(inputStream);
+                            jsonParse.getEventCreatorUserId(response, i);
+                            inputStream.close();
+                        }
+
+                        String siteId = userEvents.get(i).getReference().replaceAll("/calendar/calendar/", "");
+                        siteId = siteId.replaceAll("/main", "");
+                        userEvents.get(i).setSiteId(siteId);
+                        url = context.getResources().getString(R.string.url) + "calendar/event/" + siteId + "/" + eventId + ".json";
+                    }
                     connection.openConnection(url, ConnectionType.GET, true, false, null);
                     status = connection.getResponseCode();
 

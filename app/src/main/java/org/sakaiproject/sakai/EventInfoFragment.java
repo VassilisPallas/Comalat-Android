@@ -21,7 +21,7 @@ import org.sakaiproject.api.user.UserEvents;
 public class EventInfoFragment extends DialogFragment {
 
     private UserEvents selectedEvent;
-    private TextView title, date, time, description, attachment, frequency, eventType, owner, site, fromSite;
+    private TextView title, date, time, description, attachment, frequency, eventType, owner, site, fromSite, location;
     private Button editEvent, removeEvent;
     private LinearLayout attachmentLinear;
 
@@ -111,13 +111,21 @@ public class EventInfoFragment extends DialogFragment {
         site = (TextView) v.findViewById(R.id.event_site);
         site.setText(selectedEvent.getSiteName());
 
+        if (selectedEvent.getLocation() != null && !selectedEvent.getLocation().equals("")) {
+            location = (TextView) v.findViewById(R.id.event_location);
+            TextView eventLocationTxt = (TextView) v.findViewById(R.id.event_location_txt);
+            eventLocationTxt.setVisibility(View.VISIBLE);
+            location.setVisibility(View.VISIBLE);
+            location.setText(selectedEvent.getLocation());
+        }
 
+        owner = (TextView) v.findViewById(R.id.event_owner);
+        fromSite = (TextView) v.findViewById(R.id.event_from_site);
         // if the owner of the event is the user show his data
         if (User.getUserId().equals(selectedEvent.getCreator())) {
-            owner = (TextView) v.findViewById(R.id.event_owner);
+
             owner.setText(User.getFirstName() + " " + User.getLastName());
 
-            fromSite = (TextView) v.findViewById(R.id.event_from_site);
             fromSite.setText("\"" + User.getFirstName() + " " + User.getLastName() + "\'s site\" (~" + User.getUserId() + ")");
 
             editEvent = (Button) v.findViewById(R.id.edit_event);
@@ -125,6 +133,9 @@ public class EventInfoFragment extends DialogFragment {
 
             removeEvent = (Button) v.findViewById(R.id.remove_event);
             removeEvent.setVisibility(View.VISIBLE);
+        } else {
+            owner.setText(selectedEvent.getCreatorUserId());
+            fromSite.setText("\"" + selectedEvent.getSiteName() + "\" (" + selectedEvent.getSiteId() + ")");
         }
     }
 
