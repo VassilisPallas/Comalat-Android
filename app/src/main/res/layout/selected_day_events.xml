@@ -1,28 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_gravity="left"
     android:background="#ffffff"
-    android:orientation="horizontal">
+    android:orientation="vertical">
 
     <com.balysv.materialripple.MaterialRippleLayout
         android:id="@+id/selected_day_events_recycle_ripple"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         app:mrl_rippleAlpha="0.2"
         app:mrl_rippleColor="#808080"
         app:mrl_rippleDelayClick="false"
         app:mrl_rippleHover="true"
-        app:mrl_rippleOverlay="true"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        app:mrl_rippleOverlay="true">
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="left"
-            android:padding="8dp"
-            android:gravity="left">
+            android:gravity="left"
+            android:padding="8dp">
 
             <ImageView
                 android:id="@+id/activity_type_event"
@@ -50,9 +50,13 @@
                 android:layout_gravity="center"
                 android:padding="4dp"
                 android:text="TextView" />
-
         </RelativeLayout>
 
     </com.balysv.materialripple.MaterialRippleLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#33000000" />
 
 </LinearLayout>

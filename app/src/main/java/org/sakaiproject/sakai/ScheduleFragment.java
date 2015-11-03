@@ -238,6 +238,9 @@ public class ScheduleFragment extends Fragment {
         @Override
         protected List<UserEvents> doInBackground(Void... params) {
 
+            onlineEvents.getUserEventsList().clear();
+            CalendarCollection.date_collection_arr.clear();
+
             if (NetWork.getConnectionEstablished()) {
                 String url = getContext().getResources().getString(R.string.url) + "calendar/my.json";
                 onlineEvents.getUserEvents(url);

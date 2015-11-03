@@ -42,7 +42,7 @@
                     android:id="@+id/time_txt"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/date_txt"
+                    android:layout_below="@+id/event_date"
                     android:layout_marginTop="10dp"
                     android:text="Time" />
 
@@ -50,7 +50,7 @@
                     android:id="@+id/description_txt"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/time_txt"
+                    android:layout_below="@+id/event_time"
                     android:layout_marginTop="10dp"
                     android:text="Description" />
 
@@ -83,7 +83,7 @@
                     android:id="@+id/owner_txt"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/type_txt"
+                    android:layout_below="@+id/event_type"
                     android:layout_marginTop="10dp"
                     android:text="Owner" />
 
@@ -91,7 +91,7 @@
                     android:id="@+id/site_txt"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/owner_txt"
+                    android:layout_below="@+id/event_owner"
                     android:layout_marginTop="10dp"
                     android:text="Site" />
 
@@ -99,7 +99,7 @@
                     android:id="@+id/event_location_txt"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/site_txt"
+                    android:layout_below="@+id/event_site"
                     android:layout_marginTop="10dp"
                     android:text="Event Location"
                     android:visibility="gone" />
@@ -108,7 +108,7 @@
                     android:id="@+id/from_site_txt"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/event_location_txt"
+                    android:layout_below="@+id/event_location"
                     android:layout_marginTop="10dp"
                     android:text="From Site" />
 
@@ -127,7 +127,7 @@
                     android:id="@+id/event_time"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/date_txt"
+                    android:layout_below="@+id/event_date"
                     android:layout_marginLeft="77dp"
                     android:layout_marginTop="10dp"
                     android:layout_toRightOf="@+id/time_txt" />
@@ -137,7 +137,7 @@
                     android:id="@+id/event_description"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/time_txt"
+                    android:layout_below="@+id/event_time"
                     android:layout_marginLeft="40dp"
                     android:layout_marginTop="10dp"
                     android:layout_toRightOf="@+id/description_txt" />
@@ -177,7 +177,7 @@
                     android:id="@+id/event_owner"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/type_txt"
+                    android:layout_below="@+id/event_type"
                     android:layout_marginLeft="73dp"
                     android:layout_marginTop="10dp"
                     android:layout_toRightOf="@+id/owner_txt" />
@@ -186,7 +186,7 @@
                     android:id="@+id/event_site"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/owner_txt"
+                    android:layout_below="@+id/event_owner"
                     android:layout_marginLeft="90dp"
                     android:layout_marginTop="10dp"
                     android:layout_toRightOf="@+id/site_txt" />

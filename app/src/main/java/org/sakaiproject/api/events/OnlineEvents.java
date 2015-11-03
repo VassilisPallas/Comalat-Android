@@ -1,6 +1,7 @@
 package org.sakaiproject.api.events;
 
 import android.content.Context;
+import android.util.Log;
 
 import org.sakaiproject.api.general.ConnectionType;
 import org.sakaiproject.api.json.JsonParser;
@@ -61,15 +62,19 @@ public class OnlineEvents {
                         url = context.getResources().getString(R.string.url) + "calendar/event/~" + owner + "/" + eventId + ".json";
                     } else {
 
-                        // get event's creator user id
-                        connection.openConnection(context.getResources().getString(R.string.url) + "profile/" + userEvents.get(i).getCreator() + ".json", ConnectionType.GET, true, false, null);
-                        status = connection.getResponseCode();
-                        if (status >= 200 && status < 300) {
-                            inputStream = new BufferedInputStream(connection.getInputStream());
-                            String response = Actions.readJsonStream(inputStream);
-                            jsonParse.getEventCreatorUserId(response, i);
-                            inputStream.close();
-                        }
+                        // sometimes the status is 500 because of a unknown reason (says nullPointerException but the url is correct with the given creator's id)
+                        // 500 - INTERNAL SERVER ERROR (general server failure, probably a failure in the provider)
+                        do {
+                            // get event's creator user id
+                            connection.openConnection(context.getResources().getString(R.string.url) + "profile/" + userEvents.get(i).getCreator() + ".json", ConnectionType.GET, true, false, null);
+                            status = connection.getResponseCode();
+                            if (status >= 200 && status < 300) {
+                                inputStream = new BufferedInputStream(connection.getInputStream());
+                                String response = Actions.readJsonStream(inputStream);
+                                jsonParse.getEventCreatorUserId(response, i);
+                                inputStream.close();
+                            }
+                        } while (status == 500);
 
                         String siteId = userEvents.get(i).getReference().replaceAll("/calendar/calendar/", "");
                         siteId = siteId.replaceAll("/main", "");
