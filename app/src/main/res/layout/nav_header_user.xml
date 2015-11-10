@@ -11,7 +11,7 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
-    <org.sakaiproject.api.customviews.ImageViewRounded
+    <org.sakaiproject.customviews.ImageViewRounded
         android:id="@+id/user_image"
         android:layout_width="70dp"
         android:layout_height="65dp"

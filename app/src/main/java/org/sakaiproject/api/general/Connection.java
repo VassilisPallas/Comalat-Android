@@ -1,11 +1,17 @@
 package org.sakaiproject.api.general;
 
+import android.app.Application;
+import android.content.Context;
+import android.content.Intent;
+import android.widget.Toast;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStreamWriter;
 import java.net.CookieHandler;
 import java.net.CookieManager;
 import java.net.HttpURLConnection;
+import java.net.SocketTimeoutException;
 import java.net.URL;
 
 /**
@@ -24,7 +30,7 @@ public class Connection {
     private static Integer lastAccessedTime;
     // max seconds the session can be idle before automatic invalidation
     private static Integer maxInactiveInterval;
-
+    private Context context;
 
     private Connection() {
         CookieManager cookieManager = new CookieManager();
@@ -37,41 +43,45 @@ public class Connection {
         return instance;
     }
 
-    public static synchronized void setSessionId(String id) {
+    public void setContext(Context context) {
+        this.context = context;
+    }
+
+    public static void setSessionId(String id) {
         if (sessionId == null)
             sessionId = id;
     }
 
-    public static synchronized void nullSessionId() {
+    public static void nullSessionId() {
         if (sessionId != null)
             sessionId = null;
     }
 
-    public static synchronized String getSessionId() {
+    public static String getSessionId() {
         return sessionId;
     }
 
-    public static synchronized Integer getCreationTime() {
+    public static Integer getCreationTime() {
         return creationTime;
     }
 
-    public static synchronized Integer getLastAccessedTime() {
+    public static Integer getLastAccessedTime() {
         return lastAccessedTime;
     }
 
-    public static synchronized Integer getMaxInactiveInterval() {
+    public static Integer getMaxInactiveInterval() {
         return maxInactiveInterval;
     }
 
-    public static synchronized void setCreationTime(Integer creationTime) {
+    public static void setCreationTime(Integer creationTime) {
         Connection.creationTime = creationTime;
     }
 
-    public static synchronized void setLastAccessedTime(Integer lastAccessedTime) {
+    public static void setLastAccessedTime(Integer lastAccessedTime) {
         Connection.lastAccessedTime = lastAccessedTime;
     }
 
-    public static synchronized void setMaxInactiveInterval(Integer maxInactiveInterval) {
+    public static void setMaxInactiveInterval(Integer maxInactiveInterval) {
         Connection.maxInactiveInterval = maxInactiveInterval;
     }
 
@@ -86,50 +96,58 @@ public class Connection {
      */
     public void openConnection(String urlCon, ConnectionType method, boolean accept, boolean contentType, String data) {
         try {
-            url = new URL(urlCon);
-            con = (HttpURLConnection) url.openConnection();
+            Integer status = 0;
+            // avoid any server's problem
+            // 500 - INTERNAL SERVER ERROR (general server failure, probably a failure in the provider)
+            do {
+                url = new URL(urlCon);
+                con = (HttpURLConnection) url.openConnection();
 
-            if (accept) {
-                con.setRequestProperty("Accept", "application/json");
-            }
+                if (accept) {
+                    con.setRequestProperty("Accept", "application/json");
+                }
 
-            if (contentType) {
-                con.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-            }
+                if (contentType) {
+                    con.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+                }
 
-            switch (method) {
-                case POST:
-                    con.setRequestMethod("POST");
-                    break;
-                case GET:
-                    con.setRequestMethod("GET");
-                    break;
-                case PUT:
-                    con.setRequestMethod("PUT");
-                    break;
-                case DELETE:
-                    con.setRequestMethod("DELETE");
-                    break;
-                default:
-                    throw new IllegalArgumentException("Not valid type");
-            }
+                switch (method) {
+                    case POST:
+                        con.setRequestMethod("POST");
+                        break;
+                    case GET:
+                        con.setRequestMethod("GET");
+                        break;
+                    case PUT:
+                        con.setRequestMethod("PUT");
+                        break;
+                    case DELETE:
+                        con.setRequestMethod("DELETE");
+                        break;
+                    default:
+                        throw new IllegalArgumentException("Not valid type");
+                }
 
-            // set connection timeout and read timeout to 10 seconds
-            con.setConnectTimeout(10000);
-            con.setReadTimeout(10000);
+                // set connection timeout and read timeout to 10 seconds
+                con.setConnectTimeout(10000);
+                con.setReadTimeout(10000);
 
 
-            if ((method == ConnectionType.POST || method == ConnectionType.PUT) && (data != null || !data.isEmpty())) {
-                con.setDoOutput(true);
-                con.setChunkedStreamingMode(0);
+                if ((method == ConnectionType.POST || method == ConnectionType.PUT) && (data != null || !data.isEmpty())) {
+                    con.setDoOutput(true);
+                    con.setChunkedStreamingMode(0);
 
-                wr = new OutputStreamWriter(con.getOutputStream());
-                wr.write(data);
-                wr.flush();
-                wr.close();
-            }
+                    wr = new OutputStreamWriter(con.getOutputStream());
+                    wr.write(data);
+                    wr.flush();
+                    wr.close();
+                }
 
-            con.connect();
+                con.connect();
+                status = getResponseCode();
+            } while (status == 500);
+        } catch (SocketTimeoutException e) {
+            Toast.makeText(context, "", Toast.LENGTH_LONG).show();
         } catch (IOException e) {
             e.printStackTrace();
         }

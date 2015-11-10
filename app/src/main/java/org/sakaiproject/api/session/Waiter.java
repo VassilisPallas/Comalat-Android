@@ -110,7 +110,7 @@ public class Waiter extends Thread {
                 idle = 0;
                 Log.i("end", "end");
 
-                Logout logout = new Logout();
+                Logout logout = new Logout(context);
 
                 /* if app is on the foreground after the logout it will start MainActivity
                    else it will only logout the user

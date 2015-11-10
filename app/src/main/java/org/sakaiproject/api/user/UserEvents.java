@@ -1,10 +1,15 @@
 package org.sakaiproject.api.user;
 
+import android.util.Log;
+
 import org.sakaiproject.api.time.Time;
 import org.sakaiproject.api.events.RecurrenceRule;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -12,7 +17,7 @@ import java.util.regex.Pattern;
 /**
  * Created by vasilis on 10/20/15.
  */
-public class UserEvents implements Serializable {
+public class UserEvents implements Serializable, Cloneable {
 
     private String creator;
     private long duration;
@@ -40,6 +45,8 @@ public class UserEvents implements Serializable {
     private String siteId;
 
     private String creatorUserId;
+
+    private String month;
 
     public UserEvents() {
     }
@@ -195,88 +202,55 @@ public class UserEvents implements Serializable {
         this.location = location;
     }
 
+    public String getMonth() {
+        Calendar cal = Calendar.getInstance();
+        Date d = new Date(firstTime.getMilliseconds());
+        cal.setTime(d);
+
+        return String.valueOf(cal.get(cal.MONTH) + 1).length() > 1 ? String.valueOf((cal.get(cal.MONTH) + 1)) : "0" + cal.get(cal.MONTH) + 1;
+    }
+
     public void setEventWholeDate() {
 
-        String day = "", month = "", year = "";
+        String day, month;
+        int year;
 
-        String wholeTime = firstTime.getDisplay();
-        String split[] = wholeTime.split(",");
+        Calendar cal = Calendar.getInstance();
+        Date d = new Date(firstTime.getMilliseconds());
+        cal.setTime(d);
+        year = cal.get(Calendar.YEAR);
+        month = String.valueOf(cal.get(Calendar.MONTH) + 1 /* month starts from 0 */);
+        day = String.valueOf(cal.get(Calendar.DAY_OF_MONTH));
 
-        // Delete hour eg 15:00 am
-        String strForYear = split[1].replaceAll("(\\d+:\\d+ (am|pm))+", "");
-
-        Pattern dayPattern = Pattern.compile("\\d+");
-        Pattern monthPattern = Pattern.compile("[a-zA-z]+");
-        Pattern yearPattern = Pattern.compile("\\d+");
-
-        Matcher dayMatcher = dayPattern.matcher(split[0]);
-        Matcher monthMatcher = monthPattern.matcher(split[0]);
-        Matcher yearMatcher = yearPattern.matcher(strForYear);
-
-        while (dayMatcher.find()) {
-            day = dayMatcher.group().trim();
-        }
-
-        while (monthMatcher.find()) {
-            month = monthMatcher.group().trim();
-        }
-
-        while (yearMatcher.find()) {
-            year = yearMatcher.group().trim();
-        }
-
-        String monthNum = matchMonth(month);
-
+        month = month.length() > 1 ? month : "0" + month;
         day = day.length() > 1 ? day : "0" + day;
 
-        eventWholeDate = year + "-" + monthNum + "-" + day;
+        eventWholeDate = year + "-" + month + "-" + day;
+    }
+
+    public void setEventWholeDate(String eventWholeDate) {
+        this.eventWholeDate = eventWholeDate;
     }
 
     public void setEventDate() {
-        String wholeTime = firstTime.getDisplay();
-        eventDate = wholeTime.replaceAll("( \\d+:\\d+ (am|pm))+", "");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("MMM d, yyyy");
+        eventDate = dateFormat.format(firstTime.getTime());
     }
 
     public void setTimeDuration() {
-        String start = firstTime.getDisplay();
-        String end = lastTime.getDisplay();
-        String firstSplit[] = start.split(",");
-        String lastSplit[] = end.split(",");
 
-        start = firstSplit[1].replaceAll(" (\\d{4}) ", "");
-        end = lastSplit[1].replaceAll(" (\\d{4}) ", "");
+        Date start = firstTime.getTime();
+        Date end = lastTime.getTime();
 
-        timeDuration = start + " - " + end;
+        SimpleDateFormat dateFormat = new SimpleDateFormat("hh:mm a");
+
+        timeDuration = dateFormat.format(start).toLowerCase() + " - " + dateFormat.format(end).toLowerCase();
     }
 
-    public String matchMonth(String month) {
-        switch (month) {
-            case "Jan":
-                return "01";
-            case "Feb":
-                return "02";
-            case "Mar":
-                return "03";
-            case "Apr":
-                return "04";
-            case "May":
-                return "05";
-            case "Jun":
-                return "06";
-            case "Jul":
-                return "07";
-            case "Aug":
-                return "08";
-            case "Sep":
-                return "09";
-            case "Oct":
-                return "10";
-            case "Nov":
-                return "11";
-            case "Dec":
-                return "12";
-            default:
-                return null;
-        }
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        return super.clone();
     }
+
+
 }

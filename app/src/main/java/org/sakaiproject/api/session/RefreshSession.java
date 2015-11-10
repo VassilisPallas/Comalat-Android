@@ -20,6 +20,7 @@ public class RefreshSession {
     public RefreshSession(Context context) {
         this.context = context;
         connection = Connection.getInstance();
+        connection.setContext(context);
     }
 
     public void putSession(String url) {

@@ -24,7 +24,7 @@ import java.util.List;
 public class OnlineEvents {
     private Connection connection;
     private InputStream inputStream;
-    private static List<UserEvents> userEvents;
+
     private String userEventsJson;
     private String userEventInfoJson;
     private JsonParser jsonParse;
@@ -33,13 +33,10 @@ public class OnlineEvents {
     public OnlineEvents(Context context) {
         this.context = context;
         connection = Connection.getInstance();
-        userEvents = new ArrayList<>();
-        jsonParse = new JsonParser();
+        connection.setContext(context);
+        jsonParse = new JsonParser(context);
     }
 
-    public static List<UserEvents> getUserEventsList() {
-        return userEvents;
-    }
 
     public void getUserEvents(String eventUrl) {
         try {
@@ -54,19 +51,15 @@ public class OnlineEvents {
                 Actions.writeJsonFile(context, userEventsJson, "userEventsJson");
 
 
-                for (int i = 0; i < userEvents.size(); i++) {
-                    String owner = userEvents.get(i).getCreator();
-                    String eventId = userEvents.get(i).getEventId();
+                for (int i = 0; i < EventsCollection.getUserEventsList().size(); i++) {
+                    String owner = EventsCollection.getUserEventsList().get(i).getCreator();
+                    String eventId = EventsCollection.getUserEventsList().get(i).getEventId();
                     String url;
-                    if (owner.equals(User.getUserId())) {
-                        url = context.getResources().getString(R.string.url) + "calendar/event/~" + owner + "/" + eventId + ".json";
-                    } else {
 
-                        // sometimes the status is 500 because of a unknown reason (says nullPointerException but the url is correct with the given creator's id)
-                        // 500 - INTERNAL SERVER ERROR (general server failure, probably a failure in the provider)
+                    if (!owner.equals(User.getUserId())) {
                         do {
                             // get event's creator user id
-                            connection.openConnection(context.getResources().getString(R.string.url) + "profile/" + userEvents.get(i).getCreator() + ".json", ConnectionType.GET, true, false, null);
+                            connection.openConnection(context.getResources().getString(R.string.url) + "profile/" + EventsCollection.getUserEventsList().get(i).getCreator() + ".json", ConnectionType.GET, true, false, null);
                             status = connection.getResponseCode();
                             if (status >= 200 && status < 300) {
                                 inputStream = new BufferedInputStream(connection.getInputStream());
@@ -75,12 +68,12 @@ public class OnlineEvents {
                                 inputStream.close();
                             }
                         } while (status == 500);
-
-                        String siteId = userEvents.get(i).getReference().replaceAll("/calendar/calendar/", "");
-                        siteId = siteId.replaceAll("/main", "");
-                        userEvents.get(i).setSiteId(siteId);
-                        url = context.getResources().getString(R.string.url) + "calendar/event/" + siteId + "/" + eventId + ".json";
                     }
+                    String siteId = EventsCollection.getUserEventsList().get(i).getReference().replaceAll("/calendar/calendar/", "");
+                    siteId = siteId.replaceAll("/main", "");
+                    EventsCollection.getUserEventsList().get(i).setSiteId(siteId);
+                    url = context.getResources().getString(R.string.url) + "calendar/event/" + siteId + "/" + eventId + ".json";
+
                     connection.openConnection(url, ConnectionType.GET, true, false, null);
                     status = connection.getResponseCode();
 

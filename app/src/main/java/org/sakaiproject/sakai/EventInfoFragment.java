@@ -16,6 +16,7 @@ import org.sakaiproject.api.general.Actions;
 import org.sakaiproject.api.general.AttachmentType;
 import org.sakaiproject.api.user.User;
 import org.sakaiproject.api.user.UserEvents;
+import org.sakaiproject.api.user.profile.Profile;
 
 
 public class EventInfoFragment extends DialogFragment {
@@ -124,9 +125,9 @@ public class EventInfoFragment extends DialogFragment {
         // if the owner of the event is the user show his data
         if (User.getUserId().equals(selectedEvent.getCreator())) {
 
-            owner.setText(User.getFirstName() + " " + User.getLastName());
+            owner.setText(Profile.getDisplayName());
 
-            fromSite.setText("\"" + User.getFirstName() + " " + User.getLastName() + "\'s site\" (~" + User.getUserId() + ")");
+            fromSite.setText("\"" + Profile.getDisplayName() + "\'s site\" (~" + User.getUserId() + ")");
 
             editEvent = (Button) v.findViewById(R.id.edit_event);
             editEvent.setVisibility(View.VISIBLE);

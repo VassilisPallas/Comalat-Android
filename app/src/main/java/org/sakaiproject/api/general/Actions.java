@@ -219,7 +219,6 @@ public class Actions {
                 default:
                     return AttachmentType.UNKwOWN;
             }
-
         }
         return AttachmentType.URL;
     }
@@ -228,11 +227,10 @@ public class Actions {
      * get the image for the file from resources as a bitmap
      *
      * @param context the Application context
-     * @param name the file name
+     * @param name    the file name
      * @return the image as bitmap
      */
     public static Bitmap getAttachmentTypeImage(Context context, String name) {
-        Bitmap image;
         switch (getAttachmentType(name)) {
             case URL:
                 return BitmapFactory.decodeResource(context.getResources(), R.mipmap.ic_public_black);
@@ -255,7 +253,7 @@ public class Actions {
     }
 
 
-    public static String getMonthfromId(String index) {
+    public static String getMonthfromIndex(String index) {
         switch (index) {
             case "1":
                 return "Jan";
@@ -283,6 +281,37 @@ public class Actions {
                 return "Dec";
         }
         return null;
+    }
+
+    public static String getIndexfromMonth(String month) {
+        switch (month) {
+            case "Jan":
+                return "01";
+            case "Feb":
+                return "02";
+            case "Mar":
+                return "03";
+            case "Apr":
+                return "04";
+            case "May":
+                return "05";
+            case "Jun":
+                return "06";
+            case "Jul":
+                return "07";
+            case "Aug":
+                return "08";
+            case "Sep":
+                return "09";
+            case "Oct":
+                return "10";
+            case "Nov":
+                return "11";
+            case "Dec":
+                return "12";
+            default:
+                return null;
+        }
     }
 
 }

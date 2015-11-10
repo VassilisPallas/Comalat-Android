@@ -1,5 +1,7 @@
 package org.sakaiproject.api.motd;
 
+import android.content.Context;
+
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -20,9 +22,10 @@ public class OnlineMessageOfTheDay {
     private JsonParser jsonParse;
     private Connection connection;
 
-    public OnlineMessageOfTheDay() {
-        jsonParse = new JsonParser();
+    public OnlineMessageOfTheDay(Context context) {
+        jsonParse = new JsonParser(context);
         connection = Connection.getInstance();
+        connection.setContext(context);
     }
 
     private List<String> message;

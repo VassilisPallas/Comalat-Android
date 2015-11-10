@@ -27,7 +27,7 @@ public class Signup {
     public Signup(Context context) {
         this.context = context;
         connection = Connection.getInstance();
-
+        connection.setContext(context);
     }
 
     public boolean signUp(String url, String eid, String firstName, String lastName, String email, String password) {

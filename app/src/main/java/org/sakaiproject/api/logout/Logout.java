@@ -1,5 +1,7 @@
 package org.sakaiproject.api.logout;
 
+import android.content.Context;
+
 import org.sakaiproject.api.general.Connection;
 import org.sakaiproject.api.general.ConnectionType;
 
@@ -11,8 +13,9 @@ import java.io.IOException;
 public class Logout {
     private Connection connection;
 
-    public Logout() {
+    public Logout(Context context) {
         connection = Connection.getInstance();
+        connection.setContext(context);
     }
 
     public Integer logout(String url) {

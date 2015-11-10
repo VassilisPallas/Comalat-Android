@@ -1,6 +1,7 @@
 package org.sakaiproject.sakai;
 
 
+import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -20,14 +21,15 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import org.sakaiproject.api.customviews.RecyclerItemClickListener;
-import org.sakaiproject.api.customviews.adapters.SelectedDayEventsAdapter;
-import org.sakaiproject.api.customviews.calendar.CalendarAdapter;
-import org.sakaiproject.api.customviews.calendar.CalendarCollection;
+import org.sakaiproject.api.events.EventsCollection;
+import org.sakaiproject.customviews.RecyclerItemClickListener;
+import org.sakaiproject.adapters.SelectedDayEventsAdapter;
+import org.sakaiproject.customviews.CalendarAdapter;
 import org.sakaiproject.api.events.OnlineEvents;
 import org.sakaiproject.api.internet.NetWork;
 import org.sakaiproject.api.user.UserEvents;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.List;
@@ -77,8 +79,7 @@ public class ScheduleFragment extends Fragment {
 
         cal_month = (GregorianCalendar) GregorianCalendar.getInstance();
         cal_month_copy = (GregorianCalendar) cal_month.clone();
-        cal_adapter = new CalendarAdapter(getContext(), cal_month, CalendarCollection.date_collection_arr);
-
+        cal_adapter = new CalendarAdapter(getContext(), cal_month);
 
         tv_month = (TextView) v.findViewById(R.id.tv_month);
         tv_month.setText(android.text.format.DateFormat.format("MMMM yyyy", cal_month));
@@ -110,6 +111,7 @@ public class ScheduleFragment extends Fragment {
         });
 
         GridView gridview = (GridView) v.findViewById(R.id.gv_calendar);
+        //gridview.setExpanded(true);
         gridview.setAdapter(cal_adapter);
         gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
@@ -135,6 +137,10 @@ public class ScheduleFragment extends Fragment {
 
                 selectedDate = selectedGridDate;
 
+                if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+                    calendar.setVisibility(View.GONE);
+                }
+
                 mAdapter = new SelectedDayEventsAdapter(getContext(), ((CalendarAdapter) parent.getAdapter()).getPositionList(selectedGridDate));
                 mAdapter.notifyDataSetChanged();
                 mRecyclerView.setAdapter(mAdapter);
@@ -151,7 +157,7 @@ public class ScheduleFragment extends Fragment {
 
                 List<UserEvents> todayEvents = new ArrayList<>();
 
-                for (UserEvents ue : OnlineEvents.getUserEventsList()) {
+                for (UserEvents ue : EventsCollection.getMonthEvents()) {
                     if (ue.getEventWholeDate().equals(selectedDate)) {
                         todayEvents.add(ue);
                     }
@@ -205,6 +211,14 @@ public class ScheduleFragment extends Fragment {
             cal_month.set(GregorianCalendar.MONTH,
                     cal_month.get(GregorianCalendar.MONTH) + 1);
         }
+
+        try {
+            EventsCollection.selectedMonthEvents(String.valueOf(cal_month.get(cal_month.MONTH) + 1), cal_month_copy);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+        }
     }
 
     protected void setPreviousMonth() {
@@ -217,6 +231,13 @@ public class ScheduleFragment extends Fragment {
                     cal_month.get(GregorianCalendar.MONTH) - 1);
         }
 
+        try {
+            EventsCollection.selectedMonthEvents(String.valueOf(cal_month.get(cal_month.MONTH) + 1), cal_month_copy);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+        }
     }
 
     public void refreshCalendar() {
@@ -238,15 +259,15 @@ public class ScheduleFragment extends Fragment {
         @Override
         protected List<UserEvents> doInBackground(Void... params) {
 
-            onlineEvents.getUserEventsList().clear();
-            CalendarCollection.date_collection_arr.clear();
+            EventsCollection.getUserEventsList().clear();
+            EventsCollection.getMonthEvents().clear();
 
             if (NetWork.getConnectionEstablished()) {
                 String url = getContext().getResources().getString(R.string.url) + "calendar/my.json";
                 onlineEvents.getUserEvents(url);
             }
 
-            return onlineEvents.getUserEventsList();
+            return EventsCollection.getUserEventsList();
         }
 
 
@@ -254,11 +275,15 @@ public class ScheduleFragment extends Fragment {
         protected void onPostExecute(List<UserEvents> userEvents) {
             super.onPostExecute(userEvents);
 
-            cal_adapter.setEvents(userEvents);
-
-            for (UserEvents event : userEvents) {
-                CalendarCollection.date_collection_arr.add(new CalendarCollection(event.getEventWholeDate(), event.getTitle()));
+            try {
+                EventsCollection.findMonthlyEvents(cal_month_copy);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            } catch (CloneNotSupportedException e) {
+                e.printStackTrace();
             }
+
+            cal_adapter.setEvents(EventsCollection.getMonthEvents());
 
             calendar.setVisibility(View.VISIBLE);
             progressBar.setVisibility(View.GONE);

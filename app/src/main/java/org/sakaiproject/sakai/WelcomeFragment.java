@@ -32,7 +32,7 @@ public class WelcomeFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_welcome, container, false);
         findViewsById(v);
 
-        onlineMessageOfTheDay = new OnlineMessageOfTheDay();
+        onlineMessageOfTheDay = new OnlineMessageOfTheDay(getContext());
         new MotdAsync(getResources().getString(R.string.url) + "announcement/motd.json").execute();
         return v;
     }

@@ -1,4 +1,4 @@
-package org.sakaiproject.api.customviews.calendar;
+package org.sakaiproject.customviews;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import org.sakaiproject.api.events.EventsCollection;
 import org.sakaiproject.api.user.UserEvents;
 import org.sakaiproject.sakai.R;
 
@@ -41,8 +42,6 @@ public class CalendarAdapter extends BaseAdapter {
     int maxWeeknumber;
     int maxP;
     int calMaxP;
-    int lastWeekDay;
-    int leftDays;
     int mnthlength;
     String itemvalue, curentDateString;
     DateFormat df;
@@ -50,18 +49,16 @@ public class CalendarAdapter extends BaseAdapter {
     private ArrayList<String> items;
     public static List<String> day_string;
     private View previousView;
-    public ArrayList<CalendarCollection> date_collection_arr;
 
-    public CalendarAdapter(Context context, GregorianCalendar monthCalendar, ArrayList<CalendarCollection> date_collection_arr) {
-        this.date_collection_arr = date_collection_arr;
-        CalendarAdapter.day_string = new ArrayList<String>();
+    public CalendarAdapter(Context context, GregorianCalendar monthCalendar) {
+        CalendarAdapter.day_string = new ArrayList<>();
         Locale.setDefault(Locale.US);
         month = monthCalendar;
         selectedDate = (GregorianCalendar) monthCalendar.clone();
         this.context = context;
         month.set(GregorianCalendar.DAY_OF_MONTH, 1);
 
-        this.items = new ArrayList<String>();
+        this.items = new ArrayList<>();
         df = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
         curentDateString = df.format(selectedDate.getTime());
 
@@ -90,6 +87,22 @@ public class CalendarAdapter extends BaseAdapter {
         return 0;
     }
 
+    public void dateColor(TextView dayView, int position, String gridvalue) {
+        if ((Integer.parseInt(gridvalue) > 1) && (position < firstDay)) {
+            dayView.setTextColor(Color.GRAY);
+            dayView.setClickable(false);
+            dayView.setFocusable(false);
+        } else if ((Integer.parseInt(gridvalue) < 7) && (position > 28)) {
+            dayView.setTextColor(Color.GRAY);
+            dayView.setClickable(false);
+            dayView.setFocusable(false);
+        } else {
+            // setting current month's days in white color.
+            dayView.setTextColor(Color.WHITE);
+        }
+    }
+
+
     // create a new view for each item referenced by the Adapter
     public View getView(int position, View convertView, ViewGroup parent) {
         View v = convertView;
@@ -104,30 +117,17 @@ public class CalendarAdapter extends BaseAdapter {
 
 
         dayView = (TextView) v.findViewById(R.id.date);
+
         String[] separatedTime = day_string.get(position).split("-");
-
-
         String gridvalue = separatedTime[2].replaceFirst("^0*", "");
-        if ((Integer.parseInt(gridvalue) > 1) && (position < firstDay)) {
-            dayView.setTextColor(Color.GRAY);
-            dayView.setClickable(false);
-            dayView.setFocusable(false);
-        } else if ((Integer.parseInt(gridvalue) < 7) && (position > 28)) {
-            dayView.setTextColor(Color.GRAY);
-            dayView.setClickable(false);
-            dayView.setFocusable(false);
-        } else {
-            // setting current month's days in white color.
-            dayView.setTextColor(Color.WHITE);
-        }
 
+        dateColor(dayView, position, gridvalue);
 
         if (day_string.get(position).equals(curentDateString)) {
             v.setBackgroundColor(Color.parseColor("#0083AF"));
         } else {
             v.setBackgroundColor(Color.parseColor("#343434"));
         }
-
 
         dayView.setText(gridvalue);
 
@@ -230,11 +230,11 @@ public class CalendarAdapter extends BaseAdapter {
 
     public void setEventView(View v, int pos, TextView txt) {
 
-        int len = CalendarCollection.date_collection_arr.size();
+        int len = EventsCollection.getMonthEvents().size();
 
         for (int i = 0; i < len; i++) {
-            CalendarCollection cal_obj = CalendarCollection.date_collection_arr.get(i);
-            String date = cal_obj.date;
+            UserEvents event = EventsCollection.getMonthEvents().get(i);
+            String date = event.getEventWholeDate();
             int len1 = day_string.size();
             if (len1 > pos) {
 
@@ -243,8 +243,12 @@ public class CalendarAdapter extends BaseAdapter {
                     SpannableString spanString = new SpannableString(txt.getText());
                     spanString.setSpan(new UnderlineSpan(), 0, spanString.length(), 0);
                     spanString.setSpan(new StyleSpan(Typeface.ITALIC), 0, spanString.length(), 0);
+
+
+//                    txt.setTextColor(Color.WHITE);
+                    dateColor(txt, pos, txt.getText().toString());
+
                     txt.setText(spanString);
-                    txt.setTextColor(Color.WHITE);
                 }
             }
         }

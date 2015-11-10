@@ -35,8 +35,9 @@ public class OnlineLogin implements ILogin {
 
     public OnlineLogin(Context context) {
         this.context = context;
-        jsonParse = new JsonParser();
+        jsonParse = new JsonParser(context);
         connection = Connection.getInstance();
+        connection.setContext(context);
         user = User.getInstance();
         profile = Profile.getInstance();
     }

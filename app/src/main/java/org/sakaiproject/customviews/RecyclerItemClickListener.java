@@ -1,4 +1,4 @@
-package org.sakaiproject.api.customviews;
+package org.sakaiproject.customviews;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;

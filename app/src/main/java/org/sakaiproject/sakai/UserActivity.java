@@ -1,6 +1,7 @@
 package org.sakaiproject.sakai;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
@@ -24,7 +25,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import org.sakaiproject.api.general.SystemNotifications;
-import org.sakaiproject.api.customviews.ImageViewRounded;
+import org.sakaiproject.customviews.ImageViewRounded;
 import org.sakaiproject.api.general.Actions;
 import org.sakaiproject.api.general.Connection;
 import org.sakaiproject.api.internet.NetWork;
@@ -84,6 +85,7 @@ public class UserActivity extends AppCompatActivity
             // if the message for the session id is visible
             if (waiter.isMessageVisible()) {
                 connection = Connection.getInstance();
+                connection.setContext(getApplicationContext());
                 // if the session has expired, the session id will be null, so the user will go to MainActivity
                 if (connection.getSessionId() == null) {
                     waiter.stop = true;
@@ -168,7 +170,7 @@ public class UserActivity extends AppCompatActivity
                         if (NetWork.getConnectionEstablished()) {
                             waiter.stop = true;
                             try {
-                                Logout logout = new Logout();
+                                Logout logout = new Logout(getApplicationContext());
                                 if (logout.logout("http://141.99.248.86:8089/direct/session/" + Connection.getSessionId()) == 1) {
 
                                     User.nullInstance();

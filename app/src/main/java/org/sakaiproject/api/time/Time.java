@@ -26,6 +26,10 @@ public class Time implements Serializable {
         return time;
     }
 
+    public long getMilliseconds() {
+        return time.getTime();
+    }
+
     public void setDisplay(String display) {
         this.display = display;
     }

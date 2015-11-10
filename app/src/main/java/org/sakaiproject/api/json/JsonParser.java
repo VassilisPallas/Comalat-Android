@@ -1,5 +1,6 @@
 package org.sakaiproject.api.json;
 
+import android.content.Context;
 import android.util.Log;
 
 import org.json.JSONArray;
@@ -10,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.sakaiproject.api.events.EventsCollection;
 import org.sakaiproject.api.events.OnlineEvents;
 import org.sakaiproject.api.general.Connection;
 import org.sakaiproject.api.motd.OnlineMessageOfTheDay;
@@ -28,12 +30,15 @@ import org.sakaiproject.api.user.profile.SocialNetworkingInfo;
  */
 public class JsonParser {
 
-    Connection con;
-    User user;
-    Profile profile;
+    private Connection con;
+    private User user;
+    private Profile profile;
+    private Context context;
 
-    public JsonParser() {
+    public JsonParser(Context context) {
+        this.context = context;
         con = Connection.getInstance();
+        con.setContext(context);
         user = User.getInstance();
         profile = Profile.getInstance();
     }
@@ -212,7 +217,7 @@ public class JsonParser {
      * @return
      */
     public OnlineMessageOfTheDay parseMotdJson(String result) {
-        OnlineMessageOfTheDay onlineMessageOfTheDay = new OnlineMessageOfTheDay();
+        OnlineMessageOfTheDay onlineMessageOfTheDay = new OnlineMessageOfTheDay(context);
         List<String> messagesList = new ArrayList<>();
         List<String> siteUrlsList = new ArrayList<>();
 
@@ -267,7 +272,7 @@ public class JsonParser {
                 userEvents.setEventWholeDate();
 
 
-                OnlineEvents.getUserEventsList().add(userEvents);
+                EventsCollection.getUserEventsList().add(userEvents);
             }
 
         } catch (JSONException e) {
@@ -290,9 +295,9 @@ public class JsonParser {
             JSONObject obj = new JSONObject(result);
             JSONObject lastTimeJson = obj.getJSONObject("lastTime");
 
-            OnlineEvents.getUserEventsList().get(index).setDescription(obj.getString("description"));
-            OnlineEvents.getUserEventsList().get(index).setLastTime(new Time(lastTimeJson.getString("display"), new Date(Long.parseLong(lastTimeJson.getString("time")))));
-            OnlineEvents.getUserEventsList().get(index).setLocation(obj.getString("location"));
+            EventsCollection.getUserEventsList().get(index).setDescription(obj.getString("description"));
+            EventsCollection.getUserEventsList().get(index).setLastTime(new Time(lastTimeJson.getString("display"), new Date(Long.parseLong(lastTimeJson.getString("time")))));
+            EventsCollection.getUserEventsList().get(index).setLocation(obj.getString("location"));
 
             if (obj.has("recurrenceRule") && !obj.isNull("recurrenceRule")) {
                 JSONObject recurrenceRuleObj = obj.getJSONObject("recurrenceRule");
@@ -302,12 +307,12 @@ public class JsonParser {
                 String frequencyDescription = recurrenceRuleObj.getString("frequencyDescription");
                 int interval = recurrenceRuleObj.getInt("interval");
                 Time until = null;
-                OnlineEvents.getUserEventsList().get(index).setRecurrenceRule(new RecurrenceRule(count, frequency, frequencyDescription, interval, until));
+                EventsCollection.getUserEventsList().get(index).setRecurrenceRule(new RecurrenceRule(count, frequency, frequencyDescription, interval, until));
                 if (!recurrenceRuleObj.isNull("until")) {
                     JSONObject untilRuleObj = recurrenceRuleObj.getJSONObject("until");
                     until = new Time(untilRuleObj.getString("display"), new Date(Long.parseLong(untilRuleObj.getString("time"))));
-                    OnlineEvents.getUserEventsList().get(index).getRecurrenceRule().setUntil(until);
-                    OnlineEvents.getUserEventsList().get(index).getRecurrenceRule().setEndDate();
+                    EventsCollection.getUserEventsList().get(index).getRecurrenceRule().setUntil(until);
+                    EventsCollection.getUserEventsList().get(index).getRecurrenceRule().setEndDate();
                 }
 
             }
@@ -317,13 +322,12 @@ public class JsonParser {
 
                 for (int i = 0; i < attachments.length(); i++) {
                     JSONObject attachment = attachments.getJSONObject(i);
-                    OnlineEvents.getUserEventsList().get(index).getAttachments().add(attachment.getString("url"));
+                    EventsCollection.getUserEventsList().get(index).getAttachments().add(attachment.getString("url"));
                     Log.i("url", attachment.getString("url"));
                 }
             }
 
-
-            OnlineEvents.getUserEventsList().get(index).setTimeDuration();
+            EventsCollection.getUserEventsList().get(index).setTimeDuration();
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -334,7 +338,7 @@ public class JsonParser {
     public void getEventCreatorUserId(String result, int index) {
         try {
             JSONObject obj = new JSONObject(result);
-            OnlineEvents.getUserEventsList().get(index).setCreatorUserId(obj.getString("displayName"));
+            EventsCollection.getUserEventsList().get(index).setCreatorUserId(obj.getString("displayName"));
         } catch (JSONException e) {
             e.printStackTrace();
         }

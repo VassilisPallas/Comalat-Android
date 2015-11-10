@@ -30,7 +30,7 @@ public class OfflineLogin implements ILogin {
         this.context = context;
         user = User.getInstance();
         profile = Profile.getInstance();
-        jsonParse = new JsonParser();
+        jsonParse = new JsonParser(context);
         passwordEncryption = new PasswordEncryption();
     }
 
