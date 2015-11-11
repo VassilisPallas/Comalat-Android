@@ -6,8 +6,10 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -23,6 +25,7 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.sakaiproject.api.general.SystemNotifications;
 import org.sakaiproject.customviews.ImageViewRounded;
@@ -49,6 +52,7 @@ public class UserActivity extends AppCompatActivity
     private Waiter waiter;  //Thread which controls idle time
     private Connection connection = Connection.getInstance();
     private ProgressBar syncProgressbar;
+    private SwipeRefreshLayout mSwipeRefreshLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +72,13 @@ public class UserActivity extends AppCompatActivity
 
         findViewsById();
 
+        mSwipeRefreshLayout.setColorSchemeResources(R.color.green, R.color.red, R.color.blue);
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                refreshContent();
+            }
+        });
         /* if device is connected on the internet that means that the user made login with internet connection,
            so the thread for the idle mode will start
         */
@@ -117,6 +128,18 @@ public class UserActivity extends AppCompatActivity
     }
 
 
+    private void refreshContent() {
+
+        Toast.makeText(getApplicationContext(), "Refresh", Toast.LENGTH_LONG).show();
+
+        new Handler().post(new Runnable() {
+            @Override
+            public void run() {
+                mSwipeRefreshLayout.setRefreshing(false);
+            }
+        });
+    }
+
     public void updateSession() {
         Thread thread = new Thread(new Runnable() {
             @Override
@@ -152,6 +175,7 @@ public class UserActivity extends AppCompatActivity
         syncProgressbar = (ProgressBar) findViewById(R.id.sync_progress);
 
         syncProgressbar.getIndeterminateDrawable().setColorFilter(Color.parseColor("#FFFFFF"), android.graphics.PorterDuff.Mode.MULTIPLY);
+        mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.activity_main_swipe_refresh_layout);
     }
 
     private void logout() {

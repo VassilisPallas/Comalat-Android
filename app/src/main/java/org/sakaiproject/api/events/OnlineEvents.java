@@ -1,21 +1,17 @@
 package org.sakaiproject.api.events;
 
 import android.content.Context;
-import android.util.Log;
 
 import org.sakaiproject.api.general.ConnectionType;
 import org.sakaiproject.api.json.JsonParser;
 import org.sakaiproject.api.general.Actions;
 import org.sakaiproject.api.general.Connection;
 import org.sakaiproject.api.user.User;
-import org.sakaiproject.api.user.UserEvents;
 import org.sakaiproject.sakai.R;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by vasilis on 10/20/15.
@@ -37,8 +33,7 @@ public class OnlineEvents {
         jsonParse = new JsonParser(context);
     }
 
-
-    public void getUserEvents(String eventUrl) {
+    public void getEvents(String eventUrl) {
         try {
 
             connection.openConnection(eventUrl, ConnectionType.GET, true, false, null);
@@ -64,7 +59,7 @@ public class OnlineEvents {
                             if (status >= 200 && status < 300) {
                                 inputStream = new BufferedInputStream(connection.getInputStream());
                                 String response = Actions.readJsonStream(inputStream);
-                                jsonParse.getEventCreatorUserId(response, i);
+                                jsonParse.getEventCreatorDisplayName(response, i);
                                 inputStream.close();
                             }
                         } while (status == 500);
@@ -82,7 +77,7 @@ public class OnlineEvents {
                         userEventInfoJson = Actions.readJsonStream(inputStream);
                         inputStream.close();
                         jsonParse.parseUserEventInfoJson(userEventInfoJson, i);
-                        Actions.writeJsonFile(context, userEventInfoJson, "userEventInfoJson");
+                        Actions.writeJsonFile(context, userEventInfoJson, EventsCollection.getUserEventsList().get(i).getEventId());
                     }
                 }
             }

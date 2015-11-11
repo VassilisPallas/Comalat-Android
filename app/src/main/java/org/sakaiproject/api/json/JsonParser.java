@@ -1,6 +1,7 @@
 package org.sakaiproject.api.json;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.util.Log;
 
 import org.json.JSONArray;
@@ -335,10 +336,14 @@ public class JsonParser {
     }
 
 
-    public void getEventCreatorUserId(String result, int index) {
+    public void getEventCreatorDisplayName(String result, int index) {
         try {
             JSONObject obj = new JSONObject(result);
             EventsCollection.getUserEventsList().get(index).setCreatorUserId(obj.getString("displayName"));
+            SharedPreferences preferences = context.getSharedPreferences("event_owners", Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putString(EventsCollection.getUserEventsList().get(index).getEventId(), obj.getString("displayName"));
+            editor.apply();
         } catch (JSONException e) {
             e.printStackTrace();
         }

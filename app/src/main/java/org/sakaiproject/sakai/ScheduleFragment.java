@@ -22,6 +22,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import org.sakaiproject.api.events.EventsCollection;
+import org.sakaiproject.api.events.OfflineEvents;
 import org.sakaiproject.customviews.RecyclerItemClickListener;
 import org.sakaiproject.adapters.SelectedDayEventsAdapter;
 import org.sakaiproject.customviews.CalendarAdapter;
@@ -45,6 +46,7 @@ public class ScheduleFragment extends Fragment {
     private CalendarAdapter cal_adapter;
     private TextView tv_month;
     private OnlineEvents onlineEvents;
+    private OfflineEvents offlineEvents;
     private LinearLayout calendar;
     private ProgressBar progressBar;
 
@@ -178,6 +180,7 @@ public class ScheduleFragment extends Fragment {
         }));
 
         onlineEvents = new OnlineEvents(getContext());
+        offlineEvents = new OfflineEvents(getContext());
         new EventsAsync().execute();
 
         // Inflate the layout for this fragment
@@ -264,7 +267,9 @@ public class ScheduleFragment extends Fragment {
 
             if (NetWork.getConnectionEstablished()) {
                 String url = getContext().getResources().getString(R.string.url) + "calendar/my.json";
-                onlineEvents.getUserEvents(url);
+                onlineEvents.getEvents(url);
+            } else {
+                offlineEvents.getEvents();
             }
 
             return EventsCollection.getUserEventsList();

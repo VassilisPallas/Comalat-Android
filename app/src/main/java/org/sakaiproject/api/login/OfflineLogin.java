@@ -17,8 +17,6 @@ import java.io.IOException;
  */
 public class OfflineLogin implements ILogin {
 
-    private User user;
-    private Profile profile;
     private JsonParser jsonParse;
     private PasswordEncryption passwordEncryption;
     private String loginJson;
@@ -28,8 +26,6 @@ public class OfflineLogin implements ILogin {
 
     public OfflineLogin(Context context) {
         this.context = context;
-        user = User.getInstance();
-        profile = Profile.getInstance();
         jsonParse = new JsonParser(context);
         passwordEncryption = new PasswordEncryption();
     }

@@ -33,17 +33,10 @@ public class EventsCollection {
     public static void findMonthlyEvents(GregorianCalendar cal) throws ParseException, CloneNotSupportedException {
         monthEvents.clear();
 
-        String date;
-        int year;
-        String month, day;
+        String month;
 
-        day = String.valueOf(cal.get(cal.DAY_OF_MONTH));
         month = String.valueOf(cal.get(cal.MONTH) + 1 /* starts from 0 */);
-        year = cal.get(cal.YEAR);
-
         month = month.length() > 1 ? month : "0" + month;
-        day = day.length() > 1 ? day : "0" + day;
-        date = year + "-" + month + "-" + day;
 
         selectedMonthEvents(month, cal);
     }
@@ -310,5 +303,4 @@ public class EventsCollection {
 
         } while (date.before(untilDate));
     }
-
 }
