@@ -6,6 +6,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -27,9 +28,9 @@ import org.sakaiproject.customviews.RecyclerItemClickListener;
 import org.sakaiproject.adapters.SelectedDayEventsAdapter;
 import org.sakaiproject.customviews.CalendarAdapter;
 import org.sakaiproject.api.events.OnlineEvents;
-import org.sakaiproject.api.internet.NetWork;
 import org.sakaiproject.api.user.UserEvents;
 
+import java.io.Serializable;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
@@ -49,7 +50,7 @@ public class ScheduleFragment extends Fragment {
     private OfflineEvents offlineEvents;
     private LinearLayout calendar;
     private ProgressBar progressBar;
-
+    private org.sakaiproject.customviews.CustomSwipeRefreshLayout swipeRefreshLayout;
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
@@ -57,15 +58,30 @@ public class ScheduleFragment extends Fragment {
     private String selectedDate;
 
     public ScheduleFragment() {
-        // Required empty public constructor
     }
 
+
+    /**
+     * get the swipe refresh layout from activity
+     *
+     * @param swipeRefreshLayout the layout
+     * @return the fragment with the data
+     */
+    public ScheduleFragment setSelectedEvent(org.sakaiproject.customviews.CustomSwipeRefreshLayout swipeRefreshLayout) {
+        ScheduleFragment schedule = new ScheduleFragment();
+        Bundle b = new Bundle();
+        b.putSerializable("swipeRefresh", swipeRefreshLayout);
+        schedule.setArguments(b);
+        return schedule;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         View v = inflater.inflate(R.layout.fragment_schedule, container, false);
+
+        swipeRefreshLayout = (org.sakaiproject.customviews.CustomSwipeRefreshLayout) getArguments().getSerializable("swipeRefresh");
 
         // the view for the event on the selected day
         mRecyclerView = (RecyclerView) v.findViewById(R.id.selected_day_events_recycle);
@@ -146,6 +162,20 @@ public class ScheduleFragment extends Fragment {
                 mAdapter = new SelectedDayEventsAdapter(getContext(), ((CalendarAdapter) parent.getAdapter()).getPositionList(selectedGridDate));
                 mAdapter.notifyDataSetChanged();
                 mRecyclerView.setAdapter(mAdapter);
+
+                mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+                    @Override
+                    public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                        int topRowVerticalPosition =
+                                (recyclerView == null || recyclerView.getChildCount() == 0) ? 0 : recyclerView.getChildAt(0).getTop();
+                        swipeRefreshLayout.setEnabled(topRowVerticalPosition >= 0);
+                    }
+
+                    @Override
+                    public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                        super.onScrollStateChanged(recyclerView, newState);
+                    }
+                });
 
             }
 
@@ -265,12 +295,8 @@ public class ScheduleFragment extends Fragment {
             EventsCollection.getUserEventsList().clear();
             EventsCollection.getMonthEvents().clear();
 
-            if (NetWork.getConnectionEstablished()) {
-                String url = getContext().getResources().getString(R.string.url) + "calendar/my.json";
-                onlineEvents.getEvents(url);
-            } else {
-                offlineEvents.getEvents();
-            }
+            offlineEvents.getEvents();
+
 
             return EventsCollection.getUserEventsList();
         }

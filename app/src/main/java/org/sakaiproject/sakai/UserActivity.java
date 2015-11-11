@@ -5,8 +5,10 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -27,6 +29,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.sakaiproject.api.events.OnlineEvents;
 import org.sakaiproject.api.general.SystemNotifications;
 import org.sakaiproject.customviews.ImageViewRounded;
 import org.sakaiproject.api.general.Actions;
@@ -51,8 +54,8 @@ public class UserActivity extends AppCompatActivity
     private User user;
     private Waiter waiter;  //Thread which controls idle time
     private Connection connection = Connection.getInstance();
-    private ProgressBar syncProgressbar;
-    private SwipeRefreshLayout mSwipeRefreshLayout;
+    private org.sakaiproject.customviews.CustomSwipeRefreshLayout mSwipeRefreshLayout;
+    private RelativeLayout root;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,13 +75,15 @@ public class UserActivity extends AppCompatActivity
 
         findViewsById();
 
-        mSwipeRefreshLayout.setColorSchemeResources(R.color.green, R.color.red, R.color.blue);
+        mSwipeRefreshLayout.setColorSchemeResources(R.color.green, R.color.red, R.color.blue, R.color.orange);
+
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 refreshContent();
             }
         });
+
         /* if device is connected on the internet that means that the user made login with internet connection,
            so the thread for the idle mode will start
         */
@@ -129,12 +134,16 @@ public class UserActivity extends AppCompatActivity
 
 
     private void refreshContent() {
-
-        Toast.makeText(getApplicationContext(), "Refresh", Toast.LENGTH_LONG).show();
-
         new Handler().post(new Runnable() {
             @Override
             public void run() {
+
+                if (NetWork.getConnectionEstablished()) {
+                    new Refresh().execute();
+                } else {
+                    Snackbar.make(root, "No internet connection", Snackbar.LENGTH_LONG)
+                            .setAction("Can't sync", null).show();
+                }
                 mSwipeRefreshLayout.setRefreshing(false);
             }
         });
@@ -172,10 +181,9 @@ public class UserActivity extends AppCompatActivity
         sessionMessageTextView = (TextView) findViewById(R.id.session_message_textview);
         sessionMessageRelative = (RelativeLayout) findViewById(R.id.session_message);
         keepSessionButton = (Button) findViewById(R.id.keep_session_button);
-        syncProgressbar = (ProgressBar) findViewById(R.id.sync_progress);
 
-        syncProgressbar.getIndeterminateDrawable().setColorFilter(Color.parseColor("#FFFFFF"), android.graphics.PorterDuff.Mode.MULTIPLY);
-        mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.activity_main_swipe_refresh_layout);
+        mSwipeRefreshLayout = (org.sakaiproject.customviews.CustomSwipeRefreshLayout) findViewById(R.id.activity_main_swipe_refresh_layout);
+        root = (RelativeLayout)findViewById(R.id.user_root);
     }
 
     private void logout() {
@@ -284,7 +292,7 @@ public class UserActivity extends AppCompatActivity
             case R.id.membership:
                 break;
             case R.id.schedule:
-                ScheduleFragment scheduleFragment = new ScheduleFragment();
+                ScheduleFragment scheduleFragment = new ScheduleFragment().setSelectedEvent(mSwipeRefreshLayout);
                 selectFragment(scheduleFragment, R.id.user_frame, "Schedule");
                 break;
             case R.id.resources:
@@ -341,8 +349,22 @@ public class UserActivity extends AppCompatActivity
             waiter.setActivityIsVisible(true);
             waiter.touch();
             SystemNotifications.cancel(0);
+
+            //mSwipeRefreshLayout.setRefreshing(true);
         }
         Log.i("visible", "true");
+    }
+
+    public class Refresh extends AsyncTask<Void, Void, Void> {
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            OnlineEvents onlineEvents = new OnlineEvents(getApplicationContext());
+            String url = getResources().getString(R.string.url) + "calendar/my.json";
+            onlineEvents.getEvents(url);
+
+            return null;
+        }
     }
 
 }
