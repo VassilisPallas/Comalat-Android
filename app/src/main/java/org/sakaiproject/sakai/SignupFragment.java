@@ -3,7 +3,12 @@ package org.sakaiproject.sakai;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
@@ -136,7 +141,7 @@ public class SignupFragment extends Fragment {
             }
 
             emailValidationImageView.setVisibility(View.VISIBLE);
-            emailValidationImageView.setImageBitmap(selectValidationImage(isEmailValid));
+            emailValidationImageView.setImageDrawable(selectValidationImage(isEmailValid));
 
             validation();
         }
@@ -162,7 +167,7 @@ public class SignupFragment extends Fragment {
             }
 
             emailValidationImageView.setVisibility(View.VISIBLE);
-            emailValidationImageView.setImageBitmap(selectValidationImage(isEmailValid));
+            emailValidationImageView.setImageDrawable(selectValidationImage(isEmailValid));
 
             validation();
         }
@@ -184,7 +189,7 @@ public class SignupFragment extends Fragment {
             }
 
             passwordEqualsImageView.setVisibility(View.VISIBLE);
-            passwordEqualsImageView.setImageBitmap(selectValidationImage(isPasswordEqual));
+            passwordEqualsImageView.setImageDrawable(selectValidationImage(isPasswordEqual));
 
             validation();
         }
@@ -198,7 +203,7 @@ public class SignupFragment extends Fragment {
             }
 
             passwordEqualsImageView.setVisibility(View.VISIBLE);
-            passwordEqualsImageView.setImageBitmap(selectValidationImage(isPasswordEqual));
+            passwordEqualsImageView.setImageDrawable(selectValidationImage(isPasswordEqual));
 
             validation();
         }
@@ -219,7 +224,7 @@ public class SignupFragment extends Fragment {
             }
 
             passwordEqualsImageView.setVisibility(View.VISIBLE);
-            passwordEqualsImageView.setImageBitmap(selectValidationImage(isPasswordEqual));
+            passwordEqualsImageView.setImageDrawable(selectValidationImage(isPasswordEqual));
 
             validation();
         }
@@ -233,7 +238,7 @@ public class SignupFragment extends Fragment {
             }
 
             passwordEqualsImageView.setVisibility(View.VISIBLE);
-            passwordEqualsImageView.setImageBitmap(selectValidationImage(isPasswordEqual));
+            passwordEqualsImageView.setImageDrawable(selectValidationImage(isPasswordEqual));
 
             validation();
         }
@@ -248,11 +253,33 @@ public class SignupFragment extends Fragment {
         }
     }
 
-    private Bitmap selectValidationImage(boolean correct) {
-        if (correct) {
-            return BitmapFactory.decodeResource(getResources(), R.mipmap.ic_check_circle);
+    private Drawable selectValidationImage(boolean correct) {
+
+        try {
+            Drawable image;
+
+            int imageId = R.mipmap.ic_cancel;
+            int color = Color.RED;
+
+            if (correct) {
+                imageId = R.mipmap.ic_check_circle;
+                color = Color.parseColor("#03AD14");
+            }
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                image = getResources().getDrawable(imageId, getActivity().getTheme());
+            } else {
+                image = getResources().getDrawable(imageId);
+            }
+
+            image.setColorFilter(color, PorterDuff.Mode.SRC_IN);
+
+            //return ((BitmapDrawable) image).getBitmap();
+            return image;
+        } catch (IllegalStateException e) {
+
         }
-        return BitmapFactory.decodeResource(getResources(), R.mipmap.ic_cancel);
+        return null;
     }
 
     private class SignupAsync extends AsyncTask<Void, Void, Boolean> {
@@ -324,7 +351,7 @@ public class SignupFragment extends Fragment {
             else
                 isEidValid = !exists;
 
-            userExistsImageView.setImageBitmap(selectValidationImage(isEidValid));
+            userExistsImageView.setImageDrawable(selectValidationImage(isEidValid));
 
             validation();
         }

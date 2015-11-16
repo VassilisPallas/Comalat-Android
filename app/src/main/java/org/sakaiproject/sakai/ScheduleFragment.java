@@ -248,7 +248,6 @@ public class ScheduleFragment extends Fragment {
                     cal_month.get(GregorianCalendar.MONTH) + 1);
         }
 
-//        EventsCollection.getUserEventsList().clear();
         EventsCollection.getMonthEvents().clear();
 
         try {
@@ -270,7 +269,6 @@ public class ScheduleFragment extends Fragment {
                     cal_month.get(GregorianCalendar.MONTH) - 1);
         }
 
-//        EventsCollection.getUserEventsList().clear();
         EventsCollection.getMonthEvents().clear();
 
         try {
