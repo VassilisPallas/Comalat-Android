@@ -6,6 +6,8 @@
         <item name="colorPrimary">#0083AF</item>
         <item name="colorPrimaryDark">#046a8c</item>
         <item name="colorAccent">#0083AF</item>
+
+        <item name="android:editTextColor">@android:color/black</item>
     </style>
 
     <style name="AppTheme.NoActionBar">

@@ -176,4 +176,10 @@ public class Connection {
         return con.getErrorStream();
     }
 
+
+    @Override
+    protected void finalize() throws Throwable {
+        super.finalize();
+        instance = getInstance();
+    }
 }

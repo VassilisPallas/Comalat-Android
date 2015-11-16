@@ -3,7 +3,9 @@ package org.sakaiproject.sakai;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.Snackbar;
@@ -20,9 +22,12 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.SubMenu;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.RelativeLayout;
+import android.widget.SearchView;
 import android.widget.TextView;
 
 import org.sakaiproject.api.events.OnlineEvents;
@@ -64,7 +69,24 @@ public class UserActivity extends AppCompatActivity
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close) {
+
+            @Override
+            public void onDrawerClosed(View view) {
+                super.onDrawerClosed(view);
+            }
+
+            @Override
+            public void onDrawerOpened(View drawerView) {
+                super.onDrawerSlide(drawerView, 0);
+            }
+
+            @Override
+            public void onDrawerSlide(View drawerView, float slideOffset) {
+                super.onDrawerSlide(drawerView, 0);
+            }
+        };
+
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
@@ -149,12 +171,23 @@ public class UserActivity extends AppCompatActivity
 
     public void createDrawer(Menu navigationMenu) {
 
-        for (int i = 0; i < navigationMenu.size(); i++) {
+        MenuItem mainItem = navigationMenu.findItem(R.id.main_item);
+        SubMenu subMenu = mainItem.getSubMenu();
+
+        // make visible the items which are on the My Workspace
+        for (int i = 0; i < subMenu.size(); i++) {
             for (String item : myWorkSpaceItems) {
-                if (navigationMenu.getItem(i).getTitle().equals(item)) {
-                    navigationMenu.getItem(i).setVisible(true);
+                if (subMenu.getItem(i).getTitle().equals(item)) {
+                    subMenu.getItem(i).setVisible(true);
                 }
             }
+        }
+
+        // add new item to menu
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            subMenu.add(R.id.main_group, Menu.NONE, Menu.NONE, "title").setIcon(getResources().getDrawable(R.mipmap.ic_check_circle, getTheme())).setVisible(true);
+        } else {
+            subMenu.add(R.id.main_group, Menu.NONE, Menu.NONE, "title").setIcon(getResources().getDrawable(R.mipmap.ic_check_circle)).setVisible(true);
         }
     }
 
@@ -209,6 +242,11 @@ public class UserActivity extends AppCompatActivity
 
         mSwipeRefreshLayout = (org.sakaiproject.customviews.CustomSwipeRefreshLayout) findViewById(R.id.activity_main_swipe_refresh_layout);
         root = (RelativeLayout) findViewById(R.id.user_root);
+
+        SearchView searchView = (SearchView) findViewById(R.id.site_search_drawer);
+
+        EditText e = (EditText) searchView.findViewById(searchView.getContext().getResources().getIdentifier("android:id/search_src_text", null, null));
+        e.setHintTextColor(Color.parseColor("#808080"));
     }
 
     private void logout() {
@@ -345,6 +383,7 @@ public class UserActivity extends AppCompatActivity
         return true;
     }
 
+
     @Override
     public void onUserInteraction() {
         super.onUserInteraction();
@@ -367,6 +406,7 @@ public class UserActivity extends AppCompatActivity
         Log.i("visible", "false");
     }
 
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -379,6 +419,7 @@ public class UserActivity extends AppCompatActivity
         }
         Log.i("visible", "true");
     }
+
 
     public class Refresh extends AsyncTask<Void, Void, Void> {
 

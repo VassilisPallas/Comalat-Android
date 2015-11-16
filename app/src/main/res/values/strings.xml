@@ -44,7 +44,7 @@
     <string name="account">Account</string>
     <string name="logout">Logout</string>
 
-    <!-- site's navigation drawer's data-->
+    <!-- site's option navigation drawer's data-->
     <string name="assignments">Assignments</string>
     <string name="char_room">Chat Room</string>
     <string name="comalat_guide">COMALAT Guide</string>
@@ -71,6 +71,12 @@
     <string name="test_quizzes">Test &amp; Quizzes</string>
     <string name="wiki">Wiki</string>
     <string name="web_content">Web Content</string>
+
+    <!-- site's navigation drawer's data-->
+    <string name="my_workspace">My Workspace</string>
+    <string name="projects">Projects</string>
+    <string name="site_search">Search your sites</string>
+    <string name="sites">Sites</string>
 
     <!-- AlertDialog -->
     <string name="logout_message">Are you sure you want to log out?</string>
