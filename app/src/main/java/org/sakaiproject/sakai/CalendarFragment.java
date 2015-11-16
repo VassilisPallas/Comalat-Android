@@ -6,7 +6,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -30,19 +29,16 @@ import org.sakaiproject.customviews.CalendarAdapter;
 import org.sakaiproject.api.events.OnlineEvents;
 import org.sakaiproject.api.user.UserEvents;
 
-import java.io.Serializable;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.List;
-import java.util.Locale;
 
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ScheduleFragment extends Fragment {
+public class CalendarFragment extends Fragment {
 
 
     public GregorianCalendar cal_month, cal_month_copy;
@@ -59,7 +55,7 @@ public class ScheduleFragment extends Fragment {
 
     private String selectedDate;
 
-    public ScheduleFragment() {
+    public CalendarFragment() {
     }
 
 
@@ -69,8 +65,8 @@ public class ScheduleFragment extends Fragment {
      * @param swipeRefreshLayout the layout
      * @return the fragment with the data
      */
-    public ScheduleFragment setSelectedEvent(org.sakaiproject.customviews.CustomSwipeRefreshLayout swipeRefreshLayout) {
-        ScheduleFragment schedule = new ScheduleFragment();
+    public CalendarFragment setSelectedEvent(org.sakaiproject.customviews.CustomSwipeRefreshLayout swipeRefreshLayout) {
+        CalendarFragment schedule = new CalendarFragment();
         Bundle b = new Bundle();
         b.putSerializable("swipeRefresh", swipeRefreshLayout);
         schedule.setArguments(b);
@@ -81,7 +77,7 @@ public class ScheduleFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View v = inflater.inflate(R.layout.fragment_schedule, container, false);
+        View v = inflater.inflate(R.layout.fragment_calendar, container, false);
 
         swipeRefreshLayout = (org.sakaiproject.customviews.CustomSwipeRefreshLayout) getArguments().getSerializable("swipeRefresh");
 
@@ -248,7 +244,6 @@ public class ScheduleFragment extends Fragment {
                     cal_month.get(GregorianCalendar.MONTH) + 1);
         }
 
-        EventsCollection.getMonthEvents().clear();
 
         try {
             EventsCollection.selectedMonthEvents(String.valueOf(cal_month.get(cal_month.MONTH) + 1), cal_month_copy);
@@ -257,6 +252,10 @@ public class ScheduleFragment extends Fragment {
         } catch (CloneNotSupportedException e) {
             e.printStackTrace();
         }
+
+        mRecyclerView.setAdapter(null);
+        mAdapter.notifyDataSetChanged();
+
     }
 
     protected void setPreviousMonth() {
@@ -269,7 +268,6 @@ public class ScheduleFragment extends Fragment {
                     cal_month.get(GregorianCalendar.MONTH) - 1);
         }
 
-        EventsCollection.getMonthEvents().clear();
 
         try {
             EventsCollection.selectedMonthEvents(String.valueOf(cal_month.get(cal_month.MONTH) + 1), cal_month_copy);
@@ -278,6 +276,10 @@ public class ScheduleFragment extends Fragment {
         } catch (CloneNotSupportedException e) {
             e.printStackTrace();
         }
+
+        mRecyclerView.setAdapter(null);
+        mAdapter.notifyDataSetChanged();
+
     }
 
     public void refreshCalendar() {

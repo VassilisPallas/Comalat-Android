@@ -5,44 +5,219 @@
         <item
             android:id="@+id/dashboard"
             android:checked="true"
+            android:visible="false"
             android:icon="@mipmap/ic_dashboard_black"
             android:title="@string/dashboard" />
+
         <item
             android:id="@+id/home"
             android:icon="@mipmap/ic_home_black"
+            android:visible="false"
             android:title="@string/home" />
+
         <item
             android:id="@+id/profile"
             android:icon="@mipmap/ic_person_black"
+            android:visible="false"
             android:title="@string/profile" />
+
         <item
             android:id="@+id/membership"
             android:icon="@mipmap/ic_group_black"
+            android:visible="false"
             android:title="@string/membership" />
+
         <item
-            android:id="@+id/schedule"
+            android:id="@+id/calendar"
             android:icon="@mipmap/ic_today_black"
-            android:title="@string/schedule" />
+            android:visible="false"
+            android:title="@string/calendar" />
+
         <item
             android:id="@+id/resources"
             android:icon="@mipmap/ic_folder_black"
+            android:visible="false"
             android:title="@string/resources" />
+
         <item
             android:id="@+id/announcements"
             android:icon="@mipmap/ic_announcement_black"
+            android:visible="false"
             android:title="@string/announcements" />
+
         <item
             android:id="@+id/worksite_setup"
             android:icon="@mipmap/ic_worksite_setup_black"
+            android:visible="false"
             android:title="@string/worksite_setup" />
+
         <item
             android:id="@+id/preferences"
             android:icon="@mipmap/ic_settings_black"
+            android:visible="false"
             android:title="@string/preferences" />
+
         <item
             android:id="@+id/account"
             android:icon="@mipmap/ic_person_black"
+            android:visible="false"
             android:title="@string/account" />
+
+        <item
+            android:id="@+id/syllabus"
+            android:icon="@mipmap/ic_syllabus_black"
+            android:visible="false"
+            android:title="@string/syllabus" />
+
+        <item
+            android:id="@+id/lessons"
+            android:visible="false"
+            android:icon="@mipmap/ic_lesson"
+            android:title="@string/lessons" />
+
+        <item
+            android:id="@+id/forum"
+            android:icon="@mipmap/ic_forum_black"
+            android:visible="false"
+            android:title="@string/forum" />
+
+        <item
+            android:id="@+id/assignments"
+            android:icon="@mipmap/ic_assignment_black"
+            android:visible="false"
+            android:title="@string/assignments" />
+
+        <item
+            android:id="@+id/test_quizzes"
+            android:icon="@mipmap/ic_test_quiz"
+            android:visible="false"
+            android:title="@string/test_quizzes" />
+
+        <item
+            android:id="@+id/gradebook"
+            android:icon="@mipmap/ic_gradebook_black"
+            android:visible="false"
+            android:title="@string/gradebook" />
+
+        <item
+            android:id="@+id/dropbox"
+            android:icon="@mipmap/ic_dropbox_black"
+            android:visible="false"
+            android:title="@string/dropbox" />
+
+        <item
+            android:id="@+id/char_room"
+            android:icon="@mipmap/ic_chat_room_black"
+            android:visible="false"
+            android:title="@string/char_room" />
+
+        <item
+            android:id="@+id/wiki"
+            android:icon="@mipmap/ic_wiki_black"
+            android:visible="false"
+            android:title="@string/wiki" />
+
+        <item
+            android:id="@+id/email_archive"
+            android:icon="@mipmap/ic_email_black"
+            android:visible="false"
+            android:title="@string/email_archive" />
+
+        <item
+            android:id="@+id/news"
+            android:icon="@mipmap/ic_news"
+            android:visible="false"
+            android:title="@string/news" />
+
+        <item
+            android:id="@+id/web_content"
+            android:icon="@mipmap/ic_public_black"
+            android:visible="false"
+            android:title="@string/web_content" />
+
+        <item
+            android:id="@+id/section_info"
+            android:icon="@mipmap/ic_person_black"
+            android:visible="false"
+            android:title="@string/section_info" />
+
+        <item
+            android:id="@+id/site_info"
+            android:icon="@mipmap/ic_settings_black"
+            android:visible="false"
+            android:title="@string/site_info" />
+
+        <item
+            android:id="@+id/comalat_guide"
+            android:visible="false"
+            android:title="@string/comalat_guide" />
+
+        <item
+            android:id="@+id/contact_us"
+            android:icon="@mipmap/ic_email_black"
+            android:visible="false"
+            android:title="@string/contact_us" />
+
+        <item
+            android:id="@+id/email"
+            android:visible="false"
+            android:icon="@mipmap/ic_email_black"
+            android:title="@string/email" />
+
+        <item
+            android:id="@+id/external_tool"
+            android:icon="@mipmap/ic_public_black"
+            android:visible="false"
+            android:title="@string/external_tool" />
+
+        <item
+            android:id="@+id/messages"
+            android:icon="@mipmap/ic_mesages_black"
+            android:visible="false"
+            android:title="@string/messages" />
+
+        <item
+            android:id="@+id/podcasts"
+            android:icon="@mipmap/ic_podcasts_black"
+            android:visible="false"
+            android:title="@string/podcasts" />
+
+        <item
+            android:id="@+id/polls"
+            android:icon="@mipmap/ic_polls_black"
+            android:visible="false"
+            android:title="@string/polls" />
+
+        <item
+            android:id="@+id/post_em"
+            android:icon="@mipmap/ic_post_em_black"
+            android:visible="false"
+            android:title="@string/post_em" />
+
+        <item
+            android:id="@+id/roster"
+            android:icon="@mipmap/ic_group_black"
+            android:visible="false"
+            android:title="@string/roster" />
+
+        <item
+            android:id="@+id/search"
+            android:icon="@mipmap/ic_search_black"
+            android:visible="false"
+            android:title="@string/search" />
+
+        <item
+            android:id="@+id/sign_up"
+            android:icon="@mipmap/ic_today_black"
+            android:visible="false"
+            android:title="@string/sign_up" />
+
+        <item
+            android:id="@+id/statistics"
+            android:icon="@mipmap/ic_statistics_black"
+            android:visible="false"
+            android:title="@string/statistics" />
+
     </group>
 
     <item android:title="@string/other">

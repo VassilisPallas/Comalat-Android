@@ -3,14 +3,12 @@ package org.sakaiproject.sakai;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.view.ViewPager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.design.widget.NavigationView;
@@ -38,9 +36,10 @@ import org.sakaiproject.api.session.RefreshSession;
 import org.sakaiproject.api.session.Waiter;
 import org.sakaiproject.api.user.profile.Profile;
 import org.sakaiproject.api.user.User;
-import org.sakaiproject.customviews.SlidingTabLayout;
 
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class UserActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -70,6 +69,9 @@ public class UserActivity extends AppCompatActivity
         toggle.syncState();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+
+        createDrawer(navigationView.getMenu());
+
         navigationView.setNavigationItemSelectedListener(this);
 
         findViewsById();
@@ -128,9 +130,33 @@ public class UserActivity extends AppCompatActivity
                 updateSession();
             }
         });
-
     }
 
+    private static List<String> myWorkSpaceItems = new ArrayList<>();
+
+    static {
+        myWorkSpaceItems.add("Dashboard");
+        myWorkSpaceItems.add("Home");
+        myWorkSpaceItems.add("Profile");
+        myWorkSpaceItems.add("Membership");
+        myWorkSpaceItems.add("Calendar");
+        myWorkSpaceItems.add("Resources");
+        myWorkSpaceItems.add("Announcements");
+        myWorkSpaceItems.add("Worksite Setup");
+        myWorkSpaceItems.add("Preferences");
+        myWorkSpaceItems.add("Account");
+    }
+
+    public void createDrawer(Menu navigationMenu) {
+
+        for (int i = 0; i < navigationMenu.size(); i++) {
+            for (String item : myWorkSpaceItems) {
+                if (navigationMenu.getItem(i).getTitle().equals(item)) {
+                    navigationMenu.getItem(i).setVisible(true);
+                }
+            }
+        }
+    }
 
     private void refreshContent() {
         new Handler().post(new Runnable() {
@@ -290,9 +316,9 @@ public class UserActivity extends AppCompatActivity
                 break;
             case R.id.membership:
                 break;
-            case R.id.schedule:
-                ScheduleFragment scheduleFragment = new ScheduleFragment().setSelectedEvent(mSwipeRefreshLayout);
-                selectFragment(scheduleFragment, R.id.user_frame, "Schedule");
+            case R.id.calendar:
+                CalendarFragment calendarFragment = new CalendarFragment().setSelectedEvent(mSwipeRefreshLayout);
+                selectFragment(calendarFragment, R.id.user_frame, "Calendar");
                 break;
             case R.id.resources:
                 break;
