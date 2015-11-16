@@ -32,9 +32,11 @@ import org.sakaiproject.api.user.UserEvents;
 
 import java.io.Serializable;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.Locale;
 
 
 /**
@@ -128,6 +130,7 @@ public class ScheduleFragment extends Fragment {
             }
         });
 
+
         GridView gridview = (GridView) v.findViewById(R.id.gv_calendar);
         //gridview.setExpanded(true);
         gridview.setAdapter(cal_adapter);
@@ -176,7 +179,6 @@ public class ScheduleFragment extends Fragment {
                         super.onScrollStateChanged(recyclerView, newState);
                     }
                 });
-
             }
 
         });
@@ -208,6 +210,7 @@ public class ScheduleFragment extends Fragment {
 
             }
         }));
+
 
         onlineEvents = new OnlineEvents(getContext());
         offlineEvents = new OfflineEvents(getContext());
@@ -245,6 +248,9 @@ public class ScheduleFragment extends Fragment {
                     cal_month.get(GregorianCalendar.MONTH) + 1);
         }
 
+//        EventsCollection.getUserEventsList().clear();
+        EventsCollection.getMonthEvents().clear();
+
         try {
             EventsCollection.selectedMonthEvents(String.valueOf(cal_month.get(cal_month.MONTH) + 1), cal_month_copy);
         } catch (ParseException e) {
@@ -263,6 +269,9 @@ public class ScheduleFragment extends Fragment {
             cal_month.set(GregorianCalendar.MONTH,
                     cal_month.get(GregorianCalendar.MONTH) - 1);
         }
+
+//        EventsCollection.getUserEventsList().clear();
+        EventsCollection.getMonthEvents().clear();
 
         try {
             EventsCollection.selectedMonthEvents(String.valueOf(cal_month.get(cal_month.MONTH) + 1), cal_month_copy);

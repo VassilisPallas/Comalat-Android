@@ -1,7 +1,6 @@
 package org.sakaiproject.sakai;
 
 import android.app.Dialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
@@ -11,6 +10,7 @@ import android.os.Handler;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.design.widget.NavigationView;
@@ -24,10 +24,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import org.sakaiproject.api.events.OnlineEvents;
 import org.sakaiproject.api.general.SystemNotifications;
@@ -40,6 +38,7 @@ import org.sakaiproject.api.session.RefreshSession;
 import org.sakaiproject.api.session.Waiter;
 import org.sakaiproject.api.user.profile.Profile;
 import org.sakaiproject.api.user.User;
+import org.sakaiproject.customviews.SlidingTabLayout;
 
 import java.io.FileNotFoundException;
 
@@ -183,7 +182,7 @@ public class UserActivity extends AppCompatActivity
         keepSessionButton = (Button) findViewById(R.id.keep_session_button);
 
         mSwipeRefreshLayout = (org.sakaiproject.customviews.CustomSwipeRefreshLayout) findViewById(R.id.activity_main_swipe_refresh_layout);
-        root = (RelativeLayout)findViewById(R.id.user_root);
+        root = (RelativeLayout) findViewById(R.id.user_root);
     }
 
     private void logout() {

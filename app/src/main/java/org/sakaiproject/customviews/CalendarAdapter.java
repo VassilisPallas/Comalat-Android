@@ -6,6 +6,7 @@ import android.graphics.Typeface;
 import android.text.SpannableString;
 import android.text.style.StyleSpan;
 import android.text.style.UnderlineSpan;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -238,14 +239,23 @@ public class CalendarAdapter extends BaseAdapter {
             int len1 = day_string.size();
             if (len1 > pos) {
 
-                if (day_string.get(pos).equals(date)) {
+                if (day_string.get(pos).equals(date) && !day_string.get(pos).equals(curentDateString)) {
                     v.setBackgroundColor(Color.parseColor("#343434"));
                     SpannableString spanString = new SpannableString(txt.getText());
                     spanString.setSpan(new UnderlineSpan(), 0, spanString.length(), 0);
                     spanString.setSpan(new StyleSpan(Typeface.ITALIC), 0, spanString.length(), 0);
 
 
-//                    txt.setTextColor(Color.WHITE);
+                    dateColor(txt, pos, txt.getText().toString());
+
+                    txt.setText(spanString);
+                } else if (day_string.get(pos).equals(date) && day_string.get(pos).equals(curentDateString)) {
+                    v.setBackgroundColor(Color.parseColor("#0083AF"));
+                    SpannableString spanString = new SpannableString(txt.getText());
+                    spanString.setSpan(new UnderlineSpan(), 0, spanString.length(), 0);
+                    spanString.setSpan(new StyleSpan(Typeface.ITALIC), 0, spanString.length(), 0);
+
+
                     dateColor(txt, pos, txt.getText().toString());
 
                     txt.setText(spanString);

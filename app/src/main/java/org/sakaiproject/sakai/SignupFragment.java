@@ -287,6 +287,7 @@ public class SignupFragment extends Fragment {
             if (signup) {
                 url = getResources().getString(R.string.url) + "session";
                 new LoginAsync(fragment, url, eid, pass).execute();
+
             }
             signupProgressBar.setVisibility(View.GONE);
         }

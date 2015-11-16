@@ -32,6 +32,8 @@ public class Connection {
     private static Integer maxInactiveInterval;
     private Context context;
 
+    private boolean socketException = false;
+
     private Connection() {
         CookieManager cookieManager = new CookieManager();
         CookieHandler.setDefault(cookieManager);
@@ -147,10 +149,11 @@ public class Connection {
                 status = getResponseCode();
             } while (status == 500);
         } catch (SocketTimeoutException e) {
-            Toast.makeText(context, "", Toast.LENGTH_LONG).show();
+            socketException = true;
         } catch (IOException e) {
             e.printStackTrace();
         }
+        socketException = false;
     }
 
     public void closeConnection() {
@@ -159,6 +162,10 @@ public class Connection {
 
     public Integer getResponseCode() throws IOException {
         return con.getResponseCode();
+    }
+
+    public boolean isSocketException() {
+        return socketException;
     }
 
     public InputStream getInputStream() throws IOException {

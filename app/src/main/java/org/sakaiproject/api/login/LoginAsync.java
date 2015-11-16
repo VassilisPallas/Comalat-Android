@@ -81,6 +81,7 @@ public class LoginAsync extends AsyncTask<Void, Void, LoginType> {
     protected void onPostExecute(LoginType type) {
         super.onPostExecute(type);
 
+
         if (fragment != null && fragment instanceof LoginFragment)
             progressBar.setVisibility(View.GONE);
 
@@ -100,6 +101,8 @@ public class LoginAsync extends AsyncTask<Void, Void, LoginType> {
             if (fragment != null && fragment instanceof LoginFragment)
                 clearEditTexts();
             return;
+        } else if (type == LoginType.SOCKETEXCEPTION) {
+            Toast.makeText(context, "Error on the connection with server.\nTry later", Toast.LENGTH_LONG).show();
         } else /* connection failed */ {
             Toast.makeText(context, "Invalid login", Toast.LENGTH_SHORT).show();
             if (fragment != null && fragment instanceof LoginFragment)

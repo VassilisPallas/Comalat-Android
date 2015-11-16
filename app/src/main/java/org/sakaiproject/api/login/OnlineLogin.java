@@ -70,6 +70,9 @@ public class OnlineLogin implements ILogin {
         } finally {
             connection.closeConnection();
         }
+        if(connection.isSocketException()){
+            return LoginType.SOCKETEXCEPTION;
+        }
 
         return LoginType.INVALID_ARGUMENTS;
     }
