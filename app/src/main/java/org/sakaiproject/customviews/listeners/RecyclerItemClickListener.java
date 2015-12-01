@@ -1,4 +1,4 @@
-package org.sakaiproject.customviews;
+package org.sakaiproject.customviews.listeners;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;

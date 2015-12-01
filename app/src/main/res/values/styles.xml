@@ -22,4 +22,14 @@
     <style name="SplashProgressBar" parent="Widget.AppCompat.ProgressBar">
         <item name="colorAccent">#ffffff</item>
     </style>
+
+    <style name="InfoDialogTheme" parent="@android:style/Theme.Panel">
+        <item name="android:windowAnimationStyle">@style/MyAnimation.Window</item>
+        <item name="android:textColor">#383838</item>
+    </style>
+
+    <style name="MyAnimation.Window" parent="@android:style/Animation.Activity">
+        <item name="android:windowEnterAnimation">@anim/anim_in</item>
+        <item name="android:windowExitAnimation">@anim/anim_out</item>
+    </style>
 </resources>

@@ -1,4 +1,4 @@
-package org.sakaiproject.adapters;
+package org.sakaiproject.customviews.adapters;
 
 import android.content.Context;
 import android.graphics.Bitmap;

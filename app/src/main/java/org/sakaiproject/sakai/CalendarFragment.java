@@ -4,6 +4,7 @@ package org.sakaiproject.sakai;
 import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -23,9 +24,9 @@ import android.widget.TextView;
 
 import org.sakaiproject.api.events.EventsCollection;
 import org.sakaiproject.api.events.OfflineEvents;
-import org.sakaiproject.customviews.RecyclerItemClickListener;
-import org.sakaiproject.adapters.SelectedDayEventsAdapter;
-import org.sakaiproject.customviews.CalendarAdapter;
+import org.sakaiproject.customviews.listeners.RecyclerItemClickListener;
+import org.sakaiproject.customviews.adapters.SelectedDayEventsAdapter;
+import org.sakaiproject.customviews.adapters.CalendarAdapter;
 import org.sakaiproject.api.events.OnlineEvents;
 import org.sakaiproject.api.user.UserEvents;
 
@@ -162,6 +163,7 @@ public class CalendarFragment extends Fragment {
                 mAdapter.notifyDataSetChanged();
                 mRecyclerView.setAdapter(mAdapter);
 
+                // if the events recycle view is not on the top then the swipe refresh can not be done
                 mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
                     @Override
                     public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
@@ -197,6 +199,7 @@ public class CalendarFragment extends Fragment {
 
                 FragmentManager fm = getFragmentManager();
                 EventInfoFragment dialogFragment = new EventInfoFragment().setSelectedEvent(selectedEvent);
+                dialogFragment.setStyle( DialogFragment.STYLE_NO_TITLE, R.style.InfoDialogTheme );
                 dialogFragment.show(fm, "Event Info");
 
             }
@@ -214,24 +217,6 @@ public class CalendarFragment extends Fragment {
 
         // Inflate the layout for this fragment
         return v;
-    }
-
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.user, menu);
-        super.onCreateOptionsMenu(menu, inflater);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_refresh:
-                return true;
-            default:
-                break;
-        }
-        return false;
     }
 
     protected void setNextMonth() {

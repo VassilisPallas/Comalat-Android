@@ -2,7 +2,9 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
 
-    <item android:title="@string/sites">
+    <item
+        android:id="@+id/sites"
+        android:title="@string/other">
         <menu>
             <group android:checkableBehavior="single">
                 <item
@@ -13,12 +15,11 @@
         </menu>
     </item>
 
-    <item android:title="@string/projects">
+    <item
+        android:id="@+id/projects"
+        android:title="@string/projects">
         <menu>
             <group android:checkableBehavior="single">
-                <item
-                    android:id="@+id/my_workspace1"
-                    android:title="YEs" />
             </group>
         </menu>
     </item>

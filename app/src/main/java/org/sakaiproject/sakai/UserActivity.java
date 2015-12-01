@@ -1,6 +1,7 @@
 package org.sakaiproject.sakai;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
@@ -19,19 +20,27 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.SubMenu;
 import android.view.View;
+import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.HeaderViewListAdapter;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.SearchView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.sakaiproject.api.events.OnlineEvents;
 import org.sakaiproject.api.general.SystemNotifications;
+import org.sakaiproject.api.site.OnlineSite;
+import org.sakaiproject.api.site.SiteData;
 import org.sakaiproject.customviews.ImageViewRounded;
 import org.sakaiproject.api.general.Actions;
 import org.sakaiproject.api.general.Connection;
@@ -43,6 +52,7 @@ import org.sakaiproject.api.user.profile.Profile;
 import org.sakaiproject.api.user.User;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -59,6 +69,9 @@ public class UserActivity extends AppCompatActivity
     private Connection connection = Connection.getInstance();
     private org.sakaiproject.customviews.CustomSwipeRefreshLayout mSwipeRefreshLayout;
     private RelativeLayout root;
+    private NavigationView sitesNavigationView;
+    private boolean siteNavigationFilled = false;
+    private SearchView sitesSearchView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,9 +105,14 @@ public class UserActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
 
+        sitesNavigationView = (NavigationView) findViewById(R.id.site_nav_view);
+
         createDrawer(navigationView.getMenu());
 
+        //fillSitesDrawer(sitesNavigationView.getMenu());
+
         navigationView.setNavigationItemSelectedListener(this);
+        sitesNavigationView.setNavigationItemSelectedListener(this);
 
         findViewsById();
 
@@ -191,18 +209,70 @@ public class UserActivity extends AppCompatActivity
         }
     }
 
+    public void fillSitesDrawer(Menu navigationMenu) {
+
+        // TODO: change logic by reading data from files for offline mode
+
+        boolean exists;
+
+        MenuItem sitesItem = navigationMenu.findItem(R.id.sites);
+        SubMenu sitesSubMenu = sitesItem.getSubMenu();
+
+
+        MenuItem projectsItem = navigationMenu.findItem(R.id.projects);
+        SubMenu projectsSubMenu = projectsItem.getSubMenu();
+
+//        for (int i = 0; i < sitesSubMenu.size(); i++) {
+//            exists = false;
+//            for (SiteData sites : SiteData.getSites()) {
+//                if (sitesSubMenu.getItem(i).getTitle().equals(sites.getTitle())) {
+//                    exists = true;
+//                    break;
+//                }
+//            }
+//
+//            if (exists) {
+//                sitesSubMenu.getItem(i).setVisible(true);
+//            } else {
+//
+//            }
+//        }
+
+        if (!siteNavigationFilled) {
+            for (int i = 0; i < SiteData.getSites().size(); i++) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    sitesSubMenu.add(R.id.sites, Menu.NONE, Menu.NONE, SiteData.getSites().get(i).getTitle()).setVisible(true);
+                } else {
+                    sitesSubMenu.add(R.id.sites, Menu.NONE, Menu.NONE, SiteData.getSites().get(i).getTitle()).setVisible(true);
+                }
+            }
+
+
+            for (int i = 0; i < SiteData.getProjects().size(); i++) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    projectsSubMenu.add(R.id.projects, Menu.NONE, Menu.NONE, SiteData.getProjects().get(i).getTitle()).setVisible(true);
+                } else {
+                    projectsSubMenu.add(R.id.projects, Menu.NONE, Menu.NONE, SiteData.getProjects().get(i).getTitle()).setVisible(true);
+                }
+            }
+
+            siteNavigationFilled = true;
+        }
+
+    }
+
     private void refreshContent() {
         new Handler().post(new Runnable() {
             @Override
             public void run() {
 
                 if (NetWork.getConnectionEstablished()) {
-                    new Refresh().execute();
+                    new Refresh(getApplicationContext()).execute();
                 } else {
                     Snackbar.make(root, "No internet connection", Snackbar.LENGTH_LONG)
                             .setAction("Can't sync", null).show();
                 }
-                mSwipeRefreshLayout.setRefreshing(false);
+                //mSwipeRefreshLayout.setRefreshing(false);
             }
         });
     }
@@ -243,10 +313,107 @@ public class UserActivity extends AppCompatActivity
         mSwipeRefreshLayout = (org.sakaiproject.customviews.CustomSwipeRefreshLayout) findViewById(R.id.activity_main_swipe_refresh_layout);
         root = (RelativeLayout) findViewById(R.id.user_root);
 
-        SearchView searchView = (SearchView) findViewById(R.id.site_search_drawer);
+        sitesSearchView = (SearchView) findViewById(R.id.site_search_drawer);
 
-        EditText e = (EditText) searchView.findViewById(searchView.getContext().getResources().getIdentifier("android:id/search_src_text", null, null));
+        final EditText e = (EditText) sitesSearchView.findViewById(sitesSearchView.getContext().getResources().getIdentifier("android:id/search_src_text", null, null));
         e.setHintTextColor(Color.parseColor("#808080"));
+
+        findViewById(R.id.sites_drawer_button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // open sites drawer
+                DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+                drawer.openDrawer(GravityCompat.END);
+            }
+        });
+
+        e.addTextChangedListener(new TextWatcher() {
+            MenuItem sitesItem = sitesNavigationView.getMenu().findItem(R.id.sites);
+            SubMenu sitesSubMenu = sitesItem.getSubMenu();
+
+
+            MenuItem projectsItem = sitesNavigationView.getMenu().findItem(R.id.projects);
+            SubMenu projectsSubMenu = projectsItem.getSubMenu();
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int c) {
+
+                if (e.getText().toString().length() == 0) {
+                    for (int i = 0; i < sitesSubMenu.size(); i++) {
+                        sitesSubMenu.getItem(i).setVisible(true);
+                    }
+
+                    for (int i = 0; i < projectsSubMenu.size(); i++) {
+                        projectsSubMenu.getItem(i).setVisible(true);
+
+                    }
+                } else {
+                    for (int i = 0; i < sitesSubMenu.size(); i++) {
+                        if (!sitesSubMenu.getItem(i).getTitle().toString().toLowerCase().contains(s.toString().toLowerCase())) {
+                            sitesSubMenu.getItem(i).setVisible(false);
+                        } else {
+                            sitesSubMenu.getItem(i).setVisible(true);
+                        }
+                    }
+
+                    for (int i = 0; i < projectsSubMenu.size(); i++) {
+                        if (!projectsSubMenu.getItem(i).getTitle().toString().toLowerCase().contains(s.toString().toLowerCase())) {
+                            projectsSubMenu.getItem(i).setVisible(false);
+                        } else {
+                            projectsSubMenu.getItem(i).setVisible(true);
+                        }
+                    }
+                }
+
+                for (int i = 0, count = sitesNavigationView.getChildCount(); i < count; i++) {
+                    final View child = sitesNavigationView.getChildAt(i);
+                    if (child != null && child instanceof ListView) {
+                        final ListView menuView = (ListView) child;
+                        final HeaderViewListAdapter adapter = (HeaderViewListAdapter) menuView.getAdapter();
+                        final BaseAdapter wrapped = (BaseAdapter) adapter.getWrappedAdapter();
+                        wrapped.notifyDataSetChanged();
+                    }
+                }
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+
+//        sitesSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+//
+//            MenuItem sitesItem = sitesNavigationView.getMenu().findItem(R.id.sites);
+//            SubMenu sitesSubMenu = sitesItem.getSubMenu();
+//
+//
+//            MenuItem projectsItem = sitesNavigationView.getMenu().findItem(R.id.projects);
+//            SubMenu projectsSubMenu = projectsItem.getSubMenu();
+//
+//            @Override
+//            public boolean onQueryTextSubmit(String query) {
+//
+//                Log.i("query", query);
+//
+//
+//
+//                return false;
+//            }
+//
+//            @Override
+//            public boolean onQueryTextChange(String newText) {
+//
+//                return false;
+//            }
+//        });
     }
 
     private void logout() {
@@ -307,31 +474,12 @@ public class UserActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
-        } else {
+        }
+        else if (drawer.isDrawerOpen(GravityCompat.END)) {
+            drawer.closeDrawer(GravityCompat.END);
+        }else {
             logout();
         }
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.user, menu);
-        return false;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 
     public void selectFragment(Fragment f, int id, String title) {
@@ -346,6 +494,7 @@ public class UserActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         switch (item.getItemId()) {
+            // left drawer
             case R.id.dashboard:
                 break;
             case R.id.home:
@@ -375,11 +524,18 @@ public class UserActivity extends AppCompatActivity
                 WebViewFragment webViewFragment = new WebViewFragment();
                 selectFragment(webViewFragment, R.id.user_frame, "Help");
                 break;
+            // right drawer
+            case R.id.my_workspace:
+                break;
         }
 
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
+        if(drawer.isDrawerOpen(GravityCompat.START))
+            drawer.closeDrawer(GravityCompat.START);
+        else if(drawer.isDrawerOpen(GravityCompat.END))
+            drawer.closeDrawer(GravityCompat.END);
+
         return true;
     }
 
@@ -423,13 +579,35 @@ public class UserActivity extends AppCompatActivity
 
     public class Refresh extends AsyncTask<Void, Void, Void> {
 
+        private Context context;
+
+        public Refresh(Context context) {
+            this.context = context;
+        }
+
         @Override
         protected Void doInBackground(Void... params) {
             OnlineEvents onlineEvents = new OnlineEvents(getApplicationContext());
             String url = getResources().getString(R.string.url) + "calendar/my.json";
             onlineEvents.getEvents(url);
 
+            SiteData.getSites().clear();
+            SiteData.getProjects().clear();
+            OnlineSite onlineSite = new OnlineSite(context);
+            try {
+                onlineSite.getSites(context.getString(R.string.url) + "membership.json");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
             return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            fillSitesDrawer(sitesNavigationView.getMenu());
+            mSwipeRefreshLayout.setRefreshing(false);
         }
     }
 

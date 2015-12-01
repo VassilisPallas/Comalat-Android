@@ -16,6 +16,8 @@ import org.sakaiproject.api.events.EventsCollection;
 import org.sakaiproject.api.events.OnlineEvents;
 import org.sakaiproject.api.general.Connection;
 import org.sakaiproject.api.motd.OnlineMessageOfTheDay;
+import org.sakaiproject.api.site.OnlineSite;
+import org.sakaiproject.api.site.SiteData;
 import org.sakaiproject.api.time.Time;
 import org.sakaiproject.api.user.profile.DateOfBirth;
 import org.sakaiproject.api.user.profile.Profile;
@@ -348,4 +350,44 @@ public class JsonParser {
             e.printStackTrace();
         }
     }
+
+    public void parseSiteDataJson(String result) {
+        try {
+            JSONObject jsonObject = new JSONObject(result);
+            JSONArray collections = jsonObject.getJSONArray("membership_collection");
+            for (int i = 0; i < collections.length(); i++) {
+                JSONObject obj = collections.getJSONObject(i);
+                SiteData data = new SiteData();
+                data.setId(obj.getString("id").replace(User.getUserId() + "::site:", ""));
+                data.setType(obj.getString("siteType"));
+
+                if (obj.getString("siteType").equals("null")) {
+                    SiteData.getSites().add(data);
+                } else {
+                    SiteData.getProjects().add(data);
+                }
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void parseSiteWholeDataJson(String result, int index) {
+        try {
+            JSONObject jsonObject = new JSONObject(result);
+            SiteData.getSites().get(index).setTitle(jsonObject.getString("entityTitle"));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void parseProjectWholeDataJson(String result, int index) {
+        try {
+            JSONObject jsonObject = new JSONObject(result);
+            SiteData.getProjects().get(index).setTitle(jsonObject.getString("entityTitle"));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
 }

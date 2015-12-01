@@ -9,6 +9,7 @@
         android:id="@+id/site_search_drawer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
         android:closeIcon="@mipmap/ic_clear_black"
         android:paddingLeft="8dp"
         android:paddingRight="8dp"

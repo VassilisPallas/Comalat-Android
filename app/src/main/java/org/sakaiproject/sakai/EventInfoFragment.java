@@ -1,8 +1,11 @@
 package org.sakaiproject.sakai;
 
 
+import android.app.Dialog;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.support.v7.app.AlertDialog;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,8 +54,8 @@ public class EventInfoFragment extends DialogFragment {
 
         selectedEvent = (UserEvents) getArguments().getSerializable("event");
 
-        // disable the title bar
-        getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+//        //disable the title bar
+//        getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
 
         findViewsById(v);
 

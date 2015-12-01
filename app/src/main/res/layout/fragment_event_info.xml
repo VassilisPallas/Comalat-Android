@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#FFFFFF"
     tools:context="org.sakaiproject.sakai.EventInfoFragment">
 
 
@@ -224,6 +225,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
                     app:mrl_rippleAlpha="0.2"
                     app:mrl_rippleColor="#f5f5f5"
                     app:mrl_rippleDelayClick="false"
@@ -235,8 +237,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="#0083AF"
-                        android:text="edit"
+                        android:text="edit event"
                         android:textColor="#FFF"
+                        android:padding="8dp"
                         android:visibility="gone" />
 
                 </com.balysv.materialripple.MaterialRippleLayout>
@@ -248,6 +251,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"
                     android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
                     android:layout_toRightOf="@+id/edit_ripple"
                     app:mrl_rippleAlpha="0.2"
                     app:mrl_rippleColor="#f5f5f5"

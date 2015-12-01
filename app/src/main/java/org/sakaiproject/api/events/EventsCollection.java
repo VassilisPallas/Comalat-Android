@@ -75,6 +75,30 @@ public class EventsCollection {
         return calendar.get(calendar.DAY_OF_MONTH);
     }
 
+    /**
+     * find the frequency fo the event without until date
+     * @param count how many times the event will take place
+     * @param currentMonth the month that is selected on the calendar
+     * @param dateStr the date of the event with the format yyyy-MM-dd
+     * @param interval the interval, eg. if the frequency is daily and the interval = 3,
+     *                 then the event will take place every 3 days
+     * @param frequency the frequency of the event
+     *                  <u>frequency types:</u>
+     *                  day -> daily
+     *                  week -> weekly
+     *                  SMTW -> Sunday/Monday/Tuesday/Wednesday
+     *                  SMW -> Sunday/Monday/Wednesday
+     *                  STT -> Sunday/Tuesday/Thursday
+     *                  MW -> Monday/Wednesday
+     *                  MWF -> Monday/Wednesday/Friday
+     *                  TTh -> Tuesday/Thursday
+     *                  month -> monthly
+     *                  year -> yearly
+     * @param cal the Gregorian calendar
+     * @param event the event's data
+     * @throws ParseException
+     * @throws CloneNotSupportedException
+     */
     public static void EventFrequency(int count, String currentMonth, String dateStr, int interval, String frequency, Calendar cal, UserEvents event) throws ParseException, CloneNotSupportedException {
         int c = count == 0 ? 1 : 0;
         Date date;
@@ -191,6 +215,30 @@ public class EventsCollection {
 
     }
 
+    /**
+     * find the frequency fo the event without until date
+     * @param until the last date until the event will take place
+     * @param currentMonth the month that is selected on the calendar
+     * @param dateStr the date of the event with the format yyyy-MM-dd
+     * @param interval the interval, eg. if the frequency is daily and the interval = 3,
+     *                 then the event will take place every 3 days
+     * @param frequency the frequency of the event
+     *                  <u>frequency types:</u>
+     *                  day -> daily
+     *                  week -> weekly
+     *                  SMTW -> Sunday/Monday/Tuesday/Wednesday
+     *                  SMW -> Sunday/Monday/Wednesday
+     *                  STT -> Sunday/Tuesday/Thursday
+     *                  MW -> Monday/Wednesday
+     *                  MWF -> Monday/Wednesday/Friday
+     *                  TTh -> Tuesday/Thursday
+     *                  month -> monthly
+     *                  year -> yearly
+     * @param cal the Gregorian calendar
+     * @param event the event's data
+     * @throws ParseException
+     * @throws CloneNotSupportedException
+     */
     public static void EventFrequency(long until, String currentMonth, String dateStr, int interval, String frequency, Calendar cal, UserEvents event) throws ParseException, CloneNotSupportedException {
         Date untilDate = new Date(until);
         Date date;
