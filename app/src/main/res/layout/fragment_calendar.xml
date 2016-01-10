@@ -53,7 +53,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
-                                android:src="@mipmap/ic_arrow_left_white" />
+                                android:src="@mipmap/ic_arrow_left" />
 
                         </FrameLayout>
 
@@ -98,7 +98,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
-                                android:src="@mipmap/ic_arrow_right_white" />
+                                android:src="@mipmap/ic_arrow_right" />
 
                         </FrameLayout>
 

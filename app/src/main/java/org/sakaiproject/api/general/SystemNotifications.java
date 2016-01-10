@@ -1,5 +1,6 @@
 package org.sakaiproject.api.general;
 
+import android.app.Activity;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -17,10 +18,12 @@ import org.sakaiproject.sakai.UserActivity;
 public class SystemNotifications {
 
     private Context context;
+    private Class<?> activity;
     private static NotificationManager notificationManager;
 
-    public SystemNotifications(Context context) {
+    public SystemNotifications(Context context, Class<?> activity) {
         this.context = context;
+        this.activity = activity;
     }
 
     /**
@@ -34,7 +37,7 @@ public class SystemNotifications {
         Uri soundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
 
         // intent triggered
-        Intent intent = new Intent(context, UserActivity.class);
+        Intent intent = new Intent(context, activity);
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
 
         Notification notification = new Notification.Builder(context)

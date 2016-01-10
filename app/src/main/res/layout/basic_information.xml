@@ -1,0 +1,305 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    card_view:cardCornerRadius="4dp"
+    tools:context="org.sakaiproject.sakai.AboutActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- Header -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#dedede"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_centerVertical="true"
+                        android:padding="8dp"
+                        android:text="Basic Information"
+                        android:textSize="17sp"
+                        android:textStyle="bold" />
+
+                    <com.balysv.materialripple.MaterialRippleLayout
+                        android:id="@+id/edit_basic_ripple"
+                        android:layout_width="50dp"
+                        android:layout_height="40dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        app:mrl_rippleAlpha="0.2"
+                        app:mrl_rippleColor="#ffffff"
+                        app:mrl_rippleDelayClick="false"
+                        app:mrl_rippleHover="true"
+                        app:mrl_rippleOverlay="true"
+                        app:mrl_rippleRoundedCorners="@dimen/fab_margin">
+
+                        <FrameLayout
+                            android:id="@+id/edit_basic_button"
+                            android:layout_width="50dp"
+                            android:layout_height="40dp"
+                            android:clickable="true">
+
+                            <ImageView
+                                android:id="@+id/edit_basic_info"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_horizontal|center_vertical" />
+                        </FrameLayout>
+
+                    </com.balysv.materialripple.MaterialRippleLayout>
+
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#b4b4b4" />
+
+            </LinearLayout>
+
+            <!-- no information -->
+            <TextView
+                android:id="@+id/no_basic_information"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp"
+                android:gravity="center"
+                android:text="You haven't filled out any information yet"
+                android:textSize="15sp"
+                android:visibility="gone" />
+
+            <!-- Nickname -->
+            <LinearLayout
+                android:id="@+id/nickname_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/nickname_textview"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_centerVertical="true"
+                        android:padding="8dp"
+                        android:text="Nickname" />
+
+                    <TextView
+                        android:id="@+id/nickname_value"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_toRightOf="@+id/nickname_textview"
+                        android:gravity="right"
+                        android:padding="8dp" />
+
+                    <EditText
+                        android:id="@+id/nickname_change"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_toRightOf="@+id/nickname_textview"
+                        android:gravity="center"
+                        android:padding="8dp"
+                        android:textColor="#8f8f8f"
+                        android:visibility="gone" />
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#d7d7d7" />
+
+            </LinearLayout>
+
+            <!-- Birthday -->
+            <LinearLayout
+                android:id="@+id/birthday_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/birthday_textview"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_centerVertical="true"
+                        android:padding="8dp"
+                        android:text="Birthday" />
+
+                    <TextView
+                        android:id="@+id/birthday_value"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_toLeftOf="@+id/datepicker_imageview"
+                        android:layout_toRightOf="@+id/birthday_textview"
+                        android:gravity="right"
+                        android:padding="8dp"
+                        android:text="Aug 10, 1993" />
+
+                    <ImageView
+                        android:id="@+id/datepicker_imageview"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:visibility="invisible" />
+
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#d7d7d7" />
+
+            </LinearLayout>
+
+            <!-- Personal Summary -->
+            <LinearLayout
+                android:id="@+id/personal_summary_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/personal_summary_textview"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:padding="8dp"
+                        android:text="Personal Summary" />
+
+                    <TextView
+                        android:id="@+id/personal_summary_value"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_toRightOf="@+id/personal_summary_textview"
+                        android:padding="8dp" />
+
+                    <EditText
+                        android:id="@+id/personal_summary_change"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_toRightOf="@+id/personal_summary_textview"
+                        android:gravity="left"
+                        android:textColor="#8f8f8f"
+                        android:padding="8dp"
+                        android:visibility="gone" />
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#d7d7d7" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/basic_information_buttons"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal"
+                android:layout_marginBottom="10dp"
+                android:visibility="gone">
+
+                <com.balysv.materialripple.MaterialRippleLayout
+                    android:id="@+id/save_changes_button_ripple"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="5dp"
+                    app:mrl_rippleAlpha="0.2"
+                    app:mrl_rippleColor="#f5f5f5"
+                    app:mrl_rippleDelayClick="false"
+                    app:mrl_rippleHover="true"
+                    app:mrl_rippleOverlay="true">
+
+                    <Button
+                        android:id="@+id/save_changes_button"
+                        android:layout_width="130dp"
+                        android:layout_height="40dp"
+                        android:background="#0083AF"
+                        android:text="Save changes"
+                        android:textColor="#FFFFFF" />
+
+                </com.balysv.materialripple.MaterialRippleLayout>
+
+
+                <com.balysv.materialripple.MaterialRippleLayout
+                    android:id="@+id/cancel_button_ripple"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginTop="5dp"
+                    app:mrl_rippleAlpha="0.2"
+                    app:mrl_rippleColor="#f5f5f5"
+                    app:mrl_rippleDelayClick="false"
+                    app:mrl_rippleHover="true"
+                    app:mrl_rippleOverlay="true">
+
+                    <Button
+                        android:id="@+id/cancel_button"
+                        android:layout_width="110dp"
+                        android:layout_height="40dp"
+                        android:background="#0083AF"
+                        android:text="Cancel"
+                        android:textColor="#FFFFFF" />
+
+                </com.balysv.materialripple.MaterialRippleLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <DatePicker
+            android:id="@+id/birthday_picker"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:background="@android:drawable/dialog_holo_light_frame"
+            android:visibility="gone" />
+
+    </RelativeLayout>
+
+</android.support.v7.widget.CardView>

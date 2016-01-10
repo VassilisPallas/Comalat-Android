@@ -12,6 +12,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Created by vasilis on 11/5/15.
@@ -42,14 +43,14 @@ public class EventsCollection {
     }
 
     public static Date readDateFromString(String dateStr) throws ParseException {
-        DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        DateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
         return format.parse(dateStr);
     }
 
     public static void selectedMonthEvents(String month, GregorianCalendar cal) throws ParseException, CloneNotSupportedException {
         monthEvents.clear();
         for (UserEvents event : userEvents) {
-            if (event.getMonth() == month) {
+            if (event.getMonth().equals(month)) {
                 monthEvents.add(event);
             }
             if (event.getRecurrenceRule() != null) {
@@ -77,25 +78,26 @@ public class EventsCollection {
 
     /**
      * find the frequency fo the event without until date
-     * @param count how many times the event will take place
+     *
+     * @param count        how many times the event will take place
      * @param currentMonth the month that is selected on the calendar
-     * @param dateStr the date of the event with the format yyyy-MM-dd
-     * @param interval the interval, eg. if the frequency is daily and the interval = 3,
-     *                 then the event will take place every 3 days
-     * @param frequency the frequency of the event
-     *                  <u>frequency types:</u>
-     *                  day -> daily
-     *                  week -> weekly
-     *                  SMTW -> Sunday/Monday/Tuesday/Wednesday
-     *                  SMW -> Sunday/Monday/Wednesday
-     *                  STT -> Sunday/Tuesday/Thursday
-     *                  MW -> Monday/Wednesday
-     *                  MWF -> Monday/Wednesday/Friday
-     *                  TTh -> Tuesday/Thursday
-     *                  month -> monthly
-     *                  year -> yearly
-     * @param cal the Gregorian calendar
-     * @param event the event's data
+     * @param dateStr      the date of the event with the format yyyy-MM-dd
+     * @param interval     the interval, eg. if the frequency is daily and the interval = 3,
+     *                     then the event will take place every 3 days
+     * @param frequency    the frequency of the event
+     *                     <u>frequency types:</u>
+     *                     day -> daily
+     *                     week -> weekly
+     *                     SMTW -> Sunday/Monday/Tuesday/Wednesday
+     *                     SMW -> Sunday/Monday/Wednesday
+     *                     STT -> Sunday/Tuesday/Thursday
+     *                     MW -> Monday/Wednesday
+     *                     MWF -> Monday/Wednesday/Friday
+     *                     TTh -> Tuesday/Thursday
+     *                     month -> monthly
+     *                     year -> yearly
+     * @param cal          the Gregorian calendar
+     * @param event        the event's data
      * @throws ParseException
      * @throws CloneNotSupportedException
      */
@@ -217,25 +219,26 @@ public class EventsCollection {
 
     /**
      * find the frequency fo the event without until date
-     * @param until the last date until the event will take place
+     *
+     * @param until        the last date until the event will take place
      * @param currentMonth the month that is selected on the calendar
-     * @param dateStr the date of the event with the format yyyy-MM-dd
-     * @param interval the interval, eg. if the frequency is daily and the interval = 3,
-     *                 then the event will take place every 3 days
-     * @param frequency the frequency of the event
-     *                  <u>frequency types:</u>
-     *                  day -> daily
-     *                  week -> weekly
-     *                  SMTW -> Sunday/Monday/Tuesday/Wednesday
-     *                  SMW -> Sunday/Monday/Wednesday
-     *                  STT -> Sunday/Tuesday/Thursday
-     *                  MW -> Monday/Wednesday
-     *                  MWF -> Monday/Wednesday/Friday
-     *                  TTh -> Tuesday/Thursday
-     *                  month -> monthly
-     *                  year -> yearly
-     * @param cal the Gregorian calendar
-     * @param event the event's data
+     * @param dateStr      the date of the event with the format yyyy-MM-dd
+     * @param interval     the interval, eg. if the frequency is daily and the interval = 3,
+     *                     then the event will take place every 3 days
+     * @param frequency    the frequency of the event
+     *                     <u>frequency types:</u>
+     *                     day -> daily
+     *                     week -> weekly
+     *                     SMTW -> Sunday/Monday/Tuesday/Wednesday
+     *                     SMW -> Sunday/Monday/Wednesday
+     *                     STT -> Sunday/Tuesday/Thursday
+     *                     MW -> Monday/Wednesday
+     *                     MWF -> Monday/Wednesday/Friday
+     *                     TTh -> Tuesday/Thursday
+     *                     month -> monthly
+     *                     year -> yearly
+     * @param cal          the Gregorian calendar
+     * @param event        the event's data
      * @throws ParseException
      * @throws CloneNotSupportedException
      */

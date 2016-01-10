@@ -1,6 +1,7 @@
 package org.sakaiproject.api.site;
 
 import android.content.Context;
+import android.util.Log;
 
 import org.sakaiproject.api.general.Actions;
 import org.sakaiproject.api.general.Connection;
@@ -37,6 +38,7 @@ public class OnlineSite {
             json = Actions.readJsonStream(inputStream);
             inputStream.close();
             jsonParse.parseSiteDataJson(json);
+            Actions.writeJsonFile(context, json, "projectsAndSitesJson");
 
             for (int i = 0; i < SiteData.getSites().size(); i++) {
                 connection.openConnection(context.getResources().getString(R.string.url) + "site/" + SiteData.getSites().get(i).getId(), ConnectionType.GET, true, false, null);
@@ -45,7 +47,8 @@ public class OnlineSite {
                     inputStream = new BufferedInputStream(connection.getInputStream());
                     json = Actions.readJsonStream(inputStream);
                     inputStream.close();
-                    jsonParse.parseSiteWholeDataJson(json,i);
+                    jsonParse.parseSiteWholeDataJson(json, i);
+                    Actions.writeJsonFile(context, json, SiteData.getSites().get(i).getId());
                 }
             }
 
@@ -57,6 +60,7 @@ public class OnlineSite {
                     json = Actions.readJsonStream(inputStream);
                     inputStream.close();
                     jsonParse.parseProjectWholeDataJson(json, i);
+                    Actions.writeJsonFile(context, json, SiteData.getProjects().get(i).getId());
                 }
             }
         }

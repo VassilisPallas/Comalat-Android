@@ -3,7 +3,16 @@ package org.sakaiproject.api.general;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
+import android.os.Build;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.SubMenu;
 
+import org.sakaiproject.api.site.SiteData;
 import org.sakaiproject.sakai.R;
 
 import java.io.BufferedReader;
@@ -14,7 +23,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.URL;
 
 /**
  * Created by vasilis on 10/18/15.
@@ -233,13 +241,13 @@ public class Actions {
     public static Bitmap getAttachmentTypeImage(Context context, String name) {
         switch (getAttachmentType(name)) {
             case URL:
-                return BitmapFactory.decodeResource(context.getResources(), R.mipmap.ic_public_black);
+                return BitmapFactory.decodeResource(context.getResources(), R.mipmap.ic_public);
             case AUDIO:
-                return BitmapFactory.decodeResource(context.getResources(), R.mipmap.ic_audiotrack_black);
+                return BitmapFactory.decodeResource(context.getResources(), R.mipmap.ic_audiotrack);
             case VIDEO:
-                return BitmapFactory.decodeResource(context.getResources(), R.mipmap.ic_videocam_black);
+                return BitmapFactory.decodeResource(context.getResources(), R.mipmap.ic_videocam);
             case IMAGE:
-                return BitmapFactory.decodeResource(context.getResources(), R.mipmap.ic_image_black);
+                return BitmapFactory.decodeResource(context.getResources(), R.mipmap.ic_image);
             case ZIP:
             case WORD:
             case TXT:
@@ -247,7 +255,7 @@ public class Actions {
             case PDF:
             case EXCEL:
             case UNKwOWN:
-                return BitmapFactory.decodeResource(context.getResources(), R.mipmap.ic_insert_drive_file_black);
+                return BitmapFactory.decodeResource(context.getResources(), R.mipmap.ic_insert_drive_file);
         }
         return null;
     }
@@ -283,6 +291,36 @@ public class Actions {
         return null;
     }
 
+    public static String getMonthfromIndex(int index) {
+        switch (index) {
+            case 0:
+                return "Jan";
+            case 1:
+                return "Feb";
+            case 2:
+                return "Mar";
+            case 3:
+                return "Apr";
+            case 4:
+                return "May";
+            case 5:
+                return "Jun";
+            case 6:
+                return "Jul";
+            case 7:
+                return "Aug";
+            case 8:
+                return "Sep";
+            case 9:
+                return "Oct";
+            case 10:
+                return "Nov";
+            case 11:
+                return "Dec";
+        }
+        return null;
+    }
+
     public static String getIndexfromMonth(String month) {
         switch (month) {
             case "Jan":
@@ -311,6 +349,48 @@ public class Actions {
                 return "12";
             default:
                 return null;
+        }
+    }
+
+    public static Drawable setCustomDrawableColor(Context context, int imageId, int color) {
+
+        try {
+            Drawable image;
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                image = context.getResources().getDrawable(imageId, context.getTheme());
+            } else {
+                image = context.getResources().getDrawable(imageId);
+            }
+            if (image != null)
+                image.setColorFilter(color, PorterDuff.Mode.SRC_IN);
+
+            return image;
+        } catch (IllegalStateException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public static void fillSitesDrawer(Menu navigationMenu) {
+
+        MenuItem sitesItem = navigationMenu.findItem(R.id.sites);
+        SubMenu sitesSubMenu = sitesItem.getSubMenu();
+
+        MenuItem projectsItem = navigationMenu.findItem(R.id.projects);
+        SubMenu projectsSubMenu = projectsItem.getSubMenu();
+
+
+        sitesSubMenu.clear();
+        projectsSubMenu.clear();
+
+        sitesSubMenu.add(R.id.sites, Menu.NONE, Menu.NONE, "My Workspace").setCheckable(true).setChecked(true);
+        for (int i = 0; i < SiteData.getSites().size(); i++) {
+            sitesSubMenu.add(R.id.sites, Menu.NONE, Menu.NONE, SiteData.getSites().get(i).getTitle()).setCheckable(true);
+        }
+
+        for (int i = 0; i < SiteData.getProjects().size(); i++) {
+            projectsSubMenu.add(R.id.projects, Menu.NONE, Menu.NONE, SiteData.getProjects().get(i).getTitle()).setCheckable(true);
         }
     }
 

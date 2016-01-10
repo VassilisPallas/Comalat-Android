@@ -25,9 +25,7 @@ public class LoginAsync extends AsyncTask<Void, Void, LoginType> {
 
     private String username, password, url;
 
-    private OnlineLogin onlineOnlineLogin;
-    private OfflineLogin offlineOfflineLogin;
-
+    private ILogin login;
 
     private Context context;
     private Activity activity;
@@ -68,13 +66,12 @@ public class LoginAsync extends AsyncTask<Void, Void, LoginType> {
     @Override
     protected LoginType doInBackground(Void... params) {
 
-        onlineOnlineLogin = new OnlineLogin(context);
-        offlineOfflineLogin = new OfflineLogin(context);
-
         if (NetWork.getConnectionEstablished()) {
-            return onlineOnlineLogin.login(url, username, password);
+            login = new OnlineLogin(context);
+            return login.login(url, username, password);
         }
-        return offlineOfflineLogin.login(username, password);
+        login = new OfflineLogin(context);
+        return login.login(username, password);
     }
 
     @Override

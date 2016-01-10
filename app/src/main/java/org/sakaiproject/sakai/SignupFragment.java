@@ -52,6 +52,8 @@ public class SignupFragment extends Fragment {
 
         View v = inflater.inflate(R.layout.fragment_signup, container, false);
 
+        getActivity().setTitle("New Account");
+
         signup = new Signup(getContext());
 
         findViewsById(v);

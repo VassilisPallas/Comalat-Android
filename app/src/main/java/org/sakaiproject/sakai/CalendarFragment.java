@@ -42,10 +42,9 @@ import java.util.List;
 public class CalendarFragment extends Fragment {
 
 
-    public GregorianCalendar cal_month, cal_month_copy;
+    public static GregorianCalendar cal_month, cal_month_copy;
     private CalendarAdapter cal_adapter;
     private TextView tv_month;
-    private OnlineEvents onlineEvents;
     private OfflineEvents offlineEvents;
     private LinearLayout calendar;
     private ProgressBar progressBar;
@@ -59,6 +58,13 @@ public class CalendarFragment extends Fragment {
     public CalendarFragment() {
     }
 
+    public static GregorianCalendar getCal_month() {
+        return cal_month;
+    }
+
+    public static GregorianCalendar getCal_month_copy() {
+        return cal_month_copy;
+    }
 
     /**
      * get the swipe refresh layout from activity
@@ -79,6 +85,8 @@ public class CalendarFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         View v = inflater.inflate(R.layout.fragment_calendar, container, false);
+
+        getActivity().setTitle("Calendar");
 
         swipeRefreshLayout = (org.sakaiproject.customviews.CustomSwipeRefreshLayout) getArguments().getSerializable("swipeRefresh");
 
@@ -168,7 +176,7 @@ public class CalendarFragment extends Fragment {
                     @Override
                     public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                         int topRowVerticalPosition =
-                                (recyclerView == null || recyclerView.getChildCount() == 0) ? 0 : recyclerView.getChildAt(0).getTop();
+                                (recyclerView == null || recyclerView.getChildCount() == 0 || recyclerView.getChildCount() == 1) ? 0 : recyclerView.getChildAt(0).getTop();
                         swipeRefreshLayout.setEnabled(topRowVerticalPosition >= 0);
                     }
 
@@ -211,7 +219,6 @@ public class CalendarFragment extends Fragment {
         }));
 
 
-        onlineEvents = new OnlineEvents(getContext());
         offlineEvents = new OfflineEvents(getContext());
         new EventsAsync().execute();
 
@@ -239,7 +246,6 @@ public class CalendarFragment extends Fragment {
         }
 
         mRecyclerView.setAdapter(null);
-        mAdapter.notifyDataSetChanged();
 
     }
 
@@ -256,14 +262,11 @@ public class CalendarFragment extends Fragment {
 
         try {
             EventsCollection.selectedMonthEvents(String.valueOf(cal_month.get(cal_month.MONTH) + 1), cal_month_copy);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        } catch (CloneNotSupportedException e) {
+        } catch (ParseException | CloneNotSupportedException e) {
             e.printStackTrace();
         }
 
         mRecyclerView.setAdapter(null);
-        mAdapter.notifyDataSetChanged();
 
     }
 
@@ -302,9 +305,7 @@ public class CalendarFragment extends Fragment {
 
             try {
                 EventsCollection.findMonthlyEvents(cal_month_copy);
-            } catch (ParseException e) {
-                e.printStackTrace();
-            } catch (CloneNotSupportedException e) {
+            } catch (ParseException | CloneNotSupportedException e) {
                 e.printStackTrace();
             }
 

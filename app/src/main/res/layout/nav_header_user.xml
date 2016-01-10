@@ -14,8 +14,10 @@
     <org.sakaiproject.customviews.ImageViewRounded
         android:id="@+id/user_image"
         android:layout_width="70dp"
+        android:src="@drawable/profile"
         android:layout_height="65dp"
-        android:scaleType="centerInside" />
+        android:drawingCacheQuality="high"
+        android:scaleType="centerCrop" />
 
     <TextView
         android:id="@+id/user_display_name"

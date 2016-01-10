@@ -22,7 +22,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:src="@mipmap/ic_person_black" />
+            android:src="@mipmap/ic_person" />
 
         <TextView
             android:id="@+id/attachment_name"

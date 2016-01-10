@@ -29,14 +29,11 @@ public class Waiter extends Thread {
     private long lastUsed;
     private long period;
     public volatile boolean stop;
-    private boolean messageIsVisible = false;
     private boolean activityIsVisible;
+    private Class<?> activity;
     private Context context;
+    private boolean notificationShowed = false;
     private static long idle = 0;
-    private Activity activity;
-    private RelativeLayout messageRelativeLayout;
-    private TextView messageTextView;
-    private int count = 31;
 
     private Waiter() {
     }
@@ -47,32 +44,20 @@ public class Waiter extends Thread {
         return instance;
     }
 
-    public void setCount(int count) {
-        this.count = count;
-    }
-
-    public boolean isMessageVisible() {
-        return messageIsVisible;
+    public boolean isNotificationShowed() {
+        return notificationShowed;
     }
 
     public void setActivityIsVisible(boolean activityIsVisible) {
         this.activityIsVisible = activityIsVisible;
     }
 
-    public void setContext(Context context) {
-        this.context = context;
-    }
-
-    public void setActivity(Activity activity) {
+    public void setActivity(Class<?> activity) {
         this.activity = activity;
     }
 
-    public void setMessageRelativeLayout(RelativeLayout messageRelativeLayout) {
-        this.messageRelativeLayout = messageRelativeLayout;
-    }
-
-    public void setMessageTextView(TextView messageTextView) {
-        this.messageTextView = messageTextView;
+    public void setContext(Context context) {
+        this.context = context;
     }
 
     public void run() {
@@ -84,23 +69,15 @@ public class Waiter extends Thread {
             */
             idle = roundMultiple(System.currentTimeMillis() - lastUsed, 60000);
             Log.d(TAG, "Application is idle for " + idle + " ms");
-            count--;
 
             /* activityIsVisible is true if the app is on foreground
                messageIsVisible is true if the notification has already
                shown to the status bar
             */
-            if (idle == (period / 2) && !activityIsVisible && !messageIsVisible) {
-                messageIsVisible = true;
-                SystemNotifications systemNotifications = new SystemNotifications(context);
+            if (idle == (period / 2) && !notificationShowed) {
+                notificationShowed = true;
+                SystemNotifications systemNotifications = new SystemNotifications(context, activity);
                 systemNotifications.showSessionNotification();
-            } else if (idle == (period / 2) && activityIsVisible) {
-                activity.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        messageRelativeLayout.setVisibility(View.VISIBLE);
-                    }
-                });
             }
 
             /* if idle is equals with the expiration time of the session
@@ -150,15 +127,6 @@ public class Waiter extends Thread {
                 }
                 stop = true;
             }
-
-
-            final int finalCount = count;
-            activity.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    messageTextView.setText("Your session will timeout in " + finalCount + " minutes");
-                }
-            });
 
             if (!stop) {
                 try {
