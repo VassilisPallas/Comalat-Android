@@ -89,14 +89,14 @@ public class JsonParser {
             else
                 user.setCreatedDate(new Date(0));
             user.setCreatedTime(new Time(createdTimeJson.getString("display"), new Date(Long.parseLong(createdTimeJson.getString("time")))));
-            user.setEmail(obj.getString("email"));
-            user.setFirstName(obj.getString("firstName"));
+            user.setEmail(!obj.getString("email").trim().equals("") && !obj.getString("email").trim().equals("null") ? obj.getString("email") : "");
+            user.setFirstName(!obj.getString("firstName").trim().equals("") && !obj.getString("firstName").trim().equals("null") ? obj.getString("firstName") : "");
             if (!obj.getString("modifiedDate").equals("null"))
                 user.setModifiedDate(new Date(Long.parseLong(obj.getString("modifiedDate"))));
             else
                 user.setModifiedDate(new Date(0));
             user.setModifiedTime(new Time(modifiedTimeJson.getString("display"), new Date(Long.parseLong(modifiedTimeJson.getString("time")))));
-            user.setLastName(obj.getString("lastName"));
+            user.setLastName(!obj.getString("lastName").trim().equals("") && !obj.getString("lastName").trim().equals("null") ? obj.getString("lastName") : "");
             user.setType(obj.getString("type"));
         } catch (JSONException e) {
             e.printStackTrace();
@@ -114,11 +114,11 @@ public class JsonParser {
         try {
 
             JSONObject obj = new JSONObject(result);
-            profile.setAcademicProfileUrl(obj.getString("academicProfileUrl"));
+            profile.setAcademicProfileUrl(!obj.getString("academicProfileUrl").trim().equals("") && !obj.getString("academicProfileUrl").trim().equals("null") ? obj.getString("academicProfileUrl") : "");
             profile.setBirthday(obj.getString("birthday"));
             profile.setBirthdayDisplay(obj.getString("birthdayDisplay"));
             profile.setBusinessBiography(obj.getString("businessBiography"));
-            profile.setCourse(obj.getString("course"));
+            profile.setCourse(!obj.getString("course").trim().equals("") && !obj.getString("course").trim().equals("null") ? obj.getString("course") : "");
 
 
             if (!obj.isNull("dateOfBirth")) {
@@ -140,28 +140,28 @@ public class JsonParser {
                 profile.setDateOfBirth(new DateOfBirth(date, day, month, time, timezoneOffset, year));
             }
 
-            profile.setDepartment(obj.getString("department"));
-            profile.setDisplayName(obj.getString("displayName"));
-            profile.setFacsimile(obj.getString("facsimile"));
-            profile.setFavouriteBooks(obj.getString("favouriteBooks"));
-            profile.setFavouriteMovies(obj.getString("favouriteMovies"));
-            profile.setFavouriteQuotes(obj.getString("favouriteQuotes"));
-            profile.setFavouriteTvShows(obj.getString("favouriteTvShows"));
-            profile.setHomepage(obj.getString("homepage"));
-            profile.setHomephone(obj.getString("homephone"));
-            profile.setImageThumbUrl(obj.getString("imageThumbUrl"));
-            profile.setImageUrl(obj.getString("imageUrl"));
-            profile.setMobilephone(obj.getString("mobilephone"));
-            profile.setNickname(obj.getString("nickname"));
-            profile.setPersonalSummary(obj.getString("personalSummary"));
-            profile.setPosition(obj.getString("position"));
-            profile.setPublications(obj.getString("publications"));
-            profile.setRoom(obj.getString("room"));
-            profile.setSchool(obj.getString("school"));
-            profile.setStaffProfile(obj.getString("staffProfile"));
-            profile.setSubjects(obj.getString("subjects"));
-            profile.setUniversityProfileUrl(obj.getString("universityProfileUrl"));
-            profile.setWorkphone(obj.getString("workphone"));
+            profile.setDepartment(!obj.getString("department").trim().equals("") && !obj.getString("department").trim().equals("null") ? obj.getString("department") : "");
+            profile.setDisplayName(!obj.getString("displayName").trim().equals("") && !obj.getString("displayName").trim().equals("null") ? obj.getString("displayName") : "");
+            profile.setFacsimile(!obj.getString("facsimile").trim().equals("") && !obj.getString("facsimile").trim().equals("null") ? obj.getString("facsimile") : "");
+            profile.setFavouriteBooks(!obj.getString("favouriteBooks").trim().equals("") && !obj.getString("favouriteBooks").trim().equals("null") ? obj.getString("favouriteBooks") : "");
+            profile.setFavouriteMovies(!obj.getString("favouriteMovies").trim().equals("") && !obj.getString("favouriteMovies").trim().equals("null") ? obj.getString("favouriteMovies") : "");
+            profile.setFavouriteQuotes(!obj.getString("favouriteQuotes").trim().equals("") && !obj.getString("favouriteQuotes").trim().equals("null") ? obj.getString("favouriteQuotes") : "");
+            profile.setFavouriteTvShows(!obj.getString("favouriteTvShows").trim().equals("") && !obj.getString("favouriteTvShows").trim().equals("null") ? obj.getString("favouriteTvShows") : "");
+            profile.setHomepage(!obj.getString("homepage").trim().equals("") && !obj.getString("homepage").trim().equals("null") ? obj.getString("homepage") : "");
+            profile.setHomephone(!obj.getString("homephone").trim().equals("") && !obj.getString("homephone").trim().equals("null") ? obj.getString("homephone") : "");
+            profile.setImageThumbUrl(!obj.getString("imageThumbUrl").trim().equals("") && !obj.getString("imageThumbUrl").trim().equals("null") ? obj.getString("imageThumbUrl") : "");
+            profile.setImageUrl(!obj.getString("imageUrl").trim().equals("") && !obj.getString("imageUrl").trim().equals("null") ? obj.getString("imageUrl") : "");
+            profile.setMobilephone(!obj.getString("mobilephone").trim().equals("") && !obj.getString("mobilephone").trim().equals("null") ? obj.getString("mobilephone") : "");
+            profile.setNickname(!obj.getString("nickname").trim().equals("") && !obj.getString("nickname").trim().equals("null") ? obj.getString("nickname") : "");
+            profile.setPersonalSummary(!obj.getString("personalSummary").trim().equals("") && !obj.getString("personalSummary").trim().equals("null") ? obj.getString("personalSummary") : "");
+            profile.setPosition(!obj.getString("position").trim().equals("") && !obj.getString("position").trim().equals("null") ? obj.getString("position") : "");
+            profile.setPublications(!obj.getString("publications").trim().equals("") && !obj.getString("publications").trim().equals("null") ? obj.getString("publications") : "");
+            profile.setRoom(!obj.getString("room").trim().equals("") && !obj.getString("room").trim().equals("null") ? obj.getString("room") : "");
+            profile.setSchool(!obj.getString("school").trim().equals("") && !obj.getString("school").trim().equals("null") ? obj.getString("school") : "");
+            profile.setStaffProfile(!obj.getString("staffProfile").trim().equals("") && !obj.getString("staffProfile").trim().equals("null") ? obj.getString("staffProfile") : "");
+            profile.setSubjects(!obj.getString("subjects").trim().equals("") && !obj.getString("subjects").trim().equals("null") ? obj.getString("subjects") : "");
+            profile.setUniversityProfileUrl(!obj.getString("universityProfileUrl").trim().equals("") && !obj.getString("universityProfileUrl").trim().equals("null") ? obj.getString("universityProfileUrl") : "");
+            profile.setWorkphone(!obj.getString("workphone").trim().equals("") && !obj.getString("workphone").trim().equals("null") ? obj.getString("workphone") : "");
             profile.setLocked(obj.getBoolean("locked"));
 
 

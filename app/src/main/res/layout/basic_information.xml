@@ -221,8 +221,8 @@
                         android:layout_centerVertical="true"
                         android:layout_toRightOf="@+id/personal_summary_textview"
                         android:gravity="left"
-                        android:textColor="#8f8f8f"
                         android:padding="8dp"
+                        android:textColor="#8f8f8f"
                         android:visibility="gone" />
                 </RelativeLayout>
 
@@ -237,13 +237,13 @@
                 android:id="@+id/basic_information_buttons"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
                 android:layout_marginTop="10dp"
                 android:orientation="horizontal"
-                android:layout_marginBottom="10dp"
                 android:visibility="gone">
 
                 <com.balysv.materialripple.MaterialRippleLayout
-                    android:id="@+id/save_changes_button_ripple"
+                    android:id="@+id/basic_info_save_changes_button_ripple"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
@@ -255,7 +255,7 @@
                     app:mrl_rippleOverlay="true">
 
                     <Button
-                        android:id="@+id/save_changes_button"
+                        android:id="@+id/basic_info_save_changes_button"
                         android:layout_width="130dp"
                         android:layout_height="40dp"
                         android:background="#0083AF"
@@ -266,7 +266,7 @@
 
 
                 <com.balysv.materialripple.MaterialRippleLayout
-                    android:id="@+id/cancel_button_ripple"
+                    android:id="@+id/basic_info_cancel_button_ripple"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="15dp"
@@ -278,7 +278,7 @@
                     app:mrl_rippleOverlay="true">
 
                     <Button
-                        android:id="@+id/cancel_button"
+                        android:id="@+id/basic_info_cancel_button"
                         android:layout_width="110dp"
                         android:layout_height="40dp"
                         android:background="#0083AF"

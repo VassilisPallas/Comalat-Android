@@ -97,6 +97,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
                     android:padding="8dp"
                     android:text="Email" />
 
@@ -105,10 +106,23 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
                     android:layout_toRightOf="@+id/email_textview"
                     android:autoLink="email"
                     android:gravity="right"
                     android:padding="8dp" />
+
+                <EditText
+                    android:id="@+id/email_change"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@+id/email_value"
+                    android:gravity="center"
+                    android:padding="8dp"
+                    android:textColor="#8f8f8f"
+                    android:visibility="gone" />
             </RelativeLayout>
 
             <View
@@ -134,6 +148,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
                     android:padding="8dp"
                     android:text="Home page" />
 
@@ -142,10 +157,23 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
                     android:layout_toRightOf="@+id/home_page_textview"
                     android:autoLink="web"
                     android:gravity="right"
                     android:padding="8dp" />
+
+                <EditText
+                    android:id="@+id/home_page_change"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@+id/home_page_value"
+                    android:gravity="center"
+                    android:padding="8dp"
+                    android:textColor="#8f8f8f"
+                    android:visibility="gone" />
             </RelativeLayout>
 
             <View
@@ -171,6 +199,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
                     android:padding="8dp"
                     android:text="Work phone" />
 
@@ -179,10 +208,23 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
                     android:layout_toRightOf="@+id/work_phone_textview"
                     android:autoLink="phone"
                     android:gravity="right"
                     android:padding="8dp" />
+
+                <EditText
+                    android:id="@+id/work_phone_change"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@+id/work_phone_value"
+                    android:gravity="center"
+                    android:padding="8dp"
+                    android:textColor="#8f8f8f"
+                    android:visibility="gone" />
             </RelativeLayout>
 
             <View
@@ -208,6 +250,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
                     android:padding="8dp"
                     android:text="Home phone" />
 
@@ -216,10 +259,23 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
                     android:layout_toRightOf="@+id/home_phone_textview"
                     android:autoLink="phone"
                     android:gravity="right"
                     android:padding="8dp" />
+
+                <EditText
+                    android:id="@+id/home_phone_change"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@+id/home_phone_value"
+                    android:gravity="center"
+                    android:padding="8dp"
+                    android:textColor="#8f8f8f"
+                    android:visibility="gone" />
             </RelativeLayout>
 
             <View
@@ -245,6 +301,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
                     android:padding="8dp"
                     android:text="Mobile phone" />
 
@@ -253,10 +310,23 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
                     android:layout_toRightOf="@+id/mobile_phone_textview"
                     android:autoLink="phone"
                     android:gravity="right"
                     android:padding="8dp" />
+
+                <EditText
+                    android:id="@+id/mobile_phone_change"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@+id/mobile_phone_value"
+                    android:gravity="center"
+                    android:padding="8dp"
+                    android:textColor="#8f8f8f"
+                    android:visibility="gone" />
             </RelativeLayout>
 
             <View
@@ -282,6 +352,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
                     android:padding="8dp"
                     android:text="Facsimile" />
 
@@ -290,16 +361,85 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
                     android:layout_toRightOf="@+id/facsimile_textview"
                     android:autoLink="phone"
                     android:gravity="right"
                     android:padding="8dp" />
+
+                <EditText
+                    android:id="@+id/facsimile_change"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@+id/facsimile_value"
+                    android:gravity="center"
+                    android:padding="8dp"
+                    android:textColor="#8f8f8f"
+                    android:visibility="gone" />
             </RelativeLayout>
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="#d7d7d7" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/contact_information_buttons"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+            <com.balysv.materialripple.MaterialRippleLayout
+                android:id="@+id/contact_info_save_changes_button_ripple"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="5dp"
+                app:mrl_rippleAlpha="0.2"
+                app:mrl_rippleColor="#f5f5f5"
+                app:mrl_rippleDelayClick="false"
+                app:mrl_rippleHover="true"
+                app:mrl_rippleOverlay="true">
+
+                <Button
+                    android:id="@+id/contact_info_save_changes_button"
+                    android:layout_width="130dp"
+                    android:layout_height="40dp"
+                    android:background="#0083AF"
+                    android:text="Save changes"
+                    android:textColor="#FFFFFF" />
+
+            </com.balysv.materialripple.MaterialRippleLayout>
+
+
+            <com.balysv.materialripple.MaterialRippleLayout
+                android:id="@+id/contact_info_cancel_button_ripple"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="5dp"
+                app:mrl_rippleAlpha="0.2"
+                app:mrl_rippleColor="#f5f5f5"
+                app:mrl_rippleDelayClick="false"
+                app:mrl_rippleHover="true"
+                app:mrl_rippleOverlay="true">
+
+                <Button
+                    android:id="@+id/contact_info_cancel_button"
+                    android:layout_width="110dp"
+                    android:layout_height="40dp"
+                    android:background="#0083AF"
+                    android:text="Cancel"
+                    android:textColor="#FFFFFF" />
+
+            </com.balysv.materialripple.MaterialRippleLayout>
 
         </LinearLayout>
 

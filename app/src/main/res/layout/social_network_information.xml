@@ -97,6 +97,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
                     android:padding="8dp"
                     android:text="Facebook URL" />
 
@@ -105,10 +106,25 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
                     android:layout_toRightOf="@+id/fb_textview"
                     android:autoLink="web"
                     android:gravity="right"
-                    android:padding="8dp" />
+                    android:padding="8dp"
+                    android:singleLine="true" />
+
+                <EditText
+                    android:id="@+id/fb_change"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@+id/fb_value"
+                    android:gravity="center"
+                    android:padding="8dp"
+                    android:singleLine="true"
+                    android:textColor="#8f8f8f"
+                    android:visibility="gone" />
             </RelativeLayout>
 
             <View
@@ -134,6 +150,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
                     android:padding="8dp"
                     android:text="LinkedIn URL" />
 
@@ -142,10 +159,25 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
                     android:layout_toRightOf="@+id/linked_in_textview"
                     android:autoLink="web"
                     android:gravity="right"
-                    android:padding="8dp" />
+                    android:padding="8dp"
+                    android:singleLine="true" />
+
+                <EditText
+                    android:id="@+id/linked_in_change"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@+id/linked_in_value"
+                    android:gravity="center"
+                    android:padding="8dp"
+                    android:singleLine="true"
+                    android:textColor="#8f8f8f"
+                    android:visibility="gone" />
             </RelativeLayout>
 
             <View
@@ -171,6 +203,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
                     android:padding="8dp"
                     android:text="MySpace URL" />
 
@@ -179,10 +212,25 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
                     android:layout_toRightOf="@+id/my_space_textview"
                     android:autoLink="web"
                     android:gravity="right"
-                    android:padding="8dp" />
+                    android:padding="8dp"
+                    android:singleLine="true" />
+
+                <EditText
+                    android:id="@+id/my_space_change"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@+id/my_space_value"
+                    android:gravity="center"
+                    android:padding="8dp"
+                    android:singleLine="true"
+                    android:textColor="#8f8f8f"
+                    android:visibility="gone" />
             </RelativeLayout>
 
             <View
@@ -208,17 +256,33 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
                     android:padding="8dp"
-                    android:text="Home phone" />
+                    android:text="Skype" />
 
                 <TextView
                     android:id="@+id/skype_value"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
                     android:layout_toRightOf="@+id/skype_textview"
                     android:gravity="right"
-                    android:padding="8dp" />
+                    android:padding="8dp"
+                    android:singleLine="true" />
+
+                <EditText
+                    android:id="@+id/skype_change"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@+id/skype_value"
+                    android:gravity="center"
+                    android:padding="8dp"
+                    android:singleLine="true"
+                    android:textColor="#8f8f8f"
+                    android:visibility="gone" />
             </RelativeLayout>
 
             <View
@@ -244,6 +308,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
                     android:padding="8dp"
                     android:text="Twitter URL" />
 
@@ -252,16 +317,87 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
                     android:layout_toRightOf="@+id/twitter_textview"
                     android:autoLink="web"
                     android:gravity="right"
-                    android:padding="8dp" />
+                    android:padding="8dp"
+                    android:singleLine="true" />
+
+                <EditText
+                    android:id="@+id/twitter_change"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@+id/twitter_value"
+                    android:gravity="center"
+                    android:padding="8dp"
+                    android:singleLine="true"
+                    android:textColor="#8f8f8f"
+                    android:visibility="gone" />
             </RelativeLayout>
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="#d7d7d7" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/social_network_information_buttons"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+            <com.balysv.materialripple.MaterialRippleLayout
+                android:id="@+id/social_network_info_save_changes_button_ripple"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="5dp"
+                app:mrl_rippleAlpha="0.2"
+                app:mrl_rippleColor="#f5f5f5"
+                app:mrl_rippleDelayClick="false"
+                app:mrl_rippleHover="true"
+                app:mrl_rippleOverlay="true">
+
+                <Button
+                    android:id="@+id/social_network_info_save_changes_button"
+                    android:layout_width="130dp"
+                    android:layout_height="40dp"
+                    android:background="#0083AF"
+                    android:text="Save changes"
+                    android:textColor="#FFFFFF" />
+
+            </com.balysv.materialripple.MaterialRippleLayout>
+
+
+            <com.balysv.materialripple.MaterialRippleLayout
+                android:id="@+id/social_network_info_cancel_button_ripple"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="5dp"
+                app:mrl_rippleAlpha="0.2"
+                app:mrl_rippleColor="#f5f5f5"
+                app:mrl_rippleDelayClick="false"
+                app:mrl_rippleHover="true"
+                app:mrl_rippleOverlay="true">
+
+                <Button
+                    android:id="@+id/social_network_info_cancel_button"
+                    android:layout_width="110dp"
+                    android:layout_height="40dp"
+                    android:background="#0083AF"
+                    android:text="Cancel"
+                    android:textColor="#FFFFFF" />
+
+            </com.balysv.materialripple.MaterialRippleLayout>
 
         </LinearLayout>
 
