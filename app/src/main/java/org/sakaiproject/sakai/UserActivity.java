@@ -32,12 +32,13 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.SearchView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.sakaiproject.api.site.OfflineSite;
 import org.sakaiproject.api.sync.Refresh;
 import org.sakaiproject.customviews.ImageViewRounded;
-import org.sakaiproject.api.general.Actions;
-import org.sakaiproject.api.general.Connection;
+import org.sakaiproject.general.Actions;
+import org.sakaiproject.general.Connection;
 import org.sakaiproject.api.internet.NetWork;
 import org.sakaiproject.api.logout.Logout;
 import org.sakaiproject.api.session.RefreshSession;
@@ -48,7 +49,9 @@ import org.sakaiproject.api.user.User;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Hashtable;
 import java.util.List;
+import java.util.Map;
 
 public class UserActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -63,6 +66,8 @@ public class UserActivity extends AppCompatActivity
     private RelativeLayout root;
     private static NavigationView sitesNavigationView;
     private SearchView sitesSearchView;
+
+    public static Map<Integer, String> sitesIds;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -154,6 +159,8 @@ public class UserActivity extends AppCompatActivity
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
+
+        sitesIds = new Hashtable<>();
 
         OfflineSite offlineSites = new OfflineSite(this);
         try {
@@ -401,8 +408,9 @@ public class UserActivity extends AppCompatActivity
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
+
+        // left drawer
         switch (item.getItemId()) {
-            // left drawer
             case R.id.dashboard:
                 break;
             case R.id.home:
@@ -434,11 +442,13 @@ public class UserActivity extends AppCompatActivity
                 WebViewFragment webViewFragment = new WebViewFragment();
                 selectFragment(webViewFragment, R.id.user_frame, "Help");
                 break;
-            // right drawer
-            case R.id.my_workspace:
-                break;
         }
 
+
+        for (Integer ids : sitesIds.keySet())
+            if (item.getItemId() == ids) {
+                Toast.makeText(UserActivity.this, "Pressed " + sitesIds.get(ids), Toast.LENGTH_SHORT).show();
+            }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START))

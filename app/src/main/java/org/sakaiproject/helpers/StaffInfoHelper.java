@@ -2,6 +2,7 @@ package org.sakaiproject.helpers;
 
 import android.app.Activity;
 import android.graphics.drawable.Drawable;
+import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
 import android.view.View;
 import android.widget.EditText;
@@ -26,7 +27,7 @@ public class StaffInfoHelper implements IUserAbout {
     private ImageView editStaffInformationImageView;
     private EditText positionEditText, departmentEditText, schoolEditText, roomEditText, staffProfileEditText, universityUrlEditText, academicUrlEditText, publicationsEditText;
 
-    public StaffInfoHelper(Activity activity, Drawable editDrawable, View.OnClickListener clickListener) {
+    public StaffInfoHelper(AppCompatActivity activity, Drawable editDrawable, View.OnClickListener clickListener) {
         this.editDrawable = editDrawable;
         this.clickListener = clickListener;
 
@@ -36,7 +37,7 @@ public class StaffInfoHelper implements IUserAbout {
     }
 
     @Override
-    public void initialize(Activity activity) {
+    public void initialize(AppCompatActivity activity) {
         positionLayout = (LinearLayout) activity.findViewById(R.id.position_layout);
         departmentLayout = (LinearLayout) activity.findViewById(R.id.department_layout);
         schoolLayout = (LinearLayout) activity.findViewById(R.id.school_layout);
@@ -123,7 +124,7 @@ public class StaffInfoHelper implements IUserAbout {
     }
 
     @Override
-    public void checkVisibilities(Activity activity) {
+    public void checkVisibilities(AppCompatActivity activity) {
         if (positionLayout.getVisibility() == View.GONE && departmentLayout.getVisibility() == View.GONE && schoolLayout.getVisibility() == View.GONE
                 && roomLayout.getVisibility() == View.GONE && staffProfileLayout.getVisibility() == View.GONE && universityUrlLayout.getVisibility() == View.GONE
                 && academicUrlLayout.getVisibility() == View.GONE && publicationsLayout.getVisibility() == View.GONE) {

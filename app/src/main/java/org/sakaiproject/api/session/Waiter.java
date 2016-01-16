@@ -1,15 +1,11 @@
 package org.sakaiproject.api.session;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
-import android.view.View;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 
-import org.sakaiproject.api.general.SystemNotifications;
-import org.sakaiproject.api.general.Connection;
+import org.sakaiproject.general.SystemNotifications;
+import org.sakaiproject.general.Connection;
 import org.sakaiproject.api.internet.NetWork;
 import org.sakaiproject.api.logout.Logout;
 import org.sakaiproject.api.user.profile.Profile;

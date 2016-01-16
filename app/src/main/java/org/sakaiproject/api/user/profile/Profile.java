@@ -1,5 +1,8 @@
 package org.sakaiproject.api.user.profile;
 
+import java.util.List;
+import java.util.Map;
+
 /**
  * Created by vasilis on 10/26/15.
  */
@@ -10,11 +13,11 @@ public class Profile {
     private static String birthday;
     private static String birthdayDisplay;
     private static String businessBiography;
-    private static String displayName;
-    //private static List<String> companyProfiles;
+    private static List<String> companyProfiles;
     private static String course;
     private static DateOfBirth dateOfBirth;
     private static String department;
+    private static String displayName;
     private static String facsimile; /* fax */
     private static String favouriteBooks;
     private static String favouriteMovies;
@@ -24,12 +27,11 @@ public class Profile {
     private static String homephone;
     private static String imageThumbUrl;
     private static String imageUrl;
-    private static boolean locked;
     private static String mobilephone;
     private static String nickname;
     private static String personalSummary;
     private static String position;
-    //private static Map props;
+    private static Map props;
     private static String publications;
     private static String room;
     private static String school;
@@ -39,6 +41,7 @@ public class Profile {
     private static String subjects;
     private static String universityProfileUrl;
     private static String workphone;
+    private static boolean locked;
 
     private Profile() {
     }
@@ -176,6 +179,22 @@ public class Profile {
 
     public static ProfileStatus getStatus() {
         return status;
+    }
+
+    public static List<String> getCompanyProfiles() {
+        return companyProfiles;
+    }
+
+    public static Map getProps() {
+        return props;
+    }
+
+    public static void setProps(Map props) {
+        Profile.props = props;
+    }
+
+    public static void setCompanyProfiles(List<String> companyProfiles) {
+        Profile.companyProfiles = companyProfiles;
     }
 
     public static void setStatus(ProfileStatus status) {

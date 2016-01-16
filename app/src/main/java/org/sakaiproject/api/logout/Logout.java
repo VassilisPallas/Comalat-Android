@@ -2,8 +2,8 @@ package org.sakaiproject.api.logout;
 
 import android.content.Context;
 
-import org.sakaiproject.api.general.Connection;
-import org.sakaiproject.api.general.ConnectionType;
+import org.sakaiproject.general.Connection;
+import org.sakaiproject.general.ConnectionType;
 
 import java.io.IOException;
 

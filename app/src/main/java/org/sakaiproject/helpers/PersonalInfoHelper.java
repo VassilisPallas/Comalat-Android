@@ -2,6 +2,7 @@ package org.sakaiproject.helpers;
 
 import android.app.Activity;
 import android.graphics.drawable.Drawable;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -25,7 +26,7 @@ public class PersonalInfoHelper implements IUserAbout {
     private ImageView editPersonalInformationImageView;
     private EditText booksEditText, tvShowsEditText, moviesEditText, quotesEditText;
 
-    public PersonalInfoHelper(Activity activity, Drawable editDrawable, View.OnClickListener clickListener) {
+    public PersonalInfoHelper(AppCompatActivity activity, Drawable editDrawable, View.OnClickListener clickListener) {
         this.clickListener = clickListener;
         this.editDrawable = editDrawable;
 
@@ -35,7 +36,7 @@ public class PersonalInfoHelper implements IUserAbout {
     }
 
     @Override
-    public void initialize(Activity activity) {
+    public void initialize(AppCompatActivity activity) {
         booksLayout = (LinearLayout) activity.findViewById(R.id.books_layout);
         tvShowsLayout = (LinearLayout) activity.findViewById(R.id.tv_shows_layout);
         moviesLayout = (LinearLayout) activity.findViewById(R.id.movies_layout);
@@ -85,7 +86,7 @@ public class PersonalInfoHelper implements IUserAbout {
     }
 
     @Override
-    public void checkVisibilities(Activity activity) {
+    public void checkVisibilities(AppCompatActivity activity) {
         if (booksLayout.getVisibility() == View.GONE && tvShowsLayout.getVisibility() == View.GONE && moviesLayout.getVisibility() == View.GONE
                 && quotesLayout.getVisibility() == View.GONE) {
             activity.findViewById(R.id.personal_information_buttons).setVisibility(View.VISIBLE);

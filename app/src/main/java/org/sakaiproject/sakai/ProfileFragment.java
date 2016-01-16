@@ -17,7 +17,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import org.sakaiproject.api.general.Actions;
+import org.sakaiproject.general.Actions;
 import org.sakaiproject.api.user.profile.Profile;
 import org.sakaiproject.customviews.ProfileScrollView;
 

@@ -2,6 +2,7 @@ package org.sakaiproject.helpers;
 
 import android.app.Activity;
 import android.graphics.drawable.Drawable;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -26,7 +27,7 @@ public class ContactInfoHelper implements IUserAbout {
 
     private Drawable editDrawable;
 
-    public ContactInfoHelper(Activity activity, Drawable editDrawable, View.OnClickListener clickListener) {
+    public ContactInfoHelper(AppCompatActivity activity, Drawable editDrawable, View.OnClickListener clickListener) {
         this.editDrawable = editDrawable;
         this.clickListener = clickListener;
         initialize(activity);
@@ -35,7 +36,7 @@ public class ContactInfoHelper implements IUserAbout {
     }
 
     @Override
-    public void initialize(Activity activity) {
+    public void initialize(AppCompatActivity activity) {
         emailLayout = (LinearLayout) activity.findViewById(R.id.email_layout);
         homePageLayout = (LinearLayout) activity.findViewById(R.id.home_page_layout);
         workPhoneLayout = (LinearLayout) activity.findViewById(R.id.work_phone_layout);
@@ -104,7 +105,7 @@ public class ContactInfoHelper implements IUserAbout {
     }
 
     @Override
-    public void checkVisibilities(Activity activity) {
+    public void checkVisibilities(AppCompatActivity activity) {
         if (emailLayout.getVisibility() == View.GONE && homePageLayout.getVisibility() == View.GONE && workPhoneLayout.getVisibility() == View.GONE
                 && homePhoneLayout.getVisibility() == View.GONE && mobilePhoneLayout.getVisibility() == View.GONE && facsimileLayout.getVisibility() == View.GONE) {
             activity.findViewById(R.id.no_contact_information).setVisibility(View.VISIBLE);

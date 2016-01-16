@@ -5,7 +5,7 @@ import android.os.AsyncTask;
 
 import org.sakaiproject.api.events.EventsCollection;
 import org.sakaiproject.api.events.OnlineEvents;
-import org.sakaiproject.api.general.Actions;
+import org.sakaiproject.general.Actions;
 import org.sakaiproject.api.site.OnlineSite;
 import org.sakaiproject.api.site.SiteData;
 import org.sakaiproject.customviews.CustomSwipeRefreshLayout;

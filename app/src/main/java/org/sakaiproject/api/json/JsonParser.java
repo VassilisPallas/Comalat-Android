@@ -2,6 +2,7 @@ package org.sakaiproject.api.json;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.text.TextUtils;
 import android.util.Log;
 
 import org.json.JSONArray;
@@ -10,13 +11,17 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Hashtable;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import org.sakaiproject.api.events.EventsCollection;
-import org.sakaiproject.api.events.OnlineEvents;
-import org.sakaiproject.api.general.Connection;
+import org.sakaiproject.api.site.Owner;
+import org.sakaiproject.api.site.SitePage;
+import org.sakaiproject.api.site.SiteTools;
+import org.sakaiproject.general.Connection;
 import org.sakaiproject.api.motd.OnlineMessageOfTheDay;
-import org.sakaiproject.api.site.OnlineSite;
 import org.sakaiproject.api.site.SiteData;
 import org.sakaiproject.api.time.Time;
 import org.sakaiproject.api.user.profile.DateOfBirth;
@@ -359,12 +364,15 @@ public class JsonParser {
                 JSONObject obj = collections.getJSONObject(i);
                 SiteData data = new SiteData();
                 data.setId(obj.getString("id").replace(User.getUserId() + "::site:", ""));
+                data.setMemberRole(obj.getString("memberRole"));
+                data.setActive(obj.getBoolean("active"));
+                data.setProvided(obj.getBoolean("provided"));
                 data.setType(obj.getString("siteType"));
 
-                if (obj.getString("siteType").equals("null")) {
-                    SiteData.getSites().add(data);
-                } else {
+                if (obj.getString("siteType").equals("project")) {
                     SiteData.getProjects().add(data);
+                } else {
+                    SiteData.getSites().add(data);
                 }
             }
         } catch (JSONException e) {
@@ -372,22 +380,288 @@ public class JsonParser {
         }
     }
 
-    public static void parseSiteWholeDataJson(String result, int index) {
+    public void getSiteData(String result, int index) {
         try {
             JSONObject jsonObject = new JSONObject(result);
-            SiteData.getSites().get(index).setTitle(jsonObject.getString("entityTitle"));
+
+            SiteData.getSites().get(index).setContactEmail(jsonObject.getString("contactEmail"));
+            SiteData.getSites().get(index).setContactName(jsonObject.getString("contactName"));
+
+            JSONObject createdTime = jsonObject.getJSONObject("createdTime");
+            SiteData.getSites().get(index).setCreatedTime(new Time(createdTime.getString("display"), new Date(createdTime.getLong("time"))));
+
+            SiteData.getSites().get(index).setHtmlDescription(jsonObject.getString("htmlDescription"));
+
+            SiteData.getSites().get(index).setHtmlShortDescription(jsonObject.getString("htmlShortDescription"));
+
+            SiteData.getSites().get(index).setIconUrlFull(jsonObject.getString("iconUrlFull"));
+
+            SiteData.getSites().get(index).setInfoUrlFull(jsonObject.getString("infoUrlFull"));
+
+            SiteData.getSites().get(index).setJoinerRole(jsonObject.getString("joinerRole"));
+
+            SiteData.getSites().get(index).setLastModified(jsonObject.getLong("lastModified"));
+
+            SiteData.getSites().get(index).setMaintainRole(jsonObject.getString("maintainRole"));
+
+            JSONObject modifiedTime = jsonObject.getJSONObject("modifiedTime");
+            SiteData.getSites().get(index).setModifiedTime(new Time(modifiedTime.getString("display"), new Date(modifiedTime.getLong("time"))));
+
+            SiteData.getSites().get(index).setOwner(jsonObject.getString("owner"));
+
+
+            JSONObject props = jsonObject.getJSONObject("props");
+
+            if (props != JSONObject.NULL) {
+                SiteData.getSites().get(index).setProps(jsonObjectToMap(props));
+            }
+
+            SiteData.getSites().get(index).setProviderGroupId(jsonObject.getString("providerGroupId"));
+
+            SiteData.getSites().get(index).setProviderGroupId(jsonObject.getString("providerGroupId"));
+
+            JSONArray siteGroups = jsonObject.optJSONArray("siteGroups");
+
+            if (siteGroups != null) {
+                SiteData.getSites().get(index).setSiteGroups(jsonArrayToList(siteGroups));
+            }
+
+            JSONObject siteOwner = jsonObject.getJSONObject("siteOwner");
+
+            if (siteOwner != JSONObject.NULL) {
+                SiteData.getSites().get(index).setSiteOwner(new Owner(siteOwner.getString("userDisplayName"), siteOwner.getString("userId")));
+            }
+
+            SiteData.getSites().get(index).setSkin(jsonObject.getString("skin"));
+
+            // it returns Date but is always null
+//            if (jsonObject.getLong("softlyDeletedDate") != JSONObject.NULL)
+//                SiteData.getSites().get(index).setSoftlyDeletedDate(new Date(jsonObject.getLong("softlyDeletedDate")));
+
+            SiteData.getSites().get(index).setTitle(jsonObject.getString("title"));
+
+            JSONArray userRoles = jsonObject.getJSONArray("userRoles");
+            if (userRoles != null) {
+                SiteData.getSites().get(index).setUserRoles(jsonArrayToList(userRoles));
+            }
+
+            SiteData.getSites().get(index).setActiveEdit(jsonObject.getBoolean("activeEdit"));
+
+            SiteData.getSites().get(index).setCustomPageOrdered(jsonObject.getBoolean("customPageOrdered"));
+
+            SiteData.getSites().get(index).setEmpty(jsonObject.getBoolean("empty"));
+
+            SiteData.getSites().get(index).setJoinable(jsonObject.getBoolean("joinable"));
+
+            SiteData.getSites().get(index).setPubView(jsonObject.getBoolean("pubView"));
+
+            SiteData.getSites().get(index).setPublished(jsonObject.getBoolean("published"));
+
+            SiteData.getSites().get(index).setSoftlyDeleted(jsonObject.getBoolean("softlyDeleted"));
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
     }
 
-    public static void parseProjectWholeDataJson(String result, int index) {
+    public void getProjectData(String result, int index) {
         try {
             JSONObject jsonObject = new JSONObject(result);
-            SiteData.getProjects().get(index).setTitle(jsonObject.getString("entityTitle"));
+
+            SiteData.getProjects().get(index).setContactEmail(jsonObject.getString("contactEmail"));
+            SiteData.getProjects().get(index).setContactName(jsonObject.getString("contactName"));
+
+            JSONObject createdTime = jsonObject.getJSONObject("createdTime");
+            SiteData.getProjects().get(index).setCreatedTime(new Time(createdTime.getString("display"), new Date(createdTime.getLong("time"))));
+
+            SiteData.getProjects().get(index).setHtmlDescription(jsonObject.getString("htmlDescription"));
+
+            SiteData.getProjects().get(index).setHtmlShortDescription(jsonObject.getString("htmlShortDescription"));
+
+            SiteData.getProjects().get(index).setIconUrlFull(jsonObject.getString("iconUrlFull"));
+
+            SiteData.getProjects().get(index).setInfoUrlFull(jsonObject.getString("infoUrlFull"));
+
+            SiteData.getProjects().get(index).setJoinerRole(jsonObject.getString("joinerRole"));
+
+            SiteData.getProjects().get(index).setLastModified(jsonObject.getLong("lastModified"));
+
+            SiteData.getProjects().get(index).setMaintainRole(jsonObject.getString("maintainRole"));
+
+            JSONObject modifiedTime = jsonObject.getJSONObject("modifiedTime");
+            SiteData.getProjects().get(index).setModifiedTime(new Time(modifiedTime.getString("display"), new Date(modifiedTime.getLong("time"))));
+
+            SiteData.getProjects().get(index).setOwner(jsonObject.getString("owner"));
+
+
+            JSONObject props = jsonObject.getJSONObject("props");
+
+            if (props != JSONObject.NULL) {
+                SiteData.getProjects().get(index).setProps(jsonObjectToMap(props));
+            }
+
+            SiteData.getProjects().get(index).setProviderGroupId(jsonObject.getString("providerGroupId"));
+
+            SiteData.getProjects().get(index).setProviderGroupId(jsonObject.getString("providerGroupId"));
+
+            JSONArray siteGroups = jsonObject.optJSONArray("siteGroups");
+
+            if (siteGroups != null) {
+                SiteData.getProjects().get(index).setSiteGroups(jsonArrayToList(siteGroups));
+            }
+
+            JSONObject siteOwner = jsonObject.getJSONObject("siteOwner");
+
+            if (siteOwner != JSONObject.NULL) {
+                SiteData.getProjects().get(index).setSiteOwner(new Owner(siteOwner.getString("userDisplayName"), siteOwner.getString("userId")));
+            }
+
+            SiteData.getProjects().get(index).setSkin(jsonObject.getString("skin"));
+
+
+            // it returns Date but is always null
+//            if (jsonObject.getLong("softlyDeletedDate") != JSONObject.NULL)
+//                SiteData.getProjects().get(index).setSoftlyDeletedDate(new Date(jsonObject.getLong("softlyDeletedDate")));
+
+            SiteData.getProjects().get(index).setTitle(jsonObject.getString("title"));
+
+            JSONArray userRoles = jsonObject.getJSONArray("userRoles");
+            if (userRoles != null) {
+                SiteData.getProjects().get(index).setUserRoles(jsonArrayToList(userRoles));
+            }
+
+            SiteData.getProjects().get(index).setActiveEdit(jsonObject.getBoolean("activeEdit"));
+
+            SiteData.getProjects().get(index).setCustomPageOrdered(jsonObject.getBoolean("customPageOrdered"));
+
+            SiteData.getProjects().get(index).setEmpty(jsonObject.getBoolean("empty"));
+
+            SiteData.getProjects().get(index).setJoinable(jsonObject.getBoolean("joinable"));
+
+            SiteData.getProjects().get(index).setPubView(jsonObject.getBoolean("pubView"));
+
+            SiteData.getProjects().get(index).setPublished(jsonObject.getBoolean("published"));
+
+            SiteData.getProjects().get(index).setSoftlyDeleted(jsonObject.getBoolean("softlyDeleted"));
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+    public void getSitePageData(String result, int index, String type) {
+        try {
+
+            List<SitePage> pages = new ArrayList<>();
+
+            JSONArray jsonArray = new JSONArray(result);
+
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject obj = jsonArray.getJSONObject(i);
+
+                SitePage page = new SitePage();
+                page.setLayout(obj.getInt("layout"));
+                page.setToolPopupUrl(obj.getString("toolpopupurl"));
+                page.setToolPopup(obj.getBoolean("toolpopup"));
+                page.setSkin(obj.getString("skin"));
+                page.setId(obj.getString("id"));
+                page.setPosition(obj.getInt("position"));
+                page.setTitle(obj.getString("title"));
+
+                JSONArray tools = obj.getJSONArray("tools");
+                List<SiteTools> toolsList = new ArrayList<>();
+                for (int j = 0; j < tools.length(); j++) {
+
+                    JSONObject tool = tools.getJSONObject(j);
+
+                    SiteTools siteTools = new SiteTools();
+
+                    siteTools.setToolId(tool.getString("toolId"));
+                    siteTools.setPageOrder(tool.getInt("pageOrder"));
+                    siteTools.setPlacementId(tool.getString("placementId"));
+                    siteTools.setDescription(tool.getString("description"));
+                    siteTools.setTitle(tool.getString("title"));
+
+                    toolsList.add(siteTools);
+                    // home
+                }
+
+                page.setTools(toolsList);
+
+                pages.add(page);
+            }
+
+            if (type.equals("project"))
+                SiteData.getProjects().get(index).setPages(pages);
+            else
+                SiteData.getSites().get(index).setPages(pages);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    public void getSitePermissions(String result, int index, String type) {
+        try {
+            JSONObject obj = new JSONObject(result);
+            JSONObject data = obj.getJSONObject("data");
+
+            JSONArray access = data.getJSONArray("access");
+            if (type.equals("project")) {
+                SiteData.getProjects().get(index).setAccess(jsonArrayToList(access));
+            } else {
+                SiteData.getSites().get(index).setAccess(jsonArrayToList(access));
+            }
+
+            JSONArray maintain = data.getJSONArray("maintain");
+            if (type.equals("project")) {
+                SiteData.getProjects().get(index).setMaintain(jsonArrayToList(maintain));
+            } else {
+                SiteData.getSites().get(index).setMaintain(jsonArrayToList(maintain));
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void getUserSitePermissions(String result, int index, String type) {
+        try {
+            JSONObject obj = new JSONObject(result);
+            JSONArray data = obj.getJSONArray("data");
+
+            if (type.equals("project")) {
+                SiteData.getProjects().get(index).setUserSitePermissions(jsonArrayToList(data));
+            } else {
+                SiteData.getSites().get(index).setUserSitePermissions(jsonArrayToList(data));
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private Map<String, String> jsonObjectToMap(JSONObject props) throws JSONException {
+        Map<String, String> temp = new Hashtable<>();
+
+        Iterator<?> propsKeys = props.keys();
+
+        while (propsKeys.hasNext()) {
+            String key = (String) propsKeys.next();
+            String value = (String) props.get(key);
+            temp.put(key, value);
+        }
+
+        return temp;
+    }
+
+    private List<String> jsonArrayToList(JSONArray siteGroups) throws JSONException {
+        List<String> temp = new ArrayList<>();
+
+        for (int i = 0; i < siteGroups.length(); i++) {
+            temp.add(siteGroups.get(i).toString());
+        }
+
+        return temp;
     }
 
 }

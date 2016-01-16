@@ -1,14 +1,10 @@
 package org.sakaiproject.api.site;
 
 import android.content.Context;
-import android.util.Log;
 
-import org.sakaiproject.api.general.Actions;
-import org.sakaiproject.api.general.ConnectionType;
+import org.sakaiproject.general.Actions;
 import org.sakaiproject.api.json.JsonParser;
-import org.sakaiproject.sakai.R;
 
-import java.io.BufferedInputStream;
 import java.io.IOException;
 
 /**
@@ -30,12 +26,30 @@ public class OfflineSite {
 
         for (int i = 0; i < SiteData.getSites().size(); i++) {
             sitesJson = Actions.readJsonFile(context, SiteData.getSites().get(i).getId());
-            jsonParse.parseSiteWholeDataJson(sitesJson, i);
+            jsonParse.getSiteData(sitesJson, i);
+
+            sitesJson = Actions.readJsonFile(context, SiteData.getSites().get(i).getId() + "_pages");
+            jsonParse.getSitePageData(sitesJson, i, "site");
+
+            sitesJson = Actions.readJsonFile(context, SiteData.getSites().get(i).getId() + "_perms");
+            jsonParse.getSitePermissions(sitesJson, i, "site");
+
+            sitesJson = Actions.readJsonFile(context, SiteData.getSites().get(i).getId() + "_userPerms");
+            jsonParse.getUserSitePermissions(sitesJson, i, "site");
         }
 
         for (int i = 0; i < SiteData.getProjects().size(); i++) {
             sitesJson = Actions.readJsonFile(context, SiteData.getProjects().get(i).getId());
-            jsonParse.parseProjectWholeDataJson(sitesJson, i);
+            jsonParse.getProjectData(sitesJson, i);
+
+            sitesJson = Actions.readJsonFile(context, SiteData.getProjects().get(i).getId() + "_pages");
+            jsonParse.getSitePageData(sitesJson, i, "project");
+
+            sitesJson = Actions.readJsonFile(context, SiteData.getProjects().get(i).getId() + "_perms");
+            jsonParse.getSitePermissions(sitesJson, i, "project");
+
+            sitesJson = Actions.readJsonFile(context, SiteData.getProjects().get(i).getId() + "_userPerms");
+            jsonParse.getUserSitePermissions(sitesJson, i, "project");
         }
     }
 }

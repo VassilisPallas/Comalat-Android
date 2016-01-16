@@ -5,23 +5,17 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.Html;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
-import org.sakaiproject.api.general.Actions;
-import org.sakaiproject.api.general.Connection;
+import org.sakaiproject.general.Actions;
+import org.sakaiproject.general.Connection;
 import org.sakaiproject.api.internet.NetWork;
 import org.sakaiproject.api.session.RefreshSession;
 import org.sakaiproject.api.session.Waiter;
-import org.sakaiproject.api.user.User;
-import org.sakaiproject.api.user.profile.Profile;
 import org.sakaiproject.customviews.AboutScrollView;
 import org.sakaiproject.helpers.BasicInfoHelper;
 import org.sakaiproject.helpers.ContactInfoHelper;
@@ -188,7 +182,6 @@ public class AboutActivity extends AppCompatActivity implements View.OnClickList
                 break;
             case R.id.edit_basic_button:
                 basicInfo.enableEdit();
-                findViewById(R.id.basic_information_buttons).setVisibility(View.VISIBLE);
                 break;
             case R.id.edit_contact_button:
                 contactInfoHelper.enableEdit();
@@ -208,6 +201,12 @@ public class AboutActivity extends AppCompatActivity implements View.OnClickList
             case R.id.edit_personal_button:
                 personalInfo.enableEdit();
                 findViewById(R.id.personal_information_buttons).setVisibility(View.VISIBLE);
+                break;
+            case R.id.basic_info_save_changes_button:
+                basicInfo.saveEdit();
+                break;
+            case R.id.basic_info_cancel_button:
+                basicInfo.cancelEdit();
                 break;
         }
     }

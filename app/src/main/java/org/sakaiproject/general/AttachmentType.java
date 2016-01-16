@@ -1,4 +1,4 @@
-package org.sakaiproject.api.general;
+package org.sakaiproject.general;
 
 /**
  * Created by vasilis on 10/31/15.

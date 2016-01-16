@@ -3,9 +3,9 @@ package org.sakaiproject.api.session;
 import android.content.Context;
 import android.util.Log;
 
-import org.sakaiproject.api.general.Actions;
-import org.sakaiproject.api.general.Connection;
-import org.sakaiproject.api.general.ConnectionType;
+import org.sakaiproject.general.Actions;
+import org.sakaiproject.general.Connection;
+import org.sakaiproject.general.ConnectionType;
 
 import java.io.IOException;
 

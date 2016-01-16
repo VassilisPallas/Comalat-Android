@@ -2,6 +2,7 @@ package org.sakaiproject.helpers;
 
 import android.app.Activity;
 import android.graphics.drawable.Drawable;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -25,7 +26,7 @@ public class StudentInfoHelper implements IUserAbout {
     private ImageView editStudentInformationImageView;
     private EditText degreeEditText, subjectsEditText;
 
-    public StudentInfoHelper(Activity activity, Drawable editDrawable, View.OnClickListener clickListener) {
+    public StudentInfoHelper(AppCompatActivity activity, Drawable editDrawable, View.OnClickListener clickListener) {
         this.clickListener = clickListener;
         this.editDrawable = editDrawable;
 
@@ -35,7 +36,7 @@ public class StudentInfoHelper implements IUserAbout {
     }
 
     @Override
-    public void initialize(Activity activity) {
+    public void initialize(AppCompatActivity activity) {
         degreeLayout = (LinearLayout) activity.findViewById(R.id.degree_layout);
         subjectsLayout = (LinearLayout) activity.findViewById(R.id.subjects_layout);
 
@@ -67,7 +68,7 @@ public class StudentInfoHelper implements IUserAbout {
     }
 
     @Override
-    public void checkVisibilities(Activity activity) {
+    public void checkVisibilities(AppCompatActivity activity) {
         if (degreeLayout.getVisibility() == View.GONE && subjectsLayout.getVisibility() == View.GONE) {
             activity.findViewById(R.id.no_student_information).setVisibility(View.VISIBLE);
         }
@@ -85,7 +86,6 @@ public class StudentInfoHelper implements IUserAbout {
         subjectTextView.setVisibility(View.GONE);
         subjectsEditText.setVisibility(View.VISIBLE);
         subjectsEditText.setText(Profile.getSubjects());
-
     }
 
     @Override

@@ -1,22 +1,17 @@
 package org.sakaiproject.sakai;
 
 
-import android.app.Dialog;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
-import android.support.v7.app.AlertDialog;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import org.sakaiproject.api.general.Actions;
-import org.sakaiproject.api.general.AttachmentType;
+import org.sakaiproject.general.Actions;
 import org.sakaiproject.api.user.User;
 import org.sakaiproject.api.user.UserEvents;
 import org.sakaiproject.api.user.profile.Profile;

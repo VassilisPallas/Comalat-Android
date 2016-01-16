@@ -1,24 +1,39 @@
 package org.sakaiproject.helpers;
 
-import android.app.Activity;
+import android.app.Dialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
 import android.view.View;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import org.sakaiproject.api.general.Actions;
+import org.sakaiproject.api.json.JsonWriter;
+import org.sakaiproject.api.user.User;
+import org.sakaiproject.api.user.profile.update.UpdateUserInfo;
+import org.sakaiproject.general.Actions;
 import org.sakaiproject.api.user.profile.Profile;
 import org.sakaiproject.sakai.R;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 /**
  * Created by vasilis on 1/12/16.
  */
 public class BasicInfoHelper implements IUserAbout {
+
+    private AppCompatActivity activity;
 
     private View.OnClickListener clickListener;
 
@@ -31,10 +46,12 @@ public class BasicInfoHelper implements IUserAbout {
     private ImageView editBasicInformationImageView, datePickerImageView;
     private DatePicker birthdayPicker;
     private EditText nicknameEditText, personalSummaryEditText;
+    private Button saveChangesButton, cancelChangesButton;
 
     private Drawable calendarDrawable, editDrawable;
 
-    public BasicInfoHelper(Activity activity, Drawable editDrawable, View.OnClickListener clickListener) {
+    public BasicInfoHelper(AppCompatActivity activity, Drawable editDrawable, View.OnClickListener clickListener) {
+        this.activity = activity;
         this.clickListener = clickListener;
         this.editDrawable = editDrawable;
         calendarDrawable = Actions.setCustomDrawableColor(activity.getApplicationContext(), R.mipmap.ic_today, Color.parseColor("#0083AF"));
@@ -48,7 +65,7 @@ public class BasicInfoHelper implements IUserAbout {
     }
 
     @Override
-    public void initialize(Activity activity) {
+    public void initialize(AppCompatActivity activity) {
         nicknameLayout = (LinearLayout) activity.findViewById(R.id.nickname_layout);
         birthdayLayout = (LinearLayout) activity.findViewById(R.id.birthday_layout);
         personalSummaryLayout = (LinearLayout) activity.findViewById(R.id.personal_summary_layout);
@@ -81,6 +98,12 @@ public class BasicInfoHelper implements IUserAbout {
         nicknameEditText = (EditText) activity.findViewById(R.id.nickname_change);
         personalSummaryEditText = (EditText) activity.findViewById(R.id.personal_summary_change);
 
+        saveChangesButton = (Button) activity.findViewById(R.id.basic_info_save_changes_button);
+        saveChangesButton.setOnClickListener(clickListener);
+
+        cancelChangesButton = (Button) activity.findViewById(R.id.basic_info_cancel_button);
+        cancelChangesButton.setOnClickListener(clickListener);
+
         activity.findViewById(R.id.edit_basic_button).setOnClickListener(clickListener);
     }
 
@@ -108,7 +131,7 @@ public class BasicInfoHelper implements IUserAbout {
     }
 
     @Override
-    public void checkVisibilities(Activity activity) {
+    public void checkVisibilities(AppCompatActivity activity) {
         if (nicknameLayout.getVisibility() == View.GONE && birthdayLayout.getVisibility() == View.GONE && personalSummaryLayout.getVisibility() == View.GONE) {
             activity.findViewById(R.id.no_basic_information).setVisibility(View.VISIBLE);
         }
@@ -129,16 +152,103 @@ public class BasicInfoHelper implements IUserAbout {
         personalSummaryTextView.setVisibility(View.GONE);
         personalSummaryEditText.setVisibility(View.VISIBLE);
         personalSummaryEditText.setText(Profile.getPersonalSummary());
+
+        activity.findViewById(R.id.basic_information_buttons).setVisibility(View.VISIBLE);
     }
 
     @Override
     public void saveEdit() {
-        throw new UnsupportedOperationException();
+        AlertDialog.Builder adb = new AlertDialog.Builder(activity.getSupportActionBar().getThemedContext());
+
+        adb.setTitle("Are you sure tou want to save the edits?");
+
+        adb.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                Profile.setNickname(nicknameEditText.getText().toString());
+
+                String birthday = birthdayTextView.getText().toString();
+                SimpleDateFormat birthdayFormat = new SimpleDateFormat("MMM dd, yyyy");
+                SimpleDateFormat yearFormat = new SimpleDateFormat("yy");
+                try {
+                    Date d = birthdayFormat.parse(birthday);
+                    Calendar cal = Calendar.getInstance();
+                    cal.setTime(d);
+
+                    Profile.getDateOfBirth().setDate(cal.get(Calendar.DAY_OF_MONTH));
+                    Profile.getDateOfBirth().setDay(cal.get(Calendar.DAY_OF_WEEK) - 1);
+                    Profile.getDateOfBirth().setMonth(cal.get(Calendar.MONTH));
+                    Profile.getDateOfBirth().setTime(d.getTime());
+                    Profile.getDateOfBirth().setYear(Integer.valueOf(yearFormat.format(d)));
+
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
+                Profile.setPersonalSummary(personalSummaryEditText.getText().toString());
+
+
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        UpdateUserInfo updateUserInfo = new UpdateUserInfo(activity.getApplication());
+                        updateUserInfo.updateInfo(activity.getApplicationContext().getResources().getString(R.string.url) + "/profile/" + User.getUserId() + ".json");
+                    }
+                }).start();
+
+                activity.findViewById(R.id.basic_information_buttons).setVisibility(View.GONE);
+
+                hideEditTexts();
+
+                fillValues();
+            }
+        });
+
+
+        adb.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+                activity.findViewById(R.id.basic_information_buttons).setVisibility(View.GONE);
+
+                hideEditTexts();
+
+                fillValues();
+            }
+        });
+
+        adb.setNeutralButton("Cancel", null);
+
+        Dialog d = adb.show();
     }
 
     @Override
     public void cancelEdit() {
-        throw new UnsupportedOperationException();
+        AlertDialog.Builder adb = new AlertDialog.Builder(activity.getSupportActionBar().getThemedContext());
+
+        adb.setTitle("Are you sure tou want to cancel all the edits?");
+
+        adb.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+
+                activity.findViewById(R.id.basic_information_buttons).setVisibility(View.GONE);
+
+                hideEditTexts();
+
+                fillValues();
+            }
+        });
+
+        adb.setNegativeButton("No", null);
+
+        Dialog d = adb.show();
+    }
+
+    private void hideEditTexts() {
+        nicknameEditText.setVisibility(View.GONE);
+        nicknameTextView.setVisibility(View.VISIBLE);
+        datePickerImageView.setVisibility(View.INVISIBLE);
+        personalSummaryEditText.setVisibility(View.GONE);
+        personalSummaryTextView.setVisibility(View.VISIBLE);
     }
 
 }

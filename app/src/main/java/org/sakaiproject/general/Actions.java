@@ -1,19 +1,19 @@
-package org.sakaiproject.api.general;
+package org.sakaiproject.general;
 
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.SubMenu;
 
 import org.sakaiproject.api.site.SiteData;
+import org.sakaiproject.api.user.User;
 import org.sakaiproject.sakai.R;
+import org.sakaiproject.sakai.UserActivity;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -23,6 +23,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.Hashtable;
+import java.util.Map;
 
 /**
  * Created by vasilis on 10/18/15.
@@ -374,6 +376,10 @@ public class Actions {
 
     public static void fillSitesDrawer(Menu navigationMenu) {
 
+        UserActivity.sitesIds.clear();
+
+        int key = Menu.FIRST;
+
         MenuItem sitesItem = navigationMenu.findItem(R.id.sites);
         SubMenu sitesSubMenu = sitesItem.getSubMenu();
 
@@ -384,14 +390,19 @@ public class Actions {
         sitesSubMenu.clear();
         projectsSubMenu.clear();
 
-        sitesSubMenu.add(R.id.sites, Menu.NONE, Menu.NONE, "My Workspace").setCheckable(true).setChecked(true);
+        sitesSubMenu.add(R.id.sites, key, Menu.NONE, "My Workspace").setCheckable(true).setChecked(true);
+        UserActivity.sitesIds.put(key, "My Workspace");
+
         for (int i = 0; i < SiteData.getSites().size(); i++) {
-            sitesSubMenu.add(R.id.sites, Menu.NONE, Menu.NONE, SiteData.getSites().get(i).getTitle()).setCheckable(true);
+            sitesSubMenu.add(R.id.sites, ++key, Menu.NONE, SiteData.getSites().get(i).getTitle()).setCheckable(true);
+            UserActivity.sitesIds.put(key, SiteData.getSites().get(i).getTitle());
         }
 
         for (int i = 0; i < SiteData.getProjects().size(); i++) {
-            projectsSubMenu.add(R.id.projects, Menu.NONE, Menu.NONE, SiteData.getProjects().get(i).getTitle()).setCheckable(true);
+            projectsSubMenu.add(R.id.projects, ++key, Menu.NONE, SiteData.getProjects().get(i).getTitle()).setCheckable(true);
+            UserActivity.sitesIds.put(key, SiteData.getProjects().get(i).getTitle());
         }
+
     }
 
 }

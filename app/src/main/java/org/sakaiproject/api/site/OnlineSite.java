@@ -1,11 +1,10 @@
 package org.sakaiproject.api.site;
 
 import android.content.Context;
-import android.util.Log;
 
-import org.sakaiproject.api.general.Actions;
-import org.sakaiproject.api.general.Connection;
-import org.sakaiproject.api.general.ConnectionType;
+import org.sakaiproject.general.Actions;
+import org.sakaiproject.general.Connection;
+import org.sakaiproject.general.ConnectionType;
 import org.sakaiproject.api.json.JsonParser;
 import org.sakaiproject.sakai.R;
 
@@ -41,15 +40,48 @@ public class OnlineSite {
             Actions.writeJsonFile(context, json, "projectsAndSitesJson");
 
             for (int i = 0; i < SiteData.getSites().size(); i++) {
+
                 connection.openConnection(context.getResources().getString(R.string.url) + "site/" + SiteData.getSites().get(i).getId(), ConnectionType.GET, true, false, null);
                 status = connection.getResponseCode();
                 if (status >= 200 && status < 300) {
                     inputStream = new BufferedInputStream(connection.getInputStream());
                     json = Actions.readJsonStream(inputStream);
                     inputStream.close();
-                    jsonParse.parseSiteWholeDataJson(json, i);
+                    jsonParse.getSiteData(json, i);
                     Actions.writeJsonFile(context, json, SiteData.getSites().get(i).getId());
                 }
+
+                connection.openConnection(context.getResources().getString(R.string.url) + "site/" + SiteData.getSites().get(i).getId() + "/pages", ConnectionType.GET, true, false, null);
+                status = connection.getResponseCode();
+                if (status >= 200 && status < 300) {
+                    inputStream = new BufferedInputStream(connection.getInputStream());
+                    json = Actions.readJsonStream(inputStream);
+                    inputStream.close();
+                    jsonParse.getSitePageData(json, i, "site");
+                    Actions.writeJsonFile(context, json, SiteData.getSites().get(i).getId() + "_pages");
+                }
+
+
+                connection.openConnection(context.getResources().getString(R.string.url) + "site/" + SiteData.getSites().get(i).getId() + "/perms", ConnectionType.GET, true, false, null);
+                status = connection.getResponseCode();
+                if (status >= 200 && status < 300) {
+                    inputStream = new BufferedInputStream(connection.getInputStream());
+                    json = Actions.readJsonStream(inputStream);
+                    inputStream.close();
+                    jsonParse.getSitePermissions(json, i, "site");
+                    Actions.writeJsonFile(context, json, SiteData.getSites().get(i).getId() + "_perms");
+                }
+
+                connection.openConnection(context.getResources().getString(R.string.url) + "site/" + SiteData.getSites().get(i).getId() + "/userPerms", ConnectionType.GET, true, false, null);
+                status = connection.getResponseCode();
+                if (status >= 200 && status < 300) {
+                    inputStream = new BufferedInputStream(connection.getInputStream());
+                    json = Actions.readJsonStream(inputStream);
+                    inputStream.close();
+                    jsonParse.getUserSitePermissions(json, i, "site");
+                    Actions.writeJsonFile(context, json, SiteData.getSites().get(i).getId() + "_userPerms");
+                }
+
             }
 
             for (int i = 0; i < SiteData.getProjects().size(); i++) {
@@ -59,9 +91,40 @@ public class OnlineSite {
                     inputStream = new BufferedInputStream(connection.getInputStream());
                     json = Actions.readJsonStream(inputStream);
                     inputStream.close();
-                    jsonParse.parseProjectWholeDataJson(json, i);
+                    jsonParse.getProjectData(json, i);
                     Actions.writeJsonFile(context, json, SiteData.getProjects().get(i).getId());
                 }
+
+                connection.openConnection(context.getResources().getString(R.string.url) + "site/" + SiteData.getProjects().get(i).getId() + "/pages", ConnectionType.GET, true, false, null);
+                status = connection.getResponseCode();
+                if (status >= 200 && status < 300) {
+                    inputStream = new BufferedInputStream(connection.getInputStream());
+                    json = Actions.readJsonStream(inputStream);
+                    inputStream.close();
+                    jsonParse.getSitePageData(json, i, "project");
+                    Actions.writeJsonFile(context, json, SiteData.getProjects().get(i).getId() + "_pages");
+                }
+
+                connection.openConnection(context.getResources().getString(R.string.url) + "site/" + SiteData.getProjects().get(i).getId() + "/perms", ConnectionType.GET, true, false, null);
+                status = connection.getResponseCode();
+                if (status >= 200 && status < 300) {
+                    inputStream = new BufferedInputStream(connection.getInputStream());
+                    json = Actions.readJsonStream(inputStream);
+                    inputStream.close();
+                    jsonParse.getSitePermissions(json, i, "project");
+                    Actions.writeJsonFile(context, json, SiteData.getProjects().get(i).getId() + "_perms");
+                }
+
+                connection.openConnection(context.getResources().getString(R.string.url) + "site/" + SiteData.getProjects().get(i).getId() + "/userPerms", ConnectionType.GET, true, false, null);
+                status = connection.getResponseCode();
+                if (status >= 200 && status < 300) {
+                    inputStream = new BufferedInputStream(connection.getInputStream());
+                    json = Actions.readJsonStream(inputStream);
+                    inputStream.close();
+                    jsonParse.getUserSitePermissions(json, i, "project");
+                    Actions.writeJsonFile(context, json, SiteData.getProjects().get(i).getId() + "_userPerms");
+                }
+
             }
         }
     }

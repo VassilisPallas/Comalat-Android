@@ -2,6 +2,7 @@ package org.sakaiproject.sakai;
 
 import android.app.Activity;
 import android.graphics.drawable.Drawable;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -26,7 +27,7 @@ public class SocialNetworkInfoHelper implements IUserAbout {
     private ImageView editSocialInformationImageView;
     private EditText fbEditText, linkedInEditText, mySpaceEditText, skypeEditText, twitterEditText;
 
-    public SocialNetworkInfoHelper(Activity activity, Drawable editDrawable, View.OnClickListener clickListener) {
+    public SocialNetworkInfoHelper(AppCompatActivity activity, Drawable editDrawable, View.OnClickListener clickListener) {
         this.clickListener = clickListener;
         this.editDrawable = editDrawable;
 
@@ -36,7 +37,7 @@ public class SocialNetworkInfoHelper implements IUserAbout {
     }
 
     @Override
-    public void initialize(Activity activity) {
+    public void initialize(AppCompatActivity activity) {
         fbLayout = (LinearLayout) activity.findViewById(R.id.fb_layout);
         linkedInLayout = (LinearLayout) activity.findViewById(R.id.linked_in_layout);
         mySpaceLayout = (LinearLayout) activity.findViewById(R.id.my_space_layout);
@@ -95,7 +96,7 @@ public class SocialNetworkInfoHelper implements IUserAbout {
     }
 
     @Override
-    public void checkVisibilities(Activity activity) {
+    public void checkVisibilities(AppCompatActivity activity) {
         if (fbLayout.getVisibility() == View.GONE && linkedInLayout.getVisibility() == View.GONE && mySpaceLayout.getVisibility() == View.GONE
                 && skypeLayout.getVisibility() == View.GONE && twitterLayout.getVisibility() == View.GONE) {
             activity.findViewById(R.id.no_social_information).setVisibility(View.VISIBLE);

@@ -3,7 +3,7 @@ package org.sakaiproject.api.events;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import org.sakaiproject.api.general.Actions;
+import org.sakaiproject.general.Actions;
 import org.sakaiproject.api.json.JsonParser;
 import org.sakaiproject.api.user.User;
 

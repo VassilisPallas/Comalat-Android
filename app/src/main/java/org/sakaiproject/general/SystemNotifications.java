@@ -1,6 +1,5 @@
-package org.sakaiproject.api.general;
+package org.sakaiproject.general;
 
-import android.app.Activity;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -10,7 +9,6 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 
 import org.sakaiproject.sakai.R;
-import org.sakaiproject.sakai.UserActivity;
 
 /**
  * Created by vasilis on 10/31/15.

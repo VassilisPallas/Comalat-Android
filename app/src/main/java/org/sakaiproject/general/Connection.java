@@ -1,9 +1,6 @@
-package org.sakaiproject.api.general;
+package org.sakaiproject.general;
 
-import android.app.Application;
 import android.content.Context;
-import android.content.Intent;
-import android.widget.Toast;
 
 import java.io.IOException;
 import java.io.InputStream;
