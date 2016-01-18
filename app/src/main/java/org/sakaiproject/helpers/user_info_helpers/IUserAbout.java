@@ -1,4 +1,4 @@
-package org.sakaiproject.helpers;
+package org.sakaiproject.helpers.user_info_helpers;
 
 import android.support.v7.app.AppCompatActivity;
 

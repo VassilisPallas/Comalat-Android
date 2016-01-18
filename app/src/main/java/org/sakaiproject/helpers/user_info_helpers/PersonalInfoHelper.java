@@ -1,6 +1,5 @@
-package org.sakaiproject.helpers;
+package org.sakaiproject.helpers.user_info_helpers;
 
-import android.app.Activity;
 import android.graphics.drawable.Drawable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;

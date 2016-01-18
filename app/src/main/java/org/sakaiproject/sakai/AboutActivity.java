@@ -17,11 +17,11 @@ import org.sakaiproject.api.internet.NetWork;
 import org.sakaiproject.api.session.RefreshSession;
 import org.sakaiproject.api.session.Waiter;
 import org.sakaiproject.customviews.AboutScrollView;
-import org.sakaiproject.helpers.BasicInfoHelper;
-import org.sakaiproject.helpers.ContactInfoHelper;
-import org.sakaiproject.helpers.PersonalInfoHelper;
-import org.sakaiproject.helpers.StaffInfoHelper;
-import org.sakaiproject.helpers.StudentInfoHelper;
+import org.sakaiproject.helpers.user_info_helpers.BasicInfoHelper;
+import org.sakaiproject.helpers.user_info_helpers.ContactInfoHelper;
+import org.sakaiproject.helpers.user_info_helpers.PersonalInfoHelper;
+import org.sakaiproject.helpers.user_info_helpers.StaffInfoHelper;
+import org.sakaiproject.helpers.user_info_helpers.StudentInfoHelper;
 
 public class AboutActivity extends AppCompatActivity implements View.OnClickListener {
 

@@ -1,17 +1,29 @@
 package org.sakaiproject.general;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.SubMenu;
 
+import org.sakaiproject.api.internet.NetWork;
+import org.sakaiproject.api.logout.Logout;
+import org.sakaiproject.api.session.Waiter;
 import org.sakaiproject.api.site.SiteData;
 import org.sakaiproject.api.user.User;
+import org.sakaiproject.api.user.profile.Profile;
+import org.sakaiproject.sakai.MainActivity;
 import org.sakaiproject.sakai.R;
 import org.sakaiproject.sakai.UserActivity;
 
@@ -374,35 +386,68 @@ public class Actions {
         return null;
     }
 
-    public static void fillSitesDrawer(Menu navigationMenu) {
+    public static void logout(final Context context, final Waiter waiter) {
 
-        UserActivity.sitesIds.clear();
+        AlertDialog.Builder adb = new AlertDialog.Builder(((AppCompatActivity) context).getSupportActionBar().getThemedContext());
 
-        int key = Menu.FIRST;
+        adb.setTitle(context.getResources().getString(R.string.logout_message));
 
-        MenuItem sitesItem = navigationMenu.findItem(R.id.sites);
-        SubMenu sitesSubMenu = sitesItem.getSubMenu();
+        adb.setPositiveButton(context.getResources().getString(R.string.ok), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
 
-        MenuItem projectsItem = navigationMenu.findItem(R.id.projects);
-        SubMenu projectsSubMenu = projectsItem.getSubMenu();
+                Thread thread = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        if (NetWork.getConnectionEstablished()) {
+                            waiter.stop = true;
+                            try {
+                                Logout logout = new Logout(context);
+                                if (logout.logout("http://141.99.248.86:8089/direct/session/" + Connection.getSessionId()) == 1) {
+
+                                    User.nullInstance();
+                                    Profile.nullInstance();
+                                    Connection.nullSessionId();
+                                    SiteData.getSites().clear();
+                                    SiteData.getProjects().clear();
+
+                                    Intent i = new Intent(((AppCompatActivity) context).getApplication(), MainActivity.class);
+                                    context.startActivity(i);
+                                    ((AppCompatActivity) context).finish();
+                                }
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        } else {
+                            User.nullInstance();
+                            Profile.nullInstance();
+                            Connection.nullSessionId();
+
+                            Intent i = new Intent(((AppCompatActivity) context).getApplication(), MainActivity.class);
+                            context.startActivity(i);
+                            ((AppCompatActivity) context).finish();
+                        }
+                    }
+                });
+
+                thread.start();
+
+            }
+        });
 
 
-        sitesSubMenu.clear();
-        projectsSubMenu.clear();
+        adb.setNegativeButton(((AppCompatActivity) context).getResources().getString(R.string.cancel), null);
 
-        sitesSubMenu.add(R.id.sites, key, Menu.NONE, "My Workspace").setCheckable(true).setChecked(true);
-        UserActivity.sitesIds.put(key, "My Workspace");
+        Dialog d = adb.show();
+    }
 
-        for (int i = 0; i < SiteData.getSites().size(); i++) {
-            sitesSubMenu.add(R.id.sites, ++key, Menu.NONE, SiteData.getSites().get(i).getTitle()).setCheckable(true);
-            UserActivity.sitesIds.put(key, SiteData.getSites().get(i).getTitle());
-        }
 
-        for (int i = 0; i < SiteData.getProjects().size(); i++) {
-            projectsSubMenu.add(R.id.projects, ++key, Menu.NONE, SiteData.getProjects().get(i).getTitle()).setCheckable(true);
-            UserActivity.sitesIds.put(key, SiteData.getProjects().get(i).getTitle());
-        }
 
+    public static void selectFragment(Fragment f, int id, String title, Context context) {
+        FragmentTransaction fragmentTransaction = ((AppCompatActivity) context).getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.replace(id, f);
+        fragmentTransaction.commit();
+        ((AppCompatActivity) context).setTitle(title);
     }
 
 }

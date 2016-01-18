@@ -1,8 +1,7 @@
-package org.sakaiproject.helpers;
+package org.sakaiproject.helpers.user_info_helpers;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.support.v7.app.AlertDialog;
@@ -16,7 +15,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import org.sakaiproject.api.json.JsonWriter;
 import org.sakaiproject.api.user.User;
 import org.sakaiproject.api.user.profile.update.UpdateUserInfo;
 import org.sakaiproject.general.Actions;

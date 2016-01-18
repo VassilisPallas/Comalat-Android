@@ -66,7 +66,7 @@ public class Refresh extends AsyncTask<Void, Void, Void> {
     @Override
     protected void onPostExecute(Void aVoid) {
         super.onPostExecute(aVoid);
-        Actions.fillSitesDrawer(UserActivity.getSiteMenu());
+        UserActivity.getSitesNavigationDrawer().fillSitesDrawer();
         swipeRefreshLayout.setRefreshing(false);
     }
 }
