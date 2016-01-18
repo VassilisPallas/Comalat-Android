@@ -390,9 +390,9 @@ public class JsonParser {
             JSONObject createdTime = jsonObject.getJSONObject("createdTime");
             SiteData.getSites().get(index).setCreatedTime(new Time(createdTime.getString("display"), new Date(createdTime.getLong("time"))));
 
-            SiteData.getSites().get(index).setHtmlDescription(jsonObject.getString("htmlDescription"));
+            SiteData.getSites().get(index).setDescription(jsonObject.getString("description"));
 
-            SiteData.getSites().get(index).setHtmlShortDescription(jsonObject.getString("htmlShortDescription"));
+            SiteData.getSites().get(index).setShortDescription(jsonObject.getString("shortDescription"));
 
             SiteData.getSites().get(index).setIconUrlFull(jsonObject.getString("iconUrlFull"));
 
@@ -474,9 +474,9 @@ public class JsonParser {
             JSONObject createdTime = jsonObject.getJSONObject("createdTime");
             SiteData.getProjects().get(index).setCreatedTime(new Time(createdTime.getString("display"), new Date(createdTime.getLong("time"))));
 
-            SiteData.getProjects().get(index).setHtmlDescription(jsonObject.getString("htmlDescription"));
+            SiteData.getProjects().get(index).setDescription(jsonObject.getString("description"));
 
-            SiteData.getProjects().get(index).setHtmlShortDescription(jsonObject.getString("htmlShortDescription"));
+            SiteData.getProjects().get(index).setShortDescription(jsonObject.getString("shortDescription"));
 
             SiteData.getProjects().get(index).setIconUrlFull(jsonObject.getString("iconUrlFull"));
 

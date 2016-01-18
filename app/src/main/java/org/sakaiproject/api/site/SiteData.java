@@ -23,8 +23,8 @@ public class SiteData {
     private String contactEmail;
     private String contactName;
     private Time createdTime;
-    private String htmlDescription;
-    private String htmlShortDescription;
+    private String description;
+    private String shortDescription;
     private String iconUrlFull;
     private String infoUrlFull;
     private String joinerRole;
@@ -136,20 +136,20 @@ public class SiteData {
         this.createdTime = createdTime;
     }
 
-    public String getHtmlDescription() {
-        return htmlDescription;
+    public String getDescription() {
+        return description;
     }
 
-    public void setHtmlDescription(String htmlDescription) {
-        this.htmlDescription = htmlDescription;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
-    public String getHtmlShortDescription() {
-        return htmlShortDescription;
+    public String getShortDescription() {
+        return shortDescription;
     }
 
-    public void setHtmlShortDescription(String htmlShortDescription) {
-        this.htmlShortDescription = htmlShortDescription;
+    public void setShortDescription(String shortDescription) {
+        this.shortDescription = shortDescription;
     }
 
     public String getIconUrlFull() {

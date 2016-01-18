@@ -35,8 +35,12 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.Hashtable;
+import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by vasilis on 10/18/15.
@@ -441,13 +445,69 @@ public class Actions {
         Dialog d = adb.show();
     }
 
-
-
     public static void selectFragment(Fragment f, int id, String title, Context context) {
         FragmentTransaction fragmentTransaction = ((AppCompatActivity) context).getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(id, f);
         fragmentTransaction.commit();
         ((AppCompatActivity) context).setTitle(title);
+    }
+
+    public static String deleteHtmlTags(String description) {
+        description = description.replaceAll("<p>", "");
+        description = description.replaceAll("<\\/p>", "");
+        description = description.replaceAll("<span .+?>", "");
+        description = description.replaceAll("<\\/span>", "");
+        description = description.replaceAll("<div .+?>", "");
+        description = description.replaceAll("<\\/div>", "");
+        description = description.replaceAll("(\\r)+", "");
+        description = description.replaceAll("(\\n)+", "\n");
+        description = description.replaceAll("&nbsp;", "");
+        description = description.replaceAll("( )+", " ");
+        description = description.replaceAll("(<br>|</br>|</ br>)+", "\n");
+        description = description.replaceAll("<img .+?\\/>", "");
+        description = description.replaceAll("<audio .+>.+<\\/audio>", "");
+        return description;
+    }
+
+    public static List<String> findImages(String text) {
+
+        List<String> imagePaths = new ArrayList<>();
+
+        Pattern pattern = Pattern.compile("<img .+?\\/>");
+        Matcher matcher = pattern.matcher(text);
+        while (matcher.find()) {
+            Pattern p = Pattern.compile("src=\\\".+?\\\"");
+            Matcher m = p.matcher(matcher.group(0));
+            if (m.find()) {
+                String found = m.group(0);
+                found = found.replaceAll("src( )?=( )?", "");
+                found = found.replaceAll("\"", "");
+                found = found.replaceAll("\\\\", "");
+                imagePaths.add(found);
+            }
+        }
+
+        return imagePaths;
+    }
+
+    public static List<String> findAudios(String text){
+        List<String> audioPaths = new ArrayList<>();
+
+        Pattern pattern = Pattern.compile("<audio .+>.+<\\/audio>");
+        Matcher matcher = pattern.matcher(text);
+        while (matcher.find()) {
+            Pattern p = Pattern.compile("src=\".+?\"");
+            Matcher m = p.matcher(matcher.group(0));
+            if (m.find()) {
+                String found = m.group(0);
+                found = found.replaceAll("src( )?=( )?", "");
+                found = found.replaceAll("\"", "");
+                found = found.replaceAll("\\\\", "");
+                audioPaths.add(found);
+            }
+        }
+
+        return audioPaths;
     }
 
 }

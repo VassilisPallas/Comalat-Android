@@ -23,6 +23,7 @@ import org.sakaiproject.api.user.profile.Profile;
 import org.sakaiproject.customviews.CustomSwipeRefreshLayout;
 import org.sakaiproject.general.Actions;
 import org.sakaiproject.sakai.CalendarFragment;
+import org.sakaiproject.sakai.MembershipFragment;
 import org.sakaiproject.sakai.ProfileFragment;
 import org.sakaiproject.sakai.R;
 import org.sakaiproject.sakai.UserActivity;
@@ -183,6 +184,8 @@ public abstract class NavigationDrawerHelper {
                 Actions.selectFragment(profileFragment, R.id.user_frame, Profile.getDisplayName(), context);
                 break;
             case "Membership":
+                MembershipFragment membershipFragment = new MembershipFragment();
+                Actions.selectFragment(membershipFragment, R.id.user_frame, "Membership", context);
                 break;
             case "Calendar":
                 CalendarFragment calendarFragment = new CalendarFragment().setSelectedEvent(mSwipeRefreshLayout);
