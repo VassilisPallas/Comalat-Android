@@ -20,12 +20,17 @@ public class StaffInfoHelper implements IUserAbout {
     private View.OnClickListener clickListener;
     private Drawable editDrawable;
 
-    // Staff Information
     private LinearLayout positionLayout, departmentLayout, schoolLayout, roomLayout, staffProfileLayout, universityUrlLayout, academicUrlLayout, publicationsLayout;
     private TextView positionTextView, departmentTextView, schoolTextView, roomTextView, staffProfileTextView, universityUrlTextView, academicUrlTextView, publicationsTextView;
     private ImageView editStaffInformationImageView;
     private EditText positionEditText, departmentEditText, schoolEditText, roomEditText, staffProfileEditText, universityUrlEditText, academicUrlEditText, publicationsEditText;
 
+    /**
+     * StaffInfoHelper constructor
+     * @param activity the activity
+     * @param editDrawable the custom color Edit image
+     * @param clickListener the onClickListener listener
+     */
     public StaffInfoHelper(AppCompatActivity activity, Drawable editDrawable, View.OnClickListener clickListener) {
         this.editDrawable = editDrawable;
         this.clickListener = clickListener;

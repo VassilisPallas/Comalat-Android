@@ -25,6 +25,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 /**
  * Created by vasilis on 1/12/16.
@@ -48,6 +49,13 @@ public class BasicInfoHelper implements IUserAbout {
 
     private Drawable calendarDrawable, editDrawable;
 
+    /**
+     * BasicInfoHelper constructor
+     *
+     * @param activity      the activity
+     * @param editDrawable  the custom color Edit image
+     * @param clickListener the onClickListener listener
+     */
     public BasicInfoHelper(AppCompatActivity activity, Drawable editDrawable, View.OnClickListener clickListener) {
         this.activity = activity;
         this.clickListener = clickListener;
@@ -81,7 +89,11 @@ public class BasicInfoHelper implements IUserAbout {
                 month = monthOfYear;
                 day = dayOfMonth;
                 year = Year;
-                birthdayTextView.setText(Actions.getMonthfromIndex(month) + " " + day + ", " + year);
+                birthdayTextView.setText(Actions.getMonthfromIndex(month));
+                birthdayTextView.append(" ");
+                birthdayTextView.append(String.valueOf(day));
+                birthdayTextView.append(", ");
+                birthdayTextView.append(String.valueOf(year));
                 birthdayPicker.setVisibility(View.GONE);
             }
         });
@@ -158,15 +170,15 @@ public class BasicInfoHelper implements IUserAbout {
     public void saveEdit() {
         AlertDialog.Builder adb = new AlertDialog.Builder(activity.getSupportActionBar().getThemedContext());
 
-        adb.setTitle("Are you sure tou want to save the edits?");
+        adb.setTitle(activity.getApplicationContext().getResources().getString(R.string.save_edits));
 
-        adb.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+        adb.setPositiveButton(activity.getApplicationContext().getResources().getString(R.string.yes), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 Profile.setNickname(nicknameEditText.getText().toString());
 
                 String birthday = birthdayTextView.getText().toString();
-                SimpleDateFormat birthdayFormat = new SimpleDateFormat("MMM dd, yyyy");
-                SimpleDateFormat yearFormat = new SimpleDateFormat("yy");
+                SimpleDateFormat birthdayFormat = new SimpleDateFormat("MMM dd, yyyy", Locale.US);
+                SimpleDateFormat yearFormat = new SimpleDateFormat("yy", Locale.US);
                 try {
                     Date d = birthdayFormat.parse(birthday);
                     Calendar cal = Calendar.getInstance();
@@ -202,7 +214,7 @@ public class BasicInfoHelper implements IUserAbout {
         });
 
 
-        adb.setNegativeButton("No", new DialogInterface.OnClickListener() {
+        adb.setNegativeButton(activity.getApplicationContext().getResources().getString(R.string.no), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
 
@@ -214,7 +226,7 @@ public class BasicInfoHelper implements IUserAbout {
             }
         });
 
-        adb.setNeutralButton("Cancel", null);
+        adb.setNeutralButton(activity.getApplicationContext().getResources().getString(R.string.cancel), null);
 
         Dialog d = adb.show();
     }
@@ -223,9 +235,9 @@ public class BasicInfoHelper implements IUserAbout {
     public void cancelEdit() {
         AlertDialog.Builder adb = new AlertDialog.Builder(activity.getSupportActionBar().getThemedContext());
 
-        adb.setTitle("Are you sure tou want to cancel all the edits?");
+        adb.setTitle(activity.getApplicationContext().getResources().getString(R.string.cancel_edits));
 
-        adb.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+        adb.setPositiveButton(activity.getApplicationContext().getResources().getString(R.string.yes), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
 
                 activity.findViewById(R.id.basic_information_buttons).setVisibility(View.GONE);
@@ -236,7 +248,7 @@ public class BasicInfoHelper implements IUserAbout {
             }
         });
 
-        adb.setNegativeButton("No", null);
+        adb.setNegativeButton(activity.getApplicationContext().getResources().getString(R.string.no), null);
 
         Dialog d = adb.show();
     }

@@ -3,10 +3,7 @@
     xmlns:app="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:layout_margin="10dp"
-    android:scrollbars="horizontal"
-    android:weightSum="4">
+    android:layout_margin="10dp">
 
     <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
         android:id="@+id/motd_cardview"
@@ -18,31 +15,32 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:padding="16dp">
+            android:paddingBottom="8dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp">
 
             <TextView
                 android:id="@+id/membership_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toLeftOf="@+id/unjoin_ripple"
+                android:layout_below="@+id/unjoin_ripple"
                 android:layout_centerHorizontal="true"
+                android:layout_margin="5dp"
                 android:gravity="center"
-                android:layout_margin="10dp"
-                android:text="English Language TrainingEnglish Language TrainingEnglish Language TrainingEnglish Language Training"
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
             <com.balysv.materialripple.MaterialRippleLayout
                 android:id="@+id/unjoin_ripple"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_alignParentRight="true"
                 app:mrl_rippleAlpha="0.2"
                 app:mrl_rippleColor="#f4f4f4"
                 app:mrl_rippleDelayClick="false"
                 app:mrl_rippleHover="true"
                 app:mrl_rippleOverlay="true"
-                app:mrl_rippleRoundedCorners="@dimen/fab_margin"
-                android:layout_width="35dp"
-                android:layout_height="35dp"
-                android:layout_alignParentRight="true">
+                app:mrl_rippleRoundedCorners="@dimen/fab_margin">
 
                 <FrameLayout
                     android:id="@+id/unjoin"
@@ -54,14 +52,13 @@
                         android:id="@+id/unjoin_imageview"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:src="@mipmap/ic_unjoin" />
+                        android:layout_gravity="center" />
 
                 </FrameLayout>
 
             </com.balysv.materialripple.MaterialRippleLayout>
 
-            <TextView
+            <org.sakaiproject.customviews.TextViewWithImages
                 android:id="@+id/membership_description"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -70,7 +67,6 @@
                 android:layout_marginTop="15dp"
                 android:gravity="center"
                 android:padding="5dp"
-                android:text="Hello this is the tutorial for...dfdfdfdfdafdafdfadfdfdfdfa"
                 android:textSize="15sp" />
 
             <TextView
@@ -79,7 +75,6 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/membership_description"
                 android:layout_marginTop="20dp"
-                android:text="Roster: vspallas, jimmys7, georgek"
                 android:textSize="15sp" />
 
         </RelativeLayout>

@@ -28,7 +28,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:padding="8dp"
-                    android:text="Personal Information"
+                    android:text="@string/personal_info"
                     android:textSize="17sp"
                     android:textStyle="bold" />
 
@@ -77,7 +77,7 @@
             android:layout_marginBottom="10dp"
             android:layout_marginTop="10dp"
             android:gravity="center"
-            android:text="You haven't filled out any information yet"
+            android:text="@string/no_information"
             android:textSize="15sp"
             android:visibility="gone" />
 
@@ -99,7 +99,7 @@
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentTop="true"
                     android:padding="8dp"
-                    android:text="Favorite books" />
+                    android:text="@string/favourite_books" />
 
                 <TextView
                     android:id="@+id/books_value"
@@ -149,7 +149,7 @@
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentTop="true"
                     android:padding="8dp"
-                    android:text="Favorite TV shows" />
+                    android:text="@string/favourite_tv_shows" />
 
                 <TextView
                     android:id="@+id/tv_shows_value"
@@ -199,7 +199,7 @@
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentTop="true"
                     android:padding="8dp"
-                    android:text="Favorite movies" />
+                    android:text="@string/favourite_movies" />
 
                 <TextView
                     android:id="@+id/movies_value"
@@ -249,7 +249,7 @@
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentTop="true"
                     android:padding="8dp"
-                    android:text="Favorite quotes" />
+                    android:text="@string/favoutite_quotes" />
 
                 <TextView
                     android:id="@+id/quotes_value"
@@ -307,7 +307,7 @@
                     android:layout_width="130dp"
                     android:layout_height="40dp"
                     android:background="#0083AF"
-                    android:text="Save changes"
+                    android:text="@string/save_changes"
                     android:textColor="#FFFFFF" />
 
             </com.balysv.materialripple.MaterialRippleLayout>
@@ -330,7 +330,7 @@
                     android:layout_width="110dp"
                     android:layout_height="40dp"
                     android:background="#0083AF"
-                    android:text="Cancel"
+                    android:text="@string/cancel"
                     android:textColor="#FFFFFF" />
 
             </com.balysv.materialripple.MaterialRippleLayout>

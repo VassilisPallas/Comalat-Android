@@ -23,6 +23,35 @@
                 android:background="?attr/colorPrimary"
                 app:popupTheme="@style/AppTheme.PopupOverlay" />
 
+
+            <com.balysv.materialripple.MaterialRippleLayout
+                android:id="@+id/site_drawer_search"
+                android:layout_width="50dp"
+                android:layout_height="?attr/actionBarSize"
+                android:layout_marginRight="10dp"
+                android:layout_toLeftOf="@+id/site_drawer_ripple"
+                app:mrl_rippleAlpha="0.2"
+                app:mrl_rippleColor="#f5f5f5"
+                app:mrl_rippleDelayClick="false"
+                app:mrl_rippleHover="true"
+                app:mrl_rippleOverlay="true"
+                app:mrl_rippleRoundedCorners="@dimen/fab_margin">
+
+                <FrameLayout
+                    android:id="@+id/search_button"
+                    android:layout_width="50dp"
+                    android:layout_height="?attr/actionBarSize"
+                    android:clickable="true">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal|center_vertical"
+                        android:src="@mipmap/ic_search_white" />
+                </FrameLayout>
+
+            </com.balysv.materialripple.MaterialRippleLayout>
+
             <com.balysv.materialripple.MaterialRippleLayout
                 android:id="@+id/site_drawer_ripple"
                 android:layout_width="50dp"

@@ -13,34 +13,39 @@ import org.sakaiproject.api.site.SitePage;
 import org.sakaiproject.customviews.CustomSwipeRefreshLayout;
 import org.sakaiproject.sakai.R;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by vasilis on 1/18/16.
  */
-public class UserMainNavigationDrawerHelper extends NavigationDrawerHelper {
+public class UserMainNavigationDrawerHelper extends NavigationDrawerHelper implements Serializable {
 
     private NavigationView navigationView;
     private Context context;
     private static List<String> myWorkSpaceItems = new ArrayList<>();
 
-    static {
-        myWorkSpaceItems.add("Dashboard");
-        myWorkSpaceItems.add("Home");
-        myWorkSpaceItems.add("Profile");
-        myWorkSpaceItems.add("Membership");
-        myWorkSpaceItems.add("Calendar");
-        myWorkSpaceItems.add("Resources");
-        myWorkSpaceItems.add("Announcements");
-        myWorkSpaceItems.add("Preferences");
-        myWorkSpaceItems.add("Account");
-    }
-
+    /**
+     * UserMainNavigationDrawerHelper constructor
+     *
+     * @param context                          the context
+     * @param mSwipeRefreshLayout              the swipeRefreshLayout object
+     * @param onNavigationItemSelectedListener the listener for the selected item on the drawer
+     */
     public UserMainNavigationDrawerHelper(Context context, CustomSwipeRefreshLayout mSwipeRefreshLayout, NavigationView.OnNavigationItemSelectedListener onNavigationItemSelectedListener) {
         super(context, mSwipeRefreshLayout);
-
         this.context = context;
+
+        myWorkSpaceItems.add(context.getResources().getString(R.string.dashboard));
+        myWorkSpaceItems.add(context.getResources().getString(R.string.home));
+        myWorkSpaceItems.add(context.getResources().getString(R.string.profile));
+        myWorkSpaceItems.add(context.getResources().getString(R.string.membership));
+        myWorkSpaceItems.add(context.getResources().getString(R.string.calendar));
+        myWorkSpaceItems.add(context.getResources().getString(R.string.resources));
+        myWorkSpaceItems.add(context.getResources().getString(R.string.announcements));
+        myWorkSpaceItems.add(context.getResources().getString(R.string.preferences));
+        myWorkSpaceItems.add(context.getResources().getString(R.string.account));
 
         navigationView = (NavigationView) ((AppCompatActivity) context).findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(onNavigationItemSelectedListener);
@@ -72,7 +77,7 @@ public class UserMainNavigationDrawerHelper extends NavigationDrawerHelper {
             }
         } else {
             for (SitePage page : list) {
-                if (page.getTitle().equals("COMALAT Guide")) {
+                if (page.getTitle().equals(context.getResources().getString(R.string.comalat_guide))) {
                     subMenu.add(R.id.main_group, ++id, page.getPosition(), page.getTitle()).setCheckable(true);
                 } else {
                     int iconId = findIcon(page.getTitle());
@@ -88,9 +93,9 @@ public class UserMainNavigationDrawerHelper extends NavigationDrawerHelper {
 
         // add new item to menu
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            subMenu.add(R.id.main_group, R.id.help, subMenu.size(), "Help").setIcon(context.getResources().getDrawable(R.mipmap.ic_help, context.getTheme())).setCheckable(true);
+            subMenu.add(R.id.main_group, R.id.help, subMenu.size(), context.getResources().getString(R.string.help)).setIcon(context.getResources().getDrawable(R.mipmap.ic_help, context.getTheme())).setCheckable(true);
         } else {
-            subMenu.add(R.id.main_group, R.id.help, subMenu.size(), "Help").setIcon(context.getResources().getDrawable(R.mipmap.ic_help)).setCheckable(true);
+            subMenu.add(R.id.main_group, R.id.help, subMenu.size(), context.getResources().getString(R.string.help)).setIcon(context.getResources().getDrawable(R.mipmap.ic_help)).setCheckable(true);
         }
 
 

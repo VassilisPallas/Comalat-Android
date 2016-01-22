@@ -29,7 +29,7 @@
                     android:layout_width="250dp"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:hint="User Id *" />
+                    android:hint="@string/user_id" />
 
 
                 <ProgressBar
@@ -56,7 +56,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/user_eid_relative"
                 android:layout_marginTop="20dp"
-                android:hint="First Name" />
+                android:hint="@string/first_name" />
 
             <EditText
                 android:id="@+id/last_name_edittext"
@@ -64,7 +64,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/first_name_edittext"
                 android:layout_marginTop="20dp"
-                android:hint="Last Name" />
+                android:hint="@string/last_name" />
 
             <RelativeLayout
                 android:id="@+id/user_email_relative"
@@ -78,7 +78,8 @@
                     android:layout_width="250dp"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:hint="Email" />
+                    android:hint="@string/email"
+                    android:inputType="textEmailAddress" />
 
                 <ImageView
                     android:id="@+id/email_validation_imageview"
@@ -98,7 +99,7 @@
                 android:layout_below="@+id/user_email_relative"
                 android:layout_marginTop="20dp"
                 android:fontFamily="sans-serif"
-                android:hint="Password *"
+                android:hint="@string/password"
                 android:inputType="textPassword" />
 
 
@@ -114,7 +115,7 @@
                     android:layout_width="250dp"
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif"
-                    android:hint="Confirm Password *"
+                    android:hint="@string/confirm_password"
                     android:inputType="textPassword" />
 
                 <ImageView
@@ -134,7 +135,7 @@
                 android:layout_below="@+id/user_confirm_password_relative"
                 android:layout_marginTop="20dp"
                 android:enabled="false"
-                android:hint="type: registered" />
+                android:hint="@string/new_account_type" />
 
             <com.balysv.materialripple.MaterialRippleLayout
                 android:id="@+id/ripple"
@@ -155,7 +156,7 @@
                     android:layout_height="wrap_content"
                     android:background="@drawable/signup_button_style"
                     android:enabled="false"
-                    android:text="Create Account"
+                    android:text="@string/create_account"
                     android:textColor="#FFF" />
 
             </com.balysv.materialripple.MaterialRippleLayout>

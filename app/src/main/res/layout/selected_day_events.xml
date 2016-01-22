@@ -28,8 +28,7 @@
                 android:id="@+id/activity_type_event"
                 android:layout_width="30dp"
                 android:layout_height="25dp"
-                android:scaleType="fitCenter"
-                android:src="@drawable/activity" />
+                android:scaleType="fitCenter" />
 
             <TextView
                 android:id="@+id/tv_event"
@@ -37,7 +36,6 @@
                 android:layout_height="wrap_content"
                 android:layout_toRightOf="@+id/activity_type_event"
                 android:padding="3dp"
-                android:text="TextView"
                 android:textColor="#000000"
                 android:textSize="16dp"
                 android:textStyle="bold" />
@@ -48,8 +46,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/tv_event"
                 android:layout_gravity="center"
-                android:padding="4dp"
-                android:text="TextView" />
+                android:padding="4dp" />
         </RelativeLayout>
 
     </com.balysv.materialripple.MaterialRippleLayout>

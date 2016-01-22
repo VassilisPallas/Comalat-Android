@@ -33,6 +33,12 @@ public class SitesNavigationDrawerHelper extends NavigationDrawerHelper {
     private Context context;
     private NavigationView.OnNavigationItemSelectedListener onNavigationItemSelectedListener;
 
+    /**
+     * SitesNavigationDrawerHelper constructor
+     * @param context the context
+     * @param mSwipeRefreshLayout the swipeRefreshLayout object
+     * @param onNavigationItemSelectedListener the listener for the selected item on the drawer
+     */
     public SitesNavigationDrawerHelper(Context context, CustomSwipeRefreshLayout mSwipeRefreshLayout, NavigationView.OnNavigationItemSelectedListener onNavigationItemSelectedListener) {
         super(context, mSwipeRefreshLayout);
         this.context = context;
@@ -141,7 +147,7 @@ public class SitesNavigationDrawerHelper extends NavigationDrawerHelper {
         sitesSubMenu.clear();
         projectsSubMenu.clear();
 
-        sitesSubMenu.add(R.id.sites, R.id.my_workspace, Menu.NONE, "My Workspace").setCheckable(true).setChecked(true);
+        sitesSubMenu.add(R.id.sites, R.id.my_workspace, Menu.NONE, context.getResources().getString(R.string.my_workspace)).setCheckable(true).setChecked(true);
 
         for (int i = 0; i < SiteData.getSites().size(); i++) {
             sitesSubMenu.add(R.id.sites, ++id, Menu.NONE, SiteData.getSites().get(i).getTitle()).setCheckable(true);

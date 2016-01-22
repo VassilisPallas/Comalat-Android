@@ -52,7 +52,7 @@ public class SignupFragment extends Fragment {
 
         View v = inflater.inflate(R.layout.fragment_signup, container, false);
 
-        getActivity().setTitle("New Account");
+        getActivity().setTitle(getContext().getResources().getString(R.string.new_account));
 
         signup = new Signup(getContext());
 

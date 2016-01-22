@@ -86,7 +86,7 @@ public class CalendarFragment extends Fragment {
 
         View v = inflater.inflate(R.layout.fragment_calendar, container, false);
 
-        getActivity().setTitle("Calendar");
+        getActivity().setTitle(getContext().getResources().getString(R.string.calendar));
 
         swipeRefreshLayout = (org.sakaiproject.customviews.CustomSwipeRefreshLayout) getArguments().getSerializable("swipeRefresh");
 
@@ -208,7 +208,7 @@ public class CalendarFragment extends Fragment {
                 FragmentManager fm = getFragmentManager();
                 EventInfoFragment dialogFragment = new EventInfoFragment().setSelectedEvent(selectedEvent);
                 dialogFragment.setStyle( DialogFragment.STYLE_NO_TITLE, R.style.InfoDialogTheme );
-                dialogFragment.show(fm, "Event Info");
+                dialogFragment.show(fm, getContext().getResources().getString(R.string.event_info));
 
             }
 

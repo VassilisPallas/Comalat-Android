@@ -43,6 +43,10 @@ public class JsonParser {
     private Profile profile;
     private Context context;
 
+    /**
+     * the JsonParser constructor
+     * @param context the context
+     */
     public JsonParser(Context context) {
         this.context = context;
         con = Connection.getInstance();
@@ -342,7 +346,13 @@ public class JsonParser {
         }
     }
 
-
+    /**
+     * get the full name from the owner of the event
+     * http://141.99.248.86:8089/direct/profile/user_id.json
+     *
+     * @param result the response json
+     * @param index the index of the event on the List
+     */
     public void getEventCreatorDisplayName(String result, int index) {
         try {
             JSONObject obj = new JSONObject(result);
@@ -356,6 +366,13 @@ public class JsonParser {
         }
     }
 
+    /**
+     * get the data from the sites and projects
+     * if the type is project it saves the data on the projects list, else on the sites list
+     * http://141.99.248.86:8089/direct/membership.json
+     *
+     * @param result the response json
+     */
     public void parseSiteDataJson(String result) {
         try {
             JSONObject jsonObject = new JSONObject(result);
@@ -380,6 +397,13 @@ public class JsonParser {
         }
     }
 
+    /**
+     * get the data from the selected site
+     * http://141.99.248.86:8089/direct/site/site_id.json
+     *
+     * @param result the response json
+     * @param index the index of the site on the List
+     */
     public void getSiteData(String result, int index) {
         try {
             JSONObject jsonObject = new JSONObject(result);
@@ -390,9 +414,10 @@ public class JsonParser {
             JSONObject createdTime = jsonObject.getJSONObject("createdTime");
             SiteData.getSites().get(index).setCreatedTime(new Time(createdTime.getString("display"), new Date(createdTime.getLong("time"))));
 
-            SiteData.getSites().get(index).setDescription(jsonObject.getString("description"));
 
-            SiteData.getSites().get(index).setShortDescription(jsonObject.getString("shortDescription"));
+            SiteData.getSites().get(index).setDescription(!jsonObject.getString("description").trim().equals("") && !jsonObject.getString("description").trim().equals("null") ? jsonObject.getString("description") : "");
+
+            SiteData.getSites().get(index).setShortDescription(!jsonObject.getString("shortDescription").trim().equals("") && !jsonObject.getString("shortDescription").trim().equals("null") ? jsonObject.getString("shortDescription") : "");
 
             SiteData.getSites().get(index).setIconUrlFull(jsonObject.getString("iconUrlFull"));
 
@@ -464,6 +489,13 @@ public class JsonParser {
         }
     }
 
+    /**
+     * get the data from the selected project
+     * http://141.99.248.86:8089/direct/site/site_id.json
+     *
+     * @param result the response json
+     * @param index the index of the project on the List
+     */
     public void getProjectData(String result, int index) {
         try {
             JSONObject jsonObject = new JSONObject(result);
@@ -474,9 +506,9 @@ public class JsonParser {
             JSONObject createdTime = jsonObject.getJSONObject("createdTime");
             SiteData.getProjects().get(index).setCreatedTime(new Time(createdTime.getString("display"), new Date(createdTime.getLong("time"))));
 
-            SiteData.getProjects().get(index).setDescription(jsonObject.getString("description"));
+            SiteData.getProjects().get(index).setDescription(!jsonObject.getString("description").trim().equals("") && !jsonObject.getString("description").trim().equals("null") ? jsonObject.getString("description") : "");
 
-            SiteData.getProjects().get(index).setShortDescription(jsonObject.getString("shortDescription"));
+            SiteData.getProjects().get(index).setShortDescription(!jsonObject.getString("shortDescription").trim().equals("") && !jsonObject.getString("shortDescription").trim().equals("null") ? jsonObject.getString("shortDescription") : "");
 
             SiteData.getProjects().get(index).setIconUrlFull(jsonObject.getString("iconUrlFull"));
 
@@ -549,6 +581,14 @@ public class JsonParser {
         }
     }
 
+    /**
+     * get the info from the tools for each site or project
+     * http://141.99.248.86:8089/direct/site/site_id/pages.json
+     *
+     * @param result the response json
+     * @param index the index of the project on the List
+     * @param type "project" for project type, and "site" for site type
+     */
     public void getSitePageData(String result, int index, String type) {
         try {
 
@@ -601,6 +641,14 @@ public class JsonParser {
     }
 
 
+    /**
+     * get the permissions from the site
+     * http://141.99.248.86:8089/direct/site/site_id/perms.json
+     *
+     * @param result the response json
+     * @param index the index of the project on the List
+     * @param type "project" for project type, and "site" for site type
+     */
     public void getSitePermissions(String result, int index, String type) {
         try {
             JSONObject obj = new JSONObject(result);
@@ -624,6 +672,14 @@ public class JsonParser {
         }
     }
 
+    /**
+     * get the permissions for the user from the site (mainten or access)
+     * http://141.99.248.86:8089/direct/site/site_id/userPerms.json
+     *
+     * @param result the response json
+     * @param index the index of the project on the List
+     * @param type "project" for project type, and "site" for site type
+     */
     public void getUserSitePermissions(String result, int index, String type) {
         try {
             JSONObject obj = new JSONObject(result);
@@ -640,6 +696,13 @@ public class JsonParser {
         }
     }
 
+    /**
+     * Convert jsonObject to Map<String, String>
+     *
+     * @param props the json object
+     * @return the converted jsonObject to Map
+     * @throws JSONException
+     */
     private Map<String, String> jsonObjectToMap(JSONObject props) throws JSONException {
         Map<String, String> temp = new Hashtable<>();
 
@@ -654,6 +717,13 @@ public class JsonParser {
         return temp;
     }
 
+    /**
+     * Convert jsonArray to List<String>
+     *
+     * @param siteGroups the json array
+     * @return the converted jsonArray to List
+     * @throws JSONException
+     */
     private List<String> jsonArrayToList(JSONArray siteGroups) throws JSONException {
         List<String> temp = new ArrayList<>();
 

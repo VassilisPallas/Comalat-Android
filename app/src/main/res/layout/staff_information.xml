@@ -28,7 +28,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:padding="8dp"
-                    android:text="Staff Information"
+                    android:text="@string/staff_information"
                     android:textSize="17sp"
                     android:textStyle="bold" />
 
@@ -77,7 +77,7 @@
             android:layout_marginBottom="10dp"
             android:layout_marginTop="10dp"
             android:gravity="center"
-            android:text="You haven't filled out any information yet"
+            android:text="@string/no_information"
             android:textSize="15sp"
             android:visibility="gone" />
 
@@ -149,7 +149,7 @@
                     android:layout_alignParentLeft="true"
                     android:layout_centerVertical="true"
                     android:padding="8dp"
-                    android:text="Department" />
+                    android:text="@string/department" />
 
                 <TextView
                     android:id="@+id/department_value"
@@ -199,7 +199,7 @@
                     android:layout_alignParentLeft="true"
                     android:layout_centerVertical="true"
                     android:padding="8dp"
-                    android:text="School" />
+                    android:text="@string/school" />
 
                 <TextView
                     android:id="@+id/school_value"
@@ -249,7 +249,7 @@
                     android:layout_alignParentLeft="true"
                     android:layout_centerVertical="true"
                     android:padding="8dp"
-                    android:text="Room" />
+                    android:text="@string/room" />
 
                 <TextView
                     android:id="@+id/room_value"
@@ -299,7 +299,7 @@
                     android:layout_alignParentLeft="true"
                     android:layout_centerVertical="true"
                     android:padding="8dp"
-                    android:text="Staff profile" />
+                    android:text="@string/staff_profile" />
 
                 <TextView
                     android:id="@+id/staff_profile_value"
@@ -349,7 +349,7 @@
                     android:layout_alignParentLeft="true"
                     android:layout_centerVertical="true"
                     android:padding="8dp"
-                    android:text="University profile URL" />
+                    android:text="@string/university_profile_url" />
 
                 <TextView
                     android:id="@+id/university_url_value"
@@ -402,7 +402,7 @@
                     android:layout_alignParentLeft="true"
                     android:layout_centerVertical="true"
                     android:padding="8dp"
-                    android:text="Academic/research URL" />
+                    android:text="@string/academic_url" />
 
                 <TextView
                     android:id="@+id/academic_url_value"
@@ -455,7 +455,7 @@
                     android:layout_alignParentLeft="true"
                     android:layout_centerVertical="true"
                     android:padding="8dp"
-                    android:text="Publications and\nconference" />
+                    android:text="@string/publications_conference" />
 
                 <TextView
                     android:id="@+id/publication_value"
@@ -513,7 +513,7 @@
                     android:layout_width="130dp"
                     android:layout_height="40dp"
                     android:background="#0083AF"
-                    android:text="Save changes"
+                    android:text="@string/save_changes"
                     android:textColor="#FFFFFF" />
 
             </com.balysv.materialripple.MaterialRippleLayout>
@@ -536,7 +536,7 @@
                     android:layout_width="110dp"
                     android:layout_height="40dp"
                     android:background="#0083AF"
-                    android:text="Cancel"
+                    android:text="@string/cancel"
                     android:textColor="#FFFFFF" />
 
             </com.balysv.materialripple.MaterialRippleLayout>

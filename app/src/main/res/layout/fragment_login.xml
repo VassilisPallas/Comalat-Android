@@ -24,7 +24,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="20dp"
-                android:hint="Enter your user Id"
+                android:hint="@string/enter_user_id"
                 android:singleLine="true" />
 
 
@@ -36,7 +36,7 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="20dp"
                 android:fontFamily="sans-serif"
-                android:hint="Enter your password"
+                android:hint="@string/enter_password"
                 android:inputType="textPassword"
                 android:singleLine="true" />
 
@@ -58,7 +58,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="#0083AF"
-                    android:text="Login"
+                    android:text="@string/login"
                     android:textColor="#FFF" />
             </com.balysv.materialripple.MaterialRippleLayout>
 

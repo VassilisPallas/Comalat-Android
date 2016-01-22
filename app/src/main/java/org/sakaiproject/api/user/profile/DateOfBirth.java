@@ -2,7 +2,7 @@ package org.sakaiproject.api.user.profile;
 
 /**
  * Created by vasilis on 10/31/15.
- * user's date of birth
+ * This has created to get the data which are DateOfBirth type from the response jsons
  */
 public class DateOfBirth {
 
@@ -18,6 +18,16 @@ public class DateOfBirth {
     // year of birth, eg 93
     private int year;
 
+
+    /**
+     * DateOfBirth constructor
+     * @param date the user date birth (eg 10)
+     * @param day the user day birth (eg Tuesday)
+     * @param month the user month birth
+     * @param time the user birth on milliseconds
+     * @param timezoneOffset the user birth timezone offset
+     * @param year the user year birth
+     */
     public DateOfBirth(int date, int day, int month, long time, int timezoneOffset, int year) {
         this.date = date;
         this.day = day;

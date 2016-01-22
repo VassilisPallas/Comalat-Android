@@ -6,7 +6,7 @@ import java.io.Serializable;
 
 /**
  * Created by vasilis on 10/30/15.
- * Recurrence of the event
+ * a JavaBeans convention class for the Recurrence of the event
  */
 public class RecurrenceRule implements Serializable {
     private int count;
@@ -20,6 +20,14 @@ public class RecurrenceRule implements Serializable {
     public RecurrenceRule() {
     }
 
+    /**
+     * the RecurrenceRule constructor
+     * @param count the times that the event will take place (eg 15 times)
+     * @param frequency the event frequency (eg yearly, monthly etc)
+     * @param frequencyDescription the frequency description (eg Monday, Tuesday etc)
+     * @param interval the event interval (eg per 2 days)
+     * @param until the date until the event will take place
+     */
     public RecurrenceRule(int count, String frequency, String frequencyDescription, int interval, Time until) {
         this.count = count;
         this.frequency = frequency;

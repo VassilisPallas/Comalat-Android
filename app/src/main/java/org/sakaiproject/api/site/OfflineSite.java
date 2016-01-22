@@ -15,11 +15,19 @@ public class OfflineSite {
     private Context context;
     private JsonParser jsonParse;
 
+    /**
+     * OfflineSite constructor
+     * @param context the context
+     */
     public OfflineSite(Context context) {
         this.context = context;
         jsonParse = new JsonParser(context);
     }
 
+    /**
+     * parse the data from sites and projects the user has join
+     * @throws IOException
+     */
     public void getSites() throws IOException {
         String sitesJson = Actions.readJsonFile(context, "projectsAndSitesJson");
         jsonParse.parseSiteDataJson(sitesJson);

@@ -48,7 +48,7 @@
                             android:id="@+id/say_something_EditText"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="Say something"
+                            android:hint="@string/say_something"
                             android:singleLine="true" />
 
                         <TextView
@@ -81,7 +81,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="40dp"
                             android:background="#0083AF"
-                            android:text="Say it"
+                            android:text="@string/say_it"
                             android:textColor="#FFFFFF" />
 
                     </com.balysv.materialripple.MaterialRippleLayout>
@@ -146,7 +146,7 @@
                                 android:layout_gravity="center_horizontal"
                                 android:layout_marginBottom="10dp"
                                 android:layout_marginTop="5dp"
-                                android:text="About"
+                                android:text="@string/about"
                                 android:textSize="15sp"
                                 android:textStyle="bold" />
 
@@ -195,7 +195,7 @@
                                 android:layout_gravity="center_horizontal"
                                 android:layout_marginBottom="10dp"
                                 android:layout_marginTop="5dp"
-                                android:text="Photos"
+                                android:text="@string/photos"
                                 android:textSize="15sp"
                                 android:textStyle="bold" />
 
@@ -245,7 +245,7 @@
                                 android:layout_gravity="center_horizontal"
                                 android:layout_marginBottom="10dp"
                                 android:layout_marginTop="5dp"
-                                android:text="Friends"
+                                android:text="@string/friends"
                                 android:textSize="15sp"
                                 android:textStyle="bold" />
 
@@ -294,7 +294,7 @@
                         android:layout_width="130dp"
                         android:layout_height="40dp"
                         android:background="#0083AF"
-                        android:text="Post on Wall"
+                        android:text="@string/post_on_wall"
                         android:textColor="#FFFFFF" />
 
                 </com.balysv.materialripple.MaterialRippleLayout>
@@ -305,7 +305,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="15dp"
-                android:text="Posts"
+                android:text="@string/posts"
                 android:textSize="15sp"
                 android:textStyle="bold" />
 
@@ -475,7 +475,7 @@
                                     android:layout_width="120dp"
                                     android:layout_height="40dp"
                                     android:background="#0083AF"
-                                    android:text="Add comment"
+                                    android:text="@string/add_comment"
                                     android:textColor="#FFFFFF" />
 
                             </com.balysv.materialripple.MaterialRippleLayout>
@@ -498,7 +498,7 @@
                                     android:layout_width="120dp"
                                     android:layout_height="40dp"
                                     android:background="#0083AF"
-                                    android:text="Cancel"
+                                    android:text="@string/cancel"
                                     android:textColor="#FFFFFF" />
 
                             </com.balysv.materialripple.MaterialRippleLayout>
@@ -556,7 +556,7 @@
                                 android:layout_marginLeft="5dp"
                                 android:layout_marginRight="2dp"
                                 android:layout_toRightOf="@+id/current_status_subcomment_image"
-                                android:text="Ok"
+                                android:text="@string/ok"
                                 android:textSize="15sp" />
 
                             <TextView

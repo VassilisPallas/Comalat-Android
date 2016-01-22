@@ -11,6 +11,7 @@ import org.sakaiproject.api.logout.Logout;
 import org.sakaiproject.api.user.profile.Profile;
 import org.sakaiproject.api.user.User;
 import org.sakaiproject.sakai.MainActivity;
+import org.sakaiproject.sakai.R;
 
 /**
  * Created by vasilis on 10/28/15.
@@ -91,7 +92,7 @@ public class Waiter extends Thread {
                 if (activityIsVisible) {
                     if (NetWork.getConnectionEstablished()) {
                         try {
-                            if (logout.logout("http://141.99.248.86:8089/direct/session/" + Connection.getSessionId()) == 1) {
+                            if (logout.logout(context.getResources().getString(R.string.url) + "session/" + Connection.getSessionId()) == 1) {
                                 User.nullInstance();
                                 Profile.nullInstance();
                                 Connection.nullSessionId();
@@ -112,7 +113,7 @@ public class Waiter extends Thread {
                     }
                 } else {
                     try {
-                        if (logout.logout("http://141.99.248.86:8089/direct/session/" + Connection.getSessionId()) == 1) {
+                        if (logout.logout(context.getResources().getString(R.string.url) + "session/" + Connection.getSessionId()) == 1) {
                             User.nullInstance();
                             Profile.nullInstance();
                             Connection.nullSessionId();

@@ -10,10 +10,15 @@ import org.sakaiproject.sakai.R;
 
 /**
  * Created by vasilis on 1/13/16.
+ * this is the json writes for updates (PUT calls)
  */
 public class JsonWriter {
     Context context;
 
+    /**
+     * the JsonWriter constructor
+     * @param context the context
+     */
     public JsonWriter(Context context) {
         this.context = context;
     }

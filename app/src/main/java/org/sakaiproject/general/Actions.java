@@ -10,12 +10,16 @@ import android.graphics.BitmapFactory;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.os.Environment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.SubMenu;
+
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 
 import org.sakaiproject.api.internet.NetWork;
 import org.sakaiproject.api.logout.Logout;
@@ -129,6 +133,50 @@ public class Actions {
         out.flush();
         out.close();
 
+    }
+
+    public static void downloadAndSaveImage(String url, Context context, String fileName) {
+        Picasso.with(context)
+                .load(url)
+                .into(getTarget(fileName, context));
+    }
+
+    //target to save
+    private static Target getTarget(final String fileName, final Context context) {
+        Target target = new Target() {
+
+            @Override
+            public void onBitmapLoaded(final Bitmap bitmap, Picasso.LoadedFrom from) {
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        File path = context.getFilesDir();
+                        File file = new File(path, fileName);
+
+                        try {
+                            FileOutputStream out = new FileOutputStream(file);
+                            bitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
+                            out.flush();
+                            out.close();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }).start();
+
+            }
+
+            @Override
+            public void onBitmapFailed(Drawable errorDrawable) {
+
+            }
+
+            @Override
+            public void onPrepareLoad(Drawable placeHolderDrawable) {
+
+            }
+        };
+        return target;
     }
 
     /**
@@ -279,6 +327,12 @@ public class Actions {
     }
 
 
+    /**
+     * get the month from a string index
+     *
+     * @param index the month index
+     * @return the abbreviation of the month with the selected index
+     */
     public static String getMonthfromIndex(String index) {
         switch (index) {
             case "1":
@@ -309,6 +363,12 @@ public class Actions {
         return null;
     }
 
+    /**
+     * get the month from a index
+     *
+     * @param index the month index
+     * @return the abbreviation of the month with the selected index
+     */
     public static String getMonthfromIndex(int index) {
         switch (index) {
             case 0:
@@ -339,6 +399,12 @@ public class Actions {
         return null;
     }
 
+    /**
+     * get the month index from month abbreviation
+     *
+     * @param month the abbreviation of the month
+     * @return the index from the abbreviation month
+     */
     public static String getIndexfromMonth(String month) {
         switch (month) {
             case "Jan":
@@ -370,6 +436,14 @@ public class Actions {
         }
     }
 
+    /**
+     * change color on a drawable image
+     *
+     * @param context the context
+     * @param imageId the id from the image
+     * @param color   the color hex
+     * @return
+     */
     public static Drawable setCustomDrawableColor(Context context, int imageId, int color) {
 
         try {
@@ -390,6 +464,12 @@ public class Actions {
         return null;
     }
 
+    /**
+     * user logout
+     *
+     * @param context the context
+     * @param waiter  the waiter object for the session expiration
+     */
     public static void logout(final Context context, final Waiter waiter) {
 
         AlertDialog.Builder adb = new AlertDialog.Builder(((AppCompatActivity) context).getSupportActionBar().getThemedContext());
@@ -407,7 +487,7 @@ public class Actions {
                             waiter.stop = true;
                             try {
                                 Logout logout = new Logout(context);
-                                if (logout.logout("http://141.99.248.86:8089/direct/session/" + Connection.getSessionId()) == 1) {
+                                if (logout.logout(context.getResources().getString(R.string.url) + "session/" + Connection.getSessionId()) == 1) {
 
                                     User.nullInstance();
                                     Profile.nullInstance();
@@ -445,6 +525,14 @@ public class Actions {
         Dialog d = adb.show();
     }
 
+    /**
+     * Lazy method for change Fragments
+     *
+     * @param f       the fragment to move
+     * @param id      the FrameLayout id
+     * @param title   the title for the Actionbar title
+     * @param context the context
+     */
     public static void selectFragment(Fragment f, int id, String title, Context context) {
         FragmentTransaction fragmentTransaction = ((AppCompatActivity) context).getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(id, f);
@@ -452,45 +540,36 @@ public class Actions {
         ((AppCompatActivity) context).setTitle(title);
     }
 
-    public static String deleteHtmlTags(String description) {
-        description = description.replaceAll("<p>", "");
-        description = description.replaceAll("<\\/p>", "");
-        description = description.replaceAll("<span .+?>", "");
-        description = description.replaceAll("<\\/span>", "");
-        description = description.replaceAll("<div .+?>", "");
-        description = description.replaceAll("<\\/div>", "");
-        description = description.replaceAll("(\\r)+", "");
-        description = description.replaceAll("(\\n)+", "\n");
-        description = description.replaceAll("&nbsp;", "");
-        description = description.replaceAll("( )+", " ");
-        description = description.replaceAll("(<br>|</br>|</ br>)+", "\n");
-        description = description.replaceAll("<img .+?\\/>", "");
-        description = description.replaceAll("<audio .+>.+<\\/audio>", "");
-        return description;
+    /**
+     * delete the html tags on some texts like description etc
+     *
+     * @param text the text to remove the html tags
+     * @return the text without html tags
+     */
+    public static String deleteHtmlTags(String text) {
+        text = text.replaceAll("<p>", "");
+        text = text.replaceAll("<\\/p>", "");
+        text = text.replaceAll("<span .+?>", "");
+        text = text.replaceAll("<\\/span>", "");
+        text = text.replaceAll("<div .+?>", "");
+        text = text.replaceAll("<\\/div>", "");
+        text = text.replaceAll("(\\r)+", "");
+        text = text.replaceAll("(\\n)+", "\n");
+        text = text.replaceAll("&nbsp;", "");
+        text = text.replaceAll("( )+", " ");
+        text = text.replaceAll("(<br>|</br>|</ br>)+", "\n");
+        //text = text.replaceAll("<img .+?\\/>", "");
+        text = text.replaceAll("<audio .+>.+<\\/audio>", "");
+        return text;
     }
 
-    public static List<String> findImages(String text) {
-
-        List<String> imagePaths = new ArrayList<>();
-
-        Pattern pattern = Pattern.compile("<img .+?\\/>");
-        Matcher matcher = pattern.matcher(text);
-        while (matcher.find()) {
-            Pattern p = Pattern.compile("src=\\\".+?\\\"");
-            Matcher m = p.matcher(matcher.group(0));
-            if (m.find()) {
-                String found = m.group(0);
-                found = found.replaceAll("src( )?=( )?", "");
-                found = found.replaceAll("\"", "");
-                found = found.replaceAll("\\\\", "");
-                imagePaths.add(found);
-            }
-        }
-
-        return imagePaths;
-    }
-
-    public static List<String> findAudios(String text){
+    /**
+     * find audios tags on some texts like description, MOTD etc
+     *
+     * @param text the text to search for audios tags
+     * @return the list with the audio urls
+     */
+    public static List<String> findAudios(String text) {
         List<String> audioPaths = new ArrayList<>();
 
         Pattern pattern = Pattern.compile("<audio .+>.+<\\/audio>");

@@ -4,6 +4,7 @@ import java.util.List;
 
 /**
  * Created by vasilis on 1/15/16.
+ * a JavaBeans convention class for the site page data
  */
 public class SitePage {
 

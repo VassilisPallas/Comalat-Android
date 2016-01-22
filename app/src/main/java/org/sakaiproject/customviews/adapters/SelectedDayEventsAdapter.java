@@ -23,6 +23,11 @@ public class SelectedDayEventsAdapter extends RecyclerView.Adapter<SelectedDayEv
     List<UserEvents> userEventsList;
     private Context context;
 
+    /**
+     * SelectedDayEventsAdapter constructor
+     * @param context the context
+     * @param userEventsList the list with the events
+     */
     public SelectedDayEventsAdapter(Context context, List<UserEvents> userEventsList) {
         this.context = context;
         this.userEventsList = userEventsList;

@@ -19,11 +19,18 @@ public class OfflineEvents {
     private String userEventInfoJson;
     private Context context;
 
+    /**
+     * the OfflineEvents events constructor
+     * @param context the context
+     */
     public OfflineEvents(Context context) {
         this.context = context;
         jsonParse = new JsonParser(context);
     }
 
+    /**
+     * parsing the data to get the events for the offline mode
+     */
     public void getEvents() {
         try {
             userEventsJson = Actions.readJsonFile(context, "userEventsJson");

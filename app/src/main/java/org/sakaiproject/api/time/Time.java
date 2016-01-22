@@ -5,6 +5,7 @@ import java.util.Date;
 
 /**
  * Created by vasilis on 10/14/15.
+ * This has created to get the data which are Time type from the response jsons
  */
 public class Time implements Serializable {
     private String display;

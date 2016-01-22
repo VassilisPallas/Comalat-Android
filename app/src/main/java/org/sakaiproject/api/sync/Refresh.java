@@ -24,6 +24,10 @@ public class Refresh extends AsyncTask<Void, Void, Void> {
     private Context context;
     private CustomSwipeRefreshLayout swipeRefreshLayout;
 
+    /**
+     * Refresh constructor
+     * @param context the context
+     */
     public Refresh(Context context) {
         this.context = context;
     }

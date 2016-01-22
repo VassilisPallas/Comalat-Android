@@ -25,6 +25,12 @@ public class StudentInfoHelper implements IUserAbout {
     private ImageView editStudentInformationImageView;
     private EditText degreeEditText, subjectsEditText;
 
+    /**
+     * StudentInfoHelper constructor
+     * @param activity the activity
+     * @param editDrawable the custom color Edit image
+     * @param clickListener the onClickListener listener
+     */
     public StudentInfoHelper(AppCompatActivity activity, Drawable editDrawable, View.OnClickListener clickListener) {
         this.clickListener = clickListener;
         this.editDrawable = editDrawable;

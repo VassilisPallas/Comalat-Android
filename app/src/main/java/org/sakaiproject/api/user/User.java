@@ -6,6 +6,7 @@ import java.util.Date;
 
 /**
  * Created by vasilis on 10/26/15.
+ * * a JavaBeans convention class for the User data
  */
 public class User {
     private static User instance = null;

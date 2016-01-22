@@ -22,6 +22,10 @@ public class OnlineSite {
     private InputStream inputStream;
     private JsonParser jsonParse;
 
+    /**
+     * OnlineSite constructor
+     * @param context the context
+     */
     public OnlineSite(Context context) {
         this.context = context;
         this.jsonParse = new JsonParser(context);
@@ -29,6 +33,11 @@ public class OnlineSite {
         connection.setContext(context);
     }
 
+    /**
+     * REST calls to get the data from sites and projects the user has join
+     * @param url the url
+     * @throws IOException
+     */
     public void getSites(String url) throws IOException {
         connection.openConnection(url, ConnectionType.GET, true, false, null);
         Integer status = connection.getResponseCode();

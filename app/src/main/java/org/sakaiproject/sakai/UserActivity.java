@@ -25,8 +25,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.SubMenu;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.HeaderViewListAdapter;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
@@ -66,6 +68,7 @@ public class UserActivity extends AppCompatActivity implements NavigationView.On
     private Connection connection = Connection.getInstance();
     private org.sakaiproject.customviews.CustomSwipeRefreshLayout mSwipeRefreshLayout;
     private RelativeLayout root;
+    private FrameLayout searchFrame;
 
     private UserMainNavigationDrawerHelper mainNavigationDrawer;
     private static SitesNavigationDrawerHelper sitesNavigationDrawer;
@@ -138,7 +141,7 @@ public class UserActivity extends AppCompatActivity implements NavigationView.On
             e.printStackTrace();
         }
 
-        mainNavigationDrawer.createDrawer("My Workspace", null);
+        mainNavigationDrawer.createDrawer(getResources().getString(R.string.my_workspace), null);
     }
 
     public static SitesNavigationDrawerHelper getSitesNavigationDrawer() {
@@ -156,8 +159,8 @@ public class UserActivity extends AppCompatActivity implements NavigationView.On
                     refresh.execute();
 
                 } else {
-                    Snackbar.make(root, "No internet connection", Snackbar.LENGTH_LONG)
-                            .setAction("Can't sync", null).show();
+                    Snackbar.make(root, getResources().getString(R.string.no_internet), Snackbar.LENGTH_LONG)
+                            .setAction(getResources().getText(R.string.can_not_sync), null).show();
                 }
             }
         });
@@ -199,7 +202,6 @@ public class UserActivity extends AppCompatActivity implements NavigationView.On
             Actions.logout(this, waiter);
         }
     }
-
 
     @Override
     public void onUserInteraction() {
@@ -246,11 +248,11 @@ public class UserActivity extends AppCompatActivity implements NavigationView.On
                 Actions.logout(this, waiter);
                 break;
             case R.id.my_workspace:
-                mainNavigationDrawer.createDrawer("My Workspace", null);
+                mainNavigationDrawer.createDrawer(getResources().getString(R.string.my_workspace), null);
                 break;
             case R.id.help:
                 WebViewFragment webViewFragment = new WebViewFragment();
-                Actions.selectFragment(webViewFragment, R.id.user_frame, "Help", this);
+                Actions.selectFragment(webViewFragment, R.id.user_frame, getResources().getString(R.string.help), this);
                 break;
         }
 
@@ -272,7 +274,6 @@ public class UserActivity extends AppCompatActivity implements NavigationView.On
             }
         }
 
-        //DrawerLayout drawer = (DrawerLayout) ((AppCompatActivity) context).findViewById(R.id.drawer_layout);
         if (NavigationDrawerHelper.getDrawer().isDrawerOpen(GravityCompat.START))
             NavigationDrawerHelper.getDrawer().closeDrawer(GravityCompat.START);
         else if (NavigationDrawerHelper.getDrawer().isDrawerOpen(GravityCompat.END))

@@ -5,6 +5,7 @@ import java.util.Date;
 
 /**
  * Created by vasilis on 10/15/15.
+ * This has created to get the data which are ProfileStatus type from the response jsons
  */
 public class ProfileStatus implements Serializable {
 

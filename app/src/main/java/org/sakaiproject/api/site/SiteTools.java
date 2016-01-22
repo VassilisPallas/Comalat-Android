@@ -2,6 +2,7 @@ package org.sakaiproject.api.site;
 
 /**
  * Created by vasilis on 1/15/16.
+ * a JavaBeans convention class for the site tools data
  */
 public class SiteTools {
 

@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity
 
         if (savedInstanceState == null) {
             WelcomeFragment welcomeFragment = new WelcomeFragment();
-            selectFragment(welcomeFragment, R.id.content_frame, "Welcome");
+            selectFragment(welcomeFragment, R.id.content_frame, getResources().getString(R.string.welcome));
         }
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -118,7 +118,7 @@ public class MainActivity extends AppCompatActivity
         switch (item.getItemId()) {
             case R.id.welcome:
                 WelcomeFragment welcomeFragment = new WelcomeFragment();
-                selectFragment(welcomeFragment, R.id.content_frame, "Welcome");
+                selectFragment(welcomeFragment, R.id.content_frame, getResources().getString(R.string.welcome));
                 break;
             case R.id.about:
                 break;
@@ -132,15 +132,15 @@ public class MainActivity extends AppCompatActivity
                 break;
             case R.id.help:
                 WebViewFragment webViewFragment = new WebViewFragment();
-                selectFragment(webViewFragment, R.id.content_frame, "Help");
+                selectFragment(webViewFragment, R.id.content_frame, getResources().getString(R.string.help));
                 break;
             case R.id.login:
                 LoginFragment loginFragment = new LoginFragment();
-                selectFragment(loginFragment, R.id.content_frame, "Login");
+                selectFragment(loginFragment, R.id.content_frame, getResources().getString(R.string.login));
                 break;
             case R.id.new_user:
                 SignupFragment signupFragment = new SignupFragment();
-                selectFragment(signupFragment, R.id.content_frame, "New Account");
+                selectFragment(signupFragment, R.id.content_frame, getResources().getString(R.string.new_account));
                 break;
             case R.id.reset_password:
                 break;

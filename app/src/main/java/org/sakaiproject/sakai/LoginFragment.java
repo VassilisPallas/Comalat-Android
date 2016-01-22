@@ -28,7 +28,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
 
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_login, container, false);
-        getActivity().setTitle("Login");
+        getActivity().setTitle(getResources().getString(R.string.login));
         findViewsById(v);
         return v;
     }
@@ -56,7 +56,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
                     String pass = passwordEditText.getText().toString().trim();
                     new LoginAsync(this, url, userId, pass).execute();
                 } else
-                    Toast.makeText(getContext(), "Empty fields", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), getResources().getString(R.string.empty_fields), Toast.LENGTH_SHORT).show();
                 break;
         }
     }

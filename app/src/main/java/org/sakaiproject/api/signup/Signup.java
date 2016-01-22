@@ -24,12 +24,26 @@ public class Signup {
     String userId;
     private Connection connection;
 
+    /**
+     * Signup constructor
+     * @param context the context
+     */
     public Signup(Context context) {
         this.context = context;
         connection = Connection.getInstance();
         connection.setContext(context);
     }
 
+    /**
+     * the REST call (POST) for the signup
+     * @param url the url
+     * @param eid the username
+     * @param firstName the first name
+     * @param lastName the last name
+     * @param email the email
+     * @param password the password
+     * @return true if the signup completed, false if doesn't
+     */
     public boolean signUp(String url, String eid, String firstName, String lastName, String email, String password) {
 
         String data = null;
@@ -69,6 +83,11 @@ public class Signup {
         return false;
     }
 
+    /**
+     * check if the username already exists
+     * @param eid the username
+     * @return true if exists, false if doesn't
+     */
     public boolean eidExists(String eid) {
         try {
             String url = context.getResources().getString(R.string.url) + "user/" + eid + "/exists.json";

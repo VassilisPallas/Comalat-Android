@@ -12,6 +12,7 @@ import java.util.Map;
 
 /**
  * Created by vasilis on 11/21/15.
+ * a JavaBeans convention class for the site data
  */
 public class SiteData {
 

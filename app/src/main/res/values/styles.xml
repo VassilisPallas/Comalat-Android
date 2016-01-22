@@ -7,7 +7,7 @@
         <item name="colorPrimaryDark">#046a8c</item>
         <item name="colorAccent">#0083AF</item>
 
-        <item name="android:editTextColor">@android:color/black</item>
+        <item name="android:alertDialogTheme">@style/Theme.AppCompat.Light.Dialog.Alert</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
@@ -32,4 +32,13 @@
         <item name="android:windowEnterAnimation">@anim/anim_in</item>
         <item name="android:windowExitAnimation">@anim/anim_out</item>
     </style>
+
+    <style name="MembershipEditTextTheme">
+        <!-- Used for the bottom line when not selected / focused -->
+        <item name="colorControlNormal">#ffffff</item>
+        <item name="colorControlActivated">#a6f2f2f2</item>
+        <item name="android:textColorHint">#ace9e9e9</item>
+        <!-- colorControlActivated & colorControlHighlight use the colorAccent color by default -->
+    </style>
+
 </resources>

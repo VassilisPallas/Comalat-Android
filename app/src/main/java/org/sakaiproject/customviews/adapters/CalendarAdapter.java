@@ -50,6 +50,11 @@ public class CalendarAdapter extends BaseAdapter {
     public static List<String> day_string;
     private View previousView;
 
+    /**
+     * CalendarAdapter constructor
+     * @param context the context
+     * @param monthCalendar the month Calendar
+     */
     public CalendarAdapter(Context context, GregorianCalendar monthCalendar) {
         CalendarAdapter.day_string = new ArrayList<>();
         Locale.setDefault(Locale.US);

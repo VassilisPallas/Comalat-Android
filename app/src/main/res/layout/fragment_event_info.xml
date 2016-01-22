@@ -25,7 +25,7 @@
                     android:id="@+id/event_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Event Title"
+                    android:text="@string/event_title"
                     android:textSize="18sp"
                     android:textStyle="bold" />
 
@@ -37,7 +37,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/event_title"
                     android:layout_marginTop="10dp"
-                    android:text="Date" />
+                    android:text="@string/date" />
 
                 <TextView
                     android:id="@+id/time_txt"
@@ -45,7 +45,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/event_date"
                     android:layout_marginTop="10dp"
-                    android:text="Time" />
+                    android:text="@string/time" />
 
                 <TextView
                     android:id="@+id/description_txt"
@@ -53,7 +53,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/event_time"
                     android:layout_marginTop="10dp"
-                    android:text="Description" />
+                    android:text="@string/description" />
 
                 <TextView
                     android:id="@+id/attachments_txt"
@@ -61,7 +61,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/description_txt"
                     android:layout_marginTop="10dp"
-                    android:text="Attachments"
+                    android:text="@string/attachments"
                     android:visibility="gone" />
 
                 <TextView
@@ -70,7 +70,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/attachments_linear"
                     android:layout_marginTop="10dp"
-                    android:text="Frequency" />
+                    android:text="@string/frequency" />
 
                 <TextView
                     android:id="@+id/type_txt"
@@ -78,7 +78,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/event_frequency"
                     android:layout_marginTop="10dp"
-                    android:text="Event Type" />
+                    android:text="@string/event_type" />
 
                 <TextView
                     android:id="@+id/owner_txt"
@@ -86,7 +86,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/event_type"
                     android:layout_marginTop="10dp"
-                    android:text="Owner" />
+                    android:text="@string/owner" />
 
                 <TextView
                     android:id="@+id/site_txt"
@@ -94,7 +94,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/event_owner"
                     android:layout_marginTop="10dp"
-                    android:text="Site" />
+                    android:text="@string/Site" />
 
                 <TextView
                     android:id="@+id/event_location_txt"
@@ -102,7 +102,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/event_site"
                     android:layout_marginTop="10dp"
-                    android:text="Event Location"
+                    android:text="@string/event_location"
                     android:visibility="gone" />
 
                 <TextView
@@ -111,7 +111,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/event_location"
                     android:layout_marginTop="10dp"
-                    android:text="From Site" />
+                    android:text="@string/from_site" />
 
                 <!-- Right side TextView -->
 
@@ -224,8 +224,8 @@
                     android:id="@+id/edit_ripple"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
                     android:layout_marginBottom="10dp"
+                    android:layout_marginTop="10dp"
                     app:mrl_rippleAlpha="0.2"
                     app:mrl_rippleColor="#f5f5f5"
                     app:mrl_rippleDelayClick="false"
@@ -237,9 +237,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="#0083AF"
-                        android:text="edit event"
-                        android:textColor="#FFF"
                         android:padding="8dp"
+                        android:text="@string/edit_event"
+                        android:textColor="#FFF"
                         android:visibility="gone" />
 
                 </com.balysv.materialripple.MaterialRippleLayout>
@@ -249,9 +249,9 @@
                     android:id="@+id/remove_ripple"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
                     android:layout_marginLeft="20dp"
                     android:layout_marginTop="10dp"
-                    android:layout_marginBottom="10dp"
                     android:layout_toRightOf="@+id/edit_ripple"
                     app:mrl_rippleAlpha="0.2"
                     app:mrl_rippleColor="#f5f5f5"
@@ -265,7 +265,7 @@
                         android:layout_height="wrap_content"
                         android:background="#0083AF"
                         android:padding="8dp"
-                        android:text="remove event"
+                        android:text="@string/remove_event"
                         android:textColor="#FFF"
                         android:visibility="gone" />
 

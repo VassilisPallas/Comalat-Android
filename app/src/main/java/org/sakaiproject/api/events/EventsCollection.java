@@ -1,7 +1,5 @@
 package org.sakaiproject.api.events;
 
-import android.util.Log;
-
 import org.sakaiproject.api.user.UserEvents;
 
 import java.text.DateFormat;
@@ -31,22 +29,41 @@ public class EventsCollection {
         return monthEvents;
     }
 
+    /**
+     * get the monthly events based on the current month
+     * @param cal the calendar
+     * @throws ParseException
+     * @throws CloneNotSupportedException
+     */
     public static void findMonthlyEvents(GregorianCalendar cal) throws ParseException, CloneNotSupportedException {
         monthEvents.clear();
 
         String month;
 
-        month = String.valueOf(cal.get(cal.MONTH) + 1 /* starts from 0 */);
+        month = String.valueOf(cal.get(Calendar.MONTH) + 1 /* starts from 0 */);
         month = month.length() > 1 ? month : "0" + month;
 
         selectedMonthEvents(month, cal);
     }
 
+    /**
+     * convert String to Date object
+     * @param dateStr the String which will be converted into Date
+     * @return
+     * @throws ParseException
+     */
     public static Date readDateFromString(String dateStr) throws ParseException {
         DateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
         return format.parse(dateStr);
     }
 
+    /**
+     * select the month events based on the current month
+     * @param month the current month on string index
+     * @param cal the calendar
+     * @throws ParseException
+     * @throws CloneNotSupportedException
+     */
     public static void selectedMonthEvents(String month, GregorianCalendar cal) throws ParseException, CloneNotSupportedException {
         monthEvents.clear();
         for (UserEvents event : userEvents) {
@@ -62,6 +79,15 @@ public class EventsCollection {
         }
     }
 
+    /**
+     * get the last day of the month (31 for Jan etc)
+     * it gets the date and goes to the next month,
+     * then subtract - 1 day and finds the last day of
+     * the previous month (the selected one)
+     *
+     * @param date the Date to check which day is the last one
+     * @return the last day
+     */
     public static int maxMonthDay(Date date) {
 
         Calendar calendar = Calendar.getInstance();
@@ -73,7 +99,7 @@ public class EventsCollection {
 
         Date lastDayOfMonth = calendar.getTime();
         calendar.setTime(lastDayOfMonth);
-        return calendar.get(calendar.DAY_OF_MONTH);
+        return calendar.get(Calendar.DAY_OF_MONTH);
     }
 
     /**

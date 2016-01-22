@@ -13,6 +13,10 @@ import java.io.IOException;
 public class Logout {
     private Connection connection;
 
+    /**
+     * Logout constructor
+     * @param context the context
+     */
     public Logout(Context context) {
         connection = Connection.getInstance();
         connection.setContext(context);

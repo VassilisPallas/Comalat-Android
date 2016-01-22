@@ -19,6 +19,11 @@ public class SystemNotifications {
     private Class<?> activity;
     private static NotificationManager notificationManager;
 
+    /**
+     * SystemNotifications constructor
+     * @param context the context
+     * @param activity the Class<?> type of activity (MyActivity.class)
+     */
     public SystemNotifications(Context context, Class<?> activity) {
         this.context = context;
         this.activity = activity;
@@ -39,8 +44,8 @@ public class SystemNotifications {
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
 
         Notification notification = new Notification.Builder(context)
-                .setContentTitle("Session expiration")
-                .setContentText("Session will expire in less than 15 minutes")
+                .setContentTitle(context.getResources().getString(R.string.session_expiration))
+                .setContentText(context.getResources().getString(R.string.session_expiration_on_fifteen_minutes))
                 .setSmallIcon(R.mipmap.ic_launcher)
                 .setContentIntent(pendingIntent)
                 .setSound(soundUri)

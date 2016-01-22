@@ -26,6 +26,10 @@ public class OnlineEvents {
     private JsonParser jsonParse;
     private Context context;
 
+    /**
+     * the OnlineEvents constructor
+     * @param context the context
+     */
     public OnlineEvents(Context context) {
         this.context = context;
         connection = Connection.getInstance();
@@ -33,6 +37,10 @@ public class OnlineEvents {
         jsonParse = new JsonParser(context);
     }
 
+    /**
+     * make REST call and get the json responses, then parse them for the data
+     * @param eventUrl the url
+     */
     public void getEvents(String eventUrl) {
         try {
 

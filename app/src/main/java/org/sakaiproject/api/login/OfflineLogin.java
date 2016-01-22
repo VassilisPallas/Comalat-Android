@@ -22,6 +22,10 @@ public class OfflineLogin implements ILogin {
     private String userProfileDataJson;
     private Context context;
 
+    /**
+     * the OfflineLogin constructor
+     * @param context the context
+     */
     public OfflineLogin(Context context) {
         this.context = context;
         jsonParse = new JsonParser(context);

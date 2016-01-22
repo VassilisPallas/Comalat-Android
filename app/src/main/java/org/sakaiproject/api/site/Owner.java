@@ -2,10 +2,16 @@ package org.sakaiproject.api.site;
 
 /**
  * Created by vasilis on 1/15/16.
+ * a JavaBeans convention class for the Owner display name and id
  */
 public class Owner {
     private String userDisplayName, userId;
 
+    /**
+     * Owner constructor
+     * @param userDisplayName the display name from the user
+     * @param userId the userId
+     */
     public Owner(String userDisplayName, String userId) {
         this.userDisplayName = userDisplayName;
         this.userId = userId;

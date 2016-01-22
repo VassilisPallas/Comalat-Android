@@ -1,4 +1,5 @@
 <resources>
+
     <!-- application's data-->
     <string name="app_name">Sakai</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
@@ -27,7 +28,7 @@
     <string name="acknowledgements">Acknowledgements</string>
     <string name="help">Help</string>
     <string name="login">Login</string>
-    <string name="new_user">New User</string>
+    <string name="new_account">New Account</string>
     <string name="reset_password">Reset Password</string>
     <string name="other">Other</string>
 
@@ -39,7 +40,6 @@
     <string name="calendar">Calendar</string>
     <string name="resources">Resources</string>
     <string name="announcements">Announcements</string>
-    <string name="worksite_setup">Worksite Setup</string>
     <string name="preferences">Preferences</string>
     <string name="account">Account</string>
     <string name="logout">Logout</string>
@@ -81,14 +81,113 @@
     <!-- AlertDialog -->
     <string name="logout_message">Are you sure you want to log out?</string>
     <string name="session_expired">Your session has been expired.\nPlease login again</string>
+    <string name="unjoin_message">Are you sure you want to unjoin from</string>
+    <string name="save_edits">Are you sure tou want to save the edits?</string>
+    <string name="cancel_edits">Are you sure tou want to cancel all the edits?</string>
     <string name="ok">OK</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
     <string name="cancel">Cancel</string>
 
     <!-- menu options -->
     <string name="action_settings">Settings</string>
     <string name="action_refresh">Refresh</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="title_activity_main2">Main2Activity</string>
+    <!-- Notification messages -->
+    <string name="session_expiration">Session expiration</string>
+    <string name="session_expiration_on_fifteen_minutes">Session will expire in less than 15 minutes</string>
+
+    <!-- Toast messages -->
+    <string name="first_login_without_internet">You have never login again!\nTo login without internet\nyou have to access at least\none time with internet connection</string>
+    <string name="invalid_login">Invalid login</string>
+    <string name="successful_unjoined">Unjoined successfully</string>
+    <string name="empty_fields">Empty fields</string>
+    <string name="no_internet">No internet connection</string>
+    <string name="can_not_sync">Can\'t sync</string>
+
+    <!-- about info -->
+    <!-- <string name="no_information">You haven't filled out any information yet</string> -->
+    <string name="no_information">No information yet</string>
+    <string name="save_changes">Save changes</string>
+    <!-- basic info -->
+    <string name="basic_information">Basic Information</string>
+    <string name="nickname">Nickname</string>
+    <string name="birthday">Birthday</string>
+    <string name="personal_summary">Personal Summary</string>
+    <!-- contact info -->
+    <string name="contact_information">Contact Information</string>
+    <string name="home_page">Home page</string>
+    <string name="work_phone">Work phone</string>
+    <string name="home_phone">Home phone</string>
+    <string name="mobile_phone">Mobile phone</string>
+    <string name="facsimile">Facsimile</string>
+    <!-- personal info -->
+    <string name="personal_info">Personal Information</string>
+    <string name="favourite_books">Favorite books</string>
+    <string name="favourite_tv_shows">Favorite TV shows</string>
+    <string name="favourite_movies">Favorite movies</string>
+    <string name="favoutite_quotes">Favorite quotes</string>
+    <!-- social network info -->
+    <string name="social_networking">Social Networking</string>
+    <string name="facebook_url">Facebook URL</string>
+    <string name="linked_in_url">LinkedIn URL</string>
+    <string name="myspace_url">MySpace URL</string>
+    <string name="skype">Skype</string>
+    <string name="twitter_url">Twitter URL</string>
+    <!-- staff info -->
+    <string name="staff_information">Staff Information</string>
+    <string name="position">Position</string>
+    <string name="department">Department</string>
+    <string name="school">School</string>
+    <string name="room">Room</string>
+    <string name="staff_profile">Staff profile</string>
+    <string name="university_profile_url">University profile URL</string>
+    <string name="academic_url">Academic/research URL</string>
+    <string name="publications_conference">Publications and\nconference</string>
+    <!-- student info -->
+    <string name="student_information">Student Information</string>
+    <string name="degree_course">Degree/Course</string>
+    <string name="subjects">Subjects</string>
+
+    <!-- event info -->
+    <string name="event_title">Event Title</string>
+    <string name="date">Date</string>
+    <string name="time">Time</string>
+    <string name="description">Description</string>
+    <string name="frequency">Frequency</string>
+    <string name="event_type">Event Type</string>
+    <string name="owner">Owner</string>
+    <string name="Site">Site</string>
+    <string name="from_site">From Site</string>
+    <string name="attachments">Attachments</string>
+    <string name="event_location">Event Location</string>
+    <string name="edit_event">edit event</string>
+    <string name="remove_event">remove event</string>
+
+    <!-- Other -->
+    <string name="no_description">No description available</string>
+    <string name="server_error">An error has occurred.\nTry later</string>
+    <string name="event_info">Event Info</string>
+    <string name="activity_occurs_once">Activity occurs once</string>
+    <string name="every">Every</string>
+    <string name="ends_on">, Ends on</string>
+    <string name="site">site</string>
+    <string name="enter_user_id">Enter your user Id</string>
+    <string name="enter_password">Enter your password</string>
+    <string name="search_user_sites_projects">Search for your sites and projects</string>
+    <string name="say_something">Say something</string>
+    <string name="say_it">Say it</string>
+    <string name="photos">Photos</string>
+    <string name="friends">Friends</string>
+    <string name="post_on_wall">Post on Wall</string>
+    <string name="posts">Posts</string>
+    <string name="add_comment">Add comment</string>
+    <string name="user_id">User Id *</string>
+    <string name="first_name">First Name</string>
+    <string name="last_name">Last Name</string>
+    <string name="password">Password *</string>
+    <string name="confirm_password">Confirm Password *</string>
+    <string name="new_account_type">type: registered</string>
+    <string name="create_account">Create Account</string>
+
 </resources>

@@ -17,6 +17,10 @@ public class RefreshSession {
     private Connection connection;
     private Context context;
 
+    /**
+     * RefreshSession constructor
+     * @param context the context
+     */
     public RefreshSession(Context context) {
         this.context = context;
         connection = Connection.getInstance();

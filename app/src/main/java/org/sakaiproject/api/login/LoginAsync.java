@@ -34,6 +34,14 @@ public class LoginAsync extends AsyncTask<Void, Void, LoginType> {
     private ProgressBar progressBar;
     private EditText usernameEditText, passwordEditText;
 
+    /**
+     * The LoginAsync constructor
+     *
+     * @param fragment the fragment where the object will be create
+     * @param url      the url
+     * @param username the username
+     * @param password the password
+     */
     public LoginAsync(Fragment fragment, String url, String username, String password) {
         this.fragment = fragment;
         context = this.fragment.getContext();
@@ -94,14 +102,14 @@ public class LoginAsync extends AsyncTask<Void, Void, LoginType> {
         } else if (type == LoginType.LOGIN_WITHOUT_INTERNET) /* connection completed without internet */ {
 
         } else if (type == LoginType.FIRST_TIME_LOGIN_WITHOUT_INTERNET) /* if the user tries to login without internet connection for the first time */ {
-            Toast.makeText(context, "You have never login again!\nTo login without internet\nyou have to access at least\none time with internet connection", Toast.LENGTH_LONG).show();
+            Toast.makeText(context, context.getResources().getString(R.string.first_login_without_internet), Toast.LENGTH_LONG).show();
             if (fragment != null && fragment instanceof LoginFragment)
                 clearEditTexts();
             return;
         } else if (type == LoginType.SOCKETEXCEPTION) {
-            Toast.makeText(context, "Error on the connection with server.\nTry later", Toast.LENGTH_LONG).show();
+            Toast.makeText(context, context.getResources().getString(R.string.server_error), Toast.LENGTH_LONG).show();
         } else /* connection failed */ {
-            Toast.makeText(context, "Invalid login", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, context.getResources().getString(R.string.invalid_login), Toast.LENGTH_SHORT).show();
             if (fragment != null && fragment instanceof LoginFragment)
                 clearEditTexts();
             return;

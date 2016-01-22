@@ -26,6 +26,12 @@ public class ContactInfoHelper implements IUserAbout {
 
     private Drawable editDrawable;
 
+    /**
+     * ContactInfoHelper constructor
+     * @param activity the activity
+     * @param editDrawable the custom color Edit image
+     * @param clickListener the onClickListener listener
+     */
     public ContactInfoHelper(AppCompatActivity activity, Drawable editDrawable, View.OnClickListener clickListener) {
         this.editDrawable = editDrawable;
         this.clickListener = clickListener;

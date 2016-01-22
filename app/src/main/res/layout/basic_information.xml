@@ -34,7 +34,7 @@
                         android:layout_alignParentLeft="true"
                         android:layout_centerVertical="true"
                         android:padding="8dp"
-                        android:text="Basic Information"
+                        android:text="@string/basic_information"
                         android:textSize="17sp"
                         android:textStyle="bold" />
 
@@ -83,7 +83,7 @@
                 android:layout_marginBottom="10dp"
                 android:layout_marginTop="10dp"
                 android:gravity="center"
-                android:text="You haven't filled out any information yet"
+                android:text="@string/no_information"
                 android:textSize="15sp"
                 android:visibility="gone" />
 
@@ -105,7 +105,7 @@
                         android:layout_alignParentLeft="true"
                         android:layout_centerVertical="true"
                         android:padding="8dp"
-                        android:text="Nickname" />
+                        android:text="@string/nickname" />
 
                     <TextView
                         android:id="@+id/nickname_value"
@@ -155,7 +155,7 @@
                         android:layout_alignParentLeft="true"
                         android:layout_centerVertical="true"
                         android:padding="8dp"
-                        android:text="Birthday" />
+                        android:text="@string/birthday" />
 
                     <TextView
                         android:id="@+id/birthday_value"
@@ -165,8 +165,7 @@
                         android:layout_toLeftOf="@+id/datepicker_imageview"
                         android:layout_toRightOf="@+id/birthday_textview"
                         android:gravity="right"
-                        android:padding="8dp"
-                        android:text="Aug 10, 1993" />
+                        android:padding="8dp" />
 
                     <ImageView
                         android:id="@+id/datepicker_imageview"
@@ -202,7 +201,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentLeft="true"
                         android:padding="8dp"
-                        android:text="Personal Summary" />
+                        android:text="@string/personal_summary" />
 
                     <TextView
                         android:id="@+id/personal_summary_value"
@@ -259,7 +258,7 @@
                         android:layout_width="130dp"
                         android:layout_height="40dp"
                         android:background="#0083AF"
-                        android:text="Save changes"
+                        android:text="@string/save_changes"
                         android:textColor="#FFFFFF" />
 
                 </com.balysv.materialripple.MaterialRippleLayout>
@@ -282,7 +281,7 @@
                         android:layout_width="110dp"
                         android:layout_height="40dp"
                         android:background="#0083AF"
-                        android:text="Cancel"
+                        android:text="@string/cancel"
                         android:textColor="#FFFFFF" />
 
                 </com.balysv.materialripple.MaterialRippleLayout>

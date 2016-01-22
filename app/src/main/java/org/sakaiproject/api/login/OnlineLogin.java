@@ -33,6 +33,10 @@ public class OnlineLogin implements ILogin {
     private Context context;
     private Connection connection;
 
+    /**
+     * the OnlineLogin constructor
+     * @param context the context
+     */
     public OnlineLogin(Context context) {
         this.context = context;
         jsonParse = new JsonParser(context);

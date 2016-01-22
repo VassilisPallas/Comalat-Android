@@ -12,16 +12,29 @@ import java.io.IOException;
 
 /**
  * Created by vasilis on 1/13/16.
+ * update the user info (NOT WORKING BECAUSE THERE IS NO PUT METHOD FOR USER INFO UPDATE)
  */
+@Deprecated
 public class UpdateUserInfo {
     private Connection connection;
     private JsonWriter jsonWriter;
 
+    /**
+     * UpdateUserInfo constructor
+     *
+     * @param context the context
+     */
     public UpdateUserInfo(Context context) {
         connection = Connection.getInstance();
         jsonWriter = new JsonWriter(context);
     }
 
+    /**
+     * PUT call to update the user info
+     *
+     * @param url update the user info (NOT WORKING BECAUSE THERE IS NO PUT METHOD FOR USER INFO UPDATE)
+     */
+    @Deprecated
     public void updateInfo(String url) {
         try {
             String infoJson = jsonWriter.updateUserProfileInfo();

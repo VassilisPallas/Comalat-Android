@@ -16,6 +16,7 @@ import java.util.regex.Pattern;
 
 /**
  * Created by vasilis on 10/20/15.
+ * * a JavaBeans convention class for the user events data
  */
 public class UserEvents implements Serializable, Cloneable {
 

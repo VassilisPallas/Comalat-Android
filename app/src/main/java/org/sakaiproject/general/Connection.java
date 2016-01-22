@@ -5,6 +5,7 @@ import android.content.Context;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStreamWriter;
+import java.net.ConnectException;
 import java.net.CookieHandler;
 import java.net.CookieManager;
 import java.net.HttpURLConnection;
@@ -132,7 +133,7 @@ public class Connection {
                 con.setReadTimeout(10000);
 
 
-                if ((method == ConnectionType.POST || method == ConnectionType.PUT) && (data != null || !data.isEmpty())) {
+                if ((method == ConnectionType.POST || method == ConnectionType.PUT) && (data != null && !data.equals(""))) {
                     con.setDoOutput(true);
                     con.setChunkedStreamingMode(0);
 

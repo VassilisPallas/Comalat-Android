@@ -5,6 +5,7 @@ import java.util.Map;
 
 /**
  * Created by vasilis on 10/26/15.
+ * a JavaBeans convention class for the user Profile data
  */
 public class Profile {
     private static Profile instance = null;

@@ -35,7 +35,7 @@
         <item
             android:id="@+id/new_user"
             android:icon="@mipmap/ic_person"
-            android:title="@string/new_user" />
+            android:title="@string/new_account" />
         <item
             android:id="@+id/reset_password"
             android:icon="@mipmap/ic_person"

@@ -28,7 +28,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:padding="8dp"
-                    android:text="Contact Information"
+                    android:text="@string/contact_information"
                     android:textSize="17sp"
                     android:textStyle="bold" />
 
@@ -77,7 +77,7 @@
             android:layout_marginBottom="10dp"
             android:layout_marginTop="10dp"
             android:gravity="center"
-            android:text="You haven't filled out any information yet"
+            android:text="@string/no_information"
             android:textSize="15sp"
             android:visibility="gone" />
 
@@ -99,7 +99,7 @@
                     android:layout_alignParentLeft="true"
                     android:layout_centerVertical="true"
                     android:padding="8dp"
-                    android:text="Email" />
+                    android:text="@string/email" />
 
                 <TextView
                     android:id="@+id/email_value"
@@ -120,6 +120,7 @@
                     android:layout_centerVertical="true"
                     android:layout_toRightOf="@+id/email_value"
                     android:gravity="center"
+                    android:inputType="textEmailAddress"
                     android:padding="8dp"
                     android:textColor="#8f8f8f"
                     android:visibility="gone" />
@@ -150,7 +151,7 @@
                     android:layout_alignParentLeft="true"
                     android:layout_centerVertical="true"
                     android:padding="8dp"
-                    android:text="Home page" />
+                    android:text="@string/home_page" />
 
                 <TextView
                     android:id="@+id/home_page_value"
@@ -201,7 +202,7 @@
                     android:layout_alignParentLeft="true"
                     android:layout_centerVertical="true"
                     android:padding="8dp"
-                    android:text="Work phone" />
+                    android:text="@string/work_phone" />
 
                 <TextView
                     android:id="@+id/work_phone_value"
@@ -252,7 +253,7 @@
                     android:layout_alignParentLeft="true"
                     android:layout_centerVertical="true"
                     android:padding="8dp"
-                    android:text="Home phone" />
+                    android:text="@string/home_phone" />
 
                 <TextView
                     android:id="@+id/home_phone_value"
@@ -303,7 +304,7 @@
                     android:layout_alignParentLeft="true"
                     android:layout_centerVertical="true"
                     android:padding="8dp"
-                    android:text="Mobile phone" />
+                    android:text="@string/mobile_phone" />
 
                 <TextView
                     android:id="@+id/mobile_phone_value"
@@ -354,7 +355,7 @@
                     android:layout_alignParentLeft="true"
                     android:layout_centerVertical="true"
                     android:padding="8dp"
-                    android:text="Facsimile" />
+                    android:text="@string/facsimile" />
 
                 <TextView
                     android:id="@+id/facsimile_value"
@@ -413,7 +414,7 @@
                     android:layout_width="130dp"
                     android:layout_height="40dp"
                     android:background="#0083AF"
-                    android:text="Save changes"
+                    android:text="@string/save_changes"
                     android:textColor="#FFFFFF" />
 
             </com.balysv.materialripple.MaterialRippleLayout>
@@ -436,7 +437,7 @@
                     android:layout_width="110dp"
                     android:layout_height="40dp"
                     android:background="#0083AF"
-                    android:text="Cancel"
+                    android:text="@string/cancel"
                     android:textColor="#FFFFFF" />
 
             </com.balysv.materialripple.MaterialRippleLayout>

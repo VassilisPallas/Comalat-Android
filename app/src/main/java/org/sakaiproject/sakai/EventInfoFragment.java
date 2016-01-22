@@ -95,11 +95,11 @@ public class EventInfoFragment extends DialogFragment {
         }
 
         frequency = (TextView) v.findViewById(R.id.event_frequency);
-        String frequencyText = "Activity occurs once";
+        String frequencyText = getContext().getResources().getString(R.string.activity_occurs_once);
         if (selectedEvent.getRecurrenceRule() != null) {
-            frequencyText = "Every " + selectedEvent.getRecurrenceRule().getInterval() + " " + selectedEvent.getRecurrenceRule().getFrequencyDescription();
+            frequencyText = getContext().getResources().getString(R.string.every) + " " + selectedEvent.getRecurrenceRule().getInterval() + " " + selectedEvent.getRecurrenceRule().getFrequencyDescription();
             if (selectedEvent.getRecurrenceRule().getUntil() != null) {
-                frequencyText += ", Ends on " + selectedEvent.getRecurrenceRule().getEndDate();
+                frequencyText += getContext().getResources().getString(R.string.ends_on) + " " + selectedEvent.getRecurrenceRule().getEndDate();
             }
         }
         frequency.setText(frequencyText);
@@ -125,7 +125,13 @@ public class EventInfoFragment extends DialogFragment {
 
             owner.setText(Profile.getDisplayName());
 
-            fromSite.setText("\"" + Profile.getDisplayName() + "\'s site\" (~" + User.getUserId() + ")");
+            fromSite.setText("\"");
+            fromSite.append(Profile.getDisplayName());
+            fromSite.append("\'s ");
+            fromSite.append(getContext().getResources().getString(R.string.site));
+            fromSite.append("\" (~");
+            fromSite.append(User.getUserId());
+            fromSite.append(")");
 
             editEvent = (Button) v.findViewById(R.id.edit_event);
             editEvent.setVisibility(View.VISIBLE);
@@ -134,7 +140,11 @@ public class EventInfoFragment extends DialogFragment {
             removeEvent.setVisibility(View.VISIBLE);
         } else {
             owner.setText(selectedEvent.getCreatorUserId());
-            fromSite.setText("\"" + selectedEvent.getSiteName() + "\" (" + selectedEvent.getSiteId() + ")");
+            fromSite.setText("\"");
+            fromSite.append(selectedEvent.getSiteName());
+            fromSite.append("\" (");
+            fromSite.append(selectedEvent.getSiteId());
+            fromSite.append(")");
         }
     }
 
