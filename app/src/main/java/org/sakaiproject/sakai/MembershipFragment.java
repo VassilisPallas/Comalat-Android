@@ -1,20 +1,23 @@
 package org.sakaiproject.sakai;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
+import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import org.sakaiproject.api.site.SiteData;
-import org.sakaiproject.customviews.adapters.MemebershipAdapter;
-import org.sakaiproject.general.Actions;
+import org.sakaiproject.api.site.actions.IUnJoin;
+import org.sakaiproject.api.site.actions.UnJoinAsync;
+import org.sakaiproject.customviews.adapters.MembershipAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,13 +26,15 @@ import java.util.List;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class MembershipFragment extends Fragment {
+public class MembershipFragment extends Fragment implements IUnJoin {
 
     private RecyclerView mRecyclerView;
-    private RecyclerView.Adapter mAdapter;
+    private MembershipAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
 
+    private ProgressBar refreshProgressBar;
     private FloatingActionButton createSite;
+    private EditText membershipSearch;
 
     private org.sakaiproject.customviews.CustomSwipeRefreshLayout swipeRefreshLayout;
 
@@ -58,6 +63,8 @@ public class MembershipFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_membership, container, false);
 
         getActivity().setTitle(getContext().getResources().getString(R.string.membership));
+
+        refreshProgressBar = (ProgressBar) v.findViewById(R.id.membership_refresh);
 
         swipeRefreshLayout = (org.sakaiproject.customviews.CustomSwipeRefreshLayout) getArguments().getSerializable("swipeRefresh");
 
@@ -90,7 +97,7 @@ public class MembershipFragment extends Fragment {
         List<SiteData> membership = new ArrayList<>(SiteData.getSites());
         membership.addAll(SiteData.getProjects());
 
-        mAdapter = new MemebershipAdapter(membership, v.getContext());
+        mAdapter = new MembershipAdapter(membership, v.getContext(), this);
         mRecyclerView.setAdapter(mAdapter);
 
         createSite = (FloatingActionButton) v.findViewById(R.id.create_site);
@@ -101,6 +108,31 @@ public class MembershipFragment extends Fragment {
             }
         });
 
+        membershipSearch = (EditText) v.findViewById(R.id.membership_search);
+        membershipSearch.addTextChangedListener(searchWatcher);
+
         return v;
+    }
+
+    private TextWatcher searchWatcher = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            mAdapter.getFilter().filter(s);
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+
+        }
+    };
+
+    @Override
+    public void siteUnJoin(List<SiteData> membership, int position) {
+        new UnJoinAsync(membership.get(position).getId(), getContext(), refreshProgressBar, mAdapter, position).execute();
     }
 }

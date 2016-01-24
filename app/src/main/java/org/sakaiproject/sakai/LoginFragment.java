@@ -3,6 +3,7 @@ package org.sakaiproject.sakai;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -54,11 +55,11 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
                 if (!usernameEditText.getText().toString().equals("") && !passwordEditText.getText().toString().equals("")) {
                     String userId = usernameEditText.getText().toString().trim();
                     String pass = passwordEditText.getText().toString().trim();
+
                     new LoginAsync(this, url, userId, pass).execute();
                 } else
                     Toast.makeText(getContext(), getResources().getString(R.string.empty_fields), Toast.LENGTH_SHORT).show();
                 break;
         }
     }
-
 }

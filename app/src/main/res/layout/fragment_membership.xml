@@ -7,20 +7,22 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:id="@+id/search_memberships"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="?actionBarSize"
             android:background="@drawable/search_layout"
             android:orientation="horizontal"
             android:paddingLeft="8dp"
             android:paddingRight="8dp">
 
             <EditText
+                android:id="@+id/membership_search"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
                 android:layout_weight="0.6"
                 android:drawableLeft="@mipmap/ic_search_white"
                 android:hint="@string/search_user_sites_projects"
@@ -36,6 +38,14 @@
             android:layout_below="@+id/search_memberships"
             android:layout_marginTop="10dp"
             android:scrollbars="vertical" />
+
+        <ProgressBar
+            android:id="@+id/membership_refresh"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:visibility="gone" />
 
     </RelativeLayout>
 

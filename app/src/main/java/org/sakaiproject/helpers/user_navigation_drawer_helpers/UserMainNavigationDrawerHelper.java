@@ -5,6 +5,7 @@ import android.content.Context;
 import android.os.Build;
 import android.support.design.widget.NavigationView;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.SubMenu;
@@ -33,8 +34,8 @@ public class UserMainNavigationDrawerHelper extends NavigationDrawerHelper imple
      * @param mSwipeRefreshLayout              the swipeRefreshLayout object
      * @param onNavigationItemSelectedListener the listener for the selected item on the drawer
      */
-    public UserMainNavigationDrawerHelper(Context context, CustomSwipeRefreshLayout mSwipeRefreshLayout, NavigationView.OnNavigationItemSelectedListener onNavigationItemSelectedListener) {
-        super(context, mSwipeRefreshLayout);
+    public UserMainNavigationDrawerHelper(Context context, CustomSwipeRefreshLayout mSwipeRefreshLayout, Toolbar toolbar, NavigationView.OnNavigationItemSelectedListener onNavigationItemSelectedListener) {
+        super(context, mSwipeRefreshLayout, toolbar);
         this.context = context;
 
         myWorkSpaceItems.add(context.getResources().getString(R.string.dashboard));

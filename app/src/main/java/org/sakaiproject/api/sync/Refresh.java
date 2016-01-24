@@ -49,9 +49,7 @@ public class Refresh extends AsyncTask<Void, Void, Void> {
             EventsCollection.selectedMonthEvents(String.valueOf(CalendarFragment.getCal_month().get(CalendarFragment.getCal_month().MONTH) + 1), CalendarFragment.getCal_month_copy());
         } catch (NullPointerException e) {
             // will be thrown if we update the data on any fragment except CalendarFragment
-        } catch (ParseException e) {
-            e.printStackTrace();
-        } catch (CloneNotSupportedException e) {
+        } catch (ParseException | CloneNotSupportedException e) {
             e.printStackTrace();
         }
 

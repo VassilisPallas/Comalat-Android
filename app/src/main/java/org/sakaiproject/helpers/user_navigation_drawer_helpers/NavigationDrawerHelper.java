@@ -69,7 +69,7 @@ public abstract class NavigationDrawerHelper {
     private static String WIKI;
     private static String WEB_CONTENT;
 
-    NavigationDrawerHelper(Context context, CustomSwipeRefreshLayout mSwipeRefreshLayout) {
+    NavigationDrawerHelper(Context context, CustomSwipeRefreshLayout mSwipeRefreshLayout, Toolbar toolbar) {
         this.context = context;
 
         DASHBOARD = context.getString(R.string.dashboard);
@@ -113,8 +113,8 @@ public abstract class NavigationDrawerHelper {
         pagesIds = new Hashtable<>();
         myWorkspaceIds = new Hashtable<>();
 
-        Toolbar toolbar = (Toolbar) ((AppCompatActivity) context).findViewById(R.id.toolbar);
-        ((AppCompatActivity) context).setSupportActionBar(toolbar);
+//        Toolbar toolbar = (Toolbar) ((AppCompatActivity) context).findViewById(R.id.toolbar);
+//        ((AppCompatActivity) context).setSupportActionBar(toolbar);
 
         drawer = (DrawerLayout) ((AppCompatActivity) context).findViewById(R.id.drawer_layout);
 
@@ -249,13 +249,13 @@ public abstract class NavigationDrawerHelper {
 
         } else if (pageName.equals(PROFILE)) {
             ProfileFragment profileFragment = new ProfileFragment().getSwipeRefreshLayout(mSwipeRefreshLayout);
-            Actions.selectFragment(profileFragment, R.id.user_frame, Profile.getDisplayName(), context);
+            Actions.selectFragment(profileFragment, R.id.user_frame, context);
         } else if (pageName.equals(MEMBERSHIP)) {
             MembershipFragment membershipFragment = new MembershipFragment().getSwipeRefreshLayout(mSwipeRefreshLayout);
-            Actions.selectFragment(membershipFragment, R.id.user_frame, "Membership", context);
+            Actions.selectFragment(membershipFragment, R.id.user_frame, context);
         } else if (pageName.equals(CALENDAR)) {
             CalendarFragment calendarFragment = new CalendarFragment().setSelectedEvent(mSwipeRefreshLayout);
-            Actions.selectFragment(calendarFragment, R.id.user_frame, "Calendar", context);
+            Actions.selectFragment(calendarFragment, R.id.user_frame, context);
         } else if (pageName.equals(RESOURCES)) {
 
         } else if (pageName.equals(ANNOUNCEMENTS)) {

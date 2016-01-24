@@ -530,14 +530,12 @@ public class Actions {
      *
      * @param f       the fragment to move
      * @param id      the FrameLayout id
-     * @param title   the title for the Actionbar title
      * @param context the context
      */
-    public static void selectFragment(Fragment f, int id, String title, Context context) {
+    public static void selectFragment(Fragment f, int id, Context context) {
         FragmentTransaction fragmentTransaction = ((AppCompatActivity) context).getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(id, f);
         fragmentTransaction.commit();
-        ((AppCompatActivity) context).setTitle(title);
     }
 
     /**

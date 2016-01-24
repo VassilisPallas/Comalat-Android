@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -208,7 +209,7 @@ public class UserEvents implements Serializable, Cloneable {
         Date d = new Date(firstTime.getMilliseconds());
         cal.setTime(d);
 
-        return String.valueOf(cal.get(cal.MONTH) + 1).length() > 1 ? String.valueOf((cal.get(cal.MONTH) + 1)) : "0" + cal.get(cal.MONTH) + 1;
+        return String.valueOf(cal.get(Calendar.MONTH) + 1).length() > 1 ? String.valueOf((cal.get(Calendar.MONTH) + 1)) : "0" + cal.get(Calendar.MONTH) + 1;
     }
 
     public void setEventWholeDate() {
@@ -234,7 +235,7 @@ public class UserEvents implements Serializable, Cloneable {
     }
 
     public void setEventDate() {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("MMM d, yyyy");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("MMM d, yyyy", Locale.US);
         eventDate = dateFormat.format(firstTime.getTime());
     }
 
@@ -243,7 +244,7 @@ public class UserEvents implements Serializable, Cloneable {
         Date start = firstTime.getTime();
         Date end = lastTime.getTime();
 
-        SimpleDateFormat dateFormat = new SimpleDateFormat("hh:mm a");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("hh:mm a", Locale.US);
 
         timeDuration = dateFormat.format(start).toLowerCase() + " - " + dateFormat.format(end).toLowerCase();
     }

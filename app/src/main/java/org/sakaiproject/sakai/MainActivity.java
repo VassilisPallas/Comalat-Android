@@ -16,6 +16,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import org.sakaiproject.api.internet.NetWork;
+import org.sakaiproject.general.Actions;
 
 
 public class MainActivity extends AppCompatActivity
@@ -31,7 +32,7 @@ public class MainActivity extends AppCompatActivity
 
         if (savedInstanceState == null) {
             WelcomeFragment welcomeFragment = new WelcomeFragment();
-            selectFragment(welcomeFragment, R.id.content_frame, getResources().getString(R.string.welcome));
+            Actions.selectFragment(welcomeFragment, R.id.content_frame, this);
         }
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -103,12 +104,12 @@ public class MainActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
-    public void selectFragment(Fragment f, int id, String title) {
-        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.replace(id, f);
-        fragmentTransaction.commit();
-        setTitle(title);
-    }
+//    public void selectFragment(Fragment f, int id, String title) {
+//        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+//        fragmentTransaction.replace(id, f);
+//        fragmentTransaction.commit();
+//        setTitle(title);
+//    }
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
@@ -118,7 +119,7 @@ public class MainActivity extends AppCompatActivity
         switch (item.getItemId()) {
             case R.id.welcome:
                 WelcomeFragment welcomeFragment = new WelcomeFragment();
-                selectFragment(welcomeFragment, R.id.content_frame, getResources().getString(R.string.welcome));
+                Actions.selectFragment(welcomeFragment, R.id.content_frame, this);
                 break;
             case R.id.about:
                 break;
@@ -132,15 +133,15 @@ public class MainActivity extends AppCompatActivity
                 break;
             case R.id.help:
                 WebViewFragment webViewFragment = new WebViewFragment();
-                selectFragment(webViewFragment, R.id.content_frame, getResources().getString(R.string.help));
+                Actions.selectFragment(webViewFragment, R.id.content_frame, this);
                 break;
             case R.id.login:
                 LoginFragment loginFragment = new LoginFragment();
-                selectFragment(loginFragment, R.id.content_frame, getResources().getString(R.string.login));
+                Actions.selectFragment(loginFragment, R.id.content_frame, this);
                 break;
             case R.id.new_user:
                 SignupFragment signupFragment = new SignupFragment();
-                selectFragment(signupFragment, R.id.content_frame, getResources().getString(R.string.new_account));
+                Actions.selectFragment(signupFragment, R.id.content_frame, this);
                 break;
             case R.id.reset_password:
                 break;

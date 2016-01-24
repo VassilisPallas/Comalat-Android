@@ -78,6 +78,10 @@ public class UserActivity extends AppCompatActivity implements NavigationView.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user);
 
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
         findViewsById();
 
         mSwipeRefreshLayout.setColorSchemeResources(R.color.green, R.color.red, R.color.blue, R.color.orange);
@@ -91,9 +95,9 @@ public class UserActivity extends AppCompatActivity implements NavigationView.On
             }
         });
 
-        mainNavigationDrawer = new UserMainNavigationDrawerHelper(this, mSwipeRefreshLayout, this);
+        mainNavigationDrawer = new UserMainNavigationDrawerHelper(this, mSwipeRefreshLayout, toolbar, this);
 
-        sitesNavigationDrawer = new SitesNavigationDrawerHelper(this, mSwipeRefreshLayout, this);
+        sitesNavigationDrawer = new SitesNavigationDrawerHelper(this, mSwipeRefreshLayout, toolbar, this);
 
         /* if device is connected on the internet that means that the user made login with internet connection,
            so the thread for the idle mode will start
@@ -252,7 +256,7 @@ public class UserActivity extends AppCompatActivity implements NavigationView.On
                 break;
             case R.id.help:
                 WebViewFragment webViewFragment = new WebViewFragment();
-                Actions.selectFragment(webViewFragment, R.id.user_frame, getResources().getString(R.string.help), this);
+                Actions.selectFragment(webViewFragment, R.id.user_frame, this);
                 break;
         }
 

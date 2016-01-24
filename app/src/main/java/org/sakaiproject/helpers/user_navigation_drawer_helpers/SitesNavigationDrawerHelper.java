@@ -7,6 +7,7 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.Menu;
@@ -39,8 +40,8 @@ public class SitesNavigationDrawerHelper extends NavigationDrawerHelper {
      * @param mSwipeRefreshLayout the swipeRefreshLayout object
      * @param onNavigationItemSelectedListener the listener for the selected item on the drawer
      */
-    public SitesNavigationDrawerHelper(Context context, CustomSwipeRefreshLayout mSwipeRefreshLayout, NavigationView.OnNavigationItemSelectedListener onNavigationItemSelectedListener) {
-        super(context, mSwipeRefreshLayout);
+    public SitesNavigationDrawerHelper(Context context, CustomSwipeRefreshLayout mSwipeRefreshLayout, Toolbar toolbar, NavigationView.OnNavigationItemSelectedListener onNavigationItemSelectedListener) {
+        super(context, mSwipeRefreshLayout, toolbar);
         this.context = context;
         this.onNavigationItemSelectedListener = onNavigationItemSelectedListener;
         initialize();
