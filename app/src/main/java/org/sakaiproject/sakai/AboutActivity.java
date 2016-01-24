@@ -20,6 +20,7 @@ import org.sakaiproject.customviews.AboutScrollView;
 import org.sakaiproject.helpers.user_info_helpers.BasicInfoHelper;
 import org.sakaiproject.helpers.user_info_helpers.ContactInfoHelper;
 import org.sakaiproject.helpers.user_info_helpers.PersonalInfoHelper;
+import org.sakaiproject.helpers.user_info_helpers.SocialNetworkInfoHelper;
 import org.sakaiproject.helpers.user_info_helpers.StaffInfoHelper;
 import org.sakaiproject.helpers.user_info_helpers.StudentInfoHelper;
 

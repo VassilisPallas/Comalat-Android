@@ -116,7 +116,7 @@ public class UserActivity extends AppCompatActivity implements NavigationView.On
                 connection = Connection.getInstance();
                 connection.setContext(getApplicationContext());
                 // if the session has expired, the session id will be null, so the user will go to MainActivity
-                if (connection.getSessionId() == null) {
+                if (Connection.getSessionId() == null) {
                     waiter.stop = true;
                     Intent i = new Intent(this, MainActivity.class);
                     i.putExtra("session_expired", true);
@@ -128,8 +128,8 @@ public class UserActivity extends AppCompatActivity implements NavigationView.On
 
         profile = Profile.getInstance();
         user = User.getInstance();
-        displayNameTextView.setText(profile.getDisplayName());
-        emailTextView.setText(user.getEmail());
+        displayNameTextView.setText(Profile.getDisplayName());
+        emailTextView.setText(User.getEmail());
         try {
             userImage.setImageBitmap(Actions.getImage(this, "user_thumbnail_image"));
         } catch (FileNotFoundException e) {
@@ -177,7 +177,7 @@ public class UserActivity extends AppCompatActivity implements NavigationView.On
                 if (NetWork.getConnectionEstablished()) {
                     try {
                         RefreshSession refreshSession = new RefreshSession(getApplicationContext());
-                        refreshSession.putSession(getResources().getString(R.string.url) + "session/" + connection.getSessionId() + ".json");
+                        refreshSession.putSession(getResources().getString(R.string.url) + "session/" + Connection.getSessionId() + ".json");
                         waiter.stop = false;
                     } catch (Exception e) {
                         e.printStackTrace();

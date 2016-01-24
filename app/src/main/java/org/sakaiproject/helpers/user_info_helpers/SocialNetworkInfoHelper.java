@@ -1,4 +1,4 @@
-package org.sakaiproject.sakai;
+package org.sakaiproject.helpers.user_info_helpers;
 
 import android.graphics.drawable.Drawable;
 import android.support.v7.app.AppCompatActivity;
@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import org.sakaiproject.api.user.profile.Profile;
 import org.sakaiproject.helpers.user_info_helpers.IUserAbout;
+import org.sakaiproject.sakai.R;
 
 /**
  * Created by vasilis on 1/13/16.
