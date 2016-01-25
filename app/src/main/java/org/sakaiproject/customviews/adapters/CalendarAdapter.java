@@ -50,9 +50,12 @@ public class CalendarAdapter extends BaseAdapter {
     public static List<String> day_string;
     private View previousView;
 
+    private int todayPosition;
+
     /**
      * CalendarAdapter constructor
-     * @param context the context
+     *
+     * @param context       the context
      * @param monthCalendar the month Calendar
      */
     public CalendarAdapter(Context context, GregorianCalendar monthCalendar) {
@@ -69,6 +72,10 @@ public class CalendarAdapter extends BaseAdapter {
 
         refreshDays();
 
+    }
+
+    public int getTodayPosition() {
+        return todayPosition;
     }
 
     public void setItems(ArrayList<String> items) {
@@ -130,6 +137,7 @@ public class CalendarAdapter extends BaseAdapter {
 
         if (day_string.get(position).equals(curentDateString)) {
             v.setBackgroundColor(Color.parseColor("#0083AF"));
+            todayPosition = position;
         } else {
             v.setBackgroundColor(Color.parseColor("#343434"));
         }
@@ -172,6 +180,7 @@ public class CalendarAdapter extends BaseAdapter {
         if (len > pos) {
             if (day_string.get(pos).equals(curentDateString)) {
                 view.setBackgroundColor(Color.parseColor("#0083AF"));
+                todayPosition = pos;
             } else {
                 previousView = view;
             }
@@ -254,6 +263,7 @@ public class CalendarAdapter extends BaseAdapter {
 
                     txt.setText(spanString);
                 } else if (day_string.get(pos).equals(date) && day_string.get(pos).equals(curentDateString)) {
+                    todayPosition = pos;
                     v.setBackgroundColor(Color.parseColor("#0083AF"));
                     SpannableString spanString = new SpannableString(txt.getText());
                     spanString.setSpan(new UnderlineSpan(), 0, spanString.length(), 0);

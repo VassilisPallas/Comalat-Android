@@ -189,5 +189,6 @@
     <string name="confirm_password">Confirm Password *</string>
     <string name="new_account_type">type: registered</string>
     <string name="create_account">Create Account</string>
+    <string name="no_events">No event on the selected day</string>
 
 </resources>

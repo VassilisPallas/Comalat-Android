@@ -10,7 +10,6 @@ import android.view.View;
 
 import org.sakaiproject.api.site.SiteData;
 import org.sakaiproject.api.site.SitePage;
-import org.sakaiproject.api.user.profile.Profile;
 import org.sakaiproject.customviews.CustomSwipeRefreshLayout;
 import org.sakaiproject.general.Actions;
 import org.sakaiproject.sakai.CalendarFragment;
@@ -43,7 +42,7 @@ public abstract class NavigationDrawerHelper {
     private static String ANNOUNCEMENTS;
     private static String PREFERENCES;
     private static String ACCOUNT;
-    private static String ASSINGMENTS;
+    private static String ASSIGNMENTS;
     private static String CHAT_ROOM;
     private static String CONTACT_US;
     private static String DROPBOX;
@@ -81,7 +80,7 @@ public abstract class NavigationDrawerHelper {
         ANNOUNCEMENTS = context.getString(R.string.announcements);
         PREFERENCES = context.getString(R.string.preferences);
         ACCOUNT = context.getString(R.string.account);
-        ASSINGMENTS = context.getString(R.string.assignments);
+        ASSIGNMENTS = context.getString(R.string.assignments);
         CHAT_ROOM = context.getString(R.string.char_room);
         CONTACT_US = context.getString(R.string.contact_us);
         DROPBOX = context.getString(R.string.dropbox);
@@ -182,7 +181,7 @@ public abstract class NavigationDrawerHelper {
             return R.mipmap.ic_settings;
         } else if (pageName.equals(ACCOUNT)) {
             return R.mipmap.ic_person;
-        } else if (pageName.equals(ASSINGMENTS)) {
+        } else if (pageName.equals(ASSIGNMENTS)) {
             return R.mipmap.ic_assignment;
         } else if (pageName.equals(CHAT_ROOM)) {
             return R.mipmap.ic_chat_room;
@@ -264,7 +263,7 @@ public abstract class NavigationDrawerHelper {
 
         } else if (pageName.equals(ACCOUNT)) {
 
-        } else if (pageName.equals(ASSINGMENTS)) {
+        } else if (pageName.equals(ASSIGNMENTS)) {
 
         } else if (pageName.equals(CHAT_ROOM)) {
 

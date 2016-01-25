@@ -20,14 +20,17 @@ public class UnJoinAsync extends AsyncTask<Void, Void, Boolean> {
     private ProgressBar refreshProgressBar;
     private MembershipAdapter mAdapter;
     private int position;
+    private org.sakaiproject.customviews.CustomSwipeRefreshLayout customSwipeRefreshLayout;
 
-    public UnJoinAsync(String siteId, Context context, ProgressBar progressBar, MembershipAdapter mAdapter, int position) {
+    public UnJoinAsync(String siteId, Context context, ProgressBar progressBar, MembershipAdapter mAdapter, int position, org.sakaiproject.customviews.CustomSwipeRefreshLayout customSwipeRefreshLayout) {
         this.refreshProgressBar = progressBar;
         this.mAdapter = mAdapter;
         this.context = context;
         this.siteId = siteId;
         this.position = position;
+        this.customSwipeRefreshLayout = customSwipeRefreshLayout;
     }
+
 
     @Override
     protected void onPreExecute() {
@@ -43,7 +46,10 @@ public class UnJoinAsync extends AsyncTask<Void, Void, Boolean> {
     @Override
     protected void onPostExecute(Boolean unjoin) {
         super.onPostExecute(unjoin);
-        new MembershipRefresh(context).execute();
+        MembershipRefresh membershipRefresh = new MembershipRefresh(context);
+        membershipRefresh.setSwipeRefreshLayout(customSwipeRefreshLayout);
+        membershipRefresh.execute();
+
         mAdapter.notifyItemRemoved(position);
         if (unjoin) {
             Toast.makeText(context, context.getResources().getString(R.string.successful_unjoined), Toast.LENGTH_SHORT).show();

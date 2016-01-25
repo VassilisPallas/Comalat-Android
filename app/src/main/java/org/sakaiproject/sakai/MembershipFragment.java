@@ -1,8 +1,12 @@
 package org.sakaiproject.sakai;
 
+import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
@@ -11,12 +15,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import org.sakaiproject.api.internet.NetWork;
 import org.sakaiproject.api.site.SiteData;
 import org.sakaiproject.api.site.actions.IUnJoin;
 import org.sakaiproject.api.site.actions.UnJoinAsync;
+import org.sakaiproject.api.sync.MembershipRefresh;
 import org.sakaiproject.customviews.adapters.MembershipAdapter;
 
 import java.util.ArrayList;
@@ -26,7 +33,7 @@ import java.util.List;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class MembershipFragment extends Fragment implements IUnJoin {
+public class MembershipFragment extends Fragment implements IUnJoin, SwipeRefreshLayout.OnRefreshListener {
 
     private RecyclerView mRecyclerView;
     private MembershipAdapter mAdapter;
@@ -35,11 +42,21 @@ public class MembershipFragment extends Fragment implements IUnJoin {
     private ProgressBar refreshProgressBar;
     private FloatingActionButton createSite;
     private EditText membershipSearch;
+    private FrameLayout root;
+
+    ISwipeRefresh swipeRefresh;
 
     private org.sakaiproject.customviews.CustomSwipeRefreshLayout swipeRefreshLayout;
 
     public MembershipFragment() {
         // Required empty public constructor
+    }
+
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        swipeRefresh = (ISwipeRefresh) context;
     }
 
     /**
@@ -64,22 +81,20 @@ public class MembershipFragment extends Fragment implements IUnJoin {
 
         getActivity().setTitle(getContext().getResources().getString(R.string.membership));
 
+        root = (FrameLayout) v.findViewById(R.id.root);
+
         refreshProgressBar = (ProgressBar) v.findViewById(R.id.membership_refresh);
 
         swipeRefreshLayout = (org.sakaiproject.customviews.CustomSwipeRefreshLayout) getArguments().getSerializable("swipeRefresh");
 
         mRecyclerView = (RecyclerView) v.findViewById(R.id.membership_recycler_view);
 
-//        // use this setting to improve performance if you know that changes
-//        // in content do not change the layout size of the RecyclerView
-//        mRecyclerView.setHasFixedSize(true);
-
         // use a linear layout manager
         mLayoutManager = new LinearLayoutManager(v.getContext());
         mRecyclerView.setLayoutManager(mLayoutManager);
 
 
-        // if the events recycle view is not on the top then the swipe refresh can not be done
+        // if the memberships recycle view is not on the top then the swipe refresh can not be done
         mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
@@ -111,6 +126,8 @@ public class MembershipFragment extends Fragment implements IUnJoin {
         membershipSearch = (EditText) v.findViewById(R.id.membership_search);
         membershipSearch.addTextChangedListener(searchWatcher);
 
+        swipeRefresh.Callback(this);
+
         return v;
     }
 
@@ -133,6 +150,26 @@ public class MembershipFragment extends Fragment implements IUnJoin {
 
     @Override
     public void siteUnJoin(List<SiteData> membership, int position) {
-        new UnJoinAsync(membership.get(position).getId(), getContext(), refreshProgressBar, mAdapter, position).execute();
+        new UnJoinAsync(membership.get(position).getId(), getContext(), refreshProgressBar, mAdapter, position, swipeRefreshLayout).execute();
+    }
+
+    @Override
+    public void onRefresh() {
+        new Handler().post(new Runnable() {
+            @Override
+            public void run() {
+                if (NetWork.getConnectionEstablished()) {
+                    MembershipRefresh refresh = new MembershipRefresh(getContext());
+                    refresh.setSwipeRefreshLayout(swipeRefreshLayout);
+                    refresh.setmAdapter(mAdapter);
+                    refresh.setmRecyclerView(mRecyclerView);
+                    refresh.execute();
+
+                } else {
+                    Snackbar.make(root, getResources().getString(R.string.no_internet), Snackbar.LENGTH_LONG)
+                            .setAction(getResources().getText(R.string.can_not_sync), null).show();
+                }
+            }
+        });
     }
 }

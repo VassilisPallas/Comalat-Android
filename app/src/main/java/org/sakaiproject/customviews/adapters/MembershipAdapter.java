@@ -51,6 +51,10 @@ public class MembershipAdapter extends RecyclerView.Adapter<MembershipAdapter.Vi
         this.siteUnJoin = siteUnJoin;
     }
 
+    public void setMemberships(List<SiteData> memberships) {
+        this.memberships = memberships;
+    }
+
     @Override
     public MembershipAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         // create a new view

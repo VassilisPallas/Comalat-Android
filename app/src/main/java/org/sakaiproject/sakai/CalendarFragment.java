@@ -1,14 +1,19 @@
 package org.sakaiproject.sakai;
 
 
+import android.content.Context;
 import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -24,6 +29,9 @@ import android.widget.TextView;
 
 import org.sakaiproject.api.events.EventsCollection;
 import org.sakaiproject.api.events.OfflineEvents;
+import org.sakaiproject.api.internet.NetWork;
+import org.sakaiproject.api.sync.EventsRefresh;
+import org.sakaiproject.api.sync.MembershipRefresh;
 import org.sakaiproject.customviews.listeners.RecyclerItemClickListener;
 import org.sakaiproject.customviews.adapters.SelectedDayEventsAdapter;
 import org.sakaiproject.customviews.adapters.CalendarAdapter;
@@ -34,12 +42,13 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.Locale;
 
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class CalendarFragment extends Fragment {
+public class CalendarFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
 
 
     public static GregorianCalendar cal_month, cal_month_copy;
@@ -52,10 +61,21 @@ public class CalendarFragment extends Fragment {
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
+    private FrameLayout root;
+    private GridView gridview;
+    private TextView noEventsTextView;
+
+    ISwipeRefresh swipeRefresh;
 
     private String selectedDate;
 
     public CalendarFragment() {
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        swipeRefresh = (ISwipeRefresh) context;
     }
 
     public static GregorianCalendar getCal_month() {
@@ -85,6 +105,10 @@ public class CalendarFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         View v = inflater.inflate(R.layout.fragment_calendar, container, false);
+
+        noEventsTextView = (TextView) v.findViewById(R.id.no_events_textview);
+
+        root = (FrameLayout) v.findViewById(R.id.root);
 
         getActivity().setTitle(getContext().getResources().getString(R.string.calendar));
 
@@ -136,9 +160,14 @@ public class CalendarFragment extends Fragment {
         });
 
 
-        GridView gridview = (GridView) v.findViewById(R.id.gv_calendar);
+        gridview = (GridView) v.findViewById(R.id.gv_calendar);
         //gridview.setExpanded(true);
         gridview.setAdapter(cal_adapter);
+
+        int todayPosition = cal_adapter.getTodayPosition();
+
+        Log.i("position", String.valueOf(todayPosition));
+
         gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             public void onItemClick(AdapterView<?> parent, View v,
@@ -167,10 +196,18 @@ public class CalendarFragment extends Fragment {
                     calendar.setVisibility(View.GONE);
                 }
 
-                mAdapter = new SelectedDayEventsAdapter(getContext(), ((CalendarAdapter) parent.getAdapter()).getPositionList(selectedGridDate));
-                mAdapter.notifyDataSetChanged();
-                mRecyclerView.setAdapter(mAdapter);
 
+                if (((CalendarAdapter) parent.getAdapter()).getPositionList(selectedGridDate).size() == 0) {
+                    noEventsTextView.setVisibility(View.VISIBLE);
+                    mRecyclerView.setVisibility(View.GONE);
+                } else {
+                    noEventsTextView.setVisibility(View.GONE);
+                    mRecyclerView.setVisibility(View.VISIBLE);
+
+                    mAdapter = new SelectedDayEventsAdapter(getContext(), ((CalendarAdapter) parent.getAdapter()).getPositionList(selectedGridDate));
+                    mAdapter.notifyDataSetChanged();
+                    mRecyclerView.setAdapter(mAdapter);
+                }
                 // if the events recycle view is not on the top then the swipe refresh can not be done
                 mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
                     @Override
@@ -207,7 +244,7 @@ public class CalendarFragment extends Fragment {
 
                 FragmentManager fm = getFragmentManager();
                 EventInfoFragment dialogFragment = new EventInfoFragment().setSelectedEvent(selectedEvent);
-                dialogFragment.setStyle( DialogFragment.STYLE_NO_TITLE, R.style.InfoDialogTheme );
+                dialogFragment.setStyle(DialogFragment.STYLE_NO_TITLE, R.style.InfoDialogTheme);
                 dialogFragment.show(fm, getContext().getResources().getString(R.string.event_info));
 
             }
@@ -218,9 +255,10 @@ public class CalendarFragment extends Fragment {
             }
         }));
 
-
         offlineEvents = new OfflineEvents(getContext());
         new EventsAsync().execute();
+
+        swipeRefresh.Callback(this);
 
         // Inflate the layout for this fragment
         return v;
@@ -276,6 +314,27 @@ public class CalendarFragment extends Fragment {
         tv_month.setText(android.text.format.DateFormat.format("MMMM yyyy", cal_month));
     }
 
+    @Override
+    public void onRefresh() {
+        new Handler().post(new Runnable() {
+            @Override
+            public void run() {
+                if (NetWork.getConnectionEstablished()) {
+                    EventsRefresh refresh = new EventsRefresh(getContext());
+                    refresh.setSwipeRefreshLayout(swipeRefreshLayout);
+                    refresh.setAdapter(cal_adapter);
+                    refresh.setGridView(gridview);
+                    refresh.execute();
+
+                } else {
+                    Snackbar.make(root, getResources().getString(R.string.no_internet), Snackbar.LENGTH_LONG)
+                            .setAction(getResources().getText(R.string.can_not_sync), null).show();
+                }
+            }
+        });
+        Log.i("calendar", "true");
+    }
+
     private class EventsAsync extends AsyncTask<Void, Void, List<UserEvents>> {
 
         @Override
@@ -313,6 +372,8 @@ public class CalendarFragment extends Fragment {
 
             calendar.setVisibility(View.VISIBLE);
             progressBar.setVisibility(View.GONE);
+
+            //gridview.performItemClick(gridview.getChildAt(30), 30, gridview.getItemIdAtPosition(30));
         }
     }
 

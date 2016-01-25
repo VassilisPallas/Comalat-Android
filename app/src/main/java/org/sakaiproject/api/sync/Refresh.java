@@ -2,6 +2,7 @@ package org.sakaiproject.api.sync;
 
 import android.content.Context;
 import android.os.AsyncTask;
+import android.support.v4.widget.SwipeRefreshLayout;
 
 import org.sakaiproject.api.events.EventsCollection;
 import org.sakaiproject.api.events.OnlineEvents;
@@ -22,7 +23,7 @@ import java.text.ParseException;
 public class Refresh extends AsyncTask<Void, Void, Void> {
 
     private Context context;
-    private CustomSwipeRefreshLayout swipeRefreshLayout;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     /**
      * Refresh constructor
@@ -32,7 +33,7 @@ public class Refresh extends AsyncTask<Void, Void, Void> {
         this.context = context;
     }
 
-    public void setSwipeRefreshLayout(CustomSwipeRefreshLayout swipeRefreshLayout) {
+    public void setSwipeRefreshLayout(SwipeRefreshLayout swipeRefreshLayout) {
         this.swipeRefreshLayout = swipeRefreshLayout;
     }
 

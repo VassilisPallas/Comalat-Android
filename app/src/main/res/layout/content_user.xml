@@ -20,5 +20,5 @@
             android:layout_height="match_parent" />
 
     </org.sakaiproject.customviews.CustomSwipeRefreshLayout>
-    
+
 </RelativeLayout>

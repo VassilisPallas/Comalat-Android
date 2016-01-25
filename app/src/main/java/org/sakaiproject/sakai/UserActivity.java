@@ -1,40 +1,19 @@
 package org.sakaiproject.sakai;
 
-import android.app.Dialog;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.AlertDialog;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
-import android.view.SubMenu;
-import android.view.View;
-import android.view.WindowManager;
-import android.widget.BaseAdapter;
-import android.widget.EditText;
 import android.widget.FrameLayout;
-import android.widget.HeaderViewListAdapter;
-import android.widget.ListView;
 import android.widget.RelativeLayout;
-import android.widget.SearchView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import org.sakaiproject.api.site.OfflineSite;
 import org.sakaiproject.api.sync.Refresh;
@@ -42,7 +21,6 @@ import org.sakaiproject.customviews.ImageViewRounded;
 import org.sakaiproject.general.Actions;
 import org.sakaiproject.general.Connection;
 import org.sakaiproject.api.internet.NetWork;
-import org.sakaiproject.api.logout.Logout;
 import org.sakaiproject.api.session.RefreshSession;
 import org.sakaiproject.api.session.Waiter;
 import org.sakaiproject.api.user.profile.Profile;
@@ -53,17 +31,11 @@ import org.sakaiproject.helpers.user_navigation_drawer_helpers.UserMainNavigatio
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Hashtable;
-import java.util.List;
-import java.util.Map;
 
-public class UserActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class UserActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, ISwipeRefresh {
 
     private TextView displayNameTextView, emailTextView;
     private ImageViewRounded userImage;
-    private Profile profile;
-    private User user;
     private Waiter waiter;  //Thread which controls idle time
     private Connection connection = Connection.getInstance();
     private org.sakaiproject.customviews.CustomSwipeRefreshLayout mSwipeRefreshLayout;
@@ -78,7 +50,6 @@ public class UserActivity extends AppCompatActivity implements NavigationView.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user);
 
-
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -87,13 +58,6 @@ public class UserActivity extends AppCompatActivity implements NavigationView.On
         mSwipeRefreshLayout.setColorSchemeResources(R.color.green, R.color.red, R.color.blue, R.color.orange);
 
         mSwipeRefreshLayout.setRefreshing(false);
-
-        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                refreshContent();
-            }
-        });
 
         mainNavigationDrawer = new UserMainNavigationDrawerHelper(this, mSwipeRefreshLayout, toolbar, this);
 
@@ -126,8 +90,6 @@ public class UserActivity extends AppCompatActivity implements NavigationView.On
             }
         }
 
-        profile = Profile.getInstance();
-        user = User.getInstance();
         displayNameTextView.setText(Profile.getDisplayName());
         emailTextView.setText(User.getEmail());
         try {
@@ -284,5 +246,11 @@ public class UserActivity extends AppCompatActivity implements NavigationView.On
             NavigationDrawerHelper.getDrawer().closeDrawer(GravityCompat.END);
 
         return true;
+    }
+
+
+    @Override
+    public void Callback(SwipeRefreshLayout.OnRefreshListener listener) {
+        mSwipeRefreshLayout.setOnRefreshListener(listener);
     }
 }
