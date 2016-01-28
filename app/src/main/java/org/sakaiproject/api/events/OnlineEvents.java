@@ -10,6 +10,7 @@ import org.sakaiproject.api.user.User;
 import org.sakaiproject.sakai.R;
 
 import java.io.BufferedInputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -28,6 +29,7 @@ public class OnlineEvents {
 
     /**
      * the OnlineEvents constructor
+     *
      * @param context the context
      */
     public OnlineEvents(Context context) {
@@ -39,6 +41,7 @@ public class OnlineEvents {
 
     /**
      * make REST call and get the json responses, then parse them for the data
+     *
      * @param eventUrl the url
      */
     public void getEvents(String eventUrl) {
@@ -51,7 +54,8 @@ public class OnlineEvents {
                 userEventsJson = Actions.readJsonStream(inputStream);
                 inputStream.close();
                 jsonParse.parseUserEventJson(userEventsJson);
-                Actions.writeJsonFile(context, userEventsJson, "userEventsJson");
+                if (Actions.createDirIfNotExists(context, User.getUserId() + File.separator + "events"))
+                    Actions.writeJsonFile(context, userEventsJson, "userEventsJson", User.getUserId() + File.separator + "events");
 
 
                 for (int i = 0; i < EventsCollection.getUserEventsList().size(); i++) {
@@ -85,7 +89,8 @@ public class OnlineEvents {
                         userEventInfoJson = Actions.readJsonStream(inputStream);
                         inputStream.close();
                         jsonParse.parseUserEventInfoJson(userEventInfoJson, i);
-                        Actions.writeJsonFile(context, userEventInfoJson, EventsCollection.getUserEventsList().get(i).getEventId());
+                        if (Actions.createDirIfNotExists(context, User.getUserId() + File.separator + "events"))
+                            Actions.writeJsonFile(context, userEventInfoJson, EventsCollection.getUserEventsList().get(i).getEventId(), User.getUserId() + File.separator + "events");
                     }
                 }
             }

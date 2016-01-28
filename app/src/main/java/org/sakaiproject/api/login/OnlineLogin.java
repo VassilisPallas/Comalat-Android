@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
 import java.io.BufferedInputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URLEncoder;
@@ -93,7 +94,8 @@ public class OnlineLogin implements ILogin {
                 loginJson = Actions.readJsonStream(inputStream);
                 inputStream.close();
                 jsonParse.parseLoginResult(loginJson);
-                Actions.writeJsonFile(context, loginJson, "loginJson");
+                if (Actions.createDirIfNotExists(context, User.getUserId() + File.separator + "user"))
+                    Actions.writeJsonFile(context, loginJson, "loginJson", User.getUserId() + File.separator + "user");
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -113,7 +115,8 @@ public class OnlineLogin implements ILogin {
                 userDataJson = Actions.readJsonStream(inputStream);
                 inputStream.close();
                 jsonParse.parseUserDataJson(userDataJson);
-                Actions.writeJsonFile(context, userDataJson, "fullUserDataJson");
+                if (Actions.createDirIfNotExists(context, User.getUserId() + File.separator + "user"))
+                    Actions.writeJsonFile(context, userDataJson, "fullUserDataJson", User.getUserId() + File.separator + "user");
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -133,7 +136,8 @@ public class OnlineLogin implements ILogin {
                 userProfileDataJson = Actions.readJsonStream(inputStream);
                 inputStream.close();
                 jsonParse.parseUserProfileDataJson(userProfileDataJson);
-                Actions.writeJsonFile(context, userProfileDataJson, "userProfileDataJson");
+                if (Actions.createDirIfNotExists(context, User.getUserId() + File.separator + "user"))
+                    Actions.writeJsonFile(context, userProfileDataJson, "userProfileDataJson", User.getUserId() + File.separator + "user");
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -152,7 +156,8 @@ public class OnlineLogin implements ILogin {
             if (status >= 200 && status < 300) {
                 InputStream inputStream = new BufferedInputStream(connection.getInputStream());
                 bitmap = BitmapFactory.decodeStream(inputStream);
-                Actions.saveImage(context, bitmap, "user_image.jpg");
+                if (Actions.createDirIfNotExists(context, User.getUserId() + File.separator + "user"))
+                    Actions.saveImage(context, bitmap, "user_image.jpg", User.getUserId() + File.separator + "user");
             }
 
         } catch (IOException e) {
@@ -172,7 +177,8 @@ public class OnlineLogin implements ILogin {
             if (status >= 200 && status < 300) {
                 InputStream inputStream = new BufferedInputStream(connection.getInputStream());
                 bitmap = BitmapFactory.decodeStream(inputStream);
-                Actions.saveImage(context, bitmap, "user_thumbnail_image.jpg");
+                if (Actions.createDirIfNotExists(context, User.getUserId() + File.separator + "user"))
+                    Actions.saveImage(context, bitmap, "user_thumbnail_image.jpg", User.getUserId() + File.separator + "user");
             }
         } catch (IOException e) {
             e.printStackTrace();

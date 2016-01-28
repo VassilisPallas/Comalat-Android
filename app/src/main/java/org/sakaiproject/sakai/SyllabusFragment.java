@@ -87,10 +87,10 @@ public class SyllabusFragment extends Fragment implements SwipeRefreshLayout.OnR
             e.printStackTrace();
         }
 
-        if (!syllabus.getRedirectUrl().equals("")) {
-            WebViewFragment webViewFragment = new WebViewFragment().getUrl(syllabus.getRedirectUrl());
-            Actions.selectFragment(webViewFragment, R.id.user_frame, getContext());
-        }
+//        if (!syllabus.getRedirectUrl().equals("")) {
+//            WebViewFragment webViewFragment = new WebViewFragment().getUrl(syllabus.getRedirectUrl());
+//            Actions.selectFragment(webViewFragment, R.id.user_frame, getContext());
+//        }
 
         root = (FrameLayout) v.findViewById(R.id.root);
 

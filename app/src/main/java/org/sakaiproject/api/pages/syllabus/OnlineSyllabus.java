@@ -3,11 +3,13 @@ package org.sakaiproject.api.pages.syllabus;
 import android.content.Context;
 
 import org.sakaiproject.api.json.JsonParser;
+import org.sakaiproject.api.user.User;
 import org.sakaiproject.general.Actions;
 import org.sakaiproject.general.Connection;
 import org.sakaiproject.general.ConnectionType;
 
 import java.io.BufferedInputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -43,7 +45,8 @@ public class OnlineSyllabus {
             inputStream = new BufferedInputStream(connection.getInputStream());
             json = Actions.readJsonStream(inputStream);
             inputStream.close();
-            Actions.writeJsonFile(context, json, siteId + "_syllabusJson");
+            if (Actions.createDirIfNotExists(context, User.getUserId() + File.separator + "memberships" + File.separator + siteId + File.separator + "syllabus"))
+                Actions.writeJsonFile(context, json, siteId + "_syllabus", User.getUserId() + File.separator + "memberships" + File.separator + siteId + File.separator + "syllabus");
         }
     }
 

@@ -7,6 +7,7 @@ import org.sakaiproject.general.Actions;
 import org.sakaiproject.api.json.JsonParser;
 import org.sakaiproject.api.user.User;
 
+import java.io.File;
 import java.io.IOException;
 
 /**
@@ -21,6 +22,7 @@ public class OfflineEvents {
 
     /**
      * the OfflineEvents events constructor
+     *
      * @param context the context
      */
     public OfflineEvents(Context context) {
@@ -33,11 +35,13 @@ public class OfflineEvents {
      */
     public void getEvents() {
         try {
-            userEventsJson = Actions.readJsonFile(context, "userEventsJson");
+            if (Actions.createDirIfNotExists(context, User.getUserId() + File.separator + "events"))
+                userEventsJson = Actions.readJsonFile(context, "userEventsJson", User.getUserId() + File.separator + "events");
             jsonParse.parseUserEventJson(userEventsJson);
 
             for (int i = 0; i < EventsCollection.getUserEventsList().size(); i++) {
-                userEventInfoJson = Actions.readJsonFile(context, EventsCollection.getUserEventsList().get(i).getEventId());
+                if (Actions.createDirIfNotExists(context, User.getUserId() + File.separator + "events"))
+                    userEventInfoJson = Actions.readJsonFile(context, EventsCollection.getUserEventsList().get(i).getEventId(), User.getUserId() + File.separator + "events");
                 jsonParse.parseUserEventInfoJson(userEventInfoJson, i);
                 if (!EventsCollection.getUserEventsList().get(i).getCreator().equals(User.getUserId())) {
                     SharedPreferences prfs = context.getSharedPreferences("event_owners", Context.MODE_PRIVATE);

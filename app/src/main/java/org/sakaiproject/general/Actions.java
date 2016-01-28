@@ -13,6 +13,7 @@ import android.os.Build;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 
 import org.sakaiproject.api.internet.NetWork;
 import org.sakaiproject.api.logout.Logout;
@@ -71,10 +72,10 @@ public class Actions {
      * @param fileName   the name of the file
      * @throws IOException
      */
-    public static void writeJsonFile(Context context, String jsonString, String fileName) throws IOException {
-        File path = context.getFilesDir();
+    public static void writeJsonFile(Context context, String jsonString, String fileName, String path) throws IOException {
+        File externalStoragePath = new File(context.getFilesDir(), path);
 
-        File file = new File(path, fileName + ".json");
+        File file = new File(externalStoragePath, fileName + ".json");
 
         FileOutputStream stream;
         stream = new FileOutputStream(file);
@@ -90,9 +91,10 @@ public class Actions {
      * @return the json string
      * @throws IOException
      */
-    public static String readJsonFile(Context context, String fileName) throws IOException {
-        File path = context.getFilesDir();
-        File file = new File(path, fileName + ".json");
+    public static String readJsonFile(Context context, String fileName, String path) throws IOException {
+
+        File externalStoragePath = new File(context.getFilesDir(), path);
+        File file = new File(externalStoragePath, fileName + ".json");
 
         int length = (int) file.length();
 
@@ -113,10 +115,10 @@ public class Actions {
      * @param imageName the name for the image
      * @throws IOException
      */
-    public static void saveImage(Context context, Bitmap bitmap, String imageName) throws IOException {
-        File path = context.getFilesDir();
+    public static void saveImage(Context context, Bitmap bitmap, String imageName, String path) throws IOException {
+        File externalStoragePath = new File(context.getFilesDir(), path);
 
-        File file = new File(path, imageName);
+        File file = new File(externalStoragePath, imageName);
 
         FileOutputStream out = new FileOutputStream(file);
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
@@ -133,9 +135,9 @@ public class Actions {
      * @param name    the name for the image
      * @throws IOException
      */
-    public static Bitmap getImage(Context context, String name) throws FileNotFoundException {
-        File path = context.getFilesDir();
-        File f = new File(path, name + ".jpg");
+    public static Bitmap getImage(Context context, String name, String path) throws FileNotFoundException {
+        File externalStoragePath = new File(context.getFilesDir(), path);
+        File f = new File(externalStoragePath, name + ".jpg");
         Bitmap b = BitmapFactory.decodeStream(new FileInputStream(f));
 
         return b;
@@ -536,4 +538,18 @@ public class Actions {
         return audioPaths;
     }
 
+
+    public static boolean createDirIfNotExists(Context context, String path) {
+        boolean ret = true;
+
+        File externalStoragePath = context.getFilesDir();
+        File file = new File(externalStoragePath, path);
+        if (!file.exists()) {
+            if (!file.mkdirs()) {
+                Log.e("TravellerLog :: ", "Problem creating folder");
+                ret = false;
+            }
+        }
+        return ret;
+    }
 }

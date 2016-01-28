@@ -17,10 +17,12 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import org.sakaiproject.api.user.User;
 import org.sakaiproject.general.Actions;
 import org.sakaiproject.api.user.profile.Profile;
 import org.sakaiproject.customviews.ProfileScrollView;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 
 public class ProfileFragment extends Fragment implements View.OnClickListener {
@@ -70,7 +72,8 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         profileImage = (ImageView) v.findViewById(R.id.profile_image);
 
         try {
-            profileImage.setImageBitmap(Actions.getImage(getContext(), "user_image"));
+            if (Actions.createDirIfNotExists(getContext(), User.getUserId() + File.separator + "user"))
+                profileImage.setImageBitmap(Actions.getImage(getContext(), "user_image", User.getUserId() + File.separator + "user"));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -95,9 +98,9 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         friends = (LinearLayout) v.findViewById(R.id.friends_button);
         friends.setOnClickListener(this);
 
-        newPostEditText = (EditText)v.findViewById(R.id.new_post_EditText);
+        newPostEditText = (EditText) v.findViewById(R.id.new_post_EditText);
 
-        newPostButton = (Button)v.findViewById(R.id.new_post_button);
+        newPostButton = (Button) v.findViewById(R.id.new_post_button);
         newPostButton.setOnClickListener(this);
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         newSubcomment = (LinearLayout) v.findViewById(R.id.new_subcomment);

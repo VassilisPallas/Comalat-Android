@@ -10,6 +10,7 @@ import android.util.AttributeSet;
 import android.widget.TextView;
 
 import org.sakaiproject.api.site.SiteData;
+import org.sakaiproject.api.user.User;
 import org.sakaiproject.general.Actions;
 import org.sakaiproject.general.Connection;
 import org.sakaiproject.general.ConnectionType;
@@ -60,7 +61,10 @@ public class TextViewWithImages extends TextView {
 
 
     private void add(final Context context, final Spannable spannable) {
-        path = context.getFilesDir();
+
+        if (Actions.createDirIfNotExists(context, User.getUserId() + File.separator + "memberships" + File.separator + id)) {
+            path = new File(context.getFilesDir(), User.getUserId() + File.separator + "memberships" + File.separator + id);
+        }
 
         Pattern refImgPattern = Pattern.compile("<img .+?\\/>");
 
@@ -140,7 +144,10 @@ public class TextViewWithImages extends TextView {
 
 
     private void addImages(Spannable spannable, Context context, Image im) {
-        image = new File(path, im.getName());
+        if (Actions.createDirIfNotExists(context, User.getUserId() + File.separator + "memberships" + File.separator + id)) {
+            path = new File(context.getFilesDir(), User.getUserId() + File.separator + "memberships" + File.separator + id);
+            image = new File(path, im.getName());
+        }
         BitmapFactory.Options bmOptions = new BitmapFactory.Options();
         bitmap = BitmapFactory.decodeFile(image.getAbsolutePath(), bmOptions);
         if (im.getWidth() > 0 && im.getHeight() > 0)
@@ -188,7 +195,8 @@ public class TextViewWithImages extends TextView {
                 if (status >= 200 && status < 300) {
                     InputStream inputStream = new BufferedInputStream(connection.getInputStream());
                     Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
-                    Actions.saveImage(context, bitmap, img.getName());
+                    if (Actions.createDirIfNotExists(context, User.getUserId() + File.separator + "memberships" + File.separator + id))
+                        Actions.saveImage(context, bitmap, img.getName(), User.getUserId() + File.separator + "memberships" + File.separator + id);
                 }
                 return true;
             } catch (IOException e) {

@@ -3,10 +3,12 @@ package org.sakaiproject.api.login;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import org.sakaiproject.api.user.User;
 import org.sakaiproject.general.Actions;
 import org.sakaiproject.api.cryptography.PasswordEncryption;
 import org.sakaiproject.api.json.JsonParser;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
@@ -24,6 +26,7 @@ public class OfflineLogin implements ILogin {
 
     /**
      * the OfflineLogin constructor
+     *
      * @param context the context
      */
     public OfflineLogin(Context context) {
@@ -53,19 +56,22 @@ public class OfflineLogin implements ILogin {
 
     @Override
     public void getLoginJson(String... params) throws IOException {
-        loginJson = Actions.readJsonFile(context, "loginJson");
+        if (Actions.createDirIfNotExists(context, User.getUserId() + File.separator + "user"))
+            loginJson = Actions.readJsonFile(context, "loginJson", User.getUserId() + File.separator + "user");
         jsonParse.parseLoginResult(loginJson);
     }
 
     @Override
     public void getUserDataJson(String... params) throws IOException {
-        userDataJson = Actions.readJsonFile(context, "fullUserDataJson");
+        if (Actions.createDirIfNotExists(context, User.getUserId() + File.separator + "user"))
+            userDataJson = Actions.readJsonFile(context, "fullUserDataJson", User.getUserId() + File.separator + "user");
         jsonParse.parseUserDataJson(userDataJson);
     }
 
     @Override
     public void getUserProfileDataJson(String... params) throws IOException {
-        userProfileDataJson = Actions.readJsonFile(context, "userProfileDataJson");
+        if (Actions.createDirIfNotExists(context, User.getUserId() + File.separator + "user"))
+            userProfileDataJson = Actions.readJsonFile(context, "userProfileDataJson", User.getUserId() + File.separator + "user");
         jsonParse.parseUserProfileDataJson(userProfileDataJson);
     }
 

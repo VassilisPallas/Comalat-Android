@@ -2,6 +2,7 @@ package org.sakaiproject.api.site;
 
 import android.content.Context;
 
+import org.sakaiproject.api.user.User;
 import org.sakaiproject.general.Actions;
 import org.sakaiproject.general.Connection;
 import org.sakaiproject.general.ConnectionType;
@@ -9,6 +10,7 @@ import org.sakaiproject.api.json.JsonParser;
 import org.sakaiproject.sakai.R;
 
 import java.io.BufferedInputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -24,6 +26,7 @@ public class OnlineSite {
 
     /**
      * OnlineSite constructor
+     *
      * @param context the context
      */
     public OnlineSite(Context context) {
@@ -36,6 +39,7 @@ public class OnlineSite {
     /**
      * REST calls to get the data from sites and projects the user has join
      * http://141.99.248.86:8089/direct/membership.json
+     *
      * @param url the url
      * @throws IOException
      */
@@ -47,7 +51,8 @@ public class OnlineSite {
             json = Actions.readJsonStream(inputStream);
             inputStream.close();
             jsonParse.parseSiteDataJson(json);
-            Actions.writeJsonFile(context, json, "projectsAndSitesJson");
+            if (Actions.createDirIfNotExists(context, User.getUserId() + File.separator + "memberships"))
+                Actions.writeJsonFile(context, json, "projectsAndSitesJson", User.getUserId() + File.separator + "memberships");
 
             for (int i = 0; i < SiteData.getSites().size(); i++) {
 
@@ -58,7 +63,8 @@ public class OnlineSite {
                     json = Actions.readJsonStream(inputStream);
                     inputStream.close();
                     jsonParse.getSiteData(json, i);
-                    Actions.writeJsonFile(context, json, SiteData.getSites().get(i).getId());
+                    if (Actions.createDirIfNotExists(context, User.getUserId() + File.separator + "memberships" + File.separator + SiteData.getSites().get(i).getId()))
+                        Actions.writeJsonFile(context, json, SiteData.getSites().get(i).getId(), User.getUserId() + File.separator + "memberships" + File.separator + SiteData.getSites().get(i).getId());
                 }
 
                 connection.openConnection(context.getResources().getString(R.string.url) + "site/" + SiteData.getSites().get(i).getId() + "/pages", ConnectionType.GET, true, false, null);
@@ -68,7 +74,8 @@ public class OnlineSite {
                     json = Actions.readJsonStream(inputStream);
                     inputStream.close();
                     jsonParse.getSitePageData(json, i, "site");
-                    Actions.writeJsonFile(context, json, SiteData.getSites().get(i).getId() + "_pages");
+                    if (Actions.createDirIfNotExists(context, User.getUserId() + File.separator + "memberships" + File.separator + SiteData.getSites().get(i).getId()))
+                        Actions.writeJsonFile(context, json, SiteData.getSites().get(i).getId() + "_pages", User.getUserId() + File.separator + "memberships" + File.separator + SiteData.getSites().get(i).getId());
                 }
 
 
@@ -79,7 +86,8 @@ public class OnlineSite {
                     json = Actions.readJsonStream(inputStream);
                     inputStream.close();
                     jsonParse.getSitePermissions(json, i, "site");
-                    Actions.writeJsonFile(context, json, SiteData.getSites().get(i).getId() + "_perms");
+                    if (Actions.createDirIfNotExists(context, User.getUserId() + File.separator + "memberships" + File.separator + SiteData.getSites().get(i).getId()))
+                        Actions.writeJsonFile(context, json, SiteData.getSites().get(i).getId() + "_perms", User.getUserId() + File.separator + "memberships" + File.separator + SiteData.getSites().get(i).getId());
                 }
 
                 connection.openConnection(context.getResources().getString(R.string.url) + "site/" + SiteData.getSites().get(i).getId() + "/userPerms", ConnectionType.GET, true, false, null);
@@ -89,7 +97,8 @@ public class OnlineSite {
                     json = Actions.readJsonStream(inputStream);
                     inputStream.close();
                     jsonParse.getUserSitePermissions(json, i, "site");
-                    Actions.writeJsonFile(context, json, SiteData.getSites().get(i).getId() + "_userPerms");
+                    if (Actions.createDirIfNotExists(context, User.getUserId() + File.separator + "memberships" + File.separator + SiteData.getSites().get(i).getId()))
+                        Actions.writeJsonFile(context, json, SiteData.getSites().get(i).getId() + "_userPerms", User.getUserId() + File.separator + "memberships" + File.separator + SiteData.getSites().get(i).getId());
                 }
 
             }
@@ -102,7 +111,8 @@ public class OnlineSite {
                     json = Actions.readJsonStream(inputStream);
                     inputStream.close();
                     jsonParse.getProjectData(json, i);
-                    Actions.writeJsonFile(context, json, SiteData.getProjects().get(i).getId());
+                    if (Actions.createDirIfNotExists(context, User.getUserId() + File.separator + "memberships" + File.separator + SiteData.getProjects().get(i).getId()))
+                        Actions.writeJsonFile(context, json, SiteData.getProjects().get(i).getId(), User.getUserId() + File.separator + "memberships" + File.separator + SiteData.getProjects().get(i).getId());
                 }
 
                 connection.openConnection(context.getResources().getString(R.string.url) + "site/" + SiteData.getProjects().get(i).getId() + "/pages", ConnectionType.GET, true, false, null);
@@ -112,7 +122,8 @@ public class OnlineSite {
                     json = Actions.readJsonStream(inputStream);
                     inputStream.close();
                     jsonParse.getSitePageData(json, i, "project");
-                    Actions.writeJsonFile(context, json, SiteData.getProjects().get(i).getId() + "_pages");
+                    if (Actions.createDirIfNotExists(context, User.getUserId() + File.separator + "memberships" + File.separator + SiteData.getProjects().get(i).getId()))
+                        Actions.writeJsonFile(context, json, SiteData.getProjects().get(i).getId() + "_pages", User.getUserId() + File.separator + "memberships" + File.separator + SiteData.getProjects().get(i).getId());
                 }
 
                 connection.openConnection(context.getResources().getString(R.string.url) + "site/" + SiteData.getProjects().get(i).getId() + "/perms", ConnectionType.GET, true, false, null);
@@ -122,7 +133,8 @@ public class OnlineSite {
                     json = Actions.readJsonStream(inputStream);
                     inputStream.close();
                     jsonParse.getSitePermissions(json, i, "project");
-                    Actions.writeJsonFile(context, json, SiteData.getProjects().get(i).getId() + "_perms");
+                    if (Actions.createDirIfNotExists(context, User.getUserId() + File.separator + "memberships" + File.separator + SiteData.getProjects().get(i).getId()))
+                        Actions.writeJsonFile(context, json, SiteData.getProjects().get(i).getId() + "_perms", User.getUserId() + File.separator + "memberships" + File.separator + SiteData.getProjects().get(i).getId());
                 }
 
                 connection.openConnection(context.getResources().getString(R.string.url) + "site/" + SiteData.getProjects().get(i).getId() + "/userPerms", ConnectionType.GET, true, false, null);
@@ -132,7 +144,8 @@ public class OnlineSite {
                     json = Actions.readJsonStream(inputStream);
                     inputStream.close();
                     jsonParse.getUserSitePermissions(json, i, "project");
-                    Actions.writeJsonFile(context, json, SiteData.getProjects().get(i).getId() + "_userPerms");
+                    if (Actions.createDirIfNotExists(context, User.getUserId() + File.separator + "memberships" + File.separator + SiteData.getProjects().get(i).getId()))
+                        Actions.writeJsonFile(context, json, SiteData.getProjects().get(i).getId() + "_userPerms", User.getUserId() + File.separator + "memberships" + File.separator + SiteData.getProjects().get(i).getId());
                 }
 
             }

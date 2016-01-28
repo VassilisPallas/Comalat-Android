@@ -3,8 +3,10 @@ package org.sakaiproject.api.pages.syllabus;
 import android.content.Context;
 
 import org.sakaiproject.api.json.JsonParser;
+import org.sakaiproject.api.user.User;
 import org.sakaiproject.general.Actions;
 
+import java.io.File;
 import java.io.IOException;
 
 /**
@@ -22,8 +24,10 @@ public class OfflineSyllabus {
     }
 
     public Syllabus getSyllabus() throws IOException {
-        String syllabusJson = Actions.readJsonFile(context, siteId + "_syllabusJson");
+        String syllabusJson = null;
+        if (Actions.createDirIfNotExists(context, User.getUserId() + File.separator + "memberships" + File.separator + siteId + File.separator + "syllabus"))
+            syllabusJson = Actions.readJsonFile(context, siteId + "_syllabus", User.getUserId() + File.separator + "memberships" + File.separator + siteId + File.separator + "syllabus");
         return jsonParse.getSiteSyllabus(syllabusJson);
     }
-    
+
 }

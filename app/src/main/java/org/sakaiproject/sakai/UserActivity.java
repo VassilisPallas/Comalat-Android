@@ -29,6 +29,7 @@ import org.sakaiproject.helpers.user_navigation_drawer_helpers.NavigationDrawerH
 import org.sakaiproject.helpers.user_navigation_drawer_helpers.SitesNavigationDrawerHelper;
 import org.sakaiproject.helpers.user_navigation_drawer_helpers.UserMainNavigationDrawerHelper;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
@@ -93,7 +94,8 @@ public class UserActivity extends AppCompatActivity implements NavigationView.On
         displayNameTextView.setText(Profile.getDisplayName());
         emailTextView.setText(User.getEmail());
         try {
-            userImage.setImageBitmap(Actions.getImage(this, "user_thumbnail_image"));
+            if (Actions.createDirIfNotExists(this, User.getUserId() + File.separator + "user"))
+                userImage.setImageBitmap(Actions.getImage(this, "user_thumbnail_image", User.getUserId() + File.separator + "user"));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }

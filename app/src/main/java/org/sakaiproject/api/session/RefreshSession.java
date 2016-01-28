@@ -3,10 +3,12 @@ package org.sakaiproject.api.session;
 import android.content.Context;
 import android.util.Log;
 
+import org.sakaiproject.api.user.User;
 import org.sakaiproject.general.Actions;
 import org.sakaiproject.general.Connection;
 import org.sakaiproject.general.ConnectionType;
 
+import java.io.File;
 import java.io.IOException;
 
 /**
@@ -19,6 +21,7 @@ public class RefreshSession {
 
     /**
      * RefreshSession constructor
+     *
      * @param context the context
      */
     public RefreshSession(Context context) {
@@ -30,7 +33,9 @@ public class RefreshSession {
     public void putSession(String url) {
 
         try {
-            String loginJson = Actions.readJsonFile(context, "loginJson");
+            String loginJson = null;
+            if (Actions.createDirIfNotExists(context, User.getUserId() + File.separator + "user"))
+                loginJson = Actions.readJsonFile(context, "loginJson", User.getUserId() + File.separator + "user");
 
             connection.openConnection(url, ConnectionType.PUT, false, true, loginJson);
             Integer status = connection.getResponseCode();
