@@ -2,7 +2,6 @@ package org.sakaiproject.api.json;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.text.TextUtils;
 import android.util.Log;
 
 import org.json.JSONArray;
@@ -17,6 +16,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.sakaiproject.api.events.EventsCollection;
+import org.sakaiproject.api.pages.syllabus.Item;
+import org.sakaiproject.api.pages.syllabus.Syllabus;
 import org.sakaiproject.api.site.Owner;
 import org.sakaiproject.api.site.SitePage;
 import org.sakaiproject.api.site.SiteTools;
@@ -27,7 +28,7 @@ import org.sakaiproject.api.time.Time;
 import org.sakaiproject.api.user.profile.DateOfBirth;
 import org.sakaiproject.api.user.profile.Profile;
 import org.sakaiproject.api.user.User;
-import org.sakaiproject.api.user.UserEvents;
+import org.sakaiproject.api.events.UserEvents;
 import org.sakaiproject.api.events.RecurrenceRule;
 import org.sakaiproject.api.user.profile.ProfileStatus;
 import org.sakaiproject.api.user.profile.SocialNetworkingInfo;
@@ -45,6 +46,7 @@ public class JsonParser {
 
     /**
      * the JsonParser constructor
+     *
      * @param context the context
      */
     public JsonParser(Context context) {
@@ -72,12 +74,26 @@ public class JsonParser {
             user.setUserEid(obj.getString("userEid"));
             user.setUserId(obj.getString("userId"));
 
+            JSONObject attribute = obj.optJSONObject("attribute");
+
+            if (attribute != JSONObject.NULL && attribute != null) {
+                user.setAttribute(jsonObjectToMap(attribute));
+            }
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
-        // attributeName
-        // attribute
+        /**
+         * posible values for enum
+         * <xs:enumeration value="true"/>
+         * <xs:enumeration value="yes"/>
+         * <xs:enumeration value="false"/>
+         * <xs:enumeration value="no"/>
+         * @see <a href="http://help.pervasive.com/plugins/servlet/mobile#content/view/19137048">Confluence Mobile - XML Schema for Deployment Descriptor</a>
+         */
+        //Enum attributeName;
+
     }
 
     /**
@@ -212,9 +228,16 @@ public class JsonParser {
                 profile.setStatus(new ProfileStatus(message, dateAdded, dateFormatted));
             }
 
+            JSONArray companyProfiles = obj.optJSONArray("companyProfiles");
+            if (companyProfiles != null)
+                profile.setCompanyProfiles(jsonArrayToList(companyProfiles));
 
-            // companyProfiles -> List
-            // props -> Map
+            JSONObject props = obj.optJSONObject("props");
+
+            if (props != JSONObject.NULL && props != null) {
+                profile.setProps(jsonObjectToMap(props));
+            }
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -226,7 +249,7 @@ public class JsonParser {
      * http://141.99.248.86:8089/direct/announcement/motd.json
      *
      * @param result the response json
-     * @return
+     * @return the motd object
      */
     public OnlineMessageOfTheDay parseMotdJson(String result) {
         OnlineMessageOfTheDay onlineMessageOfTheDay = new OnlineMessageOfTheDay(context);
@@ -351,7 +374,7 @@ public class JsonParser {
      * http://141.99.248.86:8089/direct/profile/user_id.json
      *
      * @param result the response json
-     * @param index the index of the event on the List
+     * @param index  the index of the event on the List
      */
     public void getEventCreatorDisplayName(String result, int index) {
         try {
@@ -402,7 +425,7 @@ public class JsonParser {
      * http://141.99.248.86:8089/direct/site/site_id.json
      *
      * @param result the response json
-     * @param index the index of the site on the List
+     * @param index  the index of the site on the List
      */
     public void getSiteData(String result, int index) {
         try {
@@ -435,15 +458,14 @@ public class JsonParser {
             SiteData.getSites().get(index).setOwner(jsonObject.getString("owner"));
 
 
-            JSONObject props = jsonObject.getJSONObject("props");
+            JSONObject props = jsonObject.optJSONObject("props");
 
-            if (props != JSONObject.NULL) {
+            if (props != JSONObject.NULL && props != null) {
                 SiteData.getSites().get(index).setProps(jsonObjectToMap(props));
             }
 
             SiteData.getSites().get(index).setProviderGroupId(jsonObject.getString("providerGroupId"));
 
-            SiteData.getSites().get(index).setProviderGroupId(jsonObject.getString("providerGroupId"));
 
             JSONArray siteGroups = jsonObject.optJSONArray("siteGroups");
 
@@ -484,9 +506,34 @@ public class JsonParser {
 
             SiteData.getSites().get(index).setSoftlyDeleted(jsonObject.getBoolean("softlyDeleted"));
 
+            List<SitePage> pages = new ArrayList<>();
+
+            JSONArray sitePages = jsonObject.getJSONArray("sitePages");
+
+            for (int i = 0; i < sitePages.length(); i++) {
+                JSONObject obj = sitePages.getJSONObject(i);
+                SitePage page = new SitePage();
+
+                JSONObject pageProps = obj.optJSONObject("props");
+
+                if (pageProps != JSONObject.NULL && pageProps != null) {
+                    page.setProps(jsonObjectToMap(pageProps));
+                }
+
+                page.setTitleCustom(obj.getBoolean("titleCustom"));
+                page.setActiveEdit(obj.getBoolean("activeEdit"));
+                page.setHomePage(obj.getBoolean("homePage"));
+                page.setPopup(obj.getBoolean("popUp"));
+                pages.add(page);
+            }
+
+            SiteData.getSites().get(index).setPages(pages);
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
+        // softlyDeletedDate, softlyDeletedDate
     }
 
     /**
@@ -494,7 +541,7 @@ public class JsonParser {
      * http://141.99.248.86:8089/direct/site/site_id.json
      *
      * @param result the response json
-     * @param index the index of the project on the List
+     * @param index  the index of the project on the List
      */
     public void getProjectData(String result, int index) {
         try {
@@ -526,9 +573,9 @@ public class JsonParser {
             SiteData.getProjects().get(index).setOwner(jsonObject.getString("owner"));
 
 
-            JSONObject props = jsonObject.getJSONObject("props");
+            JSONObject props = jsonObject.optJSONObject("props");
 
-            if (props != JSONObject.NULL) {
+            if (props != JSONObject.NULL && props != null) {
                 SiteData.getProjects().get(index).setProps(jsonObjectToMap(props));
             }
 
@@ -576,6 +623,29 @@ public class JsonParser {
 
             SiteData.getProjects().get(index).setSoftlyDeleted(jsonObject.getBoolean("softlyDeleted"));
 
+            List<SitePage> pages = new ArrayList<>();
+
+            JSONArray sitePages = jsonObject.getJSONArray("sitePages");
+
+            for (int i = 0; i < sitePages.length(); i++) {
+                JSONObject obj = sitePages.getJSONObject(i);
+                SitePage page = new SitePage();
+
+                JSONObject pageProps = obj.optJSONObject("props");
+
+                if (pageProps != JSONObject.NULL && pageProps != null) {
+                    page.setProps(jsonObjectToMap(pageProps));
+                }
+
+                page.setTitleCustom(obj.getBoolean("titleCustom"));
+                page.setActiveEdit(obj.getBoolean("activeEdit"));
+                page.setHomePage(obj.getBoolean("homePage"));
+                page.setPopup(obj.getBoolean("popUp"));
+                pages.add(page);
+            }
+
+            SiteData.getProjects().get(index).setPages(pages);
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -586,55 +656,80 @@ public class JsonParser {
      * http://141.99.248.86:8089/direct/site/site_id/pages.json
      *
      * @param result the response json
-     * @param index the index of the project on the List
-     * @param type "project" for project type, and "site" for site type
+     * @param index  the index of the project on the List
+     * @param type   "project" for project type, and "site" for site type
      */
     public void getSitePageData(String result, int index, String type) {
         try {
 
-            List<SitePage> pages = new ArrayList<>();
-
             JSONArray jsonArray = new JSONArray(result);
-
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject obj = jsonArray.getJSONObject(i);
 
-                SitePage page = new SitePage();
-                page.setLayout(obj.getInt("layout"));
-                page.setToolPopupUrl(obj.getString("toolpopupurl"));
-                page.setToolPopup(obj.getBoolean("toolpopup"));
-                page.setSkin(obj.getString("skin"));
-                page.setId(obj.getString("id"));
-                page.setPosition(obj.getInt("position"));
-                page.setTitle(obj.getString("title"));
+                if (type.contains("project")) {
 
-                JSONArray tools = obj.getJSONArray("tools");
-                List<SiteTools> toolsList = new ArrayList<>();
-                for (int j = 0; j < tools.length(); j++) {
+                    SitePage page = SiteData.getProjects().get(index).getPages().get(i);
 
-                    JSONObject tool = tools.getJSONObject(j);
+                    page.setLayout(obj.getInt("layout"));
+                    page.setToolPopupUrl(obj.getString("toolpopupurl"));
+                    page.setToolPopup(obj.getBoolean("toolpopup"));
+                    page.setSkin(obj.getString("skin"));
+                    page.setId(obj.getString("id"));
+                    page.setPosition(obj.getInt("position"));
+                    page.setTitle(obj.getString("title"));
 
-                    SiteTools siteTools = new SiteTools();
+                    JSONArray tools = obj.getJSONArray("tools");
+                    List<SiteTools> toolsList = new ArrayList<>();
+                    for (int j = 0; j < tools.length(); j++) {
 
-                    siteTools.setToolId(tool.getString("toolId"));
-                    siteTools.setPageOrder(tool.getInt("pageOrder"));
-                    siteTools.setPlacementId(tool.getString("placementId"));
-                    siteTools.setDescription(tool.getString("description"));
-                    siteTools.setTitle(tool.getString("title"));
+                        JSONObject tool = tools.getJSONObject(j);
 
-                    toolsList.add(siteTools);
-                    // home
+                        SiteTools siteTools = new SiteTools();
+
+                        siteTools.setToolId(tool.getString("toolId"));
+                        siteTools.setPageOrder(tool.getInt("pageOrder"));
+                        siteTools.setPlacementId(tool.getString("placementId"));
+                        siteTools.setDescription(tool.getString("description"));
+                        siteTools.setTitle(tool.getString("title"));
+
+                        toolsList.add(siteTools);
+                        // home
+                    }
+
+                    page.setTools(toolsList);
+                } else {
+                    SitePage page = SiteData.getSites().get(index).getPages().get(i);
+
+                    page.setLayout(obj.getInt("layout"));
+                    page.setToolPopupUrl(obj.getString("toolpopupurl"));
+                    page.setToolPopup(obj.getBoolean("toolpopup"));
+                    page.setSkin(obj.getString("skin"));
+                    page.setId(obj.getString("id"));
+                    page.setPosition(obj.getInt("position"));
+                    page.setTitle(obj.getString("title"));
+
+                    JSONArray tools = obj.getJSONArray("tools");
+                    List<SiteTools> toolsList = new ArrayList<>();
+                    for (int j = 0; j < tools.length(); j++) {
+
+                        JSONObject tool = tools.getJSONObject(j);
+
+                        SiteTools siteTools = new SiteTools();
+
+                        siteTools.setToolId(tool.getString("toolId"));
+                        siteTools.setPageOrder(tool.getInt("pageOrder"));
+                        siteTools.setPlacementId(tool.getString("placementId"));
+                        siteTools.setDescription(tool.getString("description"));
+                        siteTools.setTitle(tool.getString("title"));
+
+                        toolsList.add(siteTools);
+                        // home
+                    }
+
+                    page.setTools(toolsList);
                 }
-
-                page.setTools(toolsList);
-
-                pages.add(page);
             }
 
-            if (type.equals("project"))
-                SiteData.getProjects().get(index).setPages(pages);
-            else
-                SiteData.getSites().get(index).setPages(pages);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -646,8 +741,8 @@ public class JsonParser {
      * http://141.99.248.86:8089/direct/site/site_id/perms.json
      *
      * @param result the response json
-     * @param index the index of the project on the List
-     * @param type "project" for project type, and "site" for site type
+     * @param index  the index of the project on the List
+     * @param type   "project" for project type, and "site" for site type
      */
     public void getSitePermissions(String result, int index, String type) {
         try {
@@ -677,8 +772,8 @@ public class JsonParser {
      * http://141.99.248.86:8089/direct/site/site_id/userPerms.json
      *
      * @param result the response json
-     * @param index the index of the project on the List
-     * @param type "project" for project type, and "site" for site type
+     * @param index  the index of the project on the List
+     * @param type   "project" for project type, and "site" for site type
      */
     public void getUserSitePermissions(String result, int index, String type) {
         try {
@@ -694,6 +789,60 @@ public class JsonParser {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * get the syllabus data
+     *
+     * @param result the response json
+     */
+    public Syllabus getSiteSyllabus(String result) {
+        Syllabus syllabus = null;
+        try {
+            JSONObject obj = new JSONObject(result);
+            JSONArray itemsArray = obj.getJSONArray("items");
+
+            syllabus = new Syllabus();
+            List<Item> items = new ArrayList<>();
+
+
+            for (int i = 0; i < itemsArray.length(); i++) {
+
+                List<String> attachments = new ArrayList<>();
+
+                JSONObject itemObj = itemsArray.getJSONObject(i);
+
+                Item item = new Item();
+
+                JSONArray attachmentsArray = itemObj.getJSONArray("attachments");
+                for (int j = 0; j < attachmentsArray.length(); j++) {
+                    JSONObject attachmentObj = attachmentsArray.getJSONObject(j);
+                    attachments.add(attachmentObj.getString("title"));
+                }
+
+                item.setAttachments(attachments);
+
+                item.setData(!itemObj.getString("data").trim().equals("") && !itemObj.getString("data").trim().equals("null") ? itemObj.getString("data") : "");
+
+                item.setEndDate(itemObj.getLong("startDate"));
+
+                item.setEndDate(itemObj.getLong("endDate"));
+
+                item.setOrder(itemObj.getInt("order"));
+
+                item.setTitle(itemObj.getString("title"));
+
+                items.add(item);
+            }
+
+            syllabus.setItems(items);
+            syllabus.setRedirectUrl(!obj.getString("redirectUrl").trim().equals("") && !obj.getString("redirectUrl").trim().equals("null") ? obj.getString("redirectUrl") : "");
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return syllabus;
     }
 
     /**

@@ -3,6 +3,7 @@ package org.sakaiproject.api.user;
 import org.sakaiproject.api.time.Time;
 
 import java.util.Date;
+import java.util.Map;
 
 /**
  * Created by vasilis on 10/26/15.
@@ -22,6 +23,7 @@ public class User {
     private static String sortName;
     private static Date modifiedDate;
     private static Time modifiedTime;
+    private static Map<String, String> attribute;
 
     private User() {
     }
@@ -123,5 +125,13 @@ public class User {
 
     public static void setSortName() {
         User.sortName = User.lastName + ", " + User.firstName;
+    }
+
+    public static Map<String, String> getAttribute() {
+        return attribute;
+    }
+
+    public static void setAttribute(Map<String, String> attribute) {
+        User.attribute = attribute;
     }
 }

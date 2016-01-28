@@ -217,7 +217,7 @@ public class UserActivity extends AppCompatActivity implements NavigationView.On
                 mainNavigationDrawer.createDrawer(getResources().getString(R.string.my_workspace), null);
                 break;
             case R.id.help:
-                WebViewFragment webViewFragment = new WebViewFragment();
+                WebViewFragment webViewFragment = new WebViewFragment().getUrl("http://141.99.248.86:8089/portal/help/main");
                 Actions.selectFragment(webViewFragment, R.id.user_frame, this);
                 break;
         }
@@ -230,6 +230,9 @@ public class UserActivity extends AppCompatActivity implements NavigationView.On
 
         for (Integer ids : NavigationDrawerHelper.getSitesIds().keySet()) {
             if (item.getItemId() == ids) {
+
+                NavigationDrawerHelper.setSelectedSite(NavigationDrawerHelper.getSitesIds().get(ids).getTitle());
+                NavigationDrawerHelper.setSelectedSiteData(NavigationDrawerHelper.getSitesIds().get(ids));
                 mainNavigationDrawer.createDrawer(NavigationDrawerHelper.getSitesIds().get(ids).getTitle(), NavigationDrawerHelper.getSitesIds().get(ids).getPages());
             }
         }

@@ -13,14 +13,18 @@ import android.widget.TextView;
 
 import org.sakaiproject.general.Actions;
 import org.sakaiproject.api.user.User;
-import org.sakaiproject.api.user.UserEvents;
+import org.sakaiproject.api.events.UserEvents;
 import org.sakaiproject.api.user.profile.Profile;
+
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 
 
 public class EventInfoFragment extends DialogFragment {
 
     private UserEvents selectedEvent;
-    private TextView title, date, time, description, attachment, frequency, eventType, owner, site, fromSite, location;
+    private TextView title, date, time, attachment, frequency, eventType, owner, site, fromSite, location;
+    private org.sakaiproject.customviews.TextViewWithImages description;
     private Button editEvent, removeEvent;
     private LinearLayout attachmentLinear;
 
@@ -49,17 +53,18 @@ public class EventInfoFragment extends DialogFragment {
 
         selectedEvent = (UserEvents) getArguments().getSerializable("event");
 
-//        //disable the title bar
-//        getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
-
-        findViewsById(v);
+        try {
+            findViewsById(v);
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
 
         // Inflate the layout for this fragment
         return v;
     }
 
 
-    public void findViewsById(View v) {
+    public void findViewsById(View v) throws UnsupportedEncodingException {
         title = (TextView) v.findViewById(R.id.event_title);
         title.setText(selectedEvent.getTitle());
 
@@ -69,8 +74,14 @@ public class EventInfoFragment extends DialogFragment {
         time = (TextView) v.findViewById(R.id.event_time);
         time.setText(selectedEvent.getTimeDuration());
 
-        description = (TextView) v.findViewById(R.id.event_description);
-        description.setText(selectedEvent.getDescription());
+        description = (org.sakaiproject.customviews.TextViewWithImages) v.findViewById(R.id.event_description);
+
+        description.setSiteData(selectedEvent.getEventId());
+
+        String descr = Actions.deleteHtmlTags(selectedEvent.getDescription());
+
+        if (descr != null && !descr.equals(""))
+            description.setText(descr);
 
         if (selectedEvent.getAttachments().size() > 0) {
             attachment = (TextView) v.findViewById(R.id.attachments_txt);
@@ -83,7 +94,7 @@ public class EventInfoFragment extends DialogFragment {
                 View currentAttachment = attachmentLinear.inflate(getActivity(), R.layout.attachment_row, null);
 
                 TextView name = (TextView) currentAttachment.findViewById(R.id.attachment_name);
-                name.setText(selectedEvent.getAttachmentNames().get(i));
+                name.setText(URLDecoder.decode(selectedEvent.getAttachmentNames().get(i), "UTF-8"));
 
                 ImageView image = (ImageView) currentAttachment.findViewById(R.id.attachment_type_image);
 

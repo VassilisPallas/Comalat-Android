@@ -15,9 +15,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -31,18 +28,15 @@ import org.sakaiproject.api.events.EventsCollection;
 import org.sakaiproject.api.events.OfflineEvents;
 import org.sakaiproject.api.internet.NetWork;
 import org.sakaiproject.api.sync.EventsRefresh;
-import org.sakaiproject.api.sync.MembershipRefresh;
 import org.sakaiproject.customviews.listeners.RecyclerItemClickListener;
 import org.sakaiproject.customviews.adapters.SelectedDayEventsAdapter;
 import org.sakaiproject.customviews.adapters.CalendarAdapter;
-import org.sakaiproject.api.events.OnlineEvents;
-import org.sakaiproject.api.user.UserEvents;
+import org.sakaiproject.api.events.UserEvents;
 
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.List;
-import java.util.Locale;
 
 
 /**
@@ -65,7 +59,7 @@ public class CalendarFragment extends Fragment implements SwipeRefreshLayout.OnR
     private GridView gridview;
     private TextView noEventsTextView;
 
-    ISwipeRefresh swipeRefresh;
+    private ISwipeRefresh swipeRefresh;
 
     private String selectedDate;
 
@@ -277,9 +271,7 @@ public class CalendarFragment extends Fragment implements SwipeRefreshLayout.OnR
 
         try {
             EventsCollection.selectedMonthEvents(String.valueOf(cal_month.get(cal_month.MONTH) + 1), cal_month_copy);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        } catch (CloneNotSupportedException e) {
+        } catch (ParseException | CloneNotSupportedException e) {
             e.printStackTrace();
         }
 
@@ -352,7 +344,6 @@ public class CalendarFragment extends Fragment implements SwipeRefreshLayout.OnR
             EventsCollection.getMonthEvents().clear();
 
             offlineEvents.getEvents();
-
 
             return EventsCollection.getUserEventsList();
         }

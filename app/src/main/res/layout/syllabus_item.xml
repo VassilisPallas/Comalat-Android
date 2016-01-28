@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="5dp"
+    android:paddingLeft="12dp"
+    android:paddingRight="12dp">
+
+    <RelativeLayout
+        android:id="@+id/main_item_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp">
+
+        <com.balysv.materialripple.MaterialRippleLayout
+            android:id="@+id/unjoin_ripple"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_alignParentRight="true"
+            app:mrl_rippleAlpha="0.2"
+            app:mrl_rippleColor="#b4b4b4"
+            app:mrl_rippleDelayClick="false"
+            app:mrl_rippleHover="true"
+            app:mrl_rippleOverlay="true"
+            app:mrl_rippleRoundedCorners="@dimen/fab_margin">
+
+            <FrameLayout
+                android:id="@+id/delete_item"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:clickable="true">
+
+                <ImageView
+                    android:id="@+id/delete_imageview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:src="@mipmap/ic_delete" />
+
+            </FrameLayout>
+
+        </com.balysv.materialripple.MaterialRippleLayout>
+
+        <TextView
+            android:id="@+id/syllabus_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Title"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <org.sakaiproject.customviews.TextViewWithImages
+            android:id="@+id/syllabus_data"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/syllabus_title"
+            android:layout_marginTop="5dp"
+            android:text="Data"
+            android:textSize="17sp"
+            android:textStyle="italic" />
+
+        <LinearLayout
+            android:id="@+id/attachments_linear"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/syllabus_data"
+            android:layout_marginTop="5dp"
+            android:orientation="vertical"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/syllabus_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/attachments_linear"
+            android:layout_marginTop="5dp"
+            android:text="2016/01/28 13:15 PM - 2016/01/30 16:30 AM" />
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@id/main_item_layout"
+        android:background="#dadada" />
+</RelativeLayout>

@@ -2,7 +2,7 @@ package org.sakaiproject.api.site;
 
 /**
  * Created by vasilis on 1/15/16.
- * a JavaBeans convention class for the Owner display name and id
+ * custom calls for the site owner
  */
 public class Owner {
     private String userDisplayName, userId;

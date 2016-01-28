@@ -1,6 +1,7 @@
 package org.sakaiproject.api.site;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by vasilis on 1/15/16.
@@ -16,6 +17,8 @@ public class SitePage {
     private int position;
     private String title;
     private List<SiteTools> tools;
+    private Map<String, String> props;
+    private boolean titleCustom, activeEdit, homePage, popup;
 
     public int getLayout() {
         return layout;
@@ -79,5 +82,45 @@ public class SitePage {
 
     public void setTools(List<SiteTools> tools) {
         this.tools = tools;
+    }
+
+    public Map<String, String> getProps() {
+        return props;
+    }
+
+    public void setProps(Map<String, String> props) {
+        this.props = props;
+    }
+
+    public boolean isTitleCustom() {
+        return titleCustom;
+    }
+
+    public void setTitleCustom(boolean titleCustom) {
+        this.titleCustom = titleCustom;
+    }
+
+    public boolean isActiveEdit() {
+        return activeEdit;
+    }
+
+    public void setActiveEdit(boolean activeEdit) {
+        this.activeEdit = activeEdit;
+    }
+
+    public boolean isHomePage() {
+        return homePage;
+    }
+
+    public void setHomePage(boolean homePage) {
+        this.homePage = homePage;
+    }
+
+    public boolean isPopup() {
+        return popup;
+    }
+
+    public void setPopup(boolean popup) {
+        this.popup = popup;
     }
 }

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:drawable/dialog_holo_light_frame">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/owner_data"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:gravity="center_horizontal"
+                android:padding="5dp"
+                android:text="Vasilis Pallas (vspallas@gmail.com)"
+                android:textSize="17sp"
+                android:textStyle="bold" />
+
+            <org.sakaiproject.customviews.TextViewWithImages
+                android:id="@+id/membership_short_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="15dp"
+                android:gravity="center"
+                android:padding="5dp"
+                android:text="short descshort descshort descshort descshort descshort descshort descshort descshort desc"
+                android:textSize="13sp" />
+
+            <org.sakaiproject.customviews.TextViewWithImages
+                android:id="@+id/membership_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="15dp"
+                android:gravity="center"
+                android:padding="5dp"
+                android:text="short descshort descshort descshort descshort descshort descshort descshort descshort desc"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+    </ScrollView>
+
+</FrameLayout>

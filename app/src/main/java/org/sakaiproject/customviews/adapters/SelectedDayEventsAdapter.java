@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import org.sakaiproject.api.user.UserEvents;
+import org.sakaiproject.api.events.UserEvents;
 import org.sakaiproject.sakai.R;
 
 import java.util.List;

@@ -13,7 +13,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import org.sakaiproject.api.events.EventsCollection;
-import org.sakaiproject.api.user.UserEvents;
+import org.sakaiproject.api.events.UserEvents;
 import org.sakaiproject.sakai.R;
 
 import java.text.DateFormat;

@@ -10,16 +10,9 @@ import android.graphics.BitmapFactory;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
-import android.os.Environment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.SubMenu;
-
-import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Target;
 
 import org.sakaiproject.api.internet.NetWork;
 import org.sakaiproject.api.logout.Logout;
@@ -29,7 +22,6 @@ import org.sakaiproject.api.user.User;
 import org.sakaiproject.api.user.profile.Profile;
 import org.sakaiproject.sakai.MainActivity;
 import org.sakaiproject.sakai.R;
-import org.sakaiproject.sakai.UserActivity;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -40,9 +32,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Hashtable;
 import java.util.List;
-import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -126,58 +116,15 @@ public class Actions {
     public static void saveImage(Context context, Bitmap bitmap, String imageName) throws IOException {
         File path = context.getFilesDir();
 
-        File file = new File(path, imageName + ".jpg");
+        File file = new File(path, imageName);
 
         FileOutputStream out = new FileOutputStream(file);
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
         out.flush();
         out.close();
 
     }
 
-    public static void downloadAndSaveImage(String url, Context context, String fileName) {
-        Picasso.with(context)
-                .load(url)
-                .into(getTarget(fileName, context));
-    }
-
-    //target to save
-    private static Target getTarget(final String fileName, final Context context) {
-        Target target = new Target() {
-
-            @Override
-            public void onBitmapLoaded(final Bitmap bitmap, Picasso.LoadedFrom from) {
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        File path = context.getFilesDir();
-                        File file = new File(path, fileName);
-
-                        try {
-                            FileOutputStream out = new FileOutputStream(file);
-                            bitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
-                            out.flush();
-                            out.close();
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }).start();
-
-            }
-
-            @Override
-            public void onBitmapFailed(Drawable errorDrawable) {
-
-            }
-
-            @Override
-            public void onPrepareLoad(Drawable placeHolderDrawable) {
-
-            }
-        };
-        return target;
-    }
 
     /**
      * get image from internal storage
@@ -294,7 +241,9 @@ public class Actions {
                     return AttachmentType.UNKwOWN;
             }
         }
-        return AttachmentType.URL;
+        if (file.startsWith("http") || file.startsWith("ftp") || file.startsWith("https"))
+            return AttachmentType.URL;
+        return AttachmentType.UNKwOWN;
     }
 
     /**

@@ -21,6 +21,19 @@ public class WebViewFragment extends Fragment {
         // Required empty public constructor
     }
 
+    /**
+     * get the swipe refresh layout from activity
+     *
+     * @param url the url for the webview
+     * @return the fragment with the data
+     */
+    public WebViewFragment getUrl(String url) {
+        WebViewFragment webViewFragment = new WebViewFragment();
+        Bundle b = new Bundle();
+        b.putSerializable("url", url);
+        webViewFragment.setArguments(b);
+        return webViewFragment;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -30,7 +43,7 @@ public class WebViewFragment extends Fragment {
 
         webView = (WebView) v.findViewById(R.id.webview);
         webView.getSettings().setJavaScriptEnabled(true);
-        webView.loadUrl("http://141.99.248.86:8089/portal/help/main");
+        webView.loadUrl(getArguments().getString("url"));
 
         // Inflate the layout for this fragment
         return v;

@@ -7,6 +7,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.Toast;
 
 import org.sakaiproject.api.site.SiteData;
 import org.sakaiproject.api.site.SitePage;
@@ -16,6 +17,7 @@ import org.sakaiproject.sakai.CalendarFragment;
 import org.sakaiproject.sakai.MembershipFragment;
 import org.sakaiproject.sakai.ProfileFragment;
 import org.sakaiproject.sakai.R;
+import org.sakaiproject.sakai.SyllabusFragment;
 
 import java.util.Hashtable;
 import java.util.Map;
@@ -32,6 +34,8 @@ public abstract class NavigationDrawerHelper {
     private static Context context;
     private static CustomSwipeRefreshLayout mSwipeRefreshLayout;
     protected static DrawerLayout drawer;
+    private static String selectedSite = "My Workspace";
+    private static SiteData selectedSiteData;
 
     private static String DASHBOARD;
     private static String HOME;
@@ -112,8 +116,6 @@ public abstract class NavigationDrawerHelper {
         pagesIds = new Hashtable<>();
         myWorkspaceIds = new Hashtable<>();
 
-//        Toolbar toolbar = (Toolbar) ((AppCompatActivity) context).findViewById(R.id.toolbar);
-//        ((AppCompatActivity) context).setSupportActionBar(toolbar);
 
         drawer = (DrawerLayout) ((AppCompatActivity) context).findViewById(R.id.drawer_layout);
 
@@ -154,6 +156,14 @@ public abstract class NavigationDrawerHelper {
 
     public static DrawerLayout getDrawer() {
         return drawer;
+    }
+
+    public static void setSelectedSite(String selectedSite) {
+        NavigationDrawerHelper.selectedSite = selectedSite;
+    }
+
+    public static void setSelectedSiteData(SiteData selectedSiteData) {
+        NavigationDrawerHelper.selectedSiteData = selectedSiteData;
     }
 
     /**
@@ -306,7 +316,8 @@ public abstract class NavigationDrawerHelper {
         } else if (pageName.equals(STATISTICS)) {
 
         } else if (pageName.equals(SYLLABUS)) {
-
+            SyllabusFragment syllabusFragment = new SyllabusFragment().getData(mSwipeRefreshLayout, selectedSiteData);
+            Actions.selectFragment(syllabusFragment, R.id.user_frame, context);
         } else if (pageName.equals(TESTS_QUIZZES)) {
 
         } else if (pageName.equals(WIKI)) {

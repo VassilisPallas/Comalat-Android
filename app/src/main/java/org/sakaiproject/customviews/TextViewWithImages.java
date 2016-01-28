@@ -3,17 +3,24 @@ package org.sakaiproject.customviews;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.text.Spannable;
 import android.text.style.ImageSpan;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.widget.TextView;
 
 import org.sakaiproject.api.site.SiteData;
 import org.sakaiproject.general.Actions;
+import org.sakaiproject.general.Connection;
+import org.sakaiproject.general.ConnectionType;
+import org.sakaiproject.general.Image;
 
+import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -23,8 +30,17 @@ import java.util.regex.Pattern;
 public class TextViewWithImages extends TextView {
 
     private static final Spannable.Factory spannableFactory = Spannable.Factory.getInstance();
-    private static SiteData siteData;
-    private static Bitmap bitmap;
+
+    private String id;
+    private Bitmap bitmap;
+    private File image;
+    private File path;
+    private String imageName;
+    private int width;
+    private int height;
+    private boolean set;
+    private Matcher refImgMatcher;
+    private List<Image> images;
 
     public TextViewWithImages(Context context) {
         super(context);
@@ -38,17 +54,20 @@ public class TextViewWithImages extends TextView {
         super(context, attrs, defStyleAttr);
     }
 
-    public void setSiteData(SiteData siteData) {
-        this.siteData = siteData;
+    public void setSiteData(String id) {
+        this.id = id;
     }
 
-    private static boolean addImages(Context context, Spannable spannable) {
-        Pattern refImgPattern = Pattern.compile("<img .+?\\/>");
-        boolean hasChanges = false;
 
-        Matcher refImgMatcher = refImgPattern.matcher(spannable);
+    private void add(final Context context, final Spannable spannable) {
+        path = context.getFilesDir();
+
+        Pattern refImgPattern = Pattern.compile("<img .+?\\/>");
+
+        refImgMatcher = refImgPattern.matcher(spannable);
         while (refImgMatcher.find()) {
-            boolean set = true;
+
+            set = true;
             for (ImageSpan span : spannable.getSpans(refImgMatcher.start(), refImgMatcher.end(), ImageSpan.class)) {
                 if (spannable.getSpanStart(span) >= refImgMatcher.start()
                         && spannable.getSpanEnd(span) <= refImgMatcher.end()
@@ -62,7 +81,7 @@ public class TextViewWithImages extends TextView {
 
             String imageUrl = spannable.subSequence(refImgMatcher.start(0), refImgMatcher.end(0)).toString().trim();
 
-            int width = 0;
+            width = 0;
             Pattern widthPattern = Pattern.compile("width=\"[0-9]+?\"");
             Matcher widthMatcher = widthPattern.matcher(imageUrl);
 
@@ -73,7 +92,7 @@ public class TextViewWithImages extends TextView {
                 width = Integer.valueOf(w);
             }
 
-            int height = 0;
+            height = 0;
             Pattern heightPattern = Pattern.compile("height=\"[0-9]+?\"");
             Matcher heightMatcher = heightPattern.matcher(imageUrl);
 
@@ -90,63 +109,105 @@ public class TextViewWithImages extends TextView {
             if (urlMatcher.find())
                 imageUrl = urlMatcher.group(0);
 
-            Log.i("url", imageUrl);
-            Log.i("width", String.valueOf(width));
-            Log.i("height", String.valueOf(height));
+            imageName = id + "_" + imageUrl.substring(imageUrl.lastIndexOf("/") + 1, imageUrl.length());
 
-            String imageName = siteData.getId() + "_" + imageUrl.substring(imageUrl.lastIndexOf("/") + 1, imageUrl.length());
+            images.add(new Image(imageUrl, imageName, width, height, refImgMatcher.start(0), refImgMatcher.end(0)));
 
-            File path = context.getFilesDir();
-
-            File image = new File(path, imageName);
-
-            if (!image.exists()) {
-                Actions.downloadAndSaveImage(imageUrl, context, imageName);
-                image = new File(path, imageName);
-            }
-
-            BitmapFactory.Options bmOptions = new BitmapFactory.Options();
-            bitmap = BitmapFactory.decodeFile(image.getAbsolutePath(), bmOptions);
-            if (width > 0 && height > 0)
-                bitmap = Bitmap.createScaledBitmap(bitmap, width * 3, height * 3, true);
-
-            if (set) {
-                hasChanges = true;
-                spannable.setSpan(new ImageSpan(context, bitmap),
-                        refImgMatcher.start(),
-                        refImgMatcher.end(),
-                        Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-                );
-            }
-
-
-//            int id = context.getResources().getIdentifier(imageUrl, "drawable", context.getPackageName());
-//
-//
-//            if (set) {
-//                hasChanges = true;
-//                spannable.setSpan(new ImageSpan(context, id),
-//                        matcher.start(),
-//                        matcher.end(),
-//                        Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-//                );
-//            }
 
         }
 
-        return hasChanges;
+        if (images.size() > 0) {
+
+
+            for (final Image img : images) {
+                image = new File(path, img.getName());
+                if (!image.exists()) {
+                    new DownLoadImage(context, spannable, img).execute();
+                } else
+                    addImages(spannable, context, img);
+            }
+        }
+
     }
 
-    private static Spannable getTextWithImages(Context context, CharSequence text) {
+    private Spannable getTextWithImages(Context context, CharSequence text) {
+        images = new ArrayList<>();
+
         Spannable spannable = spannableFactory.newSpannable(text);
-        addImages(context, spannable);
+        add(context, spannable);
         return spannable;
     }
 
 
+    private void addImages(Spannable spannable, Context context, Image im) {
+        image = new File(path, im.getName());
+        BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+        bitmap = BitmapFactory.decodeFile(image.getAbsolutePath(), bmOptions);
+        if (im.getWidth() > 0 && im.getHeight() > 0)
+            bitmap = Bitmap.createScaledBitmap(bitmap, im.getWidth() * 3, im.getHeight() * 3, true);
+
+        if (set) {
+            spannable.setSpan(new ImageSpan(context, bitmap),
+                    im.getStartIndex(),
+                    im.getEndIndex(),
+                    Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+            );
+        }
+    }
+
+    private CharSequence tempText;
+
     @Override
     public void setText(CharSequence text, BufferType type) {
         Spannable s = getTextWithImages(getContext(), text);
+        tempText = s;
         super.setText(s, BufferType.SPANNABLE);
+    }
+
+
+    private class DownLoadImage extends AsyncTask<Void, Void, Boolean> {
+
+        private Connection connection = Connection.getInstance();
+        private Context context;
+        private Spannable spannable;
+        private Image img;
+
+        public DownLoadImage(Context context, Spannable spannable, Image image) {
+            this.spannable = spannable;
+            this.context = context;
+            this.img = image;
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... params) {
+
+            try {
+                connection.openConnection(img.getPath(), ConnectionType.GET, false, false, null);
+
+                Integer status = connection.getResponseCode();
+                if (status >= 200 && status < 300) {
+                    InputStream inputStream = new BufferedInputStream(connection.getInputStream());
+                    Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+                    Actions.saveImage(context, bitmap, img.getName());
+                }
+                return true;
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                connection.closeConnection();
+            }
+
+            return false;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean downloaded) {
+            super.onPostExecute(downloaded);
+            if (downloaded) {
+                addImages(spannable, context, img);
+                Spannable s = getTextWithImages(getContext(), tempText);
+                setText(s, BufferType.SPANNABLE);
+            }
+        }
     }
 }

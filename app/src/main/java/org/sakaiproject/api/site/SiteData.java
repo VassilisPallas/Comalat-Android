@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 
 import org.sakaiproject.api.time.Time;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -14,7 +15,7 @@ import java.util.Map;
  * Created by vasilis on 11/21/15.
  * a JavaBeans convention class for the site data
  */
-public class SiteData {
+public class SiteData implements Serializable {
 
     private String id;
     private String type;

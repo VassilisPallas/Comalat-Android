@@ -5,6 +5,8 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
+import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -15,6 +17,7 @@ import android.widget.Filterable;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.balysv.materialripple.MaterialRippleLayout;
 
@@ -22,6 +25,8 @@ import org.sakaiproject.api.site.SiteData;
 import org.sakaiproject.api.site.actions.IUnJoin;
 import org.sakaiproject.api.user.User;
 import org.sakaiproject.general.Actions;
+import org.sakaiproject.sakai.IMembershipDialog;
+import org.sakaiproject.sakai.MembershipDescriptionFragment;
 import org.sakaiproject.sakai.R;
 
 import java.util.ArrayList;
@@ -37,6 +42,7 @@ public class MembershipAdapter extends RecyclerView.Adapter<MembershipAdapter.Vi
     private MembershipFilter filter;
     private Context context;
     private IUnJoin siteUnJoin;
+    private IMembershipDialog dialog;
 
     /**
      * MembershipAdapter constructor
@@ -44,7 +50,8 @@ public class MembershipAdapter extends RecyclerView.Adapter<MembershipAdapter.Vi
      * @param membership the list with the sites and projects
      * @param context    the context
      */
-    public MembershipAdapter(List<SiteData> membership, Context context, IUnJoin siteUnJoin) {
+    public MembershipAdapter(List<SiteData> membership, Context context, IUnJoin siteUnJoin, IMembershipDialog dialog) {
+        this.dialog = dialog;
         this.memberships = membership;
         filteredMembership = new ArrayList<>();
         this.context = context;
@@ -92,14 +99,30 @@ public class MembershipAdapter extends RecyclerView.Adapter<MembershipAdapter.Vi
             holder.description.setText(context.getString(R.string.no_description));
         } else {
 
-            holder.description.setSiteData(memberships.get(position));
+            holder.description.setSiteData(memberships.get(position).getId()
+
+
+            );
 
             if (description.length() > 60) {
                 description = description.substring(0, 60);
-                description += "...";
+                description += "...[Tap for More]";
             }
             holder.description.setText(description);
         }
+
+        holder.description.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                String displayName = memberships.get(position).getSiteOwner().getUserDisplayName();
+                String email = memberships.get(position).getProps().get("contact-email");
+                String shortDescr = memberships.get(position).getShortDescription();
+                String descr = memberships.get(position).getDescription();
+                SiteData data = memberships.get(position);
+                dialog.openDialog(displayName, email, shortDescr, descr, data);
+            }
+        });
 
         if (memberships.get(position).getOwner().equals(User.getUserId())) {
 

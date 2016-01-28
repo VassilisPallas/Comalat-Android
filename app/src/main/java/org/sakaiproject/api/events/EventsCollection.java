@@ -1,7 +1,5 @@
 package org.sakaiproject.api.events;
 
-import org.sakaiproject.api.user.UserEvents;
-
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

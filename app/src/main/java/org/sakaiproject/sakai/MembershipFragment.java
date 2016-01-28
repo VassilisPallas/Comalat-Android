@@ -5,8 +5,11 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
@@ -33,7 +36,7 @@ import java.util.List;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class MembershipFragment extends Fragment implements IUnJoin, SwipeRefreshLayout.OnRefreshListener {
+public class MembershipFragment extends Fragment implements IUnJoin, SwipeRefreshLayout.OnRefreshListener, IMembershipDialog {
 
     private RecyclerView mRecyclerView;
     private MembershipAdapter mAdapter;
@@ -44,7 +47,7 @@ public class MembershipFragment extends Fragment implements IUnJoin, SwipeRefres
     private EditText membershipSearch;
     private FrameLayout root;
 
-    ISwipeRefresh swipeRefresh;
+    private ISwipeRefresh swipeRefresh;
 
     private org.sakaiproject.customviews.CustomSwipeRefreshLayout swipeRefreshLayout;
 
@@ -112,7 +115,7 @@ public class MembershipFragment extends Fragment implements IUnJoin, SwipeRefres
         List<SiteData> membership = new ArrayList<>(SiteData.getSites());
         membership.addAll(SiteData.getProjects());
 
-        mAdapter = new MembershipAdapter(membership, v.getContext(), this);
+        mAdapter = new MembershipAdapter(membership, v.getContext(), this, this);
         mRecyclerView.setAdapter(mAdapter);
 
         createSite = (FloatingActionButton) v.findViewById(R.id.create_site);
@@ -171,5 +174,14 @@ public class MembershipFragment extends Fragment implements IUnJoin, SwipeRefres
                 }
             }
         });
+    }
+
+    @Override
+    public void openDialog(String userShortName, String email, String shortDescription, String description, SiteData data) {
+        FragmentManager fm = getFragmentManager();
+        MembershipDescriptionFragment dialogFragment = new MembershipDescriptionFragment().getData(userShortName, email, shortDescription, description, data);
+        dialogFragment.setStyle(DialogFragment.STYLE_NO_TITLE, R.style.InfoDialogTheme);
+        dialogFragment.show(fm, getContext().getResources().getString(R.string.site_descr));
+
     }
 }

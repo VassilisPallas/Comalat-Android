@@ -35,6 +35,7 @@ public class OnlineLogin implements ILogin {
 
     /**
      * the OnlineLogin constructor
+     *
      * @param context the context
      */
     public OnlineLogin(Context context) {
@@ -74,7 +75,7 @@ public class OnlineLogin implements ILogin {
         } finally {
             connection.closeConnection();
         }
-        if(connection.isSocketException()){
+        if (connection.isSocketException()) {
             return LoginType.SOCKETEXCEPTION;
         }
 
@@ -151,7 +152,7 @@ public class OnlineLogin implements ILogin {
             if (status >= 200 && status < 300) {
                 InputStream inputStream = new BufferedInputStream(connection.getInputStream());
                 bitmap = BitmapFactory.decodeStream(inputStream);
-                Actions.saveImage(context, bitmap, "user_image");
+                Actions.saveImage(context, bitmap, "user_image.jpg");
             }
 
         } catch (IOException e) {
@@ -171,7 +172,7 @@ public class OnlineLogin implements ILogin {
             if (status >= 200 && status < 300) {
                 InputStream inputStream = new BufferedInputStream(connection.getInputStream());
                 bitmap = BitmapFactory.decodeStream(inputStream);
-                Actions.saveImage(context, bitmap, "user_thumbnail_image");
+                Actions.saveImage(context, bitmap, "user_thumbnail_image.jpg");
             }
         } catch (IOException e) {
             e.printStackTrace();

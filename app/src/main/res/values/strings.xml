@@ -190,5 +190,8 @@
     <string name="new_account_type">type: registered</string>
     <string name="create_account">Create Account</string>
     <string name="no_events">No event on the selected day</string>
+    <string name="no_short_descr">No short site description has been provided</string>
+    <string name="no_descr">No site description has been provided</string>
+    <string name="site_descr">Site Description</string>
 
 </resources>

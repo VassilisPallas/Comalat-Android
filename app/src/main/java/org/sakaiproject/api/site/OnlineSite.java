@@ -35,6 +35,7 @@ public class OnlineSite {
 
     /**
      * REST calls to get the data from sites and projects the user has join
+     * http://141.99.248.86:8089/direct/membership.json
      * @param url the url
      * @throws IOException
      */

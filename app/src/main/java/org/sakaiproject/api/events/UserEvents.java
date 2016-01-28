@@ -1,4 +1,4 @@
-package org.sakaiproject.api.user;
+package org.sakaiproject.api.events;
 
 import android.util.Log;
 
@@ -209,7 +209,7 @@ public class UserEvents implements Serializable, Cloneable {
         Date d = new Date(firstTime.getMilliseconds());
         cal.setTime(d);
 
-        return String.valueOf(cal.get(Calendar.MONTH) + 1).length() > 1 ? String.valueOf((cal.get(Calendar.MONTH) + 1)) : "0" + cal.get(Calendar.MONTH) + 1;
+        return String.valueOf(cal.get(cal.MONTH) + 1);
     }
 
     public void setEventWholeDate() {
