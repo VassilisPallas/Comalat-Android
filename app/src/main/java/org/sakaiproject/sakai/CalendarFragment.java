@@ -250,6 +250,7 @@ public class CalendarFragment extends Fragment implements SwipeRefreshLayout.OnR
         }));
 
         offlineEvents = new OfflineEvents(getContext());
+
         new EventsAsync().execute();
 
         swipeRefresh.Callback(this);
@@ -354,14 +355,16 @@ public class CalendarFragment extends Fragment implements SwipeRefreshLayout.OnR
             super.onPostExecute(userEvents);
 
             try {
-                EventsCollection.findMonthlyEvents(cal_month_copy);
+                //EventsCollection.findMonthlyEvents(cal_month_copy);
+                EventsCollection.selectedMonthEvents(String.valueOf(cal_month.get(cal_month.MONTH) + 1), cal_month_copy);
             } catch (ParseException | CloneNotSupportedException e) {
                 e.printStackTrace();
             }
 
-            cal_adapter.setEvents(EventsCollection.getMonthEvents());
+            mRecyclerView.setAdapter(null);
 
             calendar.setVisibility(View.VISIBLE);
+            refreshCalendar();
             progressBar.setVisibility(View.GONE);
 
             //gridview.performItemClick(gridview.getChildAt(30), 30, gridview.getItemIdAtPosition(30));

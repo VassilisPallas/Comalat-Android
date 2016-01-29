@@ -1,5 +1,7 @@
 package org.sakaiproject.api.events;
 
+import android.util.Log;
+
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
