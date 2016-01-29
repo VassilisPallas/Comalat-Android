@@ -15,6 +15,7 @@ import org.sakaiproject.general.Actions;
 import org.sakaiproject.general.Connection;
 import org.sakaiproject.general.ConnectionType;
 import org.sakaiproject.general.Image;
+import org.sakaiproject.sakai.R;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -127,6 +128,7 @@ public class TextViewWithImages extends TextView {
                 image = new File(path, img.getName());
                 if (!image.exists()) {
                     new DownLoadImage(context, spannable, img).execute();
+                    loadingImage(spannable, context, img);
                 } else
                     addImages(spannable, context, img);
             }
@@ -142,6 +144,24 @@ public class TextViewWithImages extends TextView {
         return spannable;
     }
 
+
+    private void loadingImage(Spannable spannable, Context context, Image im) {
+        BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+        bitmap = BitmapFactory.decodeResource(context.getResources(),
+                R.mipmap.ic_image, bmOptions);
+
+        if (im.getWidth() > 0 && im.getHeight() > 0)
+            bitmap = Bitmap.createScaledBitmap(bitmap, im.getWidth() * 3, im.getHeight() * 3, true);
+
+        if (set) {
+            spannable.setSpan(new ImageSpan(context, bitmap),
+                    im.getStartIndex(),
+                    im.getEndIndex(),
+                    Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+            );
+        }
+
+    }
 
     private void addImages(Spannable spannable, Context context, Image im) {
         if (Actions.createDirIfNotExists(context, User.getUserId() + File.separator + "memberships" + File.separator + id)) {
