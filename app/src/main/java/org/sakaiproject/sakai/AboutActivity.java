@@ -199,6 +199,7 @@ public class AboutActivity extends AppCompatActivity implements View.OnClickList
             case R.id.edit_social_button:
                 socialNetworkInfo.enableEdit();
                 findViewById(R.id.social_network_information_buttons).setVisibility(View.VISIBLE);
+                break;
             case R.id.edit_personal_button:
                 personalInfo.enableEdit();
                 findViewById(R.id.personal_information_buttons).setVisibility(View.VISIBLE);

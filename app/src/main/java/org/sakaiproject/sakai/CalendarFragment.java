@@ -355,7 +355,6 @@ public class CalendarFragment extends Fragment implements SwipeRefreshLayout.OnR
             super.onPostExecute(userEvents);
 
             try {
-                //EventsCollection.findMonthlyEvents(cal_month_copy);
                 EventsCollection.selectedMonthEvents(String.valueOf(cal_month.get(cal_month.MONTH) + 1), cal_month_copy);
             } catch (ParseException | CloneNotSupportedException e) {
                 e.printStackTrace();
