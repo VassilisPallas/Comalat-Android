@@ -136,7 +136,7 @@ public class CalendarAdapter extends BaseAdapter {
         dateColor(dayView, position, gridvalue);
 
         if (day_string.get(position).equals(curentDateString)) {
-            v.setBackgroundColor(Color.parseColor("#0083AF"));
+            v.setBackgroundColor(Color.parseColor("#43C84E"));
             todayPosition = position;
         } else {
             v.setBackgroundColor(Color.parseColor("#343434"));
@@ -174,12 +174,12 @@ public class CalendarAdapter extends BaseAdapter {
             previousView.setBackgroundColor(Color.parseColor("#343434"));
         }
 
-        view.setBackgroundColor(Color.parseColor("#036a8c"));
+        view.setBackgroundColor(Color.parseColor("#29A031"));
 
         int len = day_string.size();
         if (len > pos) {
             if (day_string.get(pos).equals(curentDateString)) {
-                view.setBackgroundColor(Color.parseColor("#0083AF"));
+                view.setBackgroundColor(Color.parseColor("#43C84E"));
                 todayPosition = pos;
             } else {
                 previousView = view;
@@ -264,7 +264,7 @@ public class CalendarAdapter extends BaseAdapter {
                     txt.setText(spanString);
                 } else if (day_string.get(pos).equals(date) && day_string.get(pos).equals(curentDateString)) {
                     todayPosition = pos;
-                    v.setBackgroundColor(Color.parseColor("#0083AF"));
+                    v.setBackgroundColor(Color.parseColor("#43C84E"));
                     SpannableString spanString = new SpannableString(txt.getText());
                     spanString.setSpan(new UnderlineSpan(), 0, spanString.length(), 0);
                     spanString.setSpan(new StyleSpan(Typeface.ITALIC), 0, spanString.length(), 0);

@@ -60,7 +60,7 @@ public class BasicInfoHelper implements IUserAbout {
         this.activity = activity;
         this.clickListener = clickListener;
         this.editDrawable = editDrawable;
-        calendarDrawable = Actions.setCustomDrawableColor(activity.getApplicationContext(), R.mipmap.ic_today, Color.parseColor("#0083AF"));
+        calendarDrawable = Actions.setCustomDrawableColor(activity.getApplicationContext(), R.mipmap.ic_today, Color.parseColor("#43C84E"));
         initialize(activity);
         fillValues();
         checkVisibilities(activity);

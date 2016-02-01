@@ -207,7 +207,7 @@
                     android:id="@+id/student_info_save_changes_button"
                     android:layout_width="130dp"
                     android:layout_height="40dp"
-                    android:background="#0083AF"
+                    android:background="#43C84E"
                     android:text="@string/save_changes"
                     android:textColor="#FFFFFF" />
 
@@ -230,7 +230,7 @@
                     android:id="@+id/student_info_cancel_button"
                     android:layout_width="110dp"
                     android:layout_height="40dp"
-                    android:background="#0083AF"
+                    android:background="#43C84E"
                     android:text="@string/cancel"
                     android:textColor="#FFFFFF" />
 

@@ -74,6 +74,7 @@ public class EventsRefresh extends AsyncTask<Void, Void, Void> {
             e.printStackTrace();
         }
 
+
         adapter.setEvents(EventsCollection.getMonthEvents());
 
         gridView.setAdapter(adapter);

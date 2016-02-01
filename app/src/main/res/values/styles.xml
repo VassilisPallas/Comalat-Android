@@ -3,9 +3,9 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">#0083AF</item>
-        <item name="colorPrimaryDark">#046a8c</item>
-        <item name="colorAccent">#0083AF</item>
+        <item name="colorPrimary">#43C84E</item>
+        <item name="colorPrimaryDark">#29A031</item>
+        <item name="colorAccent">#43C84E</item>
 
         <item name="android:alertDialogTheme">@style/Theme.AppCompat.Light.Dialog.Alert</item>
     </style>

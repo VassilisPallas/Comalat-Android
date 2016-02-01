@@ -362,6 +362,10 @@ public class CalendarFragment extends Fragment implements SwipeRefreshLayout.OnR
 
             mRecyclerView.setAdapter(null);
 
+            cal_adapter.setEvents(EventsCollection.getMonthEvents());
+
+            gridview.setAdapter(cal_adapter);
+
             calendar.setVisibility(View.VISIBLE);
             refreshCalendar();
             progressBar.setVisibility(View.GONE);

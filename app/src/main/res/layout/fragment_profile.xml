@@ -80,7 +80,7 @@
                             android:id="@+id/say_something_button"
                             android:layout_width="wrap_content"
                             android:layout_height="40dp"
-                            android:background="#0083AF"
+                            android:background="#43C84E"
                             android:text="@string/say_it"
                             android:textColor="#FFFFFF" />
 
@@ -293,7 +293,7 @@
                         android:id="@+id/new_post_button"
                         android:layout_width="130dp"
                         android:layout_height="40dp"
-                        android:background="#0083AF"
+                        android:background="#43C84E"
                         android:text="@string/post_on_wall"
                         android:textColor="#FFFFFF" />
 
@@ -474,7 +474,7 @@
                                     android:id="@+id/add_comment_button"
                                     android:layout_width="120dp"
                                     android:layout_height="40dp"
-                                    android:background="#0083AF"
+                                    android:background="#43C84E"
                                     android:text="@string/add_comment"
                                     android:textColor="#FFFFFF" />
 
@@ -497,7 +497,7 @@
                                     android:id="@+id/cancel_add_comment_button"
                                     android:layout_width="120dp"
                                     android:layout_height="40dp"
-                                    android:background="#0083AF"
+                                    android:background="#43C84E"
                                     android:text="@string/cancel"
                                     android:textColor="#FFFFFF" />
 

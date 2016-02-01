@@ -45,7 +45,7 @@ public class AboutActivity extends AppCompatActivity implements View.OnClickList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_about);
 
-        editDrawable = Actions.setCustomDrawableColor(this, R.mipmap.ic_create, Color.parseColor("#046a8c"));
+        editDrawable = Actions.setCustomDrawableColor(this, R.mipmap.ic_create, Color.parseColor("#29A031"));
 
         scrollView = (AboutScrollView) findViewById(R.id.about_scrollview);
 

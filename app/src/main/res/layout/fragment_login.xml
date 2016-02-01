@@ -57,7 +57,7 @@
                     android:id="@+id/loginButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="#0083AF"
+                    android:background="#43C84E"
                     android:text="@string/login"
                     android:textColor="#FFF" />
             </com.balysv.materialripple.MaterialRippleLayout>
