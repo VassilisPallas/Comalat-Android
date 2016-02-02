@@ -2,10 +2,8 @@ package org.sakaiproject.api.sync;
 
 import android.content.Context;
 import android.os.AsyncTask;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
 
-import org.sakaiproject.api.pages.syllabus.Syllabus;
 import org.sakaiproject.api.site.OnlineSite;
 import org.sakaiproject.api.site.SiteData;
 import org.sakaiproject.customviews.adapters.MembershipAdapter;

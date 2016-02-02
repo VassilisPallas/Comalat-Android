@@ -3,7 +3,6 @@ package org.sakaiproject.customviews.adapters;
 import android.content.Context;
 import android.graphics.Color;
 import android.support.v4.app.FragmentActivity;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,18 +12,13 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.balysv.materialripple.MaterialRippleLayout;
-
 import org.sakaiproject.api.pages.syllabus.Item;
-import org.sakaiproject.api.pages.syllabus.Syllabus;
-import org.sakaiproject.api.site.SiteData;
 import org.sakaiproject.general.Actions;
 import org.sakaiproject.sakai.R;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;

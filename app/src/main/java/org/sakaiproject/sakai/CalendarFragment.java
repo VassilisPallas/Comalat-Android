@@ -27,11 +27,13 @@ import android.widget.TextView;
 import org.sakaiproject.api.events.EventsCollection;
 import org.sakaiproject.api.events.OfflineEvents;
 import org.sakaiproject.api.internet.NetWork;
+import org.sakaiproject.api.site.SiteData;
 import org.sakaiproject.api.sync.EventsRefresh;
 import org.sakaiproject.customviews.listeners.RecyclerItemClickListener;
 import org.sakaiproject.customviews.adapters.SelectedDayEventsAdapter;
 import org.sakaiproject.customviews.adapters.CalendarAdapter;
 import org.sakaiproject.api.events.UserEvents;
+import org.sakaiproject.helpers.user_navigation_drawer_helpers.NavigationDrawerHelper;
 
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -48,7 +50,7 @@ public class CalendarFragment extends Fragment implements SwipeRefreshLayout.OnR
     public static GregorianCalendar cal_month, cal_month_copy;
     private CalendarAdapter cal_adapter;
     private TextView tv_month;
-    private OfflineEvents offlineEvents;
+    private OfflineEvents userOfflineEvents;
     private LinearLayout calendar;
     private ProgressBar progressBar;
     private org.sakaiproject.customviews.CustomSwipeRefreshLayout swipeRefreshLayout;
@@ -58,10 +60,11 @@ public class CalendarFragment extends Fragment implements SwipeRefreshLayout.OnR
     private FrameLayout root;
     private GridView gridview;
     private TextView noEventsTextView;
-
     private ISwipeRefresh swipeRefresh;
-
     private String selectedDate;
+    private SiteData siteData;
+    private String siteName;
+    private org.sakaiproject.api.pages.events.OfflineEvents siteOfflineEvents;
 
     public CalendarFragment() {
     }
@@ -249,7 +252,13 @@ public class CalendarFragment extends Fragment implements SwipeRefreshLayout.OnR
             }
         }));
 
-        offlineEvents = new OfflineEvents(getContext());
+        siteData = NavigationDrawerHelper.getSelectedSiteData();
+        siteName = NavigationDrawerHelper.getSelectedSite();
+        Log.i("name", siteName);
+        if (siteName.equals(getResources().getString(R.string.my_workspace)))
+            userOfflineEvents = new OfflineEvents(getContext());
+        else
+            siteOfflineEvents = new org.sakaiproject.api.pages.events.OfflineEvents(getContext(), siteData.getId());
 
         new EventsAsync().execute();
 
@@ -317,6 +326,7 @@ public class CalendarFragment extends Fragment implements SwipeRefreshLayout.OnR
                     refresh.setSwipeRefreshLayout(swipeRefreshLayout);
                     refresh.setAdapter(cal_adapter);
                     refresh.setGridView(gridview);
+                    refresh.setSiteData(siteData);
                     refresh.execute();
 
                 } else {
@@ -344,7 +354,10 @@ public class CalendarFragment extends Fragment implements SwipeRefreshLayout.OnR
             EventsCollection.getUserEventsList().clear();
             EventsCollection.getMonthEvents().clear();
 
-            offlineEvents.getEvents();
+            if (siteName.equals(getResources().getString(R.string.my_workspace)))
+                userOfflineEvents.getEvents();
+            else
+                siteOfflineEvents.getEvents();
 
             return EventsCollection.getUserEventsList();
         }

@@ -27,6 +27,7 @@ public class EventsRefresh extends AsyncTask<Void, Void, Void> {
     private GridView gridView;
     private CalendarAdapter adapter;
     private org.sakaiproject.customviews.CustomSwipeRefreshLayout swipeRefreshLayout;
+    private SiteData siteData;
 
     public EventsRefresh(Context context) {
         this.context = context;
@@ -44,13 +45,21 @@ public class EventsRefresh extends AsyncTask<Void, Void, Void> {
         this.adapter = adapter;
     }
 
+    public void setSiteData(SiteData siteData) {
+        this.siteData = siteData;
+    }
+
     @Override
     protected Void doInBackground(Void... params) {
         EventsCollection.getUserEventsList().clear();
         EventsCollection.getMonthEvents().clear();
 
         OnlineEvents onlineEvents = new OnlineEvents(context);
-        String url = context.getResources().getString(R.string.url) + "calendar/my.json";
+        String url = null;
+        if (siteData == null)
+            url = context.getResources().getString(R.string.url) + "calendar/my.json";
+        else
+            url = context.getResources().getString(R.string.url) + "calendar/site/" + siteData.getId() + ".json";
         onlineEvents.getEvents(url);
 
         try {

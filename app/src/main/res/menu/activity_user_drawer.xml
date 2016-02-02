@@ -3,7 +3,7 @@
 
     <item
         android:id="@+id/main_item"
-        android:title="My Workspace">
+        android:title="@string/my_workspace">
         <menu>
             <group
                 android:id="@+id/main_group"

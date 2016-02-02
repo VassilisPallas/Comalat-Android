@@ -1,6 +1,5 @@
 package org.sakaiproject.api.pages.syllabus;
 
-import java.util.Date;
 import java.util.List;
 
 /**

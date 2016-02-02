@@ -232,8 +232,6 @@ public class UserActivity extends AppCompatActivity implements NavigationView.On
 
         for (Integer ids : NavigationDrawerHelper.getSitesIds().keySet()) {
             if (item.getItemId() == ids) {
-
-                NavigationDrawerHelper.setSelectedSite(NavigationDrawerHelper.getSitesIds().get(ids).getTitle());
                 NavigationDrawerHelper.setSelectedSiteData(NavigationDrawerHelper.getSitesIds().get(ids));
                 mainNavigationDrawer.createDrawer(NavigationDrawerHelper.getSitesIds().get(ids).getTitle(), NavigationDrawerHelper.getSitesIds().get(ids).getPages());
             }

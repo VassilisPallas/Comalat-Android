@@ -2,22 +2,16 @@ package org.sakaiproject.api.sync;
 
 import android.content.Context;
 import android.os.AsyncTask;
-import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.RecyclerView;
-import android.widget.FrameLayout;
-import android.widget.ProgressBar;
 
 import org.sakaiproject.api.pages.syllabus.OfflineSyllabus;
 import org.sakaiproject.api.pages.syllabus.OnlineSyllabus;
 import org.sakaiproject.api.pages.syllabus.Syllabus;
-import org.sakaiproject.api.site.SiteData;
 import org.sakaiproject.customviews.adapters.SyllabusAdapter;
 import org.sakaiproject.sakai.R;
 import org.sakaiproject.sakai.UpdateSyllabus;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by vasilis on 1/28/16.

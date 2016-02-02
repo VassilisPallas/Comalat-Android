@@ -9,7 +9,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,16 +16,13 @@ import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 
 import org.sakaiproject.api.internet.NetWork;
-import org.sakaiproject.api.pages.syllabus.Item;
 import org.sakaiproject.api.pages.syllabus.OfflineSyllabus;
 import org.sakaiproject.api.pages.syllabus.Syllabus;
 import org.sakaiproject.api.site.SiteData;
 import org.sakaiproject.api.sync.SyllabusRefresh;
 import org.sakaiproject.customviews.adapters.SyllabusAdapter;
-import org.sakaiproject.general.Actions;
 
 import java.io.IOException;
-import java.util.List;
 
 /**
  * Created by vasilis on 1/28/16.

@@ -34,7 +34,6 @@ public abstract class NavigationDrawerHelper {
     private static Context context;
     private static CustomSwipeRefreshLayout mSwipeRefreshLayout;
     protected static DrawerLayout drawer;
-    private static String selectedSite = "My Workspace";
     private static SiteData selectedSiteData;
 
     private static String DASHBOARD;
@@ -158,8 +157,17 @@ public abstract class NavigationDrawerHelper {
         return drawer;
     }
 
-    public static void setSelectedSite(String selectedSite) {
-        NavigationDrawerHelper.selectedSite = selectedSite;
+
+    public static String getSelectedSite() {
+
+        if (selectedSiteData != null)
+            return selectedSiteData.getTitle();
+        else
+            return context.getResources().getString(R.string.my_workspace);
+    }
+
+    public static SiteData getSelectedSiteData() {
+        return selectedSiteData;
     }
 
     public static void setSelectedSiteData(SiteData selectedSiteData) {
