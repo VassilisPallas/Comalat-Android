@@ -36,8 +36,9 @@ public class SitesNavigationDrawerHelper extends NavigationDrawerHelper {
 
     /**
      * SitesNavigationDrawerHelper constructor
-     * @param context the context
-     * @param mSwipeRefreshLayout the swipeRefreshLayout object
+     *
+     * @param context                          the context
+     * @param mSwipeRefreshLayout              the swipeRefreshLayout object
      * @param onNavigationItemSelectedListener the listener for the selected item on the drawer
      */
     public SitesNavigationDrawerHelper(Context context, CustomSwipeRefreshLayout mSwipeRefreshLayout, Toolbar toolbar, NavigationView.OnNavigationItemSelectedListener onNavigationItemSelectedListener) {

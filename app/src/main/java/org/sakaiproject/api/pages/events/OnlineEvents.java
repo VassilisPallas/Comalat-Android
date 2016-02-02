@@ -32,6 +32,7 @@ public class OnlineEvents {
      * the OnlineEvents constructor
      *
      * @param context the context
+     * @param siteId  site id
      */
     public OnlineEvents(Context context, String siteId) {
         this.context = context;
@@ -56,9 +57,9 @@ public class OnlineEvents {
                 siteEventsJson = Actions.readJsonStream(inputStream);
                 inputStream.close();
                 jsonParse.parseUserEventJson(siteEventsJson);
+
                 if (Actions.createDirIfNotExists(context, User.getUserId() + File.separator + "memberships" + File.separator + siteId + File.separator + "calendar"))
                     Actions.writeJsonFile(context, siteEventsJson, "siteEventsJson", User.getUserId() + File.separator + "memberships" + File.separator + siteId + File.separator + "calendar");
-
 
                 for (int i = 0; i < EventsCollection.getUserEventsList().size(); i++) {
                     String owner = EventsCollection.getUserEventsList().get(i).getCreator();

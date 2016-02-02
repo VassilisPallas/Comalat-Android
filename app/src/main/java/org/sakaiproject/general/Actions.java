@@ -81,6 +81,8 @@ public class Actions {
         stream = new FileOutputStream(file);
         stream.write(jsonString.getBytes());
         stream.close();
+
+        Log.d("wirte", "file " + fileName + " wrote");
     }
 
     /**

@@ -28,6 +28,8 @@ public class EventsRefresh extends AsyncTask<Void, Void, Void> {
     private CalendarAdapter adapter;
     private org.sakaiproject.customviews.CustomSwipeRefreshLayout swipeRefreshLayout;
     private SiteData siteData;
+    private String siteName;
+    private org.sakaiproject.api.pages.events.OnlineEvents siteOnlineEvents;
 
     public EventsRefresh(Context context) {
         this.context = context;
@@ -49,6 +51,10 @@ public class EventsRefresh extends AsyncTask<Void, Void, Void> {
         this.siteData = siteData;
     }
 
+    public void setSiteName(String siteName) {
+        this.siteName = siteName;
+    }
+
     @Override
     protected Void doInBackground(Void... params) {
         EventsCollection.getUserEventsList().clear();
@@ -56,11 +62,14 @@ public class EventsRefresh extends AsyncTask<Void, Void, Void> {
 
         OnlineEvents onlineEvents = new OnlineEvents(context);
         String url = null;
-        if (siteData == null)
+        if (siteName.equals(context.getResources().getString(R.string.my_workspace))) {
             url = context.getResources().getString(R.string.url) + "calendar/my.json";
-        else
+            onlineEvents.getEvents(url);
+        } else {
+            siteOnlineEvents = new org.sakaiproject.api.pages.events.OnlineEvents(context, siteData.getId());
             url = context.getResources().getString(R.string.url) + "calendar/site/" + siteData.getId() + ".json";
-        onlineEvents.getEvents(url);
+            siteOnlineEvents.getEvents(url);
+        }
 
         try {
             EventsCollection.selectedMonthEvents(String.valueOf(CalendarFragment.getCal_month().get(CalendarFragment.getCal_month().MONTH) + 1), CalendarFragment.getCal_month_copy());

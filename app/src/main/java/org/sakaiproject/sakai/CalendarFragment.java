@@ -327,6 +327,7 @@ public class CalendarFragment extends Fragment implements SwipeRefreshLayout.OnR
                     refresh.setAdapter(cal_adapter);
                     refresh.setGridView(gridview);
                     refresh.setSiteData(siteData);
+                    refresh.setSiteName(siteName);
                     refresh.execute();
 
                 } else {

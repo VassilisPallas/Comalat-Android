@@ -109,7 +109,12 @@ public class UserActivity extends AppCompatActivity implements NavigationView.On
             e.printStackTrace();
         }
 
+        initializeMainMenu();
+    }
+
+    private void initializeMainMenu() {
         mainNavigationDrawer.createDrawer(getResources().getString(R.string.my_workspace), null);
+        NavigationDrawerHelper.setSelectedSite(getResources().getString(R.string.my_workspace));
     }
 
     public static SitesNavigationDrawerHelper getSitesNavigationDrawer() {
@@ -216,7 +221,7 @@ public class UserActivity extends AppCompatActivity implements NavigationView.On
                 Actions.logout(this, waiter);
                 break;
             case R.id.my_workspace:
-                mainNavigationDrawer.createDrawer(getResources().getString(R.string.my_workspace), null);
+                initializeMainMenu();
                 break;
             case R.id.help:
                 WebViewFragment webViewFragment = new WebViewFragment().getUrl("http://141.99.248.86:8089/portal/help/main");
@@ -232,6 +237,7 @@ public class UserActivity extends AppCompatActivity implements NavigationView.On
 
         for (Integer ids : NavigationDrawerHelper.getSitesIds().keySet()) {
             if (item.getItemId() == ids) {
+                NavigationDrawerHelper.setSelectedSite(NavigationDrawerHelper.getSitesIds().get(ids).getTitle());
                 NavigationDrawerHelper.setSelectedSiteData(NavigationDrawerHelper.getSitesIds().get(ids));
                 mainNavigationDrawer.createDrawer(NavigationDrawerHelper.getSitesIds().get(ids).getTitle(), NavigationDrawerHelper.getSitesIds().get(ids).getPages());
             }
