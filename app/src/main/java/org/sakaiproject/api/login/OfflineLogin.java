@@ -41,9 +41,9 @@ public class OfflineLogin implements ILogin {
         try {
             if (prefs.getString("user_id", null) != null && prefs.getString("password", null) != null) {
                 if (prefs.getString("user_id", null).equals(params[0]) && passwordEncryption.check(params[1], prefs.getString("password", null))) {
-                    getLoginJson();
-                    getUserDataJson();
-                    getUserProfileDataJson();
+                    getLoginJson(params[0]);
+                    getUserDataJson(params[0]);
+                    getUserProfileDataJson(params[0]);
                     return LoginType.LOGIN_WITHOUT_INTERNET;
                 }
             } else
@@ -56,23 +56,26 @@ public class OfflineLogin implements ILogin {
 
     @Override
     public void getLoginJson(String... params) throws IOException {
-        if (Actions.createDirIfNotExists(context, User.getUserId() + File.separator + "user"))
-            loginJson = Actions.readJsonFile(context, "loginJson", User.getUserId() + File.separator + "user");
-        jsonParse.parseLoginResult(loginJson);
+        if (Actions.createDirIfNotExists(context, params[0] + File.separator + "user")) {
+            loginJson = Actions.readJsonFile(context, "loginJson", params[0] + File.separator + "user");
+            jsonParse.parseLoginResult(loginJson);
+        }
     }
 
     @Override
     public void getUserDataJson(String... params) throws IOException {
-        if (Actions.createDirIfNotExists(context, User.getUserId() + File.separator + "user"))
-            userDataJson = Actions.readJsonFile(context, "fullUserDataJson", User.getUserId() + File.separator + "user");
-        jsonParse.parseUserDataJson(userDataJson);
+        if (Actions.createDirIfNotExists(context, params[0] + File.separator + "user")) {
+            userDataJson = Actions.readJsonFile(context, "fullUserDataJson", params[0] + File.separator + "user");
+            jsonParse.parseUserDataJson(userDataJson);
+        }
     }
 
     @Override
     public void getUserProfileDataJson(String... params) throws IOException {
-        if (Actions.createDirIfNotExists(context, User.getUserId() + File.separator + "user"))
-            userProfileDataJson = Actions.readJsonFile(context, "userProfileDataJson", User.getUserId() + File.separator + "user");
-        jsonParse.parseUserProfileDataJson(userProfileDataJson);
+        if (Actions.createDirIfNotExists(context, params[0] + File.separator + "user")) {
+            userProfileDataJson = Actions.readJsonFile(context, "userProfileDataJson", params[0] + File.separator + "user");
+            jsonParse.parseUserProfileDataJson(userProfileDataJson);
+        }
     }
 
     @Override

@@ -4,12 +4,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
+import org.sakaiproject.api.site.SiteData;
 import org.sakaiproject.general.SystemNotifications;
 import org.sakaiproject.general.Connection;
 import org.sakaiproject.api.internet.NetWork;
 import org.sakaiproject.api.logout.Logout;
 import org.sakaiproject.api.user.profile.Profile;
 import org.sakaiproject.api.user.User;
+import org.sakaiproject.helpers.user_navigation_drawer_helpers.UserMainNavigationDrawerHelper;
 import org.sakaiproject.sakai.MainActivity;
 import org.sakaiproject.sakai.R;
 
@@ -96,6 +98,9 @@ public class Waiter extends Thread {
                                 User.nullInstance();
                                 Profile.nullInstance();
                                 Connection.nullSessionId();
+                                SiteData.getSites().clear();
+                                SiteData.getProjects().clear();
+                                UserMainNavigationDrawerHelper.getMyWorkSpaceItems().clear();
 
                                 Intent i = new Intent(context, MainActivity.class);
                                 context.startActivity(i);
@@ -107,6 +112,9 @@ public class Waiter extends Thread {
                         User.nullInstance();
                         Profile.nullInstance();
                         Connection.nullSessionId();
+                        SiteData.getSites().clear();
+                        SiteData.getProjects().clear();
+                        UserMainNavigationDrawerHelper.getMyWorkSpaceItems().clear();
 
                         Intent i = new Intent(context, MainActivity.class);
                         context.startActivity(i);

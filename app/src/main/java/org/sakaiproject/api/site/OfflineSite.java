@@ -34,44 +34,53 @@ public class OfflineSite {
      */
     public void getSites() throws IOException {
         String sitesJson = null;
-        if (Actions.createDirIfNotExists(context, User.getUserId() + File.separator + "memberships"))
-            sitesJson = Actions.readJsonFile(context, "projectsAndSitesJson", User.getUserId() + File.separator + "memberships");
-        jsonParse.parseSiteDataJson(sitesJson);
+        if (Actions.createDirIfNotExists(context, User.getUserEid() + File.separator + "memberships")) {
+            sitesJson = Actions.readJsonFile(context, "projectsAndSitesJson", User.getUserEid() + File.separator + "memberships");
+            jsonParse.parseSiteDataJson(sitesJson);
+        }
 
         for (int i = 0; i < SiteData.getSites().size(); i++) {
-            if (Actions.createDirIfNotExists(context, User.getUserId() + File.separator + "memberships" + File.separator + SiteData.getSites().get(i).getId()))
-                sitesJson = Actions.readJsonFile(context, SiteData.getSites().get(i).getId(), User.getUserId() + File.separator + "memberships" + File.separator + SiteData.getSites().get(i).getId());
-            jsonParse.getSiteData(sitesJson, i);
+            if (Actions.createDirIfNotExists(context, User.getUserEid() + File.separator + "memberships" + File.separator + SiteData.getSites().get(i).getId())) {
+                sitesJson = Actions.readJsonFile(context, SiteData.getSites().get(i).getId(), User.getUserEid() + File.separator + "memberships" + File.separator + SiteData.getSites().get(i).getId());
+                jsonParse.getSiteData(sitesJson, i);
+            }
 
-            if (Actions.createDirIfNotExists(context, User.getUserId() + File.separator + "memberships" + File.separator + SiteData.getSites().get(i).getId()))
-                sitesJson = Actions.readJsonFile(context, SiteData.getSites().get(i).getId() + "_pages", User.getUserId() + File.separator + "memberships" + File.separator + SiteData.getSites().get(i).getId());
-            jsonParse.getSitePageData(sitesJson, i, "site");
+            if (Actions.createDirIfNotExists(context, User.getUserEid() + File.separator + "memberships" + File.separator + SiteData.getSites().get(i).getId())) {
+                sitesJson = Actions.readJsonFile(context, SiteData.getSites().get(i).getId() + "_pages", User.getUserEid() + File.separator + "memberships" + File.separator + SiteData.getSites().get(i).getId());
+                jsonParse.getSitePageData(sitesJson, i, "site");
+            }
 
-            if (Actions.createDirIfNotExists(context, User.getUserId() + File.separator + "memberships" + File.separator + SiteData.getSites().get(i).getId()))
-                sitesJson = Actions.readJsonFile(context, SiteData.getSites().get(i).getId() + "_perms", User.getUserId() + File.separator + "memberships" + File.separator + SiteData.getSites().get(i).getId());
-            jsonParse.getSitePermissions(sitesJson, i, "site");
+            if (Actions.createDirIfNotExists(context, User.getUserEid() + File.separator + "memberships" + File.separator + SiteData.getSites().get(i).getId())) {
+                sitesJson = Actions.readJsonFile(context, SiteData.getSites().get(i).getId() + "_perms", User.getUserEid() + File.separator + "memberships" + File.separator + SiteData.getSites().get(i).getId());
+                jsonParse.getSitePermissions(sitesJson, i, "site");
+            }
 
-            if (Actions.createDirIfNotExists(context, User.getUserId() + File.separator + "memberships" + File.separator + SiteData.getSites().get(i).getId()))
-                sitesJson = Actions.readJsonFile(context, SiteData.getSites().get(i).getId() + "_userPerms", User.getUserId() + File.separator + "memberships" + File.separator + SiteData.getSites().get(i).getId());
-            jsonParse.getUserSitePermissions(sitesJson, i, "site");
+            if (Actions.createDirIfNotExists(context, User.getUserEid() + File.separator + "memberships" + File.separator + SiteData.getSites().get(i).getId())) {
+                sitesJson = Actions.readJsonFile(context, SiteData.getSites().get(i).getId() + "_userPerms", User.getUserEid() + File.separator + "memberships" + File.separator + SiteData.getSites().get(i).getId());
+                jsonParse.getUserSitePermissions(sitesJson, i, "site");
+            }
         }
 
         for (int i = 0; i < SiteData.getProjects().size(); i++) {
-            if (Actions.createDirIfNotExists(context, User.getUserId() + File.separator + "memberships" + File.separator + SiteData.getProjects().get(i).getId()))
-                sitesJson = Actions.readJsonFile(context, SiteData.getProjects().get(i).getId(), User.getUserId() + File.separator + "memberships" + File.separator + SiteData.getProjects().get(i).getId());
-            jsonParse.getProjectData(sitesJson, i);
+            if (Actions.createDirIfNotExists(context, User.getUserEid() + File.separator + "memberships" + File.separator + SiteData.getProjects().get(i).getId())) {
+                sitesJson = Actions.readJsonFile(context, SiteData.getProjects().get(i).getId(), User.getUserEid() + File.separator + "memberships" + File.separator + SiteData.getProjects().get(i).getId());
+                jsonParse.getProjectData(sitesJson, i);
+            }
 
-            if (Actions.createDirIfNotExists(context, User.getUserId() + File.separator + "memberships" + File.separator + SiteData.getProjects().get(i).getId()))
-                sitesJson = Actions.readJsonFile(context, SiteData.getProjects().get(i).getId() + "_pages", User.getUserId() + File.separator + "memberships" + File.separator + SiteData.getProjects().get(i).getId());
-            jsonParse.getSitePageData(sitesJson, i, "project");
+            if (Actions.createDirIfNotExists(context, User.getUserEid() + File.separator + "memberships" + File.separator + SiteData.getProjects().get(i).getId())) {
+                sitesJson = Actions.readJsonFile(context, SiteData.getProjects().get(i).getId() + "_pages", User.getUserEid() + File.separator + "memberships" + File.separator + SiteData.getProjects().get(i).getId());
+                jsonParse.getSitePageData(sitesJson, i, "project");
+            }
 
-            if (Actions.createDirIfNotExists(context, User.getUserId() + File.separator + "memberships" + File.separator + SiteData.getProjects().get(i).getId()))
-                sitesJson = Actions.readJsonFile(context, SiteData.getProjects().get(i).getId() + "_perms", User.getUserId() + File.separator + "memberships" + File.separator + SiteData.getProjects().get(i).getId());
-            jsonParse.getSitePermissions(sitesJson, i, "project");
+            if (Actions.createDirIfNotExists(context, User.getUserEid() + File.separator + "memberships" + File.separator + SiteData.getProjects().get(i).getId())) {
+                sitesJson = Actions.readJsonFile(context, SiteData.getProjects().get(i).getId() + "_perms", User.getUserEid() + File.separator + "memberships" + File.separator + SiteData.getProjects().get(i).getId());
+                jsonParse.getSitePermissions(sitesJson, i, "project");
+            }
 
-            if (Actions.createDirIfNotExists(context, User.getUserId() + File.separator + "memberships" + File.separator + SiteData.getProjects().get(i).getId()))
-                sitesJson = Actions.readJsonFile(context, SiteData.getProjects().get(i).getId() + "_userPerms", User.getUserId() + File.separator + "memberships" + File.separator + SiteData.getProjects().get(i).getId());
-            jsonParse.getUserSitePermissions(sitesJson, i, "project");
+            if (Actions.createDirIfNotExists(context, User.getUserEid() + File.separator + "memberships" + File.separator + SiteData.getProjects().get(i).getId())) {
+                sitesJson = Actions.readJsonFile(context, SiteData.getProjects().get(i).getId() + "_userPerms", User.getUserEid() + File.separator + "memberships" + File.separator + SiteData.getProjects().get(i).getId());
+                jsonParse.getUserSitePermissions(sitesJson, i, "project");
+            }
         }
     }
 }

@@ -94,8 +94,8 @@ public class OnlineLogin implements ILogin {
                 loginJson = Actions.readJsonStream(inputStream);
                 inputStream.close();
                 jsonParse.parseLoginResult(loginJson);
-                if (Actions.createDirIfNotExists(context, User.getUserId() + File.separator + "user"))
-                    Actions.writeJsonFile(context, loginJson, "loginJson", User.getUserId() + File.separator + "user");
+                if (Actions.createDirIfNotExists(context, User.getUserEid() + File.separator + "user"))
+                    Actions.writeJsonFile(context, loginJson, "loginJson", User.getUserEid() + File.separator + "user");
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -115,8 +115,8 @@ public class OnlineLogin implements ILogin {
                 userDataJson = Actions.readJsonStream(inputStream);
                 inputStream.close();
                 jsonParse.parseUserDataJson(userDataJson);
-                if (Actions.createDirIfNotExists(context, User.getUserId() + File.separator + "user"))
-                    Actions.writeJsonFile(context, userDataJson, "fullUserDataJson", User.getUserId() + File.separator + "user");
+                if (Actions.createDirIfNotExists(context, User.getUserEid() + File.separator + "user"))
+                    Actions.writeJsonFile(context, userDataJson, "fullUserDataJson", User.getUserEid() + File.separator + "user");
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -136,8 +136,8 @@ public class OnlineLogin implements ILogin {
                 userProfileDataJson = Actions.readJsonStream(inputStream);
                 inputStream.close();
                 jsonParse.parseUserProfileDataJson(userProfileDataJson);
-                if (Actions.createDirIfNotExists(context, User.getUserId() + File.separator + "user"))
-                    Actions.writeJsonFile(context, userProfileDataJson, "userProfileDataJson", User.getUserId() + File.separator + "user");
+                if (Actions.createDirIfNotExists(context, User.getUserEid() + File.separator + "user"))
+                    Actions.writeJsonFile(context, userProfileDataJson, "userProfileDataJson", User.getUserEid() + File.separator + "user");
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -156,8 +156,8 @@ public class OnlineLogin implements ILogin {
             if (status >= 200 && status < 300) {
                 InputStream inputStream = new BufferedInputStream(connection.getInputStream());
                 bitmap = BitmapFactory.decodeStream(inputStream);
-                if (Actions.createDirIfNotExists(context, User.getUserId() + File.separator + "user"))
-                    Actions.saveImage(context, bitmap, "user_image.jpg", User.getUserId() + File.separator + "user");
+                if (Actions.createDirIfNotExists(context, User.getUserEid() + File.separator + "user"))
+                    Actions.saveImage(context, bitmap, "user_image.jpg", User.getUserEid() + File.separator + "user");
             }
 
         } catch (IOException e) {
@@ -177,8 +177,8 @@ public class OnlineLogin implements ILogin {
             if (status >= 200 && status < 300) {
                 InputStream inputStream = new BufferedInputStream(connection.getInputStream());
                 bitmap = BitmapFactory.decodeStream(inputStream);
-                if (Actions.createDirIfNotExists(context, User.getUserId() + File.separator + "user"))
-                    Actions.saveImage(context, bitmap, "user_thumbnail_image.jpg", User.getUserId() + File.separator + "user");
+                if (Actions.createDirIfNotExists(context, User.getUserEid() + File.separator + "user"))
+                    Actions.saveImage(context, bitmap, "user_thumbnail_image.jpg", User.getUserEid() + File.separator + "user");
             }
         } catch (IOException e) {
             e.printStackTrace();

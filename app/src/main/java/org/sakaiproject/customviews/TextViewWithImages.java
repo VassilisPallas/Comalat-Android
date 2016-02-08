@@ -63,8 +63,8 @@ public class TextViewWithImages extends TextView {
 
     private void add(final Context context, final Spannable spannable) {
 
-        if (Actions.createDirIfNotExists(context, User.getUserId() + File.separator + "memberships" + File.separator + id)) {
-            path = new File(context.getFilesDir(), User.getUserId() + File.separator + "memberships" + File.separator + id);
+        if (Actions.createDirIfNotExists(context, User.getUserEid() + File.separator + "memberships" + File.separator + id)) {
+            path = new File(context.getFilesDir(), User.getUserEid() + File.separator + "memberships" + File.separator + id);
         }
 
         Pattern refImgPattern = Pattern.compile("<img .+?\\/>");
@@ -164,8 +164,8 @@ public class TextViewWithImages extends TextView {
     }
 
     private void addImages(Spannable spannable, Context context, Image im) {
-        if (Actions.createDirIfNotExists(context, User.getUserId() + File.separator + "memberships" + File.separator + id)) {
-            path = new File(context.getFilesDir(), User.getUserId() + File.separator + "memberships" + File.separator + id);
+        if (Actions.createDirIfNotExists(context, User.getUserEid() + File.separator + "memberships" + File.separator + id)) {
+            path = new File(context.getFilesDir(), User.getUserEid() + File.separator + "memberships" + File.separator + id);
             image = new File(path, im.getName());
         }
         BitmapFactory.Options bmOptions = new BitmapFactory.Options();
@@ -215,8 +215,8 @@ public class TextViewWithImages extends TextView {
                 if (status >= 200 && status < 300) {
                     InputStream inputStream = new BufferedInputStream(connection.getInputStream());
                     Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
-                    if (Actions.createDirIfNotExists(context, User.getUserId() + File.separator + "memberships" + File.separator + id))
-                        Actions.saveImage(context, bitmap, img.getName(), User.getUserId() + File.separator + "memberships" + File.separator + id);
+                    if (Actions.createDirIfNotExists(context, User.getUserEid() + File.separator + "memberships" + File.separator + id))
+                        Actions.saveImage(context, bitmap, img.getName(), User.getUserEid() + File.separator + "memberships" + File.separator + id);
                 }
                 return true;
             } catch (IOException e) {

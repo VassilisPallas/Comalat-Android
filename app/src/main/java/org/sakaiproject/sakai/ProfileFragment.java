@@ -72,8 +72,8 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         profileImage = (ImageView) v.findViewById(R.id.profile_image);
 
         try {
-            if (Actions.createDirIfNotExists(getContext(), User.getUserId() + File.separator + "user"))
-                profileImage.setImageBitmap(Actions.getImage(getContext(), "user_image", User.getUserId() + File.separator + "user"));
+            if (Actions.createDirIfNotExists(getContext(), User.getUserEid() + File.separator + "user"))
+                profileImage.setImageBitmap(Actions.getImage(getContext(), "user_image", User.getUserEid() + File.separator + "user"));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }

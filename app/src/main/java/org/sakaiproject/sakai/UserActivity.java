@@ -1,6 +1,7 @@
 package org.sakaiproject.sakai;
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.Snackbar;
@@ -14,8 +15,10 @@ import android.view.MenuItem;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.sakaiproject.api.site.OfflineSite;
+import org.sakaiproject.api.site.SiteData;
 import org.sakaiproject.api.sync.Refresh;
 import org.sakaiproject.customviews.ImageViewRounded;
 import org.sakaiproject.general.Actions;
@@ -94,8 +97,8 @@ public class UserActivity extends AppCompatActivity implements NavigationView.On
         displayNameTextView.setText(Profile.getDisplayName());
         emailTextView.setText(User.getEmail());
         try {
-            if (Actions.createDirIfNotExists(this, User.getUserId() + File.separator + "user"))
-                userImage.setImageBitmap(Actions.getImage(this, "user_thumbnail_image", User.getUserId() + File.separator + "user"));
+            if (Actions.createDirIfNotExists(this, User.getUserEid() + File.separator + "user"))
+                userImage.setImageBitmap(Actions.getImage(this, "user_thumbnail_image", User.getUserEid() + File.separator + "user"));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -262,4 +265,15 @@ public class UserActivity extends AppCompatActivity implements NavigationView.On
     public void Callback(SwipeRefreshLayout.OnRefreshListener listener) {
         mSwipeRefreshLayout.setOnRefreshListener(listener);
     }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+
+        super.onConfigurationChanged(newConfig);
+
+        SiteData.getSites().clear();
+        SiteData.getProjects().clear();
+        UserMainNavigationDrawerHelper.getMyWorkSpaceItems().clear();
+    }
+
 }

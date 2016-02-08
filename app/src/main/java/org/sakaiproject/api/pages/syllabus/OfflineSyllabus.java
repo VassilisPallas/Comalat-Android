@@ -25,8 +25,8 @@ public class OfflineSyllabus {
 
     public Syllabus getSyllabus() throws IOException {
         String syllabusJson = null;
-        if (Actions.createDirIfNotExists(context, User.getUserId() + File.separator + "memberships" + File.separator + siteId + File.separator + "syllabus"))
-            syllabusJson = Actions.readJsonFile(context, siteId + "_syllabus", User.getUserId() + File.separator + "memberships" + File.separator + siteId + File.separator + "syllabus");
+        if (Actions.createDirIfNotExists(context, User.getUserEid() + File.separator + "memberships" + File.separator + siteId + File.separator + "syllabus"))
+            syllabusJson = Actions.readJsonFile(context, siteId + "_syllabus", User.getUserEid() + File.separator + "memberships" + File.separator + siteId + File.separator + "syllabus");
         return jsonParse.getSiteSyllabus(syllabusJson);
     }
 

@@ -39,14 +39,16 @@ public class OfflineEvents {
      */
     public void getEvents() {
         try {
-            if (Actions.createDirIfNotExists(context, User.getUserId() + File.separator + "memberships" + File.separator + siteId + File.separator + "calendar"))
-                siteEventsJson = Actions.readJsonFile(context, "siteEventsJson", User.getUserId() + File.separator + "memberships" + File.separator + siteId + File.separator + "calendar");
-            jsonParse.parseUserEventJson(siteEventsJson);
+            if (Actions.createDirIfNotExists(context, User.getUserEid() + File.separator + "memberships" + File.separator + siteId + File.separator + "calendar")) {
+                siteEventsJson = Actions.readJsonFile(context, "siteEventsJson", User.getUserEid() + File.separator + "memberships" + File.separator + siteId + File.separator + "calendar");
+                jsonParse.parseUserEventJson(siteEventsJson);
+            }
 
             for (int i = 0; i < EventsCollection.getUserEventsList().size(); i++) {
-                if (Actions.createDirIfNotExists(context, User.getUserId() + File.separator + "memberships" + File.separator + siteId + File.separator + "calendar"))
-                    userEventInfoJson = Actions.readJsonFile(context, EventsCollection.getUserEventsList().get(i).getEventId(), User.getUserId() + File.separator + "memberships" + File.separator + EventsCollection.getUserEventsList().get(i).getSiteId() + File.separator + "calendar");
-                jsonParse.parseUserEventInfoJson(userEventInfoJson, i);
+                if (Actions.createDirIfNotExists(context, User.getUserEid() + File.separator + "memberships" + File.separator + siteId + File.separator + "calendar")) {
+                    userEventInfoJson = Actions.readJsonFile(context, EventsCollection.getUserEventsList().get(i).getEventId(), User.getUserEid() + File.separator + "memberships" + File.separator + EventsCollection.getUserEventsList().get(i).getSiteId() + File.separator + "calendar");
+                    jsonParse.parseUserEventInfoJson(userEventInfoJson, i);
+                }
                 if (!EventsCollection.getUserEventsList().get(i).getCreator().equals(User.getUserId())) {
                     SharedPreferences prfs = context.getSharedPreferences("event_owners", Context.MODE_PRIVATE);
                     String owner = prfs.getString(EventsCollection.getUserEventsList().get(i).getEventId(), "");

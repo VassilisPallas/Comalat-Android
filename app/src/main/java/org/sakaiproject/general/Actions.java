@@ -21,6 +21,7 @@ import org.sakaiproject.api.session.Waiter;
 import org.sakaiproject.api.site.SiteData;
 import org.sakaiproject.api.user.User;
 import org.sakaiproject.api.user.profile.Profile;
+import org.sakaiproject.helpers.user_navigation_drawer_helpers.UserMainNavigationDrawerHelper;
 import org.sakaiproject.sakai.MainActivity;
 import org.sakaiproject.sakai.R;
 
@@ -447,6 +448,7 @@ public class Actions {
                                     Connection.nullSessionId();
                                     SiteData.getSites().clear();
                                     SiteData.getProjects().clear();
+                                    UserMainNavigationDrawerHelper.getMyWorkSpaceItems().clear();
 
                                     Intent i = new Intent(((AppCompatActivity) context).getApplication(), MainActivity.class);
                                     context.startActivity(i);
@@ -459,6 +461,9 @@ public class Actions {
                             User.nullInstance();
                             Profile.nullInstance();
                             Connection.nullSessionId();
+                            SiteData.getSites().clear();
+                            SiteData.getProjects().clear();
+                            UserMainNavigationDrawerHelper.getMyWorkSpaceItems().clear();
 
                             Intent i = new Intent(((AppCompatActivity) context).getApplication(), MainActivity.class);
                             context.startActivity(i);

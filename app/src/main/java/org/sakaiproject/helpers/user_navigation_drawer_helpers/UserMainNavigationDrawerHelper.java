@@ -52,6 +52,10 @@ public class UserMainNavigationDrawerHelper extends NavigationDrawerHelper imple
         navigationView.setNavigationItemSelectedListener(onNavigationItemSelectedListener);
     }
 
+    public static List<String> getMyWorkSpaceItems() {
+        return myWorkSpaceItems;
+    }
+
     public void createDrawer(String title, List<SitePage> list) {
 
         MenuItem mainItem = navigationView.getMenu().findItem(R.id.main_item);

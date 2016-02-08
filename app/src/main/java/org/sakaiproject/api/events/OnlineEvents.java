@@ -54,8 +54,8 @@ public class OnlineEvents {
                 userEventsJson = Actions.readJsonStream(inputStream);
                 inputStream.close();
                 jsonParse.parseUserEventJson(userEventsJson);
-                if (Actions.createDirIfNotExists(context, User.getUserId() + File.separator + "events"))
-                    Actions.writeJsonFile(context, userEventsJson, "userEventsJson", User.getUserId() + File.separator + "events");
+                if (Actions.createDirIfNotExists(context, User.getUserEid() + File.separator + "events"))
+                    Actions.writeJsonFile(context, userEventsJson, "userEventsJson", User.getUserEid() + File.separator + "events");
 
 
                 for (int i = 0; i < EventsCollection.getUserEventsList().size(); i++) {
@@ -89,8 +89,8 @@ public class OnlineEvents {
                         userEventInfoJson = Actions.readJsonStream(inputStream);
                         inputStream.close();
                         jsonParse.parseUserEventInfoJson(userEventInfoJson, i);
-                        if (Actions.createDirIfNotExists(context, User.getUserId() + File.separator + "events"))
-                            Actions.writeJsonFile(context, userEventInfoJson, EventsCollection.getUserEventsList().get(i).getEventId(), User.getUserId() + File.separator + "events");
+                        if (Actions.createDirIfNotExists(context, User.getUserEid() + File.separator + "events"))
+                            Actions.writeJsonFile(context, userEventInfoJson, EventsCollection.getUserEventsList().get(i).getEventId(), User.getUserEid() + File.separator + "events");
                     }
                 }
             }

@@ -34,8 +34,8 @@ public class RefreshSession {
 
         try {
             String loginJson = null;
-            if (Actions.createDirIfNotExists(context, User.getUserId() + File.separator + "user"))
-                loginJson = Actions.readJsonFile(context, "loginJson", User.getUserId() + File.separator + "user");
+            if (Actions.createDirIfNotExists(context, User.getUserEid() + File.separator + "user"))
+                loginJson = Actions.readJsonFile(context, "loginJson", User.getUserEid() + File.separator + "user");
 
             connection.openConnection(url, ConnectionType.PUT, false, true, loginJson);
             Integer status = connection.getResponseCode();

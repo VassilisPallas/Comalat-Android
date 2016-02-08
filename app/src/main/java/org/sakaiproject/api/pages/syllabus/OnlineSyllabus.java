@@ -45,8 +45,8 @@ public class OnlineSyllabus {
             inputStream = new BufferedInputStream(connection.getInputStream());
             json = Actions.readJsonStream(inputStream);
             inputStream.close();
-            if (Actions.createDirIfNotExists(context, User.getUserId() + File.separator + "memberships" + File.separator + siteId + File.separator + "syllabus"))
-                Actions.writeJsonFile(context, json, siteId + "_syllabus", User.getUserId() + File.separator + "memberships" + File.separator + siteId + File.separator + "syllabus");
+            if (Actions.createDirIfNotExists(context, User.getUserEid() + File.separator + "memberships" + File.separator + siteId + File.separator + "syllabus"))
+                Actions.writeJsonFile(context, json, siteId + "_syllabus", User.getUserEid() + File.separator + "memberships" + File.separator + siteId + File.separator + "syllabus");
         }
     }
 

@@ -35,14 +35,17 @@ public class OfflineEvents {
      */
     public void getEvents() {
         try {
-            if (Actions.createDirIfNotExists(context, User.getUserId() + File.separator + "events"))
-                userEventsJson = Actions.readJsonFile(context, "userEventsJson", User.getUserId() + File.separator + "events");
-            jsonParse.parseUserEventJson(userEventsJson);
+            if (Actions.createDirIfNotExists(context, User.getUserEid() + File.separator + "events")) {
+                userEventsJson = Actions.readJsonFile(context, "userEventsJson", User.getUserEid() + File.separator + "events");
+                jsonParse.parseUserEventJson(userEventsJson);
+            }
 
             for (int i = 0; i < EventsCollection.getUserEventsList().size(); i++) {
-                if (Actions.createDirIfNotExists(context, User.getUserId() + File.separator + "events"))
-                    userEventInfoJson = Actions.readJsonFile(context, EventsCollection.getUserEventsList().get(i).getEventId(), User.getUserId() + File.separator + "events");
-                jsonParse.parseUserEventInfoJson(userEventInfoJson, i);
+                if (Actions.createDirIfNotExists(context, User.getUserEid() + File.separator + "events")) {
+                    userEventInfoJson = Actions.readJsonFile(context, EventsCollection.getUserEventsList().get(i).getEventId(), User.getUserEid() + File.separator + "events");
+                    jsonParse.parseUserEventInfoJson(userEventInfoJson, i);
+                }
+
                 if (!EventsCollection.getUserEventsList().get(i).getCreator().equals(User.getUserId())) {
                     SharedPreferences prfs = context.getSharedPreferences("event_owners", Context.MODE_PRIVATE);
                     String owner = prfs.getString(EventsCollection.getUserEventsList().get(i).getEventId(), "");
