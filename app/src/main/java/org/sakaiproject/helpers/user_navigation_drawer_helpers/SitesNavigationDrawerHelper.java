@@ -18,10 +18,13 @@ import android.widget.EditText;
 import android.widget.HeaderViewListAdapter;
 import android.widget.ListView;
 import android.widget.SearchView;
+import android.widget.TextView;
 
 import org.sakaiproject.api.memberships.SiteData;
 import org.sakaiproject.customviews.CustomSwipeRefreshLayout;
 import org.sakaiproject.sakai.R;
+
+import java.lang.reflect.Field;
 
 /**
  * Created by vasilis on 1/18/16.
@@ -56,6 +59,7 @@ public class SitesNavigationDrawerHelper extends NavigationDrawerHelper {
         sitesNavigationView.setNavigationItemSelectedListener(onNavigationItemSelectedListener);
 
         sitesSearchView = (SearchView) ((AppCompatActivity) context).findViewById(R.id.site_search_drawer);
+
     }
 
     private void initializeSearch() {
@@ -63,6 +67,11 @@ public class SitesNavigationDrawerHelper extends NavigationDrawerHelper {
 
         final EditText e = (EditText) sitesSearchView.findViewById(sitesSearchView.getContext().getResources().getIdentifier("android:id/search_src_text", null, null));
         e.setHintTextColor(Color.parseColor("#808080"));
+        try {
+            Field mCursorDrawableRes = TextView.class.getDeclaredField("mCursorDrawableRes");
+            mCursorDrawableRes.setAccessible(true);
+            mCursorDrawableRes.set(e, 0); //This sets the cursor resource ID to 0 or @null which will make it visible on white background
+        } catch (Exception ex) {}
 
         ((AppCompatActivity) context).findViewById(R.id.sites_drawer_button).setOnClickListener(new View.OnClickListener() {
             @Override
