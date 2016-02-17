@@ -87,7 +87,7 @@ public class SyllabusFragment extends Fragment implements SwipeRefreshLayout.OnR
             e.printStackTrace();
         }
 
-        if (syllabus.getRedirectUrl() != null) {
+        if (syllabus != null && syllabus.getRedirectUrl() != null) {
             WebViewFragment webViewFragment = new WebViewFragment().getUrl(syllabus.getRedirectUrl());
             Actions.selectFragment(webViewFragment, R.id.user_frame, getContext());
         }

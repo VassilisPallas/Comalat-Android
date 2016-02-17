@@ -59,7 +59,6 @@ public class SitesNavigationDrawerHelper extends NavigationDrawerHelper {
         sitesNavigationView.setNavigationItemSelectedListener(onNavigationItemSelectedListener);
 
         sitesSearchView = (SearchView) ((AppCompatActivity) context).findViewById(R.id.site_search_drawer);
-
     }
 
     private void initializeSearch() {

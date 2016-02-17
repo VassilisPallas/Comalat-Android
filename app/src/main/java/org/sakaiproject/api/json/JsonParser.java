@@ -396,19 +396,10 @@ public class JsonParser {
     }
 
     public static void getMembershipAnnouncements(Announcement announcement) {
-
         MembershipAnnouncementHelper.membershipAnnouncement = announcement;
-
-//        for (Announcement an : MembershipAnnouncementHelper.membershipAnnouncements) {
-//            for (Announcement.AnnouncementItems item : an.getAnnouncementCollection()) {
-//                Log.i("name", item.getTitle());
-//            }
-//        }
     }
 
     public static void getUserAnnouncements(Announcement announcement) {
-//        UserAnnouncementHelper.userAnnouncements.clear();
-//        UserAnnouncementHelper.userAnnouncements.add(announcement);
         UserAnnouncementHelper.userAnnouncement = announcement;
     }
 

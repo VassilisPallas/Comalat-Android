@@ -13,7 +13,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
+import org.sakaiproject.api.announcements.OfflineUserAnnouncements;
 import org.sakaiproject.api.announcements.UserAnnouncementHelper;
+import org.sakaiproject.api.announcements.UserAnnouncementsService;
 import org.sakaiproject.api.internet.NetWork;
 import org.sakaiproject.api.memberships.SiteData;
 import org.sakaiproject.api.memberships.pages.announcements.MembershipAnnouncementHelper;
@@ -95,11 +97,13 @@ public class AnnouncementFragment extends Fragment implements SwipeRefreshLayout
         });
 
         if (siteName.equals(getContext().getResources().getString(R.string.my_workspace))) {
-            mAdapter = new AnnouncementAdapter(UserAnnouncementHelper.userAnnouncement);
+            OfflineUserAnnouncements offlineUserAnnouncements = new OfflineUserAnnouncements(getContext());
+            offlineUserAnnouncements.getAnnouncements();
+            mAdapter = new AnnouncementAdapter(UserAnnouncementHelper.userAnnouncement, null);
         } else {
             OfflineSiteAnnouncements announcements = new OfflineSiteAnnouncements(getContext(), siteData.getId());
             announcements.getAnnouncements();
-            mAdapter = new AnnouncementAdapter(MembershipAnnouncementHelper.membershipAnnouncement);
+            mAdapter = new AnnouncementAdapter(MembershipAnnouncementHelper.membershipAnnouncement, siteData.getId());
         }
 
         mRecyclerView.setAdapter(mAdapter);
@@ -120,10 +124,10 @@ public class AnnouncementFragment extends Fragment implements SwipeRefreshLayout
 
                     String url = null;
                     if (siteName.equals(getContext().getResources().getString(R.string.my_workspace))) {
-//                        UserEventsService userEventsService = new UserEventsService(getContext(), calendarRefreshUI);
-//                        userEventsService.setSwipeRefreshLayout(swipeRefreshLayout);
-//                        url = getContext().getResources().getString(R.string.url) + "calendar/my.json";
-//                        userEventsService.getEvents(url);
+                        UserAnnouncementsService userAnnouncementsService = new UserAnnouncementsService(getContext(), delegate);
+                        userAnnouncementsService.setSwipeRefreshLayout(swipeRefreshLayout);
+                        url = getContext().getResources().getString(R.string.url) + "announcement/user.json";
+                        userAnnouncementsService.getAnnouncements(url);
                     } else {
                         SiteAnnouncementsService siteAnnouncementsService = new SiteAnnouncementsService(getContext(), siteData.getId(), delegate);
                         siteAnnouncementsService.setSwipeRefreshLayout(swipeRefreshLayout);

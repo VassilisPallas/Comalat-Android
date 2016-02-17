@@ -8,6 +8,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import org.sakaiproject.api.memberships.SiteData;
 import org.sakaiproject.api.pojos.announcements.Announcement;
 import org.sakaiproject.sakai.R;
 
@@ -19,9 +20,11 @@ import java.util.List;
 public class AnnouncementAdapter extends RecyclerView.Adapter<AnnouncementAdapter.ViewHolder> {
 
     Announcement announcement;
+    String siteId;
 
-    public AnnouncementAdapter(Announcement announcement) {
+    public AnnouncementAdapter(Announcement announcement, String siteId) {
         this.announcement = announcement;
+        this.siteId = siteId;
     }
 
     public void setAnnouncement(Announcement announcement) {
@@ -33,8 +36,8 @@ public class AnnouncementAdapter extends RecyclerView.Adapter<AnnouncementAdapte
         // create a new view
         View v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.announcement_item, parent, false);
-        // set the view's size, margins, paddings and layout parameters
 
+        // set the view's size, margins, paddings and layout parameters
         ViewHolder vh = new ViewHolder(v);
 
         vh.title = (TextView) v.findViewById(R.id.announcement_title);
@@ -46,9 +49,21 @@ public class AnnouncementAdapter extends RecyclerView.Adapter<AnnouncementAdapte
 
     @Override
     public void onBindViewHolder(AnnouncementAdapter.ViewHolder holder, int position) {
+
         holder.title.setText(announcement.getAnnouncementCollection().get(position).getTitle());
         holder.owner.setText(announcement.getAnnouncementCollection().get(position).getCreatedByDisplayName());
-        holder.site.setText(announcement.getAnnouncementCollection().get(position).getSiteTitle());
+
+        if (siteId != null) {
+            if (siteId.equals(announcement.getAnnouncementCollection().get(position).getSiteId())) {
+                holder.site.setVisibility(View.GONE);
+            } else {
+                holder.site.setText(announcement.getAnnouncementCollection().get(position).getSiteTitle());
+                holder.site.setVisibility(View.VISIBLE);
+            }
+        } else {
+            holder.site.setText(announcement.getAnnouncementCollection().get(position).getSiteTitle());
+            holder.site.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
