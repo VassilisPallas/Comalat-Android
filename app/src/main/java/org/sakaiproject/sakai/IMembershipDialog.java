@@ -1,6 +1,6 @@
 package org.sakaiproject.sakai;
 
-import org.sakaiproject.api.site.SiteData;
+import org.sakaiproject.api.memberships.SiteData;
 
 /**
  * Created by vasilis on 1/26/16.

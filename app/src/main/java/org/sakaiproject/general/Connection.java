@@ -24,8 +24,8 @@ public class Connection {
     private OutputStreamWriter wr;
 
     private static String sessionId = null;
-    private static Integer creationTime;
-    private static Integer lastAccessedTime;
+    private static Long creationTime;
+    private static Long lastAccessedTime;
     // max seconds the session can be idle before automatic invalidation
     private static Integer maxInactiveInterval;
     private Context context;
@@ -61,11 +61,11 @@ public class Connection {
         return sessionId;
     }
 
-    public static Integer getCreationTime() {
+    public static Long getCreationTime() {
         return creationTime;
     }
 
-    public static Integer getLastAccessedTime() {
+    public static Long getLastAccessedTime() {
         return lastAccessedTime;
     }
 
@@ -73,11 +73,11 @@ public class Connection {
         return maxInactiveInterval;
     }
 
-    public static void setCreationTime(Integer creationTime) {
+    public static void setCreationTime(Long creationTime) {
         Connection.creationTime = creationTime;
     }
 
-    public static void setLastAccessedTime(Integer lastAccessedTime) {
+    public static void setLastAccessedTime(Long lastAccessedTime) {
         Connection.lastAccessedTime = lastAccessedTime;
     }
 

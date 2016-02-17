@@ -27,8 +27,9 @@ public class PersonalInfoHelper implements IUserAbout {
 
     /**
      * PersonalInfoHelper constructor
-     * @param activity the activity
-     * @param editDrawable the custom color Edit image
+     *
+     * @param activity      the activity
+     * @param editDrawable  the custom color Edit image
      * @param clickListener the onClickListener listener
      */
     public PersonalInfoHelper(AppCompatActivity activity, Drawable editDrawable, View.OnClickListener clickListener) {
@@ -65,25 +66,25 @@ public class PersonalInfoHelper implements IUserAbout {
 
     @Override
     public void fillValues() {
-        if (!Profile.getFavouriteBooks().equals("")) {
+        if (Profile.getFavouriteBooks() != null) {
             booksTextView.setText(Profile.getFavouriteBooks());
         } else {
             booksLayout.setVisibility(View.GONE);
         }
 
-        if (!Profile.getFavouriteTvShows().equals("")) {
+        if (Profile.getFavouriteTvShows() != null) {
             tvShowsTextView.setText(Profile.getFavouriteTvShows());
         } else {
             tvShowsLayout.setVisibility(View.GONE);
         }
 
-        if (!Profile.getFavouriteMovies().equals("")) {
+        if (Profile.getFavouriteMovies() != null) {
             moviesTextView.setText(Profile.getFavouriteMovies());
         } else {
             moviesLayout.setVisibility(View.GONE);
         }
 
-        if (!Profile.getFavouriteQuotes().equals("")) {
+        if (Profile.getFavouriteQuotes() != null) {
             quotesTextView.setText(Profile.getFavouriteQuotes());
         } else {
             quotesLayout.setVisibility(View.GONE);

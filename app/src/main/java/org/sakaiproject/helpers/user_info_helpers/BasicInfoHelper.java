@@ -119,7 +119,7 @@ public class BasicInfoHelper implements IUserAbout {
 
     @Override
     public void fillValues() {
-        if (!Profile.getNickname().equals("")) {
+        if (Profile.getNickname() != null) {
             nicknameTextView.setText(Profile.getNickname());
         } else {
             nicknameLayout.setVisibility(View.GONE);
@@ -133,7 +133,7 @@ public class BasicInfoHelper implements IUserAbout {
             birthdayLayout.setVisibility(View.GONE);
         }
 
-        if (!Profile.getPersonalSummary().equals("")) {
+        if (Profile.getPersonalSummary() != null) {
             personalSummaryTextView.setText(Html.fromHtml(Profile.getPersonalSummary()));
         } else {
             personalSummaryLayout.setVisibility(View.GONE);

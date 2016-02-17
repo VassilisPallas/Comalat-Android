@@ -2,8 +2,16 @@ package org.sakaiproject.api.logout;
 
 import android.content.Context;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.VolleyLog;
+import com.android.volley.toolbox.StringRequest;
+
+import org.sakaiproject.api.user.User;
 import org.sakaiproject.general.Connection;
 import org.sakaiproject.general.ConnectionType;
+import org.sakaiproject.sakai.AppController;
 
 import java.io.IOException;
 
@@ -11,30 +19,28 @@ import java.io.IOException;
  * Created by vasilis on 10/25/15.
  */
 public class Logout {
-    private Connection connection;
 
-    /**
-     * Logout constructor
-     * @param context the context
-     */
-    public Logout(Context context) {
-        connection = Connection.getInstance();
-        connection.setContext(context);
+    private final String logout_tag = User.getUserEid() + " logout";
+
+    public Logout() {
     }
 
-    public Integer logout(String url) {
-        try {
-            connection.openConnection(url, ConnectionType.DELETE, false, true, null);
-            Integer status = connection.getResponseCode();
+    public void logout(String url) {
 
-            if (status >= 200 && status < 300) {
-                return 1;
+        StringRequest logoutrequest = new StringRequest(Request.Method.DELETE, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                return;
             }
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            connection.closeConnection();
-        }
-        return 0;
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                VolleyLog.d(logout_tag, error.getMessage());
+            }
+        });
+
+        logoutrequest.setShouldCache(false);
+        AppController.getInstance().addToRequestQueue(logoutrequest, logout_tag);
     }
+
 }

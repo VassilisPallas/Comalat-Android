@@ -5,7 +5,6 @@ import android.content.Context;
 import android.graphics.Color;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
@@ -20,7 +19,7 @@ import android.widget.HeaderViewListAdapter;
 import android.widget.ListView;
 import android.widget.SearchView;
 
-import org.sakaiproject.api.site.SiteData;
+import org.sakaiproject.api.memberships.SiteData;
 import org.sakaiproject.customviews.CustomSwipeRefreshLayout;
 import org.sakaiproject.sakai.R;
 

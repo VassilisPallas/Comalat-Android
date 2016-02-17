@@ -16,18 +16,21 @@ import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 
 import org.sakaiproject.api.internet.NetWork;
-import org.sakaiproject.api.pages.syllabus.OfflineSyllabus;
-import org.sakaiproject.api.pages.syllabus.Syllabus;
-import org.sakaiproject.api.site.SiteData;
-import org.sakaiproject.api.sync.SyllabusRefresh;
+import org.sakaiproject.api.memberships.pages.syllabus.OfflineSyllabus;
+import org.sakaiproject.api.memberships.pages.syllabus.SyllabusService;
+import org.sakaiproject.api.memberships.pages.syllabus.UpdateSyllabus;
+import org.sakaiproject.api.pojos.syllabus.Syllabus;
+import org.sakaiproject.api.memberships.SiteData;
+import org.sakaiproject.api.sync.SyllabusRefreshUI;
 import org.sakaiproject.customviews.adapters.SyllabusAdapter;
+import org.sakaiproject.general.Actions;
 
 import java.io.IOException;
 
 /**
  * Created by vasilis on 1/28/16.
  */
-public class SyllabusFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener, UpdateSyllabus {
+public class SyllabusFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener, UpdateSyllabus, SyllabusRefreshUI {
 
     private FloatingActionButton showCreations;
     private ISwipeRefresh swipeRefresh;
@@ -40,6 +43,7 @@ public class SyllabusFragment extends Fragment implements SwipeRefreshLayout.OnR
     private ProgressBar refreshProgressBar;
     private FrameLayout root;
     private UpdateSyllabus callback;
+    private SyllabusRefreshUI delegate = this;
 
     public SyllabusFragment() {
     }
@@ -83,10 +87,10 @@ public class SyllabusFragment extends Fragment implements SwipeRefreshLayout.OnR
             e.printStackTrace();
         }
 
-//        if (!syllabus.getRedirectUrl().equals("")) {
-//            WebViewFragment webViewFragment = new WebViewFragment().getUrl(syllabus.getRedirectUrl());
-//            Actions.selectFragment(webViewFragment, R.id.user_frame, getContext());
-//        }
+        if (syllabus.getRedirectUrl() != null) {
+            WebViewFragment webViewFragment = new WebViewFragment().getUrl(syllabus.getRedirectUrl());
+            Actions.selectFragment(webViewFragment, R.id.user_frame, getContext());
+        }
 
         root = (FrameLayout) v.findViewById(R.id.root);
 
@@ -148,13 +152,22 @@ public class SyllabusFragment extends Fragment implements SwipeRefreshLayout.OnR
             @Override
             public void run() {
                 if (NetWork.getConnectionEstablished()) {
-                    SyllabusRefresh refresh = new SyllabusRefresh(getContext());
-                    refresh.setSwipeRefreshLayout(swipeRefreshLayout);
-                    refresh.setmAdapter(mAdapter);
-                    refresh.setmRecyclerView(mRecyclerView);
-                    refresh.setSiteId(siteData.getId());
-                    refresh.setCallback(callback);
-                    refresh.execute();
+//                    SyllabusRefresh refresh = new SyllabusRefresh(getContext());
+//                    refresh.setSwipeRefreshLayout(swipeRefreshLayout);
+//                    refresh.setmAdapter(mAdapter);
+//                    refresh.setmRecyclerView(mRecyclerView);
+//                    refresh.setSiteId(siteData.getId());
+//                    refresh.setCallback(callback);
+//                    refresh.execute();
+
+
+                    SyllabusService syllabusService = new SyllabusService(getContext(), siteData.getId(), delegate);
+                    syllabusService.setSwipeRefreshLayout(swipeRefreshLayout);
+                    try {
+                        syllabusService.getSyllabus(getContext().getString(R.string.url) + "syllabus/site/" + siteData.getId() + ".json");
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
 
                 } else {
                     Snackbar.make(root, getResources().getString(R.string.no_internet), Snackbar.LENGTH_LONG)
@@ -168,5 +181,19 @@ public class SyllabusFragment extends Fragment implements SwipeRefreshLayout.OnR
     public void update(RecyclerView recyclerView, SyllabusAdapter adapter, Syllabus syllabusData, String id) {
         adapter = new SyllabusAdapter(syllabusData.getItems(), getContext(), getActivity(), id);
         recyclerView.setAdapter(adapter);
+    }
+
+    @Override
+    public void updateUI() {
+        OfflineSyllabus offlineSyllabus = new OfflineSyllabus(getContext(), siteData.getId());
+        Syllabus syllabus = null;
+        try {
+            syllabus = offlineSyllabus.getSyllabus();
+            if (syllabus.getItems().size() > 0) {
+                callback.update(mRecyclerView, mAdapter, syllabus, siteData.getId());
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

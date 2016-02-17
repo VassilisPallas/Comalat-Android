@@ -7,12 +7,12 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.widget.Toast;
 
-import org.sakaiproject.api.site.SiteData;
-import org.sakaiproject.api.site.SitePage;
+import org.sakaiproject.api.memberships.SiteData;
+import org.sakaiproject.api.pojos.membership.SitePage;
 import org.sakaiproject.customviews.CustomSwipeRefreshLayout;
 import org.sakaiproject.general.Actions;
+import org.sakaiproject.sakai.AnnouncementFragment;
 import org.sakaiproject.sakai.CalendarFragment;
 import org.sakaiproject.sakai.MembershipFragment;
 import org.sakaiproject.sakai.ProfileFragment;
@@ -271,12 +271,13 @@ public abstract class NavigationDrawerHelper {
             MembershipFragment membershipFragment = new MembershipFragment().getSwipeRefreshLayout(mSwipeRefreshLayout);
             Actions.selectFragment(membershipFragment, R.id.user_frame, context);
         } else if (pageName.equals(CALENDAR)) {
-            CalendarFragment calendarFragment = new CalendarFragment().setSelectedEvent(mSwipeRefreshLayout);
+            CalendarFragment calendarFragment = new CalendarFragment().getSwipeRefreshLayout(mSwipeRefreshLayout);
             Actions.selectFragment(calendarFragment, R.id.user_frame, context);
         } else if (pageName.equals(RESOURCES)) {
 
         } else if (pageName.equals(ANNOUNCEMENTS)) {
-
+            AnnouncementFragment announcementFragment = new AnnouncementFragment().getSwipeRefreshLayout(mSwipeRefreshLayout);
+            Actions.selectFragment(announcementFragment, R.id.user_frame, context);
         } else if (pageName.equals(PREFERENCES)) {
 
         } else if (pageName.equals(ACCOUNT)) {

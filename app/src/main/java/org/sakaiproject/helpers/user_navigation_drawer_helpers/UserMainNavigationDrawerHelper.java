@@ -10,7 +10,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.SubMenu;
 
-import org.sakaiproject.api.site.SitePage;
+import org.sakaiproject.api.pojos.membership.SitePage;
 import org.sakaiproject.customviews.CustomSwipeRefreshLayout;
 import org.sakaiproject.sakai.R;
 
@@ -102,19 +102,6 @@ public class UserMainNavigationDrawerHelper extends NavigationDrawerHelper imple
         } else {
             subMenu.add(R.id.main_group, R.id.help, subMenu.size(), context.getResources().getString(R.string.help)).setIcon(context.getResources().getDrawable(R.mipmap.ic_help)).setCheckable(true);
         }
-
-
-//        for (Integer ii : myWorkspaceIds.keySet()) {
-//            Log.i("myWorkspace", myWorkspaceIds.get(ii) + " has " + String.valueOf(ii));
-//        }
-//
-//        for (Integer ii : pagesIds.keySet()) {
-//            Log.i("pages", pagesIds.get(ii).getTitle() + " has " + String.valueOf(ii));
-//        }
-//
-//        for (Integer ii : sitesIds.keySet()) {
-//            Log.i("sites and projects", sitesIds.get(ii).getTitle() + " has " + String.valueOf(ii));
-//        }
     }
 
 }

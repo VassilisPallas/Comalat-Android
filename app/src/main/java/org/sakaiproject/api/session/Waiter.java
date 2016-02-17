@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
-import org.sakaiproject.api.site.SiteData;
+import org.sakaiproject.api.memberships.SiteData;
 import org.sakaiproject.general.SystemNotifications;
 import org.sakaiproject.general.Connection;
 import org.sakaiproject.api.internet.NetWork;
@@ -86,7 +86,7 @@ public class Waiter extends Thread {
                 idle = 0;
                 Log.i("end", "end");
 
-                Logout logout = new Logout(context);
+                Logout logout = new Logout();
 
                 /* if app is on the foreground after the logout it will start MainActivity
                    else it will only logout the user
@@ -94,17 +94,17 @@ public class Waiter extends Thread {
                 if (activityIsVisible) {
                     if (NetWork.getConnectionEstablished()) {
                         try {
-                            if (logout.logout(context.getResources().getString(R.string.url) + "session/" + Connection.getSessionId()) == 1) {
-                                User.nullInstance();
-                                Profile.nullInstance();
-                                Connection.nullSessionId();
-                                SiteData.getSites().clear();
-                                SiteData.getProjects().clear();
-                                UserMainNavigationDrawerHelper.getMyWorkSpaceItems().clear();
 
-                                Intent i = new Intent(context, MainActivity.class);
-                                context.startActivity(i);
-                            }
+                            logout.logout(context.getResources().getString(R.string.url) + "session/" + Connection.getSessionId());
+                            User.nullInstance();
+                            Profile.nullInstance();
+                            Connection.nullSessionId();
+                            SiteData.getSites().clear();
+                            SiteData.getProjects().clear();
+                            UserMainNavigationDrawerHelper.getMyWorkSpaceItems().clear();
+
+                            Intent i = new Intent(context, MainActivity.class);
+                            context.startActivity(i);
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -121,11 +121,10 @@ public class Waiter extends Thread {
                     }
                 } else {
                     try {
-                        if (logout.logout(context.getResources().getString(R.string.url) + "session/" + Connection.getSessionId()) == 1) {
-                            User.nullInstance();
-                            Profile.nullInstance();
-                            Connection.nullSessionId();
-                        }
+                        logout.logout(context.getResources().getString(R.string.url) + "session/" + Connection.getSessionId());
+                        User.nullInstance();
+                        Profile.nullInstance();
+                        Connection.nullSessionId();
                     } catch (Exception e) {
                         e.printStackTrace();
                     }

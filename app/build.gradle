@@ -20,6 +20,10 @@ android {
     }
 }
 
+repositories {
+    mavenCentral()
+}
+
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     testCompile 'junit:junit:4.12'
@@ -30,7 +34,7 @@ dependencies {
     compile 'com.android.support:support-v4:23.0.+'
     compile 'com.balysv:material-ripple:1.0.2'
     compile files('libs/mail-1.4.1.jar')
-    compile 'com.squareup.retrofit2:retrofit:2.0.0-beta3'
     compile 'com.squareup.picasso:picasso:2.5.2'
-    compile 'io.reactivex:rxandroid:1.1.0'
+    compile project(':volley')
+    compile 'com.google.code.gson:gson:2.5'
 }

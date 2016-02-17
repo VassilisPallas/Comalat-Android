@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
@@ -18,7 +19,7 @@ import android.util.Log;
 import org.sakaiproject.api.internet.NetWork;
 import org.sakaiproject.api.logout.Logout;
 import org.sakaiproject.api.session.Waiter;
-import org.sakaiproject.api.site.SiteData;
+import org.sakaiproject.api.memberships.SiteData;
 import org.sakaiproject.api.user.User;
 import org.sakaiproject.api.user.profile.Profile;
 import org.sakaiproject.helpers.user_navigation_drawer_helpers.UserMainNavigationDrawerHelper;
@@ -82,8 +83,6 @@ public class Actions {
         stream = new FileOutputStream(file);
         stream.write(jsonString.getBytes());
         stream.close();
-
-        Log.d("wirte", "file " + fileName + " wrote");
     }
 
     /**
@@ -145,6 +144,9 @@ public class Actions {
 
         return b;
     }
+
+
+
 
     /**
      * get the file type of the attachment
@@ -440,9 +442,8 @@ public class Actions {
                         if (NetWork.getConnectionEstablished()) {
                             waiter.stop = true;
                             try {
-                                Logout logout = new Logout(context);
-                                if (logout.logout(context.getResources().getString(R.string.url) + "session/" + Connection.getSessionId()) == 1) {
-
+                                Logout logout = new Logout();
+                                logout.logout(context.getResources().getString(R.string.url) + "session/" + Connection.getSessionId());
                                     User.nullInstance();
                                     Profile.nullInstance();
                                     Connection.nullSessionId();
@@ -453,7 +454,6 @@ public class Actions {
                                     Intent i = new Intent(((AppCompatActivity) context).getApplication(), MainActivity.class);
                                     context.startActivity(i);
                                     ((AppCompatActivity) context).finish();
-                                }
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
@@ -545,7 +545,6 @@ public class Actions {
         return audioPaths;
     }
 
-
     public static boolean createDirIfNotExists(Context context, String path) {
         boolean ret = true;
 
@@ -553,10 +552,39 @@ public class Actions {
         File file = new File(externalStoragePath, path);
         if (!file.exists()) {
             if (!file.mkdirs()) {
-                Log.e("TravellerLog :: ", "Problem creating folder");
+                Log.e("Log :: ", "Problem creating folder");
                 ret = false;
             }
         }
         return ret;
+    }
+
+    public static Drawable selectValidationImage(Context context, boolean correct) {
+
+        try {
+            Drawable image;
+
+            int imageId = R.mipmap.ic_cancel;
+            int color = Color.RED;
+
+            if (correct) {
+                imageId = R.mipmap.ic_check_circle;
+                color = Color.parseColor("#03AD14");
+            }
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                image = context.getResources().getDrawable(imageId, context.getTheme());
+            } else {
+                image = context.getResources().getDrawable(imageId);
+            }
+
+            image.setColorFilter(color, PorterDuff.Mode.SRC_IN);
+
+            //return ((BitmapDrawable) image).getBitmap();
+            return image;
+        } catch (IllegalStateException e) {
+
+        }
+        return null;
     }
 }

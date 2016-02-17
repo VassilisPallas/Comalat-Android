@@ -78,49 +78,49 @@ public class StaffInfoHelper implements IUserAbout {
 
     @Override
     public void fillValues() {
-        if (!Profile.getPosition().equals("")) {
+        if (Profile.getPosition() != null) {
             positionTextView.setText(Profile.getPosition());
         } else {
             positionLayout.setVisibility(View.GONE);
         }
 
-        if (!Profile.getDepartment().equals("")) {
+        if (Profile.getDepartment() != null) {
             departmentTextView.setText(Profile.getDepartment());
         } else {
             departmentLayout.setVisibility(View.GONE);
         }
 
-        if (!Profile.getSchool().equals("")) {
+        if (Profile.getSchool() != null) {
             schoolTextView.setText(Profile.getSchool());
         } else {
             schoolLayout.setVisibility(View.GONE);
         }
 
-        if (!Profile.getRoom().trim().equals("")) {
+        if (Profile.getRoom().trim() != null) {
             roomTextView.setText(Profile.getRoom());
         } else {
             roomLayout.setVisibility(View.GONE);
         }
 
-        if (!Profile.getStaffProfile().equals("")) {
+        if (Profile.getStaffProfile() != null) {
             staffProfileTextView.setText(Html.fromHtml(Profile.getStaffProfile()));
         } else {
             staffProfileLayout.setVisibility(View.GONE);
         }
 
-        if (!Profile.getUniversityProfileUrl().equals("")) {
+        if (Profile.getUniversityProfileUrl() != null) {
             universityUrlTextView.setText(Profile.getUniversityProfileUrl());
         } else {
             universityUrlLayout.setVisibility(View.GONE);
         }
 
-        if (!Profile.getAcademicProfileUrl().equals("")) {
+        if (Profile.getAcademicProfileUrl() != null) {
             academicUrlTextView.setText(Profile.getAcademicProfileUrl());
         } else {
             academicUrlLayout.setVisibility(View.GONE);
         }
 
-        if (!Profile.getPublications().equals("")) {
+        if (Profile.getPublications() != null) {
             publicationsTextView.setText(Html.fromHtml(Profile.getPublications()));
         } else {
             publicationsLayout.setVisibility(View.GONE);

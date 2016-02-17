@@ -27,8 +27,9 @@ public class StudentInfoHelper implements IUserAbout {
 
     /**
      * StudentInfoHelper constructor
-     * @param activity the activity
-     * @param editDrawable the custom color Edit image
+     *
+     * @param activity      the activity
+     * @param editDrawable  the custom color Edit image
      * @param clickListener the onClickListener listener
      */
     public StudentInfoHelper(AppCompatActivity activity, Drawable editDrawable, View.OnClickListener clickListener) {
@@ -59,13 +60,13 @@ public class StudentInfoHelper implements IUserAbout {
 
     @Override
     public void fillValues() {
-        if (!Profile.getCourse().equals("")) {
+        if (Profile.getCourse() != null) {
             degreeTextView.setText(Profile.getCourse());
         } else {
             degreeLayout.setVisibility(View.GONE);
         }
 
-        if (!Profile.getSubjects().equals("")) {
+        if (Profile.getSubjects() != null) {
             subjectTextView.setText(Profile.getSubjects());
         } else {
             subjectsLayout.setVisibility(View.GONE);

@@ -1,15 +1,12 @@
 package org.sakaiproject.sakai;
 
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -18,28 +15,33 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 
-import org.sakaiproject.api.login.LoginAsync;
-import org.sakaiproject.api.signup.Signup;
+import org.sakaiproject.api.internet.NetWork;
+import org.sakaiproject.api.signup.EidExistence;
+import org.sakaiproject.api.signup.SignupService;
+import org.sakaiproject.general.Actions;
 
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class SignupFragment extends Fragment {
+public class SignupFragment extends Fragment implements EidExistence {
 
-    private Fragment fragment;
-
+    private EidExistence existence = this;
     private EditText eidEditText, firstNameEditText, lastNameEditText, emailEditText, passwordEditText, confirmPasswordEditText, typeEditText;
     private Button signupButton;
     private ProgressBar userExistsProgressBar, signupProgressBar;
     private ImageView userExistsImageView, emailValidationImageView, passwordEqualsImageView;
-    private Signup signup;
 
     private String emailRegex = "^\\w+([-+.']\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*$";
     private boolean isEidValid, isEmailValid = true, isPasswordEqual;
+
+    private FrameLayout root;
+
+    private SignupService signup;
 
     public SignupFragment() {
     }
@@ -54,23 +56,22 @@ public class SignupFragment extends Fragment {
 
         getActivity().setTitle(getContext().getResources().getString(R.string.new_account));
 
-        signup = new Signup(getContext());
-
         findViewsById(v);
-
-        fragment = this;
 
         signupButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String url = getContext().getResources().getString(R.string.url) + "user";
+
                 if (!eidEditText.getText().toString().equals("") && !passwordEditText.getText().toString().equals("")) {
                     String eid = eidEditText.getText().toString().trim();
                     String firstName = firstNameEditText.getText().toString().trim();
                     String lastName = lastNameEditText.getText().toString().trim();
                     String email = emailEditText.getText().toString().trim();
                     String password = passwordEditText.getText().toString().trim();
-                    new SignupAsync(fragment, url, eid, firstName, lastName, email, password).execute();
+
+                    signupProgressBar.setVisibility(View.VISIBLE);
+
+                    signup.signUp(getContext().getResources().getString(R.string.url), eid, firstName, lastName, email, password);
                 }
             }
         });
@@ -93,10 +94,18 @@ public class SignupFragment extends Fragment {
         passwordEqualsImageView = (ImageView) v.findViewById(R.id.password_equals_imageview);
         signupProgressBar = (ProgressBar) v.findViewById(R.id.signup_progess);
 
-        eidEditText.addTextChangedListener(userExistWatcher);
-        emailEditText.addTextChangedListener(emailValidationWatcher);
-        confirmPasswordEditText.addTextChangedListener(confirmPasswordWatcher);
-        passwordEditText.addTextChangedListener(passwordChangeWatcher);
+        root = (FrameLayout) v.findViewById(R.id.root);
+
+        if (NetWork.getConnectionEstablished()) {
+            eidEditText.addTextChangedListener(userExistWatcher);
+            emailEditText.addTextChangedListener(emailValidationWatcher);
+            confirmPasswordEditText.addTextChangedListener(confirmPasswordWatcher);
+            passwordEditText.addTextChangedListener(passwordChangeWatcher);
+        } else {
+            Snackbar.make(root, getResources().getString(R.string.no_internet), Snackbar.LENGTH_LONG)
+                    .setAction(getResources().getText(R.string.can_not_sync), null).show();
+        }
+        signup = new SignupService(getContext(), userExistsImageView, signupProgressBar, userExistsProgressBar);
     }
 
     private TextWatcher userExistWatcher = new TextWatcher() {
@@ -112,7 +121,11 @@ public class SignupFragment extends Fragment {
         @Override
         public void afterTextChanged(Editable s) {
             String eid = eidEditText.getText().toString().trim();
-            new EidExistsAsync(eid).execute();
+
+            userExistsImageView.setVisibility(View.INVISIBLE);
+            userExistsProgressBar.setVisibility(View.VISIBLE);
+
+            signup.eidExists(getContext().getResources().getString(R.string.url) + "user/" + eid + "/exists.json", existence);
         }
     };
 
@@ -143,7 +156,7 @@ public class SignupFragment extends Fragment {
             }
 
             emailValidationImageView.setVisibility(View.VISIBLE);
-            emailValidationImageView.setImageDrawable(selectValidationImage(isEmailValid));
+            emailValidationImageView.setImageDrawable(Actions.selectValidationImage(getContext(), isEmailValid));
 
             validation();
         }
@@ -169,7 +182,7 @@ public class SignupFragment extends Fragment {
             }
 
             emailValidationImageView.setVisibility(View.VISIBLE);
-            emailValidationImageView.setImageDrawable(selectValidationImage(isEmailValid));
+            emailValidationImageView.setImageDrawable(Actions.selectValidationImage(getContext(), isEmailValid));
 
             validation();
         }
@@ -191,7 +204,7 @@ public class SignupFragment extends Fragment {
             }
 
             passwordEqualsImageView.setVisibility(View.VISIBLE);
-            passwordEqualsImageView.setImageDrawable(selectValidationImage(isPasswordEqual));
+            passwordEqualsImageView.setImageDrawable(Actions.selectValidationImage(getContext(), isPasswordEqual));
 
             validation();
         }
@@ -205,7 +218,7 @@ public class SignupFragment extends Fragment {
             }
 
             passwordEqualsImageView.setVisibility(View.VISIBLE);
-            passwordEqualsImageView.setImageDrawable(selectValidationImage(isPasswordEqual));
+            passwordEqualsImageView.setImageDrawable(Actions.selectValidationImage(getContext(), isPasswordEqual));
 
             validation();
         }
@@ -226,7 +239,7 @@ public class SignupFragment extends Fragment {
             }
 
             passwordEqualsImageView.setVisibility(View.VISIBLE);
-            passwordEqualsImageView.setImageDrawable(selectValidationImage(isPasswordEqual));
+            passwordEqualsImageView.setImageDrawable(Actions.selectValidationImage(getContext(), isPasswordEqual));
 
             validation();
         }
@@ -240,7 +253,7 @@ public class SignupFragment extends Fragment {
             }
 
             passwordEqualsImageView.setVisibility(View.VISIBLE);
-            passwordEqualsImageView.setImageDrawable(selectValidationImage(isPasswordEqual));
+            passwordEqualsImageView.setImageDrawable(Actions.selectValidationImage(getContext(), isPasswordEqual));
 
             validation();
         }
@@ -255,108 +268,9 @@ public class SignupFragment extends Fragment {
         }
     }
 
-    private Drawable selectValidationImage(boolean correct) {
-
-        try {
-            Drawable image;
-
-            int imageId = R.mipmap.ic_cancel;
-            int color = Color.RED;
-
-            if (correct) {
-                imageId = R.mipmap.ic_check_circle;
-                color = Color.parseColor("#03AD14");
-            }
-
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                image = getResources().getDrawable(imageId, getActivity().getTheme());
-            } else {
-                image = getResources().getDrawable(imageId);
-            }
-
-            image.setColorFilter(color, PorterDuff.Mode.SRC_IN);
-
-            //return ((BitmapDrawable) image).getBitmap();
-            return image;
-        } catch (IllegalStateException e) {
-
-        }
-        return null;
+    @Override
+    public void signUpButton(boolean exists) {
+        isEidValid = exists;
+        validation();
     }
-
-    private class SignupAsync extends AsyncTask<Void, Void, Boolean> {
-
-        private String url, eid, fname, lname, mail, pass;
-        private Fragment fragment;
-
-        public SignupAsync(Fragment fragment, String url, String eid, String fname, String lname, String mail, String pass) {
-            this.fragment = fragment;
-            this.url = url;
-            this.eid = eid;
-            this.fname = fname;
-            this.lname = lname;
-            this.mail = mail;
-            this.pass = pass;
-        }
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            signupProgressBar.setVisibility(View.VISIBLE);
-        }
-
-        @Override
-        protected Boolean doInBackground(Void... params) {
-            return signup.signUp(url, eid, fname, lname, mail, pass);
-        }
-
-        @Override
-        protected void onPostExecute(Boolean signup) {
-            super.onPostExecute(signup);
-            if (signup) {
-                url = getResources().getString(R.string.url) + "session";
-                new LoginAsync(fragment, url, eid, pass).execute();
-
-            }
-            signupProgressBar.setVisibility(View.GONE);
-        }
-    }
-
-    private class EidExistsAsync extends AsyncTask<Void, Void, Boolean> {
-
-        private String eid;
-
-        public EidExistsAsync(String eid) {
-            this.eid = eid;
-        }
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            userExistsImageView.setVisibility(View.INVISIBLE);
-            userExistsProgressBar.setVisibility(View.VISIBLE);
-        }
-
-        @Override
-        protected Boolean doInBackground(Void... params) {
-            return signup.eidExists(eid);
-        }
-
-        @Override
-        protected void onPostExecute(Boolean exists) {
-            super.onPostExecute(exists);
-            userExistsImageView.setVisibility(View.VISIBLE);
-            userExistsProgressBar.setVisibility(View.GONE);
-
-            if (eidEditText.getText().toString().length() == 0)
-                isEidValid = exists;
-            else
-                isEidValid = !exists;
-
-            userExistsImageView.setImageDrawable(selectValidationImage(isEidValid));
-
-            validation();
-        }
-    }
-
 }

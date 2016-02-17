@@ -15,10 +15,10 @@ import android.view.MenuItem;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import org.sakaiproject.api.site.OfflineSite;
-import org.sakaiproject.api.site.SiteData;
+import org.sakaiproject.api.memberships.OfflineMemberships;
+import org.sakaiproject.api.memberships.SiteData;
+import org.sakaiproject.api.pojos.membership.SitePage;
 import org.sakaiproject.api.sync.Refresh;
 import org.sakaiproject.customviews.ImageViewRounded;
 import org.sakaiproject.general.Actions;
@@ -104,14 +104,13 @@ public class UserActivity extends AppCompatActivity implements NavigationView.On
         }
 
 
-        OfflineSite offlineSites = new OfflineSite(this);
+        OfflineMemberships offlineSites = new OfflineMemberships(this);
         try {
             offlineSites.getSites();
             sitesNavigationDrawer.fillSitesDrawer();
         } catch (IOException e) {
             e.printStackTrace();
         }
-
         initializeMainMenu();
     }
 
@@ -216,7 +215,7 @@ public class UserActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicksadb.setTitle(getResources().getString(R.string.logout_message)); here.
+        // Handle navigation view item clicks here.
 
         // left drawer
         switch (item.getItemId()) {

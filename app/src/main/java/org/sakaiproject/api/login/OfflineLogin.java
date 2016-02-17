@@ -3,7 +3,11 @@ package org.sakaiproject.api.login;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import org.sakaiproject.api.user.User;
+import com.google.gson.Gson;
+
+import org.sakaiproject.api.pojos.login.Login;
+import org.sakaiproject.api.pojos.login.Profile;
+import org.sakaiproject.api.pojos.login.UserData;
 import org.sakaiproject.general.Actions;
 import org.sakaiproject.api.cryptography.PasswordEncryption;
 import org.sakaiproject.api.json.JsonParser;
@@ -24,6 +28,9 @@ public class OfflineLogin implements ILogin {
     private String userProfileDataJson;
     private Context context;
 
+    private LoginType loginType;
+    private final Gson gson = new Gson();
+
     /**
      * the OfflineLogin constructor
      *
@@ -35,8 +42,9 @@ public class OfflineLogin implements ILogin {
         passwordEncryption = new PasswordEncryption();
     }
 
+
     @Override
-    public LoginType login(String... params) {
+    public void login(String... params) {
         SharedPreferences prefs = context.getSharedPreferences("user_data", context.MODE_PRIVATE);
         try {
             if (prefs.getString("user_id", null) != null && prefs.getString("password", null) != null) {
@@ -44,21 +52,27 @@ public class OfflineLogin implements ILogin {
                     getLoginJson(params[0]);
                     getUserDataJson(params[0]);
                     getUserProfileDataJson(params[0]);
-                    return LoginType.LOGIN_WITHOUT_INTERNET;
+                    return;
                 }
-            } else
-                return LoginType.FIRST_TIME_LOGIN_WITHOUT_INTERNET;
+            } else {
+                loginType = LoginType.FIRST_TIME_LOGIN_WITHOUT_INTERNET;
+                return;
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return LoginType.INVALID_ARGUMENTS;
+        loginType = LoginType.INVALID_ARGUMENTS;
     }
 
     @Override
     public void getLoginJson(String... params) throws IOException {
         if (Actions.createDirIfNotExists(context, params[0] + File.separator + "user")) {
+
             loginJson = Actions.readJsonFile(context, "loginJson", params[0] + File.separator + "user");
-            jsonParse.parseLoginResult(loginJson);
+
+            Login login = gson.fromJson(loginJson, Login.class);
+
+            JsonParser.parseLoginResult(login);
         }
     }
 
@@ -66,7 +80,10 @@ public class OfflineLogin implements ILogin {
     public void getUserDataJson(String... params) throws IOException {
         if (Actions.createDirIfNotExists(context, params[0] + File.separator + "user")) {
             userDataJson = Actions.readJsonFile(context, "fullUserDataJson", params[0] + File.separator + "user");
-            jsonParse.parseUserDataJson(userDataJson);
+
+            UserData userData = gson.fromJson(userDataJson, UserData.class);
+
+            JsonParser.parseUserDataJson(userData);
         }
     }
 
@@ -74,7 +91,10 @@ public class OfflineLogin implements ILogin {
     public void getUserProfileDataJson(String... params) throws IOException {
         if (Actions.createDirIfNotExists(context, params[0] + File.separator + "user")) {
             userProfileDataJson = Actions.readJsonFile(context, "userProfileDataJson", params[0] + File.separator + "user");
-            jsonParse.parseUserProfileDataJson(userProfileDataJson);
+
+            Profile profile = gson.fromJson(userProfileDataJson, Profile.class);
+
+            JsonParser.parseUserProfileDataJson(profile);
         }
     }
 
@@ -86,6 +106,11 @@ public class OfflineLogin implements ILogin {
     @Override
     public void getUserThumbnailImage(String... params) throws FileNotFoundException {
         throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public LoginType getLoginType() {
+        return loginType;
     }
 
 }

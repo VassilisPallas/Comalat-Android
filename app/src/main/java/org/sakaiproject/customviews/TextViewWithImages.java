@@ -9,12 +9,18 @@ import android.text.style.ImageSpan;
 import android.util.AttributeSet;
 import android.widget.TextView;
 
-import org.sakaiproject.api.site.SiteData;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.ImageLoader;
+import com.android.volley.toolbox.ImageRequest;
+
 import org.sakaiproject.api.user.User;
 import org.sakaiproject.general.Actions;
 import org.sakaiproject.general.Connection;
 import org.sakaiproject.general.ConnectionType;
 import org.sakaiproject.general.Image;
+import org.sakaiproject.sakai.AppController;
 import org.sakaiproject.sakai.R;
 
 import java.io.BufferedInputStream;
@@ -29,7 +35,15 @@ import java.util.regex.Pattern;
 /**
  * Created by vasilis on 1/18/16.
  */
-public class TextViewWithImages extends TextView {
+interface ImageCallback {
+    void success(Spannable spannable, Context context, Image im);
+
+    void error(Spannable spannable, Context context, Image im);
+
+    void placeholder(Spannable spannable, Context context, Image im);
+}
+
+public class TextViewWithImages extends TextView implements ImageCallback {
 
     private static final Spannable.Factory spannableFactory = Spannable.Factory.getInstance();
 
@@ -122,15 +136,39 @@ public class TextViewWithImages extends TextView {
         }
 
         if (images.size() > 0) {
-
-
             for (final Image img : images) {
                 image = new File(path, img.getName());
                 if (!image.exists()) {
-                    new DownLoadImage(context, spannable, img).execute();
-                    loadingImage(spannable, context, img);
+
+                    placeholder(spannable, context, img);
+
+                    ImageRequest imageRequest = new ImageRequest(img.getPath(), new Response.Listener<Bitmap>() {
+                        @Override
+                        public void onResponse(Bitmap response) {
+
+                            if (Actions.createDirIfNotExists(context, User.getUserEid() + File.separator + "memberships" + File.separator + id))
+                                try {
+                                    Actions.saveImage(context, response, img.getName(), User.getUserEid() + File.separator + "memberships" + File.separator + id);
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+
+                            success(spannable, context, img);
+                            Spannable s = getTextWithImages(getContext(), tempText);
+                            setText(s, BufferType.SPANNABLE);
+                        }
+                    }, 0, 0, null, Bitmap.Config.RGB_565, new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            error(spannable, context, img);
+                            Spannable s = getTextWithImages(getContext(), tempText);
+                            setText(s, BufferType.SPANNABLE);
+                        }
+                    });
+
+                    AppController.getInstance().addToRequestQueue(imageRequest, img.getName() + " " + id);
                 } else
-                    addImages(spannable, context, img);
+                    success(spannable, context, img);
             }
         }
 
@@ -144,26 +182,18 @@ public class TextViewWithImages extends TextView {
         return spannable;
     }
 
+    private CharSequence tempText;
 
-    private void loadingImage(Spannable spannable, Context context, Image im) {
-        BitmapFactory.Options bmOptions = new BitmapFactory.Options();
-        bitmap = BitmapFactory.decodeResource(context.getResources(),
-                R.mipmap.ic_image, bmOptions);
-
-        if (im.getWidth() > 0 && im.getHeight() > 0)
-            bitmap = Bitmap.createScaledBitmap(bitmap, im.getWidth() * 3, im.getHeight() * 3, true);
-
-        if (set) {
-            spannable.setSpan(new ImageSpan(context, bitmap),
-                    im.getStartIndex(),
-                    im.getEndIndex(),
-                    Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-            );
-        }
-
+    @Override
+    public void setText(CharSequence text, BufferType type) {
+        Spannable s = getTextWithImages(getContext(), text);
+        tempText = s;
+        super.setText(s, BufferType.SPANNABLE);
     }
 
-    private void addImages(Spannable spannable, Context context, Image im) {
+
+    @Override
+    public void success(Spannable spannable, Context context, Image im) {
         if (Actions.createDirIfNotExists(context, User.getUserEid() + File.separator + "memberships" + File.separator + id)) {
             path = new File(context.getFilesDir(), User.getUserEid() + File.separator + "memberships" + File.separator + id);
             image = new File(path, im.getName());
@@ -182,60 +212,39 @@ public class TextViewWithImages extends TextView {
         }
     }
 
-    private CharSequence tempText;
-
     @Override
-    public void setText(CharSequence text, BufferType type) {
-        Spannable s = getTextWithImages(getContext(), text);
-        tempText = s;
-        super.setText(s, BufferType.SPANNABLE);
+    public void error(Spannable spannable, Context context, Image im) {
+        BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+        bitmap = BitmapFactory.decodeResource(context.getResources(),
+                R.mipmap.ic_broken_image, bmOptions);
+
+        if (im.getWidth() > 0 && im.getHeight() > 0)
+            bitmap = Bitmap.createScaledBitmap(bitmap, im.getWidth() * 3, im.getHeight() * 3, true);
+
+        if (set) {
+            spannable.setSpan(new ImageSpan(context, bitmap),
+                    im.getStartIndex(),
+                    im.getEndIndex(),
+                    Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+            );
+        }
     }
 
+    @Override
+    public void placeholder(Spannable spannable, Context context, Image im) {
+        BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+        bitmap = BitmapFactory.decodeResource(context.getResources(),
+                R.mipmap.ic_image, bmOptions);
 
-    private class DownLoadImage extends AsyncTask<Void, Void, Boolean> {
+        if (im.getWidth() > 0 && im.getHeight() > 0)
+            bitmap = Bitmap.createScaledBitmap(bitmap, im.getWidth() * 3, im.getHeight() * 3, true);
 
-        private Connection connection = Connection.getInstance();
-        private Context context;
-        private Spannable spannable;
-        private Image img;
-
-        public DownLoadImage(Context context, Spannable spannable, Image image) {
-            this.spannable = spannable;
-            this.context = context;
-            this.img = image;
-        }
-
-        @Override
-        protected Boolean doInBackground(Void... params) {
-
-            try {
-                connection.openConnection(img.getPath(), ConnectionType.GET, false, false, null);
-
-                Integer status = connection.getResponseCode();
-                if (status >= 200 && status < 300) {
-                    InputStream inputStream = new BufferedInputStream(connection.getInputStream());
-                    Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
-                    if (Actions.createDirIfNotExists(context, User.getUserEid() + File.separator + "memberships" + File.separator + id))
-                        Actions.saveImage(context, bitmap, img.getName(), User.getUserEid() + File.separator + "memberships" + File.separator + id);
-                }
-                return true;
-            } catch (IOException e) {
-                e.printStackTrace();
-            } finally {
-                connection.closeConnection();
-            }
-
-            return false;
-        }
-
-        @Override
-        protected void onPostExecute(Boolean downloaded) {
-            super.onPostExecute(downloaded);
-            if (downloaded) {
-                addImages(spannable, context, img);
-                Spannable s = getTextWithImages(getContext(), tempText);
-                setText(s, BufferType.SPANNABLE);
-            }
+        if (set) {
+            spannable.setSpan(new ImageSpan(context, bitmap),
+                    im.getStartIndex(),
+                    im.getEndIndex(),
+                    Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+            );
         }
     }
 }

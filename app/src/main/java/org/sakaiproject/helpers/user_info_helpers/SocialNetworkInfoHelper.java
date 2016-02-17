@@ -64,31 +64,31 @@ public class SocialNetworkInfoHelper implements IUserAbout {
 
     @Override
     public void fillValues() {
-        if (!Profile.getSocialInfo().getFacebookUrl().equals("")) {
+        if (Profile.getSocialInfo().getFacebookUrl() != null) {
             fbTextView.setText(Profile.getSocialInfo().getFacebookUrl());
         } else {
             fbLayout.setVisibility(View.GONE);
         }
 
-        if (!Profile.getSocialInfo().getLinkedinUrl().equals("")) {
+        if (Profile.getSocialInfo().getLinkedinUrl() != null) {
             linkedInTextView.setText(Profile.getSocialInfo().getLinkedinUrl());
         } else {
             linkedInLayout.setVisibility(View.GONE);
         }
 
-        if (!Profile.getSocialInfo().getMyspaceUrl().equals("")) {
+        if (Profile.getSocialInfo().getMyspaceUrl() != null) {
             mySpaceTextView.setText(Profile.getSocialInfo().getMyspaceUrl());
         } else {
             mySpaceLayout.setVisibility(View.GONE);
         }
 
-        if (!Profile.getSocialInfo().getSkypeUsername().equals("")) {
+        if (Profile.getSocialInfo().getSkypeUsername() != null) {
             skypeTextView.setText(Profile.getSocialInfo().getSkypeUsername());
         } else {
             skypeLayout.setVisibility(View.GONE);
         }
 
-        if (!Profile.getSocialInfo().getTwitterUrl().equals("")) {
+        if (Profile.getSocialInfo().getTwitterUrl() != null) {
             twitterTextView.setText(Profile.getSocialInfo().getTwitterUrl());
         } else {
             twitterLayout.setVisibility(View.GONE);

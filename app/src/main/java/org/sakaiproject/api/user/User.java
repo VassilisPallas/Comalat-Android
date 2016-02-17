@@ -1,6 +1,6 @@
 package org.sakaiproject.api.user;
 
-import org.sakaiproject.api.time.Time;
+import org.sakaiproject.api.pojos.Time;
 
 import java.util.Date;
 import java.util.Map;

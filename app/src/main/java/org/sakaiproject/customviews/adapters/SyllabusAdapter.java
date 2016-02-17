@@ -12,8 +12,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import org.sakaiproject.api.pages.syllabus.Item;
+import org.sakaiproject.api.pojos.syllabus.Item;
 import org.sakaiproject.general.Actions;
+import org.sakaiproject.general.AttachmentType;
 import org.sakaiproject.sakai.R;
 
 import java.io.UnsupportedEncodingException;
@@ -47,7 +48,7 @@ public class SyllabusAdapter extends RecyclerView.Adapter<SyllabusAdapter.ViewHo
     private static final ThreadLocal<SimpleDateFormat> formatter = new ThreadLocal<SimpleDateFormat>() {
         @Override
         protected SimpleDateFormat initialValue() {
-            return new SimpleDateFormat("yyyy/mm/dd hh:mm a", Locale.US);
+            return new SimpleDateFormat("yyyy/MM/dd hh:mm a", Locale.US);
         }
     };
 
@@ -61,7 +62,7 @@ public class SyllabusAdapter extends RecyclerView.Adapter<SyllabusAdapter.ViewHo
         // create a new view
         View v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.syllabus_item, parent, false);
-        // set the view's size, margins, paddings and layout parameters
+        // set the view's size, margin, padding and layout parameters
 
         ViewHolder vh = new ViewHolder(v);
 
@@ -81,14 +82,15 @@ public class SyllabusAdapter extends RecyclerView.Adapter<SyllabusAdapter.ViewHo
 
         holder.title.setText(syllabusItems.get(position).getTitle());
 
-        String data = Actions.deleteHtmlTags(syllabusItems.get(position).getData());
-
-        if (data.equals("")) {
-            holder.data.setVisibility(View.GONE);
-        } else {
+        String data = null;
+        if (syllabusItems.get(position).getData() != null) {
+            data = Actions.deleteHtmlTags(syllabusItems.get(position).getData());
             holder.data.setVisibility(View.VISIBLE);
             holder.data.setText(data);
+        } else {
+            holder.data.setVisibility(View.GONE);
         }
+
 
         holder.delete.setImageDrawable(Actions.setCustomDrawableColor(context, R.mipmap.ic_delete, Color.parseColor("#FF5457")));
         holder.deleteLayout.setOnClickListener(new View.OnClickListener() {
@@ -110,7 +112,7 @@ public class SyllabusAdapter extends RecyclerView.Adapter<SyllabusAdapter.ViewHo
             if (syllabusItems.get(position).getEndDate() > 0) {
                 if (syllabusItems.get(position).getStartDate() > 0)
                     holder.date.append(" - ");
-                //holder.date.append(formatIt(new Date(syllabusItems.get(position).getEndDate())));
+                holder.date.append(formatIt(new Date(syllabusItems.get(position).getEndDate())));
             }
         }
 
@@ -121,15 +123,27 @@ public class SyllabusAdapter extends RecyclerView.Adapter<SyllabusAdapter.ViewHo
                 View currentAttachment = holder.attachements.inflate(activity, R.layout.attachment_row, null);
 
                 TextView name = (TextView) currentAttachment.findViewById(R.id.attachment_name);
+
+                String url = syllabusItems.get(position).getAttachments().get(i).getUrl();
+
                 try {
-                    name.setText(URLDecoder.decode(syllabusItems.get(position).getAttachments().get(i), "UTF-8"));
+
+                    url = url.substring(url.lastIndexOf('/') + 1);
+
+                    if (Actions.getAttachmentType(url) != AttachmentType.URL) {
+                        name.setText(URLDecoder.decode(url, "UTF-8").substring(url.lastIndexOf('/') + 1));
+                    } else {
+                        name.setText(URLDecoder.decode(url, "UTF-8").replaceAll("_", "/"));
+                    }
+
+
                 } catch (UnsupportedEncodingException e) {
                     e.printStackTrace();
                 }
 
                 ImageView image = (ImageView) currentAttachment.findViewById(R.id.attachment_type_image);
 
-                image.setImageBitmap(Actions.getAttachmentTypeImage(context, syllabusItems.get(position).getAttachments().get(i)));
+                image.setImageBitmap(Actions.getAttachmentTypeImage(context, url));
 
                 holder.attachements.addView(currentAttachment);
             }

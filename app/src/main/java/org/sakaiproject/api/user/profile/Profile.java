@@ -1,5 +1,9 @@
 package org.sakaiproject.api.user.profile;
 
+import org.sakaiproject.api.pojos.user.DateOfBirth;
+import org.sakaiproject.api.pojos.user.ProfileStatus;
+import org.sakaiproject.api.pojos.user.SocialNetworkingInfo;
+
 import java.util.List;
 import java.util.Map;
 

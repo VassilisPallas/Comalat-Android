@@ -1,25 +1,14 @@
 package org.sakaiproject.sakai;
 
-import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
-import android.support.v4.app.Fragment;
-import android.text.Spannable;
-import android.text.style.ImageSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import org.sakaiproject.api.site.SiteData;
+import org.sakaiproject.api.memberships.SiteData;
 import org.sakaiproject.general.Actions;
-import org.sakaiproject.general.Image;
-
-import java.io.File;
-import java.util.regex.Matcher;
 
 /**
  * Created by vasilis on 1/26/16.
@@ -78,9 +67,8 @@ public class MembershipDescriptionFragment extends DialogFragment {
 
         shortDescr.setSiteData(data.getId());
 
-        shortDescription = Actions.deleteHtmlTags(shortDescription);
-
-        if (shortDescription != null && !shortDescription.equals("")) {
+        if (shortDescription != null) {
+            shortDescription = Actions.deleteHtmlTags(shortDescription);
             shortDescr.setText(shortDescription);
         } else {
             shortDescr.setText(getContext().getResources().getString(R.string.no_short_descr));
@@ -88,9 +76,9 @@ public class MembershipDescriptionFragment extends DialogFragment {
 
         org.sakaiproject.customviews.TextViewWithImages descr = (org.sakaiproject.customviews.TextViewWithImages) v.findViewById(R.id.membership_description);
         descr.setSiteData(data.getId());
-        description = Actions.deleteHtmlTags(description);
 
-        if (description != null && !description.equals("")) {
+        if (description != null) {
+            description = Actions.deleteHtmlTags(description);
             descr.setText(description);
         } else {
             descr.setText(getContext().getResources().getString(R.string.no_descr));

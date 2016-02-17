@@ -1,9 +1,8 @@
 package org.sakaiproject.api.events;
 
-import android.util.Log;
-
-import org.sakaiproject.api.time.Time;
-import org.sakaiproject.api.events.RecurrenceRule;
+import org.sakaiproject.api.pojos.Attachment;
+import org.sakaiproject.api.pojos.Time;
+import org.sakaiproject.api.pojos.events.RecurrenceRule;
 
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
@@ -12,8 +11,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * Created by vasilis on 10/20/15.
@@ -29,7 +26,7 @@ public class UserEvents implements Serializable, Cloneable {
     private String siteName;
     private String title;
     private String type;
-    private List<String> attachments = new ArrayList<>();
+    private List<Attachment> attachments = new ArrayList<>();
     private String description;
 
     private Time lastTime;
@@ -109,7 +106,7 @@ public class UserEvents implements Serializable, Cloneable {
         return recurrenceRule;
     }
 
-    public List<String> getAttachments() {
+    public List<Attachment> getAttachments() {
         return attachments;
     }
 
@@ -119,7 +116,7 @@ public class UserEvents implements Serializable, Cloneable {
 
         for (int i = 0; i < attachments.size(); i++) {
 
-            String name = attachments.get(i).substring(attachments.get(i).lastIndexOf('/') + 1).toLowerCase();
+            String name = attachments.get(i).getUrl().substring(attachments.get(i).getUrl().lastIndexOf('/') + 1).toLowerCase();
 
             if (name.startsWith("http")) {
 //                name = name.replaceAll("%3A|%3a", ":");
@@ -156,7 +153,7 @@ public class UserEvents implements Serializable, Cloneable {
         this.reference = reference;
     }
 
-    public void setAttachments(List<String> attachments) {
+    public void setAttachments(List<Attachment> attachments) {
         this.attachments = attachments;
     }
 
@@ -241,8 +238,8 @@ public class UserEvents implements Serializable, Cloneable {
 
     public void setTimeDuration() {
 
-        Date start = firstTime.getTime();
-        Date end = lastTime.getTime();
+        Date start = new Date(firstTime.getTime());
+        Date end = new Date(lastTime.getTime());
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("hh:mm a", Locale.US);
 

@@ -9,7 +9,6 @@ import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
@@ -23,12 +22,14 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import org.sakaiproject.api.internet.NetWork;
-import org.sakaiproject.api.site.SiteData;
-import org.sakaiproject.api.site.actions.IUnJoin;
-import org.sakaiproject.api.site.actions.UnJoinAsync;
-import org.sakaiproject.api.sync.MembershipRefresh;
+import org.sakaiproject.api.memberships.MembershipService;
+import org.sakaiproject.api.memberships.SiteData;
+import org.sakaiproject.api.memberships.actions.IUnJoin;
+import org.sakaiproject.api.memberships.actions.SiteUnJoin;
+import org.sakaiproject.api.sync.MembershipRefreshUI;
 import org.sakaiproject.customviews.adapters.MembershipAdapter;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,18 +37,19 @@ import java.util.List;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class MembershipFragment extends Fragment implements IUnJoin, SwipeRefreshLayout.OnRefreshListener, IMembershipDialog {
+public class MembershipFragment extends Fragment implements IUnJoin, SwipeRefreshLayout.OnRefreshListener, IMembershipDialog, MembershipRefreshUI {
 
     private RecyclerView mRecyclerView;
     private MembershipAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
 
-    private ProgressBar refreshProgressBar;
     private FloatingActionButton createSite;
     private EditText membershipSearch;
     private FrameLayout root;
 
     private ISwipeRefresh swipeRefresh;
+
+    private MembershipRefreshUI delegate = this;
 
     private org.sakaiproject.customviews.CustomSwipeRefreshLayout swipeRefreshLayout;
 
@@ -85,8 +87,6 @@ public class MembershipFragment extends Fragment implements IUnJoin, SwipeRefres
         getActivity().setTitle(getContext().getResources().getString(R.string.membership));
 
         root = (FrameLayout) v.findViewById(R.id.root);
-
-        refreshProgressBar = (ProgressBar) v.findViewById(R.id.membership_refresh);
 
         swipeRefreshLayout = (org.sakaiproject.customviews.CustomSwipeRefreshLayout) getArguments().getSerializable("swipeRefresh");
 
@@ -153,7 +153,7 @@ public class MembershipFragment extends Fragment implements IUnJoin, SwipeRefres
 
     @Override
     public void siteUnJoin(List<SiteData> membership, int position) {
-        new UnJoinAsync(membership.get(position).getId(), getContext(), refreshProgressBar, mAdapter, position, swipeRefreshLayout).execute();
+        new SiteUnJoin(membership.get(position).getId(), getContext(), mAdapter, position, swipeRefreshLayout, delegate).unJoin();
     }
 
     @Override
@@ -162,12 +162,13 @@ public class MembershipFragment extends Fragment implements IUnJoin, SwipeRefres
             @Override
             public void run() {
                 if (NetWork.getConnectionEstablished()) {
-                    MembershipRefresh refresh = new MembershipRefresh(getContext());
-                    refresh.setSwipeRefreshLayout(swipeRefreshLayout);
-                    refresh.setmAdapter(mAdapter);
-                    refresh.setmRecyclerView(mRecyclerView);
-                    refresh.execute();
-
+                    MembershipService membershipService = new MembershipService(getContext(), delegate);
+                    membershipService.setSwipeRefreshLayout(swipeRefreshLayout);
+                    try {
+                        membershipService.getSites(getContext().getString(R.string.url) + "membership.json");
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 } else {
                     Snackbar.make(root, getResources().getString(R.string.no_internet), Snackbar.LENGTH_LONG)
                             .setAction(getResources().getText(R.string.can_not_sync), null).show();
@@ -183,5 +184,16 @@ public class MembershipFragment extends Fragment implements IUnJoin, SwipeRefres
         dialogFragment.setStyle(DialogFragment.STYLE_NO_TITLE, R.style.InfoDialogTheme);
         dialogFragment.show(fm, getContext().getResources().getString(R.string.site_descr));
 
+    }
+
+    @Override
+    public void updateUI() {
+        UserActivity.getSitesNavigationDrawer().fillSitesDrawer();
+        if (mAdapter != null && mRecyclerView != null) {
+            List<SiteData> temp = new ArrayList<>(SiteData.getSites());
+            temp.addAll(SiteData.getProjects());
+            mAdapter.setMemberships(temp);
+            mRecyclerView.setAdapter(mAdapter);
+        }
     }
 }

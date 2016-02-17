@@ -5,8 +5,6 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
-import android.support.v4.app.DialogFragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -17,16 +15,14 @@ import android.widget.Filterable;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.balysv.materialripple.MaterialRippleLayout;
 
-import org.sakaiproject.api.site.SiteData;
-import org.sakaiproject.api.site.actions.IUnJoin;
+import org.sakaiproject.api.memberships.SiteData;
+import org.sakaiproject.api.memberships.actions.IUnJoin;
 import org.sakaiproject.api.user.User;
 import org.sakaiproject.general.Actions;
 import org.sakaiproject.sakai.IMembershipDialog;
-import org.sakaiproject.sakai.MembershipDescriptionFragment;
 import org.sakaiproject.sakai.R;
 
 import java.util.ArrayList;
@@ -91,18 +87,18 @@ public class MembershipAdapter extends RecyclerView.Adapter<MembershipAdapter.Vi
             //holder.roster.setText("");
         }
 
-        List<String> sounds = Actions.findAudios(memberships.get(position).getDescription());
 
-        String description = Actions.deleteHtmlTags(memberships.get(position).getDescription());
+        String description = memberships.get(position).getDescription();
 
-        if (description.equals("")) {
+        if (description == null) {
             holder.description.setText(context.getString(R.string.no_description));
         } else {
 
-            holder.description.setSiteData(memberships.get(position).getId()
+            List<String> sounds = Actions.findAudios(memberships.get(position).getDescription());
 
+            description = Actions.deleteHtmlTags(memberships.get(position).getDescription());
 
-            );
+            holder.description.setSiteData(memberships.get(position).getId());
 
             if (description.length() > 60) {
                 description = description.substring(0, 60);
@@ -130,7 +126,6 @@ public class MembershipAdapter extends RecyclerView.Adapter<MembershipAdapter.Vi
             holder.ripple.setVisibility(View.INVISIBLE);
 
         } else {
-
             holder.unjoinLayout.setVisibility(View.VISIBLE);
             holder.ripple.setVisibility(View.VISIBLE);
 

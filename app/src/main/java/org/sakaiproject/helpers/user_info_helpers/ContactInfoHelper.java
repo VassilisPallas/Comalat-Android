@@ -72,37 +72,37 @@ public class ContactInfoHelper implements IUserAbout {
 
     @Override
     public void fillValues() {
-        if (!User.getEmail().equals("")) {
+        if (User.getEmail() != null) {
             emailTextView.setText(User.getEmail());
         } else {
             emailLayout.setVisibility(View.GONE);
         }
 
-        if (!Profile.getHomepage().equals("")) {
+        if (Profile.getHomepage() != null) {
             homePageTextView.setText(Profile.getHomepage());
         } else {
             homePageLayout.setVisibility(View.GONE);
         }
 
-        if (!Profile.getWorkphone().equals("")) {
+        if (Profile.getWorkphone() != null) {
             workPhoneTextView.setText(Profile.getWorkphone());
         } else {
             workPhoneLayout.setVisibility(View.GONE);
         }
 
-        if (!Profile.getHomephone().equals("")) {
+        if (Profile.getHomephone() != null) {
             homePhoneTextView.setText(Profile.getHomephone());
         } else {
             homePhoneLayout.setVisibility(View.GONE);
         }
 
-        if (!Profile.getMobilephone().equals("")) {
+        if (Profile.getMobilephone() != null) {
             mobilePhoneTextView.setText(Profile.getMobilephone());
         } else {
             mobilePhoneLayout.setVisibility(View.GONE);
         }
 
-        if (!Profile.getFacsimile().equals("")) {
+        if (Profile.getFacsimile() != null) {
             facsimileTextView.setText(Profile.getFacsimile());
         } else {
             facsimileLayout.setVisibility(View.GONE);

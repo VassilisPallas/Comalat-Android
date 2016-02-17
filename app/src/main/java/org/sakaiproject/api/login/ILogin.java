@@ -1,6 +1,5 @@
 package org.sakaiproject.api.login;
 
-import android.graphics.Bitmap;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
@@ -15,7 +14,7 @@ public interface ILogin {
      *               for login without internet connection params[0] = user_id, params[1] = password
      * @throws IOException
      */
-    public LoginType login(String... params);
+    public void login(String... params);
 
     /**
      * get the json file from the login
@@ -59,4 +58,9 @@ public interface ILogin {
      *               for login without internet connection nothing
      */
     void getUserThumbnailImage(String... params) throws FileNotFoundException;
+
+    /**
+     * @return the login type
+     */
+    LoginType getLoginType();
 }
