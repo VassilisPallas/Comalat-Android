@@ -101,36 +101,13 @@ public class MembershipAdapter extends RecyclerView.Adapter<MembershipAdapter.Vi
 
             List<String> sounds = Actions.findAudios(memberships.get(position).getDescription());
 
-            Log.i("description before", description);
-
             description = Actions.deleteHtmlTags(memberships.get(position).getDescription());
 
-            Log.i("description after", description);
 
             holder.description.setSiteData(memberships.get(position).getId());
-
-            if (description.length() > 60) {
-                description = description.substring(0, 60);
-                description += "...[Tap for More]";
-            }
+            holder.description.setAddMore(true);
 
             holder.description.setText(description);
-
-//            if (holder.description.getText().toString().length() > 60) {
-//                Editable editable = (Editable) holder.description.getText();
-//
-//                String substring = editable.toString().substring(0, 60);
-//
-//
-//
-//                //description = holder.description.getText().toString();
-//                //description = description.substring(0, 60);
-//                description += "...[Tap for More]";
-//
-//                holder.description.setText(description);
-//            }
-
-
         }
 
         holder.description.setOnClickListener(new View.OnClickListener() {

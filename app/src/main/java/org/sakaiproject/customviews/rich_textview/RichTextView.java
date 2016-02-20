@@ -8,12 +8,16 @@ import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.Build;
+import android.text.Editable;
 import android.text.Html;
 import android.text.Spannable;
+import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
+import android.text.style.ForegroundColorSpan;
 import android.text.style.ImageSpan;
 import android.text.style.StyleSpan;
 import android.util.AttributeSet;
@@ -66,6 +70,7 @@ public class RichTextView extends TextView implements ImageCallback, Html.ImageG
     private Spannable spannable;
     private String imageName;
     Drawable res = null;
+    private boolean addMore = false;
 
     public RichTextView(Context context) {
         super(context);
@@ -77,6 +82,10 @@ public class RichTextView extends TextView implements ImageCallback, Html.ImageG
 
     public RichTextView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+    }
+
+    public void setAddMore(boolean addMore) {
+        this.addMore = addMore;
     }
 
     public void setSiteData(String id) {
@@ -211,7 +220,26 @@ public class RichTextView extends TextView implements ImageCallback, Html.ImageG
     public void setText(CharSequence text, BufferType type) {
         Spannable s = getRichText(getContext(), text);
         tempText = s;
-        super.setText(Html.fromHtml(text.toString(), this, new HtmlHandler(context)), BufferType.SPANNABLE);
+
+        if (addMore && text.length() > 60) {
+
+            Editable editable = new SpannableStringBuilder((Html.fromHtml(text.toString(), this, new HtmlHandler(context))).subSequence(0, 60));
+
+
+            editable = editable.insert(editable.toString().length(), "...");
+            int from = editable.length();
+            editable = editable.insert(editable.toString().length(), "\n[Tap for More]");
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                editable.setSpan(new ForegroundColorSpan(context.getResources().getColor(R.color.colorAccent, context.getTheme())), from, editable.length(), Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+            } else
+                editable.setSpan(new ForegroundColorSpan(context.getResources().getColor(R.color.colorAccent)), from, editable.length(), Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+
+
+            super.setText(editable, BufferType.EDITABLE);
+        } else {
+
+            super.setText(Html.fromHtml(text.toString(), this, new HtmlHandler(context)), BufferType.SPANNABLE);
+        }
     }
 
     private void loadBitmapFromResources(Spannable spannable, Context context, Image im, Bitmap bitmap) {
