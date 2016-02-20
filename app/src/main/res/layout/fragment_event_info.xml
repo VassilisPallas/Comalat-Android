@@ -134,7 +134,7 @@
                     android:layout_toRightOf="@+id/time_txt" />
 
 
-                <org.sakaiproject.customviews.TextViewWithImages
+                <org.sakaiproject.customviews.rich_textview.RichTextView
                     android:id="@+id/event_description"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

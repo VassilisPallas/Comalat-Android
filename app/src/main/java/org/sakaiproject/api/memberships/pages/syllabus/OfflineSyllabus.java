@@ -32,8 +32,6 @@ public class OfflineSyllabus {
 
         Syllabus syllabus = gson.fromJson(syllabusJson, Syllabus.class);
 
-        Log.i("data", syllabus.getItems().get(0).getData());
-
 
         return syllabus;
     }

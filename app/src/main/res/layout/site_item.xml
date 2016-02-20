@@ -58,7 +58,7 @@
 
             </com.balysv.materialripple.MaterialRippleLayout>
 
-            <org.sakaiproject.customviews.TextViewWithImages
+            <org.sakaiproject.customviews.rich_textview.RichTextView
                 android:id="@+id/membership_description"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

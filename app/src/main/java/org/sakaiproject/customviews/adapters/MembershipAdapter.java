@@ -7,6 +7,9 @@ import android.content.DialogInterface;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.Spannable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +24,7 @@ import com.balysv.materialripple.MaterialRippleLayout;
 import org.sakaiproject.api.memberships.SiteData;
 import org.sakaiproject.api.memberships.actions.IUnJoin;
 import org.sakaiproject.api.user.User;
+import org.sakaiproject.customviews.rich_textview.RichTextView;
 import org.sakaiproject.general.Actions;
 import org.sakaiproject.sakai.IMembershipDialog;
 import org.sakaiproject.sakai.R;
@@ -69,7 +73,8 @@ public class MembershipAdapter extends RecyclerView.Adapter<MembershipAdapter.Vi
 
         vh.name = (TextView) v.findViewById(R.id.membership_name);
         vh.roster = (TextView) v.findViewById(R.id.membership_roster);
-        vh.description = (org.sakaiproject.customviews.TextViewWithImages) v.findViewById(R.id.membership_description);
+        vh.description = (RichTextView) v.findViewById(R.id.membership_description);
+        vh.description.setContext(context);
         vh.unjoin = (ImageView) v.findViewById(R.id.unjoin_imageview);
         vh.unjoinLayout = (FrameLayout) v.findViewById(R.id.unjoin);
         vh.ripple = (MaterialRippleLayout) v.findViewById(R.id.unjoin_ripple);
@@ -96,7 +101,11 @@ public class MembershipAdapter extends RecyclerView.Adapter<MembershipAdapter.Vi
 
             List<String> sounds = Actions.findAudios(memberships.get(position).getDescription());
 
+            Log.i("description before", description);
+
             description = Actions.deleteHtmlTags(memberships.get(position).getDescription());
+
+            Log.i("description after", description);
 
             holder.description.setSiteData(memberships.get(position).getId());
 
@@ -104,7 +113,24 @@ public class MembershipAdapter extends RecyclerView.Adapter<MembershipAdapter.Vi
                 description = description.substring(0, 60);
                 description += "...[Tap for More]";
             }
+
             holder.description.setText(description);
+
+//            if (holder.description.getText().toString().length() > 60) {
+//                Editable editable = (Editable) holder.description.getText();
+//
+//                String substring = editable.toString().substring(0, 60);
+//
+//
+//
+//                //description = holder.description.getText().toString();
+//                //description = description.substring(0, 60);
+//                description += "...[Tap for More]";
+//
+//                holder.description.setText(description);
+//            }
+
+
         }
 
         holder.description.setOnClickListener(new View.OnClickListener() {
@@ -163,7 +189,7 @@ public class MembershipAdapter extends RecyclerView.Adapter<MembershipAdapter.Vi
     public static class ViewHolder extends RecyclerView.ViewHolder {
         ImageView unjoin;
         TextView name, roster;
-        org.sakaiproject.customviews.TextViewWithImages description;
+        RichTextView description;
         FrameLayout unjoinLayout;
         com.balysv.materialripple.MaterialRippleLayout ripple;
 

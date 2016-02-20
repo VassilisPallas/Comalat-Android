@@ -4,7 +4,7 @@ package org.sakaiproject.sakai;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.JsonWriter;
+import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +12,7 @@ import android.widget.ProgressBar;
 
 import org.sakaiproject.api.internet.NetWork;
 import org.sakaiproject.api.motd.OnlineMessageOfTheDay;
+import org.sakaiproject.customviews.rich_textview.RichTextView;
 
 
 /**
@@ -36,11 +37,15 @@ public class WelcomeFragment extends Fragment {
         findViewsById(v);
         onlineMessageOfTheDay = new OnlineMessageOfTheDay(getContext());
         new MotdAsync(getResources().getString(R.string.url) + "announcement/motd.json").execute();
+
+
         return v;
     }
 
     private void findViewsById(View v) {
         progressBar = (ProgressBar) v.findViewById(R.id.motd_progressbar);
+        RichTextView welcomeMessage = (RichTextView) v.findViewById(R.id.welcome_message);
+        welcomeMessage.setMovementMethod(new LinkMovementMethod());
     }
 
     public class MotdAsync extends AsyncTask<Void, Void, Integer> {

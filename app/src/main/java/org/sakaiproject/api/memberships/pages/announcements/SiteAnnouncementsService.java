@@ -1,6 +1,7 @@
 package org.sakaiproject.api.memberships.pages.announcements;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -51,10 +52,9 @@ public class SiteAnnouncementsService {
         JsonObjectRequest announcementsRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
+
                 Announcement announcement = gson.fromJson(response.toString(), Announcement.class);
-
                 JsonParser.getMembershipAnnouncements(announcement);
-
                 if (Actions.createDirIfNotExists(context, User.getUserEid() + File.separator + "memberships" + File.separator + siteId + File.separator + "announcements"))
                     try {
                         Actions.writeJsonFile(context, response.toString(), siteId + "_announcements", User.getUserEid() + File.separator + "memberships" + File.separator + siteId + File.separator + "announcements");

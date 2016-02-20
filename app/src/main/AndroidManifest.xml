@@ -34,7 +34,7 @@
             android:theme="@style/AppTheme.NoActionBar" />
 
         <activity
-            android:name=".AboutActivity"
+            android:name=".UserAboutActivity"
             android:configChanges="orientation|keyboardHidden|screenSize">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

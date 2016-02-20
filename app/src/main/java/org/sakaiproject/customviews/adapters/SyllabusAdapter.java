@@ -13,6 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import org.sakaiproject.api.pojos.syllabus.Item;
+import org.sakaiproject.customviews.rich_textview.RichTextView;
 import org.sakaiproject.general.Actions;
 import org.sakaiproject.general.AttachmentType;
 import org.sakaiproject.sakai.R;
@@ -67,7 +68,7 @@ public class SyllabusAdapter extends RecyclerView.Adapter<SyllabusAdapter.ViewHo
         ViewHolder vh = new ViewHolder(v);
 
         vh.title = (TextView) v.findViewById(R.id.syllabus_title);
-        vh.data = (org.sakaiproject.customviews.TextViewWithImages) v.findViewById(R.id.syllabus_data);
+        vh.data = (RichTextView) v.findViewById(R.id.syllabus_data);
         vh.data.setSiteData(pageid);
         vh.delete = (ImageView) v.findViewById(R.id.delete_imageview);
         vh.deleteLayout = (FrameLayout) v.findViewById(R.id.delete_item);
@@ -163,7 +164,7 @@ public class SyllabusAdapter extends RecyclerView.Adapter<SyllabusAdapter.ViewHo
     public static class ViewHolder extends RecyclerView.ViewHolder {
         ImageView delete;
         TextView title;
-        org.sakaiproject.customviews.TextViewWithImages data;
+        RichTextView data;
         LinearLayout attachements;
         FrameLayout deleteLayout;
         TextView date;

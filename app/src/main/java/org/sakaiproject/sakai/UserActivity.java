@@ -226,7 +226,7 @@ public class UserActivity extends AppCompatActivity implements NavigationView.On
                 initializeMainMenu();
                 break;
             case R.id.help:
-                WebViewFragment webViewFragment = new WebViewFragment().getUrl("http://141.99.248.86:8089/portal/help/main");
+                WebViewFragment webViewFragment = new WebViewFragment().getUrl(getResources().getString(R.string.help_url));
                 Actions.selectFragment(webViewFragment, R.id.user_frame, this);
                 break;
         }

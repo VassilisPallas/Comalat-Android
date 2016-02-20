@@ -24,7 +24,7 @@ import org.sakaiproject.helpers.user_info_helpers.SocialNetworkInfoHelper;
 import org.sakaiproject.helpers.user_info_helpers.StaffInfoHelper;
 import org.sakaiproject.helpers.user_info_helpers.StudentInfoHelper;
 
-public class AboutActivity extends AppCompatActivity implements View.OnClickListener {
+public class UserAboutActivity extends AppCompatActivity implements View.OnClickListener {
 
     private Waiter waiter;  //Thread which controls idle time
     private Connection connection = Connection.getInstance();
@@ -43,7 +43,7 @@ public class AboutActivity extends AppCompatActivity implements View.OnClickList
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_about);
+        setContentView(R.layout.activity_user_about);
 
         editDrawable = Actions.setCustomDrawableColor(this, R.mipmap.ic_create, Color.parseColor("#29A031"));
 
@@ -68,7 +68,7 @@ public class AboutActivity extends AppCompatActivity implements View.OnClickList
         if (NetWork.getConnectionEstablished()) {
             waiter = Waiter.getInstance();
             waiter.stop = false;
-            waiter.setActivity(AboutActivity.class);
+            waiter.setActivity(UserAboutActivity.class);
             waiter.setContext(this);
             waiter.setPeriod(Connection.getMaxInactiveInterval() * 1000); // 1800 milliseconds * 1000 = 30 mins
             if (waiter.getState() == Thread.State.NEW)

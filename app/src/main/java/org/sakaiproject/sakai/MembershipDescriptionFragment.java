@@ -8,7 +8,10 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import org.sakaiproject.api.memberships.SiteData;
+import org.sakaiproject.customviews.rich_textview.RichTextView;
 import org.sakaiproject.general.Actions;
+
+import java.io.UnsupportedEncodingException;
 
 /**
  * Created by vasilis on 1/26/16.
@@ -63,7 +66,8 @@ public class MembershipDescriptionFragment extends DialogFragment {
             ownerName.append(")");
         }
 
-        org.sakaiproject.customviews.TextViewWithImages shortDescr = (org.sakaiproject.customviews.TextViewWithImages) v.findViewById(R.id.membership_short_description);
+        RichTextView shortDescr = (RichTextView) v.findViewById(R.id.membership_short_description);
+        shortDescr.setContext(getContext());
 
         shortDescr.setSiteData(data.getId());
 
@@ -74,7 +78,8 @@ public class MembershipDescriptionFragment extends DialogFragment {
             shortDescr.setText(getContext().getResources().getString(R.string.no_short_descr));
         }
 
-        org.sakaiproject.customviews.TextViewWithImages descr = (org.sakaiproject.customviews.TextViewWithImages) v.findViewById(R.id.membership_description);
+        RichTextView descr = (RichTextView) v.findViewById(R.id.membership_description);
+        descr.setContext(getContext());
         descr.setSiteData(data.getId());
 
         if (description != null) {

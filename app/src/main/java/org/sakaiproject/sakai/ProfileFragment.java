@@ -170,7 +170,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
                 // TODO: upload the new post
                 break;
             case R.id.about_button:
-                startActivity(new Intent(getActivity(), AboutActivity.class));
+                startActivity(new Intent(getActivity(), UserAboutActivity.class));
                 break;
             case R.id.photos_button:
                 break;

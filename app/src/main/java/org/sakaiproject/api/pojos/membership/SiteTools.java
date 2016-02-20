@@ -1,10 +1,12 @@
 package org.sakaiproject.api.pojos.membership;
 
+import java.io.Serializable;
+
 /**
  * Created by vasilis on 1/15/16.
  * a JavaBeans convention class for the site tools data
  */
-public class SiteTools {
+public class SiteTools implements Serializable {
 
     private String toolId;
     private int pageOrder;
@@ -12,7 +14,7 @@ public class SiteTools {
     private String description;
     private String title;
     // it's always null, so the type is unknown
-     private Object home;
+    private Object home;
 
 
     public String getToolId() {

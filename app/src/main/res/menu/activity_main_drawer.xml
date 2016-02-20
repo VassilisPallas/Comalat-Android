@@ -40,7 +40,6 @@
             android:id="@+id/reset_password"
             android:icon="@mipmap/ic_person"
             android:title="@string/reset_password" />
-
     </group>
 
     <item android:title="@string/other">

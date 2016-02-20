@@ -1,10 +1,12 @@
 package org.sakaiproject.api.pojos;
 
+import java.io.Serializable;
+
 /**
  * Created by vasilis on 1/15/16.
  * custom calls for the site owner
  */
-public class MembershipOwner {
+public class MembershipOwner implements Serializable {
     private String userDisplayName, userId;
 
     /**

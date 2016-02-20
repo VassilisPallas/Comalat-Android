@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.TextView;
 
 import org.sakaiproject.api.announcements.OfflineUserAnnouncements;
 import org.sakaiproject.api.announcements.UserAnnouncementHelper;
@@ -40,6 +41,7 @@ public class AnnouncementFragment extends Fragment implements SwipeRefreshLayout
     private RecyclerView mRecyclerView;
     private RecyclerView.LayoutManager mLayoutManager;
     private AnnouncementAdapter mAdapter;
+    private TextView noAnnouncements;
 
     @Override
     public void onAttach(Context context) {
@@ -76,6 +78,8 @@ public class AnnouncementFragment extends Fragment implements SwipeRefreshLayout
 
         mRecyclerView = (RecyclerView) v.findViewById(R.id.announcement_recycler_view);
 
+        noAnnouncements = (TextView) v.findViewById(R.id.no_announcements);
+
         // use a linear layout manager
         mLayoutManager = new LinearLayoutManager(v.getContext());
         mRecyclerView.setLayoutManager(mLayoutManager);
@@ -107,6 +111,12 @@ public class AnnouncementFragment extends Fragment implements SwipeRefreshLayout
         }
 
         mRecyclerView.setAdapter(mAdapter);
+
+        if (mAdapter.getItemCount() == 0) {
+            noAnnouncements.setVisibility(View.VISIBLE);
+        } else {
+            noAnnouncements.setVisibility(View.GONE);
+        }
 
         swipeRefresh.Callback(this);
 
@@ -151,6 +161,13 @@ public class AnnouncementFragment extends Fragment implements SwipeRefreshLayout
             } else {
                 mAdapter.setAnnouncement(MembershipAnnouncementHelper.membershipAnnouncement);
             }
+
+            if (mAdapter.getItemCount() == 0) {
+                noAnnouncements.setVisibility(View.VISIBLE);
+            } else {
+                noAnnouncements.setVisibility(View.GONE);
+            }
+
             mRecyclerView.setAdapter(mAdapter);
         }
     }

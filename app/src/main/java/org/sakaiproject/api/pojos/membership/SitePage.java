@@ -1,5 +1,6 @@
 package org.sakaiproject.api.pojos.membership;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
@@ -7,7 +8,7 @@ import java.util.Map;
  * Created by vasilis on 1/15/16.
  * a JavaBeans convention class for the site page data
  */
-public class SitePage {
+public class SitePage implements Serializable{
 
     private int layout;
     private String toolPopupUrl;

@@ -34,6 +34,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -144,8 +146,6 @@ public class Actions {
 
         return b;
     }
-
-
 
 
     /**
@@ -444,16 +444,16 @@ public class Actions {
                             try {
                                 Logout logout = new Logout();
                                 logout.logout(context.getResources().getString(R.string.url) + "session/" + Connection.getSessionId());
-                                    User.nullInstance();
-                                    Profile.nullInstance();
-                                    Connection.nullSessionId();
-                                    SiteData.getSites().clear();
-                                    SiteData.getProjects().clear();
-                                    UserMainNavigationDrawerHelper.getMyWorkSpaceItems().clear();
+                                User.nullInstance();
+                                Profile.nullInstance();
+                                Connection.nullSessionId();
+                                SiteData.getSites().clear();
+                                SiteData.getProjects().clear();
+                                UserMainNavigationDrawerHelper.getMyWorkSpaceItems().clear();
 
-                                    Intent i = new Intent(((AppCompatActivity) context).getApplication(), MainActivity.class);
-                                    context.startActivity(i);
-                                    ((AppCompatActivity) context).finish();
+                                Intent i = new Intent(((AppCompatActivity) context).getApplication(), MainActivity.class);
+                                context.startActivity(i);
+                                ((AppCompatActivity) context).finish();
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
@@ -503,19 +503,21 @@ public class Actions {
      * @return the text without html tags
      */
     public static String deleteHtmlTags(String text) {
+        //text = URLDecoder.decode(text, "UTF-8");
+
         text = text.replaceAll("<p>", "");
         text = text.replaceAll("<\\/p>", "");
-        text = text.replaceAll("<span .+?>", "");
-        text = text.replaceAll("<\\/span>", "");
+        //text = text.replaceAll("<span .+?>", "");
+        //text = text.replaceAll("<\\/span>", "");
         text = text.replaceAll("<div .+?>", "");
         text = text.replaceAll("<\\/div>", "");
         text = text.replaceAll("(\\r)+", "");
         text = text.replaceAll("(\\n)+", "\n");
-        text = text.replaceAll("&nbsp;", "");
+        text = text.replaceAll("&nbsp;", " ");
         text = text.replaceAll("( )+", " ");
         text = text.replaceAll("(<br>|</br>|</ br>)+", "\n");
         //text = text.replaceAll("<img .+?\\/>", "");
-        text = text.replaceAll("<audio .+>.+<\\/audio>", "");
+        //text = text.replaceAll("<audio .+>.+<\\/audio>", "");
         return text;
     }
 

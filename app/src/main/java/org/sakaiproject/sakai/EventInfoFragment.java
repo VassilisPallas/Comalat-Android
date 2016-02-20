@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import org.sakaiproject.customviews.rich_textview.RichTextView;
 import org.sakaiproject.general.Actions;
 import org.sakaiproject.api.user.User;
 import org.sakaiproject.api.events.UserEvents;
@@ -24,7 +25,7 @@ public class EventInfoFragment extends DialogFragment {
 
     private UserEvents selectedEvent;
     private TextView title, date, time, attachment, frequency, eventType, owner, site, fromSite, location;
-    private org.sakaiproject.customviews.TextViewWithImages description;
+    private RichTextView description;
     private Button editEvent, removeEvent;
     private LinearLayout attachmentLinear;
 
@@ -74,7 +75,7 @@ public class EventInfoFragment extends DialogFragment {
         time = (TextView) v.findViewById(R.id.event_time);
         time.setText(selectedEvent.getTimeDuration());
 
-        description = (org.sakaiproject.customviews.TextViewWithImages) v.findViewById(R.id.event_description);
+        description = (RichTextView) v.findViewById(R.id.event_description);
 
         description.setSiteData(selectedEvent.getEventId());
 

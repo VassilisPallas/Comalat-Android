@@ -1,6 +1,7 @@
 package org.sakaiproject.api.memberships;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -94,7 +95,7 @@ public class MembershipService {
 
                     membership_id_tag = User.getUserEid() + " membership " + SiteData.getSites().get(i).getId() + " data";
 
-                    JsonObjectRequest siteDataRequest = new JsonObjectRequest(Request.Method.GET, context.getResources().getString(R.string.url) + "site/" + SiteData.getSites().get(i).getId() + ".json", null, new Response.Listener<JSONObject>() {
+                    final JsonObjectRequest siteDataRequest = new JsonObjectRequest(Request.Method.GET, context.getResources().getString(R.string.url) + "site/" + SiteData.getSites().get(i).getId() + ".json", null, new Response.Listener<JSONObject>() {
                         @Override
                         public void onResponse(JSONObject response) {
 

@@ -9,6 +9,7 @@
 
     <!-- server's url for connection-->
     <string name="url">http://141.99.248.86:8089/direct/</string>
+    <string name="help_url">"http://141.99.248.86:8089/portal/help/main"</string>
 
     <!-- Message of the day -->
     <string name="message_of_the_day">Message Of The Day</string>
@@ -17,9 +18,138 @@
     <!-- Welcome -->
     <string name="welcome_title">Welcome!</string>
     <string name="welcome_to_sakai">Welcome to Sakai</string>
-    <string name="welcome_message">Welcome to the Sakai Demo. The Demo configuration was created as a way to let you get an instance of Sakai up and running quickly and easily. For more information about installing a Sakai solution appropriate for production needs please read the readme files, and visit the Sakai website at sakaiproject.org, and the Sakai Developer\'s site at collab.sakaiproject.org.</string>
+    <string name="welcome_message">
+        <![CDATA[Welcome to the Sakai Demo. The Demo configuration was created as a way to let you get an instance of Sakai up and running quickly and easily.
+        For more information about installing a Sakai solution appropriate for production needs please read the readme files, and visit the Sakai website at
+        <a href="sakaiproject.org">sakaiproject.org</a>, and the Sakai Developer\'s site at <a href="collab.sakaiproject.org">collab.sakaiproject.org</a>.]]></string>
 
-    <!-- main navigation drawer's data-->
+    <!-- About -->
+    <string name="about_sakai_title">About Sakai</string>
+    <string name="about_sakai_message">
+        <![CDATA[Sakai is a set of software tools designed to help instructors, researchers, and students create websites for collaboration. Using a web browser, users
+        choose from a set of features to create a site that meets their needs.<br /><br />Here are some common uses of Sakai:<br /><ul><li>A researcher can create a website for
+        collaboration on a project with colleagues.</li><li>An instructor can create a website that serves as an online discussion board for students to collaborate on an
+        assignment.</li><li>A student can create a site for a study group or for extra curricular activities (depending on institutional policy).</li></ul><br />Sakai is a
+        part of the <a href="http://www.apereo.org">Apereo Foundation</a> (www.apereo.org).<br /><br />An overview of Sakai can be found at
+        <a href="http://www.sakaiproject.org">http://www.sakaiproject.org</a>. For more information, contact <a href="mailto:sakaicoordinator@apereo.org">the
+        Sakai Community Coordinator</a>.]]></string>
+
+    <!-- Features -->
+    <string name="features_title">Capabilities</string>
+    <string name="features_capabilities">Sakai offers a variety of capabilities for use in course and project sites, including:</string>
+    <string name="home_capabilities">View recent announcements, discussions, and chat activity</string>
+    <string name="announcements_capabilities">Post current, time-critical information</string>
+    <string name="assignments_capabilities">Post assignments and receive submissions online</string>
+    <string name="basiclti">Basiclti</string>
+    <string name="basiclti_capabilities">Launch and exchange information with externally-hosted tools</string>
+    <string name="chat_room_capabilities">Participate in real-time, written conversations</string>
+    <string name="drop_box_capabilities">Allow private file-sharing between instructors and students</string>
+    <string name="entity_broker">Entity Broker</string>
+    <string name="entity_broker_capabilities">Provides a set of RESTful APIs that support interoperability between Sakai tools.</string>
+    <string name="email_archive_capabilities">Maintain an archive of all email sent to the worksite\'s email list</string>
+    <string name="gradebook_capabilities">Compute and store grades</string>
+    <string name="help_capabilities">Access help documentation</string>
+    <string name="lessons_capabilities">
+        Can organize the course by unit, module, week, topic, or any other grouping the instructor creates. Lessons leverages the power of other Sakai tools like Assignments,
+        and Test and Quizzes.
+    </string>
+    <string name="membership_capabilities">Choose sites in which you would like to participate</string>
+    <string name="messages_and_forums">Messages and\nForums</string>
+    <string name="messages_and_forums_capabilities">Create discussion forums and communicate between site groups and users using internal mail.</string>
+    <string name="news_capabilities">Display an RSS feed from an external site</string>
+    <string name="podcasts_capabilities">View podcasts</string>
+    <string name="polls_capabilities">Create site-based surveys and polls</string>
+    <string name="portofolios">Portfolios</string>
+    <string name="portofolios_capabilities">Supports portfolio-based activities with a suite of tools.</string>
+    <string name="postem_capabilities">Provides functionality for uploading .csv formatted files to display feedback (e.g., comments, grades) to site participants.</string>
+    <string name="preferences_capabilities">Set your personal preferences, such as time zone, tab order</string>
+    <string name="profile_capabilities">Provides a Facebook-style interface for editing user profiles; includes Twitter integration</string>
+    <string name="quartz_scheduler">Quartz\nScheduler</string>
+    <string name="quartz_scheduler_capabilities">Schedule and run cron jobs</string>
+    <string name="resources_capabilities">Add documents and URLs to your worksite</string>
+    <string name="roster_capabilities">View list of site participants</string>
+    <string name="calendar_capabilities">Keep track of important dates and deadlines on worksite calendar</string>
+    <string name="search_capabilities">Provides search capabilities of Sakai content</string>
+    <string name="section_info_capabilities">Manage sections or groups within a site</string>
+    <string name="shortened_url_service">Shortened URL\nService</string>
+    <string name="shortened_url_service_capabilities">
+        A simple service that allows tools and services to shorten links to anything, either via the Java-based service or the Entity Provider.
+    </string>
+    <string name="signup_tool">Signup tool</string>
+    <string name="signup_tool_capabilities">Schedule instructor and ta office hours, study groups, and review sessions.</string>
+    <string name="site_info_capabilities">View worksite profile and participants list</string>
+    <string name="site_stats">Site Stats</string>
+    <string name="site_stats_capabilities">View site usage statistics</string>
+    <string name="syllabus_capabilities">Create a worksite syllabus</string>
+    <string name="test_quizzes_capabilities">Create, administer, and correct tests and quizzes online, and automatically feed the results to the Gradebook</string>
+    <string name="web_content_capabilities">Include external website content in your worksite</string>
+    <string name="wiki_capabilities">Collaboratively edit simple web pages</string>
+    <string name="worksite_setup">Worksite Setup</string>
+    <string name="worksite_setup_capabilities">Create and manage sites</string>
+    <string name="webservices">Webservices</string>
+    <string name="webservices_capabilities">Includes a rich collection of web services for system admins</string>
+
+    <!-- Acknowledgements -->
+    <string name="acknowledgements_copyrights">
+        <![CDATA[Copyright 2003&#8211;2014 The Apereo Foundation. All rights reserved.<br /><br />Sakai is licensed for use pursuant to the
+        <a href="https://opensource.org/licenses/ecl2.php">Educational Community License v. 2.0</a>. Portions of Sakai are copyrighted by other parties, including the parties
+        listed below. Please refer to the licenses directory for complete copyright and licensing information.]]>
+    </string>
+    <string name="acknowledgements_message">
+        <![CDATA[Portions of Sakai were developed by Cambridge University, Georgia Tech, Indiana University, Lancaster University, MIT, Oxford University, Stanford University,
+        rSmart Corporation, The Australian National University, Unicon Corporation, Universidad Politechnica De Valencia, Universitat de Lleida, University of Cape Town,
+        University of California Berkeley, University of Michigan, University of Toronto, Virginia Tech, and others.
+        <a href="https://www.sakaiproject.org/">(http://www.sakaiproject.org/)</a>.<br /><br />
+
+        This product includes software developed by the Apache Software Foundation <a href="http://www.apache.org/">(http://www.apache.org)</a>.<br /><br />
+
+        The jaxen library is provided by The Werken Company. <a href="http://www.codehaus.org/">(http://jaxen.codehaus.org/)</a>.<br /><br />
+
+        This product includes software developed by the JDOM Project <a href="http://www.jdom.org/">(http://www.jdom.org/)</a>.<br /><br />
+
+        This product includes software developed by the Pluto Project <a href="http://portals.apache.org/pluto/">(http://portals.apache.org/pluto/)</a>.<br /><br />
+
+        This product includes software developed by the DOM4J Project <a href="http://www.dom4j.org">(http://www.dom4j.org)</a>.<br /><br />
+
+        This product includes software developed by the MX4J project <a href="http://sourceforge.net/projects/mx4j">(http://sourceforge.net/projects/mx4j)</a>.<br /><br />
+
+        This product includes software developed by the SAXPath Project <a href="http://sourceforge.net/projects/saxpath">
+        (http://sourceforge.net/projects/saxpath)</a>.<br /><br />
+
+        This product includes copyrighted software developed by E. Wray Johnson for use and distribution by the Object Data Management Group
+        <a href="http://www.odmg.org/">(http://www.odmg.org/)</a>.<br /><br />
+
+        Portions Copyright (c) 1999 Sun Microsystems, Inc. All Rights Reserved.<br /><br />
+
+        WebSPHINX is Copyright (c) 1998&#8211;2002 &#8211; Carnegie Mellon University.<br /><br />
+
+        This product includes Silk Icons developed by Mark James and are available at <a href="http://www.famfamfam.com/lab/icons/silk/">
+        (http://www.famfamfam.com/lab/icons/silk/)</a><br /><br />
+
+        This product includes both the CKEditor and FCKEditor, text editors for Internet software, Copyright (c) 2003 &#8211; 2011 CKSource &#8211; Frederico Knabben
+        <a href="http://ckeditor.com/">(http://ckeditor.com/)</a>.<br /><br />
+
+        This product includes jQuery &#8211; Copyright (c) 2006 John Resig <a href="http://www.jquery.com">http://www.jquery.com</a><br /><br />
+
+        Portions Copyright IMS Global Learning Consortium <a href="http://www.imsglobal.org/">(http://www.imsglobal.org/)</a><br /><br />
+
+        Sakai includes support for <a href="https://www.imsglobal.org/cc/statuschart.cfm">IMS Learning Tools Interoperability (LTI) 1.0, 1.1, and 2.0</a>
+        Tool Consumer.<br /><br />
+
+        This product makes use of <a href="http://codeb.it/fonticonpicker/">jQuery fontIconPicker</a> under the MIT License.<br /><br />
+
+        This product makes use of <a href="http://fontawesome.io/icons/">Font Awesome by Dave Gandy</a> under the MIT License. All brand icons are trademarks of their respective
+        owners.<br /><br />
+
+        <img alt="rsz_imsblti_v1tc" height="45" src="http://141.99.248.86:8089/library/image/rsz_imsblti_v1tc.jpg" title="rsz_imsblti_v1tc" width="120" />]]>
+    </string>
+
+    <!-- Training -->
+    <string name="training_message">
+        <![CDATA[Training is available on all aspects of Sakai. See the website <a href="https://www.sakaiproject.org/">sakaiproject.org</a> for more information.]]>
+    </string>
+
+    <!-- main navigation drawer's data -->
     <string name="welcome">Welcome</string>
     <string name="about">About</string>
     <string name="features">Features</string>
@@ -32,7 +162,7 @@
     <string name="reset_password">Reset Password</string>
     <string name="other">Other</string>
 
-    <!-- user navigation drawer's data-->
+    <!-- user navigation drawer's data -->
     <string name="dashboard">Dashboard</string>
     <string name="home">Home</string>
     <string name="profile">Profile</string>
@@ -44,7 +174,7 @@
     <string name="account">Account</string>
     <string name="logout">Logout</string>
 
-    <!-- site's option navigation drawer's data-->
+    <!-- site's option navigation drawer's data -->
     <string name="assignments">Assignments</string>
     <string name="char_room">Chat Room</string>
     <string name="comalat_guide">COMALAT Guide</string>
@@ -72,7 +202,7 @@
     <string name="wiki">Wiki</string>
     <string name="web_content">Web Content</string>
 
-    <!-- site's navigation drawer's data-->
+    <!-- site's navigation drawer's data -->
     <string name="my_workspace">My Workspace</string>
     <string name="projects">Projects</string>
     <string name="site_search">Search your sites</string>
@@ -193,5 +323,5 @@
     <string name="no_short_descr">No short site description has been provided</string>
     <string name="no_descr">No site description has been provided</string>
     <string name="site_descr">Site Description</string>
-
+    <string name="no_announcements">There are currently no announcements at this location.</string>
 </resources>

@@ -104,12 +104,6 @@ public class MainActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
-//    public void selectFragment(Fragment f, int id, String title) {
-//        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-//        fragmentTransaction.replace(id, f);
-//        fragmentTransaction.commit();
-//        setTitle(title);
-//    }
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
@@ -122,17 +116,25 @@ public class MainActivity extends AppCompatActivity
                 Actions.selectFragment(welcomeFragment, R.id.content_frame, this);
                 break;
             case R.id.about:
+                AboutFragment aboutFragment = new AboutFragment();
+                Actions.selectFragment(aboutFragment, R.id.content_frame, this);
                 break;
             case R.id.features:
+                FeaturesFragment featuresFragment = new FeaturesFragment();
+                Actions.selectFragment(featuresFragment, R.id.content_frame, this);
                 break;
             case R.id.site_browser:
                 break;
             case R.id.training:
+                TrainingFragment trainingFragment = new TrainingFragment();
+                Actions.selectFragment(trainingFragment, R.id.content_frame, this);
                 break;
             case R.id.acknowledgements:
+                AcknowledgementsFragment acknowledgementsFragment = new AcknowledgementsFragment();
+                Actions.selectFragment(acknowledgementsFragment, R.id.content_frame, this);
                 break;
             case R.id.help:
-                WebViewFragment webViewFragment = new WebViewFragment();
+                WebViewFragment webViewFragment = new WebViewFragment().getUrl(getResources().getString(R.string.help_url));
                 Actions.selectFragment(webViewFragment, R.id.content_frame, this);
                 break;
             case R.id.login:

@@ -54,47 +54,63 @@ public class UserAnnouncementsService {
         JsonObjectRequest userAnnouncementsRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
+                announcementsJson = response.toString();
                 announcement = gson.fromJson(response.toString(), Announcement.class);
 
-                for (int i = 0; i < announcement.getAnnouncementCollection().size(); i++) {
-                    final int index = i;
+                if (announcement.getAnnouncementCollection().size() > 0) {
 
-                    Announcement.AnnouncementItems item = announcement.getAnnouncementCollection().get(i);
+                    for (int i = 0; i < announcement.getAnnouncementCollection().size(); i++) {
 
-                    site_name_tag = User.getUserEid() + " " + item.getSiteId() + " name";
-                    JsonObjectRequest siteNameRequest = new JsonObjectRequest(Request.Method.GET, context.getResources().getString(R.string.url) + "site/" + item.getSiteId() + ".json", null, new Response.Listener<JSONObject>() {
-                        @Override
-                        public void onResponse(JSONObject response) {
+                        final int index = i;
 
-                            SiteName siteName = gson.fromJson(response.toString(), SiteName.class);
+                        Announcement.AnnouncementItems item = announcement.getAnnouncementCollection().get(i);
 
-                            announcement.getAnnouncementCollection().get(index).setSiteTitle(siteName.getEntityTitle());
+                        site_name_tag = User.getUserEid() + " " + item.getSiteId() + " name";
+                        JsonObjectRequest siteNameRequest = new JsonObjectRequest(Request.Method.GET, context.getResources().getString(R.string.url) + "site/" + item.getSiteId() + ".json", null, new Response.Listener<JSONObject>() {
+                            @Override
+                            public void onResponse(JSONObject response) {
 
-                            JsonParser.getUserAnnouncements(announcement);
+                                SiteName siteName = gson.fromJson(response.toString(), SiteName.class);
 
-                            announcementsJson = gson.toJson(announcement);
+                                announcement.getAnnouncementCollection().get(index).setSiteTitle(siteName.getEntityTitle());
 
-                            if (Actions.createDirIfNotExists(context, User.getUserEid() + File.separator + "announcements"))
-                                try {
-                                    Actions.writeJsonFile(context, announcementsJson, "announcements", User.getUserEid() + File.separator + "announcements");
-                                } catch (IOException e) {
-                                    e.printStackTrace();
-                                }
+                                JsonParser.getUserAnnouncements(announcement);
 
-                            delegate.updateUI();
+                                announcementsJson = gson.toJson(announcement);
 
-                            if (swipeRefreshLayout != null)
-                                swipeRefreshLayout.setRefreshing(false);
+                                if (Actions.createDirIfNotExists(context, User.getUserEid() + File.separator + "announcements"))
+                                    try {
+                                        Actions.writeJsonFile(context, announcementsJson, "announcements", User.getUserEid() + File.separator + "announcements");
+                                    } catch (IOException e) {
+                                        e.printStackTrace();
+                                    }
+                                delegate.updateUI();
+
+                                if (swipeRefreshLayout != null)
+                                    swipeRefreshLayout.setRefreshing(false);
+                            }
+                        }, new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                VolleyLog.d(site_name_tag, error.getMessage());
+                                if (swipeRefreshLayout != null)
+                                    swipeRefreshLayout.setRefreshing(false);
+                            }
+                        });
+                        AppController.getInstance().addToRequestQueue(siteNameRequest, site_name_tag);
+                    }
+                } else {
+                    if (Actions.createDirIfNotExists(context, User.getUserEid() + File.separator + "announcements"))
+                        try {
+                            Actions.writeJsonFile(context, announcementsJson, "announcements", User.getUserEid() + File.separator + "announcements");
+                        } catch (IOException e) {
+                            e.printStackTrace();
                         }
-                    }, new Response.ErrorListener() {
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
-                            VolleyLog.d(site_name_tag, error.getMessage());
-                            if (swipeRefreshLayout != null)
-                                swipeRefreshLayout.setRefreshing(false);
-                        }
-                    });
-                    AppController.getInstance().addToRequestQueue(siteNameRequest, site_name_tag);
+
+                    delegate.updateUI();
+
+                    if (swipeRefreshLayout != null)
+                        swipeRefreshLayout.setRefreshing(false);
                 }
             }
         }, new Response.ErrorListener() {

@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:paddingLeft="10dp"
     android:paddingRight="10dp"
-    tools:context="org.sakaiproject.sakai.AboutActivity">
+    tools:context=".UserAboutActivity">
 
     <org.sakaiproject.customviews.AboutScrollView
         android:id="@+id/about_scrollview"

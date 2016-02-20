@@ -48,6 +48,7 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/message_of_the_day"
                         android:layout_marginTop="10dp"
+                        android:clickable="true"
                         android:text="@string/motd" />
 
                     <ImageView
@@ -57,7 +58,7 @@
                         android:layout_below="@+id/motd"
                         android:layout_marginTop="10dp"
                         android:scaleType="fitCenter"
-                        android:src="@drawable/comalat_logo_small" />
+                        android:src="@drawable/comalat_motd" />
 
                 </RelativeLayout>
 
@@ -96,7 +97,7 @@
                         android:text="@string/welcome_to_sakai"
                         android:textSize="18sp" />
 
-                    <TextView
+                    <org.sakaiproject.customviews.rich_textview.RichTextView
                         android:id="@+id/welcome_message"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
