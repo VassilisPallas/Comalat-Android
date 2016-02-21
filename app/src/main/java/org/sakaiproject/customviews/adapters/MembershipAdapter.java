@@ -7,9 +7,6 @@ import android.content.DialogInterface;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
-import android.text.Editable;
-import android.text.Spannable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -159,6 +156,7 @@ public class MembershipAdapter extends RecyclerView.Adapter<MembershipAdapter.Vi
     public int getItemCount() {
         return memberships.size();
     }
+
 
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and

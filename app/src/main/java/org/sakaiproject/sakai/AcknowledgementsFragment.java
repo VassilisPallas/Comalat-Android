@@ -28,10 +28,10 @@ public class AcknowledgementsFragment extends Fragment {
         RichTextView acknowledgementsMessage = (RichTextView) v.findViewById(R.id.acknowledgements_message);
         acknowledgementsMessage.setContext(getContext());
         acknowledgementsMessage.setText(getContext().getResources().getString(R.string.acknowledgements_message));
-        acknowledgementsMessage.setMovementMethod(new LinkMovementMethod());
+
 
         RichTextView acknowledgementsCopyright = (RichTextView) v.findViewById(R.id.acknowledgements_copyright);
-        acknowledgementsCopyright.setMovementMethod(new LinkMovementMethod());
+        acknowledgementsCopyright.setContext(getContext());
 
         return v;
     }

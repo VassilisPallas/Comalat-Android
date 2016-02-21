@@ -32,6 +32,6 @@ public class AboutFragment extends Fragment {
 
     private void findViewsById(View v) {
         org.sakaiproject.customviews.rich_textview.RichTextView about = (org.sakaiproject.customviews.rich_textview.RichTextView) v.findViewById(R.id.about_message);
-        about.setMovementMethod(new LinkMovementMethod());
+        about.setContext(getContext());
     }
 }

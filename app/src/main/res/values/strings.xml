@@ -329,5 +329,6 @@
     <string name="no_announcements">There are currently no announcements at this location.</string>
     <string name="no_valid_email_address">Enter a valid email address</string>
     <string name="password_not_match">Password doesn\'t match</string>
+    <string name="title_activity_web_view">WebViewActivity</string>
 
 </resources>

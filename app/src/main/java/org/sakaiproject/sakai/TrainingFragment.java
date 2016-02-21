@@ -26,7 +26,7 @@ public class TrainingFragment extends Fragment {
         getActivity().setTitle(getContext().getResources().getString(R.string.training));
 
         RichTextView trainingMessage = (RichTextView) v.findViewById(R.id.training_message);
-        trainingMessage.setMovementMethod(new LinkMovementMethod());
+        trainingMessage.setContext(getContext());
 
         return v;
     }

@@ -7,6 +7,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.Html;
 import android.text.Spannable;
@@ -81,7 +82,7 @@ public class RichTextView extends TextView implements Html.ImageGetter {
 
     public void setContext(Context context) {
         this.context = context;
-        setMovementMethod(LinkMovementMethod.getInstance());
+        setMovementMethod(CustomLinkMovementMethod.getInstance(context));
     }
 
     private void addImage(final Context context, final Spannable spannable) {

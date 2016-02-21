@@ -11,8 +11,6 @@ import org.sakaiproject.api.memberships.SiteData;
 import org.sakaiproject.customviews.rich_textview.RichTextView;
 import org.sakaiproject.general.Actions;
 
-import java.io.UnsupportedEncodingException;
-
 /**
  * Created by vasilis on 1/26/16.
  */
@@ -91,4 +89,5 @@ public class MembershipDescriptionFragment extends DialogFragment {
 
         return v;
     }
+
 }

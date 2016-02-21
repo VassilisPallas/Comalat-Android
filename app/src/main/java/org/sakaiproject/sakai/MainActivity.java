@@ -134,8 +134,7 @@ public class MainActivity extends AppCompatActivity
                 Actions.selectFragment(acknowledgementsFragment, R.id.content_frame, this);
                 break;
             case R.id.help:
-                WebViewFragment webViewFragment = new WebViewFragment().getUrl(getResources().getString(R.string.help_url));
-                Actions.selectFragment(webViewFragment, R.id.content_frame, this);
+                startActivity(new Intent(this, WebViewActivity.class).putExtra("url", getResources().getString(R.string.help_url)));
                 break;
             case R.id.login:
                 LoginFragment loginFragment = new LoginFragment();
