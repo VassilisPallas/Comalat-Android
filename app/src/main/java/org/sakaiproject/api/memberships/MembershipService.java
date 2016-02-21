@@ -152,7 +152,15 @@ public class MembershipService {
                             if (swipeRefreshLayout != null)
                                 swipeRefreshLayout.setRefreshing(false);
                         }
-                    });
+                    })
+
+                    {
+                        @Override
+                        public Priority getPriority() {
+                            return Priority.LOW;
+                        }
+                    };
+
                     AppController.getInstance().addToRequestQueue(pagesRequest, membership_page_tag);
 
 
@@ -273,7 +281,14 @@ public class MembershipService {
                             if (swipeRefreshLayout != null)
                                 swipeRefreshLayout.setRefreshing(false);
                         }
-                    });
+                    })
+
+                    {
+                        @Override
+                        public Priority getPriority() {
+                            return Priority.LOW;
+                        }
+                    };
                     AppController.getInstance().addToRequestQueue(pagesRequest, membership_page_tag);
 
 

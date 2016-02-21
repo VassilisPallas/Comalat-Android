@@ -60,7 +60,8 @@ public class HtmlHandler implements Html.TagHandler {
             }
         } else if (tag.equals("span")) {
 
-            processAttributes(xmlReader);
+            if (opening)
+                processAttributes(xmlReader);
 
             if (attributes != null && attributes.size() > 0) {
 

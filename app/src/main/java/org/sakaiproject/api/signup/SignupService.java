@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -34,12 +35,13 @@ public class SignupService {
 
     private ProgressBar userExistsProgressBar, signupProgressBar;
     private ImageView userExistsImageView;
+    private TextView signupTextView;
 
-
-    public SignupService(Context context, ImageView userExistsImageView, ProgressBar signupProgressBar, ProgressBar userExistsProgressBar) {
+    public SignupService(Context context, ImageView userExistsImageView, ProgressBar signupProgressBar, TextView signupTextView, ProgressBar userExistsProgressBar) {
         this.context = context;
         this.userExistsImageView = userExistsImageView;
         this.signupProgressBar = signupProgressBar;
+        this.signupTextView = signupTextView;
         this.userExistsProgressBar = userExistsProgressBar;
     }
 
@@ -59,7 +61,7 @@ public class SignupService {
             @Override
             public void onResponse(String response) {
                 userId = response;
-                //new LoginService(signupProgressBar, context).login(url, eid, password);
+                new LoginService(signupProgressBar, signupTextView, context).login(url, eid, password);
             }
         }, new Response.ErrorListener() {
             @Override

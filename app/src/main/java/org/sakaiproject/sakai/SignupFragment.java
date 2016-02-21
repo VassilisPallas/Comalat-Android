@@ -123,7 +123,7 @@ public class SignupFragment extends Fragment implements EidExistence {
             Snackbar.make(root, getResources().getString(R.string.no_internet), Snackbar.LENGTH_LONG)
                     .setAction(getResources().getText(R.string.can_not_sync), null).show();
         }
-        signup = new SignupService(getContext(), userExistsImageView, signupProgressBar, userExistsProgressBar);
+        signup = new SignupService(getContext(), userExistsImageView, signupProgressBar, signupTextView, userExistsProgressBar);
     }
 
     private void userEidValidation() {

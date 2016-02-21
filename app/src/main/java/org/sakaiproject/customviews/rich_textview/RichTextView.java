@@ -1,32 +1,27 @@
 package org.sakaiproject.customviews.rich_textview;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Typeface;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.os.Build;
 import android.text.Editable;
 import android.text.Html;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
-import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
-import android.text.style.ClickableSpan;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.ImageSpan;
-import android.text.style.StyleSpan;
 import android.util.AttributeSet;
 import android.util.Log;
-import android.view.View;
 import android.widget.TextView;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.ImageRequest;
 
 import org.sakaiproject.api.user.User;
@@ -45,33 +40,24 @@ import java.util.regex.Pattern;
 /**
  * Created by vasilis on 1/18/16.
  */
-interface ImageCallback {
-    void success(Spannable spannable, Context context, Image im);
-
-    Drawable error();
-
-    Drawable placeholder();
-}
-
-public class RichTextView extends TextView implements ImageCallback, Html.ImageGetter {
+public class RichTextView extends TextView implements Html.ImageGetter {
 
     private static final Spannable.Factory spannableFactory = Spannable.Factory.getInstance();
 
     private String id;
-    private Bitmap bitmap;
-    private File image;
     private File path;
-    private int width;
-    private int height;
-    private boolean set;
-    private Matcher refImgMatcher;
-    private List<Image> images;
+    private File image;
     private Context context;
-    private Spannable spannable;
     private String imageName;
     private boolean addMore = false;
     private CharSequence tempText;
-    private boolean downloadError = false;
+    private int width;
+    private int height;
+    private Bitmap bitmap;
+    private boolean set;
+    private Matcher refImgMatcher;
+    private List<Image> images;
+    private URLDrawable urlDrawable = new URLDrawable();
 
     public RichTextView(Context context) {
         super(context);
@@ -98,10 +84,114 @@ public class RichTextView extends TextView implements ImageCallback, Html.ImageG
         setMovementMethod(LinkMovementMethod.getInstance());
     }
 
+    private void addImage(final Context context, final Spannable spannable) {
+        if (id != null)
+            if (Actions.createDirIfNotExists(context, User.getUserEid() + File.separator + "memberships" + File.separator + id)) {
+                path = new File(context.getFilesDir(), User.getUserEid() + File.separator + "memberships" + File.separator + id);
+            }
+
+        Pattern refImgPattern = Pattern.compile("<img .+?\\/>");
+
+        refImgMatcher = refImgPattern.matcher(spannable);
+        while (refImgMatcher.find()) {
+
+
+            String imageUrl = spannable.subSequence(refImgMatcher.start(0), refImgMatcher.end(0)).toString().trim();
+
+            width = 0;
+            Pattern widthPattern = Pattern.compile("width=\"[0-9]+?\"");
+            Matcher widthMatcher = widthPattern.matcher(imageUrl);
+
+            if (widthMatcher.find()) {
+                String w = widthMatcher.group(0);
+                w = w.replaceAll("width=", "");
+                w = w.replaceAll("\"", "");
+                width = Integer.valueOf(w);
+            }
+
+            height = 0;
+            Pattern heightPattern = Pattern.compile("height=\"[0-9]+?\"");
+            Matcher heightMatcher = heightPattern.matcher(imageUrl);
+
+            if (heightMatcher.find()) {
+                String h = heightMatcher.group(0);
+                h = h.replaceAll("height=", "");
+                h = h.replaceAll("\"", "");
+                height = Integer.valueOf(h);
+            }
+
+            Pattern urlPattern = Pattern.compile("(http|ftp|https):\\/\\/([\\w_-]+(?:(?:\\.[\\w_ -]+)+))([\\w.,@?^=%&:\\/~+#-]*[\\w@?^=%&\\/~+#-])?");
+            Matcher urlMatcher = urlPattern.matcher(imageUrl);
+
+            if (urlMatcher.find()) {
+                imageUrl = urlMatcher.group(0);
+                imageName = id + "_" + imageUrl.substring(imageUrl.lastIndexOf("/") + 1, imageUrl.length());
+                images.add(new Image(imageUrl, imageName, width, height, refImgMatcher.start(0), refImgMatcher.end(0)));
+            }
+
+        }
+
+        if (images.size() > 0) {
+
+            for (final Image img : images) {
+                image = new File(path, img.getName());
+
+                // image does not exists on hte internal storage
+                if (!image.exists()) {
+                    // search on the drawables
+                    String drawableName = img.getName().substring(0, img.getName().lastIndexOf('.')).replace(id + "_", "");
+                    int identifier = getDrawableId(drawableName);
+
+                    if (identifier == 0) {
+                        bitmap = BitmapFactory.decodeResource(context.getResources(), identifier);
+                        downloadImage(context, img);
+                    }
+                }
+            }
+        }
+
+    }
+
+
+    private void downloadImage(final Context context, final Image img) {
+
+        ImageRequest imageRequest = new ImageRequest(img.getPath(), new Response.Listener<Bitmap>() {
+            @Override
+            public void onResponse(Bitmap response) {
+
+                if (id != null) {
+                    if (Actions.createDirIfNotExists(context, User.getUserEid() + File.separator + "memberships" + File.separator + id))
+                        try {
+                            Actions.saveImage(context, response, img.getName(), User.getUserEid() + File.separator + "memberships" + File.separator + id);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                }
+                Spannable s = getRichText(getContext(), tempText);
+                setText(s, BufferType.SPANNABLE);
+            }
+        }, 0, 0, null, Bitmap.Config.RGB_565, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                VolleyLog.d(img.getName() + " " + (id != null ? id : ""), error);
+            }
+        });
+
+        AppController.getInstance().addToRequestQueue(imageRequest, img.getName() + " " + (id != null ? id : ""));
+    }
+
+    private int getDrawableId(String name) {
+        Resources resources = context.getResources();
+        int identifier;
+        identifier = resources.getIdentifier(name, "drawable", context.getPackageName());
+
+        return identifier;
+    }
+
     private Spannable getRichText(Context context, CharSequence text) {
         images = new ArrayList<>();
-        spannable = spannableFactory.newSpannable(text);
-        //addImage(context, spannable);
+        Spannable spannable = spannableFactory.newSpannable(text);
+        addImage(context, spannable);
         return spannable;
     }
 
@@ -130,140 +220,94 @@ public class RichTextView extends TextView implements ImageCallback, Html.ImageG
         }
     }
 
-    @Override
-    public void success(Spannable spannable, Context context, Image im) {
 
-    }
-
-    @Override
-    public Drawable error() {
+    public Drawable placeholder(int identifier) {
+        Drawable urlDrawable;
         Resources resources = context.getResources();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            return resources.getDrawable(R.mipmap.ic_broken_image, context.getTheme());
-        }
-        return resources.getDrawable(R.mipmap.ic_broken_image);
-    }
-
-    @Override
-    public Drawable placeholder() {
-        Resources resources = context.getResources();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            return resources.getDrawable(R.mipmap.ic_image, context.getTheme());
-        }
-        return resources.getDrawable(R.mipmap.ic_image);
-    }
-
-    @Override
-    public Drawable getDrawable(final String source) {
-        Resources resources = context.getResources();
-        Drawable res;
-
-        // the move cursor for font awesome starts with data:
-        if (!source.startsWith("data:")) {
-            imageName = source.substring(source.lastIndexOf("/") + 1, source.lastIndexOf("."));
-            res = findDrawableImage(imageName);
-            if (res != null) {
-                res.setBounds(0, 0, res.getIntrinsicWidth(), res.getIntrinsicHeight());
-                return res;
-            } else {
-                if (id != null) {
-                    if (Actions.createDirIfNotExists(context, User.getUserEid() + File.separator + "memberships" + File.separator + id)) {
-                        path = new File(context.getFilesDir(), User.getUserEid() + File.separator + "memberships" + File.separator + id);
-                    }
-                    imageName = id + "_" + source.substring(source.lastIndexOf("/") + 1, source.length());
-                    res = findImageFromPath(path.getAbsolutePath(), imageName);
-
-                    if (res == null) {
-                        // download
-                        res = placeholder();
-
-                        ImageRequest imageRequest = new ImageRequest(source, new Response.Listener<Bitmap>() {
-                            @Override
-                            public void onResponse(Bitmap response) {
-
-                                if (id != null) {
-                                    if (Actions.createDirIfNotExists(context, User.getUserEid() + File.separator + "memberships" + File.separator + id))
-                                        try {
-                                            Actions.saveImage(context, response, imageName, User.getUserEid() + File.separator + "memberships" + File.separator + id);
-                                        } catch (IOException e) {
-                                            e.printStackTrace();
-                                        }
-                                }
-
-                                Spannable s = getRichText(getContext(), tempText);
-                                setText(s, BufferType.SPANNABLE);
-                            }
-                        }, 0, 0, null, Bitmap.Config.RGB_565, new Response.ErrorListener() {
-                            @Override
-                            public void onErrorResponse(VolleyError error) {
-                                downloadError = true;
-                                Spannable s = getRichText(getContext(), tempText);
-                                setText(s, BufferType.SPANNABLE);
-                            }
-                        });
-
-                        AppController.getInstance().addToRequestQueue(imageRequest, imageName + " " + (id != null ? id : ""));
-                    }
-
-                }
-            }
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+            urlDrawable = resources.getDrawable(identifier, context.getTheme());
         } else {
-            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
-                res = resources.getDrawable(R.drawable.empty, context.getTheme());
-            } else {
-                res = resources.getDrawable(R.drawable.empty);
-            }
-            return res;
+            urlDrawable = resources.getDrawable(identifier);
         }
+        if (urlDrawable != null) {
+            urlDrawable.setBounds(0, 0, urlDrawable.getIntrinsicWidth(), urlDrawable.getIntrinsicHeight());
+            return urlDrawable;
 
-        if (res != null) {
-            if (downloadError)
-                res = error();
-            res.setBounds(0, 0, res.getIntrinsicWidth(), res.getIntrinsicHeight());
-            return res;
+        }
+        return null;
+    }
+
+    private Drawable findImageFromPath(File file) {
+
+        Drawable urlDrawable = Drawable.createFromPath(file.getAbsolutePath());
+
+        if (urlDrawable != null) {
+
+            if (urlDrawable.getIntrinsicWidth() < 20)
+                urlDrawable.setBounds(0, 0, urlDrawable.getIntrinsicWidth() * 10, urlDrawable.getIntrinsicHeight() * 10);
+            else if (urlDrawable.getIntrinsicWidth() < 150)
+                urlDrawable.setBounds(0, 0, urlDrawable.getIntrinsicWidth() * 4, urlDrawable.getIntrinsicHeight() * 4);
+            else
+                urlDrawable.setBounds(0, 0, urlDrawable.getIntrinsicWidth() * 10, urlDrawable.getIntrinsicHeight() * 10);
+
+            return urlDrawable;
         }
 
         return null;
     }
 
     private Drawable findDrawableImage(String name) {
+        Drawable urlDrawable = new URLDrawable();
         Resources resources = context.getResources();
         int identifier;
-        Drawable res = null;
         identifier = resources.getIdentifier(name, "drawable", context.getPackageName());
-
         if (identifier != 0)
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
-                res = resources.getDrawable(identifier, context.getTheme());
+                urlDrawable = resources.getDrawable(identifier, context.getTheme());
             } else {
-                res = resources.getDrawable(identifier);
+                urlDrawable = resources.getDrawable(identifier);
             }
-        return res;
-    }
+        if (urlDrawable != null) {
+            urlDrawable.setBounds(0, 0, urlDrawable.getIntrinsicWidth(), urlDrawable.getIntrinsicHeight());
+            return urlDrawable;
 
-    private Drawable findImageFromPath(String path, String name) {
-        Drawable res;
-        res = Drawable.createFromPath(path + File.separator + name);
-
-        if (res != null) {
-            if (res.getIntrinsicWidth() < 20)
-                res.setBounds(0, 0, res.getIntrinsicWidth() * 10, res.getIntrinsicHeight() * 10);
-            else if (res.getIntrinsicWidth() < 150)
-                res.setBounds(0, 0, res.getIntrinsicWidth() * 4, res.getIntrinsicHeight() * 4);
-            else
-                res.setBounds(0, 0, res.getIntrinsicWidth(), res.getIntrinsicHeight());
-            return res;
         }
         return null;
     }
 
-    private int getDrawableId(String name) {
-        Resources resources = context.getResources();
-        int identifier;
-        identifier = resources.getIdentifier(name, "drawable", context.getPackageName());
 
-        return identifier;
+    @Override
+    public Drawable getDrawable(String source) {
+        if (id != null)
+            if (Actions.createDirIfNotExists(context, User.getUserEid() + File.separator + "memberships" + File.separator + id)) {
+                path = new File(context.getFilesDir(), User.getUserEid() + File.separator + "memberships" + File.separator + id);
+            }
+
+        Pattern urlPattern = Pattern.compile("(http|ftp|https):\\/\\/([\\w_-]+(?:(?:\\.[\\w_ -]+)+))([\\w.,@?^=%&:\\/~+#-]*[\\w@?^=%&\\/~+#-])?");
+        Matcher urlMatcher = urlPattern.matcher(source);
+
+        if (urlMatcher.find()) {
+            imageName = (id != null ? id + "_" : "") + source.substring(source.lastIndexOf("/") + 1, source.length());
+            image = new File(path, imageName);
+
+            if (!image.exists()) {
+                String drawableName = imageName.substring(0, imageName.lastIndexOf('.')).replace(id + "_", "");
+
+                int identifier = getDrawableId(drawableName);
+                if (identifier != 0) {
+                    urlDrawable.setDrawable(findDrawableImage(drawableName));
+                } else {
+                    urlDrawable.setDrawable(placeholder(R.mipmap.ic_image));
+                }
+            } else {
+                urlDrawable.setDrawable(findImageFromPath(image));
+            }
+        } else {
+            urlDrawable.setDrawable(placeholder(R.drawable.empty));
+        }
+
+        // return reference to URLDrawable where I will change with actual image from
+        // the src tag
+        return urlDrawable.getDrawable();
     }
-
-
 }

@@ -21,7 +21,7 @@
     <string name="welcome_message">
         <![CDATA[Welcome to the Sakai Demo. The Demo configuration was created as a way to let you get an instance of Sakai up and running quickly and easily.
         For more information about installing a Sakai solution appropriate for production needs please read the readme files, and visit the Sakai website at
-        <a href="sakaiproject.org">sakaiproject.org</a>, and the Sakai Developer\'s site at <a href="http://collab.sakaiproject.org">collab.sakaiproject.org</a>.]]>
+        <a href="http://www.sakaiproject.org">sakaiproject.org</a>, and the Sakai Developer\'s site at <a href="http://collab.sakaiproject.org">collab.sakaiproject.org</a>.]]>
     </string>
 
     <!-- About -->
