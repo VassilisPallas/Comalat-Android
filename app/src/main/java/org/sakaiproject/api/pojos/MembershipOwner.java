@@ -7,6 +7,7 @@ import java.io.Serializable;
  * custom calls for the site owner
  */
 public class MembershipOwner implements Serializable {
+
     private String userDisplayName, userId;
 
     /**

@@ -45,24 +45,24 @@ public class SiteOfflineEvents {
             if (Actions.createDirIfNotExists(context, User.getUserEid() + File.separator + "memberships" + File.separator + siteId + File.separator + "calendar")) {
                 siteEventsJson = Actions.readJsonFile(context, "siteEventsJson", User.getUserEid() + File.separator + "memberships" + File.separator + siteId + File.separator + "calendar");
                 Event event = gson.fromJson(siteEventsJson, Event.class);
-                JsonParser.parseUserEventJson(event);
+                JsonParser.parseEventJson(event);
             }
 
-            for (int i = 0; i < EventsCollection.getUserEventsList().size(); i++) {
+            for (int i = 0; i < EventsCollection.getEventsList().size(); i++) {
                 if (Actions.createDirIfNotExists(context, User.getUserEid() + File.separator + "memberships" + File.separator + siteId + File.separator + "calendar")) {
-                    siteEventInfoJson = Actions.readJsonFile(context, EventsCollection.getUserEventsList().get(i).getEventId(), User.getUserEid() + File.separator + "memberships" + File.separator + siteId + File.separator + "calendar");
+                    siteEventInfoJson = Actions.readJsonFile(context, EventsCollection.getEventsList().get(i).getEventId(), User.getUserEid() + File.separator + "memberships" + File.separator + siteId + File.separator + "calendar");
                     EventInfo eventInfo = gson.fromJson(siteEventInfoJson, EventInfo.class);
-                    JsonParser.parseUserEventInfoJson(eventInfo, i);
+                    JsonParser.parseEventInfoJson(eventInfo, i);
                 }
 
-                if (!EventsCollection.getUserEventsList().get(i).getCreator().equals(User.getUserId())) {
+                if (!EventsCollection.getEventsList().get(i).getCreator().equals(User.getUserId())) {
                     SharedPreferences prfs = context.getSharedPreferences("event_owners", Context.MODE_PRIVATE);
-                    String owner = prfs.getString(EventsCollection.getUserEventsList().get(i).getEventId(), "");
-                    EventsCollection.getUserEventsList().get(i).setCreatorUserId(owner);
+                    String owner = prfs.getString(EventsCollection.getEventsList().get(i).getEventId(), "");
+                    EventsCollection.getEventsList().get(i).setCreatorUserId(owner);
                 }
-                String siteId = EventsCollection.getUserEventsList().get(i).getReference().replaceAll("/calendar/calendar/", "");
+                String siteId = EventsCollection.getEventsList().get(i).getReference().replaceAll("/calendar/calendar/", "");
                 siteId = siteId.replaceAll("/main", "");
-                EventsCollection.getUserEventsList().get(i).setSiteId(siteId);
+                EventsCollection.getEventsList().get(i).setSiteId(siteId);
             }
         } catch (IOException e) {
             e.printStackTrace();

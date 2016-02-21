@@ -53,6 +53,8 @@
                         android:layout_height="wrap_content"
                         android:layout_toRightOf="@+id/go_back"
                         android:paddingLeft="10dp"
+                        android:paddingRight="10dp"
+                        android:singleLine="true"
                         android:textColor="#000"
                         android:textSize="18sp" />
 
@@ -64,6 +66,8 @@
                         android:layout_below="@+id/page_title"
                         android:layout_toRightOf="@+id/go_back"
                         android:paddingLeft="15dp"
+                        android:paddingRight="15dp"
+                        android:singleLine="true"
                         android:textColor="#7e7e7e" />
 
                 </RelativeLayout>

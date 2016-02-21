@@ -62,7 +62,8 @@ public class SiteEventsService {
      * @param eventUrl the url
      */
     public void getEvents(String eventUrl) {
-        EventsCollection.getUserEventsList().clear();
+
+        EventsCollection.getEventsList().clear();
         EventsCollection.getMonthEvents().clear();
 
         if (swipeRefreshLayout != null)
@@ -72,7 +73,7 @@ public class SiteEventsService {
             @Override
             public void onResponse(JSONObject response) {
                 Event event = gson.fromJson(response.toString(), Event.class);
-                JsonParser.parseUserEventJson(event);
+                JsonParser.parseEventJson(event);
                 if (Actions.createDirIfNotExists(context, User.getUserEid() + File.separator + "memberships" + File.separator + siteId + File.separator + "calendar"))
                     try {
                         Actions.writeJsonFile(context, response.toString(), "siteEventsJson", User.getUserEid() + File.separator + "memberships" + File.separator + siteId + File.separator + "calendar");
@@ -80,18 +81,18 @@ public class SiteEventsService {
                         e.printStackTrace();
                     }
 
-                for (int i = 0; i < EventsCollection.getUserEventsList().size(); i++) {
-                    String owner = EventsCollection.getUserEventsList().get(i).getCreator();
-                    String eventId = EventsCollection.getUserEventsList().get(i).getEventId();
+                for (int i = 0; i < EventsCollection.getEventsList().size(); i++) {
+                    String owner = EventsCollection.getEventsList().get(i).getCreator();
+                    String eventId = EventsCollection.getEventsList().get(i).getEventId();
                     String url;
-                    String tag = User.getUserEid() + " " + " " + siteId + " " + EventsCollection.getUserEventsList().get(i).getEventId() + " event";
+                    String tag = User.getUserEid() + " " + " " + siteId + " " + EventsCollection.getEventsList().get(i).getEventId() + " event";
                     if (!owner.equals(User.getUserId())) {
-                        getOwnerData(context.getResources().getString(R.string.url) + "profile/" + EventsCollection.getUserEventsList().get(i).getCreator() + ".json", i, tag);
+                        getOwnerData(context.getResources().getString(R.string.url) + "profile/" + EventsCollection.getEventsList().get(i).getCreator() + ".json", i, tag);
                     }
 
-                    String siteId = EventsCollection.getUserEventsList().get(i).getReference().replaceAll("/calendar/calendar/", "");
+                    String siteId = EventsCollection.getEventsList().get(i).getReference().replaceAll("/calendar/calendar/", "");
                     siteId = siteId.replaceAll("/main", "");
-                    EventsCollection.getUserEventsList().get(i).setSiteId(siteId);
+                    EventsCollection.getEventsList().get(i).setSiteId(siteId);
                     url = context.getResources().getString(R.string.url) + "calendar/event/" + siteId + "/" + eventId + ".json";
 
                     getEventInfo(url, i, tag);
@@ -135,15 +136,15 @@ public class SiteEventsService {
             @Override
             public void onResponse(JSONObject response) {
                 EventInfo userEventOwnerPojo = gson.fromJson(response.toString(), EventInfo.class);
-                JsonParser.parseUserEventInfoJson(userEventOwnerPojo, index);
+                JsonParser.parseEventInfoJson(userEventOwnerPojo, index);
                 if (Actions.createDirIfNotExists(context, User.getUserEid() + File.separator + "memberships" + File.separator + siteId + File.separator + "calendar"))
                     try {
-                        Actions.writeJsonFile(context, response.toString(), EventsCollection.getUserEventsList().get(index).getEventId(), User.getUserEid() + File.separator + "memberships" + File.separator + siteId + File.separator + "calendar");
+                        Actions.writeJsonFile(context, response.toString(), EventsCollection.getEventsList().get(index).getEventId(), User.getUserEid() + File.separator + "memberships" + File.separator + siteId + File.separator + "calendar");
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
 
-                if (index == EventsCollection.getUserEventsList().size() - 1) {
+                if (index == EventsCollection.getEventsList().size() - 1) {
                     calendarRefreshUI.updateUI();
                     if (swipeRefreshLayout != null)
                         swipeRefreshLayout.setRefreshing(false);

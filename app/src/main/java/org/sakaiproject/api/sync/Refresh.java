@@ -37,7 +37,7 @@ public class Refresh extends AsyncTask<Void, Void, Void> {
 
     @Override
     protected Void doInBackground(Void... params) {
-//        EventsCollection.getUserEventsList().clear();
+//        EventsCollection.getEventsList().clear();
 //        EventsCollection.getMonthEvents().clear();
 //
 //        UserEventsService userEventsService = new UserEventsService(context);

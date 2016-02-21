@@ -2,7 +2,6 @@ package org.sakaiproject.api.json;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -190,9 +189,12 @@ public class JsonParser {
      * parse user's events json
      * http://141.99.248.86:8089/direct/calendar/my.json
      *
+     * parse membership's events json
+     * http://141.99.248.86:8089/direct/calendar/site/siteId.json
+     *
      * @param event the object with the json data
      */
-    public static void parseUserEventJson(Event event) {
+    public static void parseEventJson(Event event) {
 
         for (Event.Items item : event.getCalendarCollection()) {
             UserEvents userEvents = new UserEvents();
@@ -208,7 +210,7 @@ public class JsonParser {
             userEvents.setEventDate();
             userEvents.setEventWholeDate();
 
-            EventsCollection.getUserEventsList().add(userEvents);
+            EventsCollection.getEventsList().add(userEvents);
         }
     }
 
@@ -216,20 +218,23 @@ public class JsonParser {
      * parse user's event's info json
      * http://141.99.248.86:8089/direct/calendar/event/~owner/eventId.json
      *
+     * parse membership's event's info json
+     * http://141.99.248.86:8089/direct/calendar/event/siteId/eventId.json
+     *
      * @param userEventOwnerPojo the object with the json data
      * @param index              the index of the event on the List
      */
-    public static void parseUserEventInfoJson(EventInfo userEventOwnerPojo, int index) {
+    public static void parseEventInfoJson(EventInfo userEventOwnerPojo, int index) {
 
-        EventsCollection.getUserEventsList().get(index).setDescription(userEventOwnerPojo.getDescription());
-        EventsCollection.getUserEventsList().get(index).setLastTime(userEventOwnerPojo.getLastTime());
-        EventsCollection.getUserEventsList().get(index).setLocation(userEventOwnerPojo.getLocation());
-        EventsCollection.getUserEventsList().get(index).setRecurrenceRule(userEventOwnerPojo.getRecurrenceRule());
-        if (EventsCollection.getUserEventsList().get(index).getRecurrenceRule() != null)
-            EventsCollection.getUserEventsList().get(index).getRecurrenceRule().setEndDate();
-        EventsCollection.getUserEventsList().get(index).setAttachments(userEventOwnerPojo.getAttachments());
+        EventsCollection.getEventsList().get(index).setDescription(userEventOwnerPojo.getDescription());
+        EventsCollection.getEventsList().get(index).setLastTime(userEventOwnerPojo.getLastTime());
+        EventsCollection.getEventsList().get(index).setLocation(userEventOwnerPojo.getLocation());
+        EventsCollection.getEventsList().get(index).setRecurrenceRule(userEventOwnerPojo.getRecurrenceRule());
+        if (EventsCollection.getEventsList().get(index).getRecurrenceRule() != null)
+            EventsCollection.getEventsList().get(index).getRecurrenceRule().setEndDate();
+        EventsCollection.getEventsList().get(index).setAttachments(userEventOwnerPojo.getAttachments());
 
-        EventsCollection.getUserEventsList().get(index).setTimeDuration();
+        EventsCollection.getEventsList().get(index).setTimeDuration();
     }
 
     /**
@@ -242,10 +247,10 @@ public class JsonParser {
      */
     public static void getEventCreatorDisplayName(Context context, UserEventOwner userEventOwner, int index) {
 
-        EventsCollection.getUserEventsList().get(index).setCreatorUserId(userEventOwner.getDisplayName());
+        EventsCollection.getEventsList().get(index).setCreatorUserId(userEventOwner.getDisplayName());
         SharedPreferences preferences = context.getSharedPreferences("event_owners", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
-        editor.putString(EventsCollection.getUserEventsList().get(index).getEventId(), userEventOwner.getDisplayName());
+        editor.putString(EventsCollection.getEventsList().get(index).getEventId(), userEventOwner.getDisplayName());
         editor.apply();
     }
 

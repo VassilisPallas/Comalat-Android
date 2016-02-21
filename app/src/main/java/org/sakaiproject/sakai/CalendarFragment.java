@@ -371,7 +371,7 @@ public class CalendarFragment extends Fragment implements SwipeRefreshLayout.OnR
         @Override
         protected List<UserEvents> doInBackground(Void... params) {
 
-            EventsCollection.getUserEventsList().clear();
+            EventsCollection.getEventsList().clear();
             EventsCollection.getMonthEvents().clear();
 
             if (siteName.equals(getResources().getString(R.string.my_workspace)))
@@ -379,7 +379,7 @@ public class CalendarFragment extends Fragment implements SwipeRefreshLayout.OnR
             else
                 siteSiteOfflineEvents.getEvents();
 
-            return EventsCollection.getUserEventsList();
+            return EventsCollection.getEventsList();
         }
 
 

@@ -21,7 +21,7 @@ public class EventsCollection {
     private static List<UserEvents> userEvents = new ArrayList<>();
     private static List<UserEvents> monthEvents = new ArrayList<>();
 
-    public static List<UserEvents> getUserEventsList() {
+    public static List<UserEvents> getEventsList() {
         return userEvents;
     }
 
