@@ -1,174 +1,202 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/root"
     tools:context="org.sakaiproject.sakai.SignupFragment">
 
     <ScrollView
+        android:id="@+id/sign_up_scrollview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <RelativeLayout
-            android:id="@+id/signup_edittexts_relative"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:paddingBottom="10dp">
-
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
             <RelativeLayout
-                android:id="@+id/user_eid_relative"
+                android:id="@+id/signup_edittexts_relative"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="10dp">
+                android:paddingBottom="10dp">
 
-                <EditText
-                    android:id="@+id/user_id_edittext"
+                <RelativeLayout
+                    android:id="@+id/user_eid_relative"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="20dp">
+
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/input_layout_user_id"
+                        android:layout_width="250dp"
+                        android:layout_height="wrap_content">
+
+                        <EditText
+                            android:id="@+id/user_id_edittext"
+                            android:layout_width="250dp"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:hint="@string/user_id" />
+
+                    </android.support.design.widget.TextInputLayout>
+
+                    <ProgressBar
+                        android:id="@+id/user_exists_progressbar"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:layout_centerVertical="true"
+                        android:layout_toRightOf="@+id/input_layout_user_id"
+                        android:visibility="gone" />
+
+                    <ImageView
+                        android:id="@+id/user_exists_imageview"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:layout_centerVertical="true"
+                        android:layout_toRightOf="@+id/input_layout_user_id"
+                        android:visibility="invisible" />
+
+
+                </RelativeLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/input_layout_first_name"
                     android:layout_width="250dp"
                     android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:hint="@string/user_id" />
+                    android:layout_below="@+id/user_eid_relative"
+                    android:layout_marginTop="20dp">
 
+                    <EditText
+                        android:id="@+id/first_name_edittext"
+                        android:layout_width="250dp"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/first_name" />
 
-                <ProgressBar
-                    android:id="@+id/user_exists_progressbar"
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:layout_centerVertical="true"
-                    android:layout_toRightOf="@+id/user_id_edittext"
-                    android:visibility="gone" />
+                </android.support.design.widget.TextInputLayout>
 
-                <ImageView
-                    android:id="@+id/user_exists_imageview"
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:layout_centerVertical="true"
-                    android:layout_toRightOf="@+id/user_id_edittext"
-                    android:visibility="invisible" />
-
-            </RelativeLayout>
-
-            <EditText
-                android:id="@+id/first_name_edittext"
-                android:layout_width="250dp"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/user_eid_relative"
-                android:layout_marginTop="20dp"
-                android:hint="@string/first_name" />
-
-            <EditText
-                android:id="@+id/last_name_edittext"
-                android:layout_width="250dp"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/first_name_edittext"
-                android:layout_marginTop="20dp"
-                android:hint="@string/last_name" />
-
-            <RelativeLayout
-                android:id="@+id/user_email_relative"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/last_name_edittext"
-                android:layout_marginTop="20dp">
-
-                <EditText
-                    android:id="@+id/email_edittext"
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/input_layout_last_name"
                     android:layout_width="250dp"
                     android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:hint="@string/email"
-                    android:inputType="textEmailAddress" />
+                    android:layout_below="@+id/input_layout_first_name"
+                    android:layout_marginTop="20dp">
 
-                <ImageView
-                    android:id="@+id/email_validation_imageview"
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:layout_centerVertical="true"
-                    android:layout_toRightOf="@+id/email_edittext"
-                    android:scaleType="fitCenter"
-                    android:visibility="gone" />
-            </RelativeLayout>
+                    <EditText
+                        android:id="@+id/last_name_edittext"
+                        android:layout_width="250dp"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/last_name" />
 
+                </android.support.design.widget.TextInputLayout>
 
-            <EditText
-                android:id="@+id/password_edittext"
-                android:layout_width="250dp"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/user_email_relative"
-                android:layout_marginTop="20dp"
-                android:fontFamily="sans-serif"
-                android:hint="@string/password"
-                android:inputType="textPassword" />
-
-
-            <RelativeLayout
-                android:id="@+id/user_confirm_password_relative"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/password_edittext"
-                android:layout_marginTop="20dp">
-
-                <EditText
-                    android:id="@+id/confirm_password_edittext"
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/input_layout_email"
                     android:layout_width="250dp"
                     android:layout_height="wrap_content"
-                    android:fontFamily="sans-serif"
-                    android:hint="@string/confirm_password"
-                    android:inputType="textPassword" />
+                    android:layout_below="@+id/input_layout_last_name"
+                    android:layout_marginTop="20dp">
 
-                <ImageView
-                    android:id="@+id/password_equals_imageview"
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:layout_centerVertical="true"
-                    android:layout_toRightOf="@+id/confirm_password_edittext"
-                    android:visibility="gone" />
+                    <EditText
+                        android:id="@+id/email_edittext"
+                        android:layout_width="250dp"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:hint="@string/email"
+                        android:inputType="textEmailAddress" />
+
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/input_layout_password"
+                    android:layout_width="250dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/input_layout_email"
+                    android:layout_marginTop="20dp">
+
+                    <EditText
+                        android:id="@+id/password_edittext"
+                        android:layout_width="250dp"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="sans-serif"
+                        android:hint="@string/password"
+                        android:inputType="textPassword" />
+
+                </android.support.design.widget.TextInputLayout>
+
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/input_layout_confirm_password"
+                    android:layout_width="250dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/input_layout_password">
+
+                    <EditText
+                        android:id="@+id/confirm_password_edittext"
+                        android:layout_width="250dp"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="sans-serif"
+                        android:hint="@string/confirm_password"
+                        android:inputType="textPassword" />
+
+                </android.support.design.widget.TextInputLayout>
+
+                <EditText
+                    android:id="@+id/type_edittext"
+                    android:layout_width="250dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/input_layout_confirm_password"
+                    android:layout_marginTop="20dp"
+                    android:enabled="false"
+                    android:hint="@string/new_account_type" />
+
             </RelativeLayout>
-
-
-            <EditText
-                android:id="@+id/type_edittext"
-                android:layout_width="250dp"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/user_confirm_password_relative"
-                android:layout_marginTop="20dp"
-                android:enabled="false"
-                android:hint="@string/new_account_type" />
 
             <com.balysv.materialripple.MaterialRippleLayout
                 android:id="@+id/ripple"
-                android:layout_width="250dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/type_edittext"
+                android:layout_below="@id/signup_edittexts_relative"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="20dp"
                 app:mrl_rippleAlpha="0.2"
                 app:mrl_rippleColor="#f5f5f5"
                 app:mrl_rippleDelayClick="false"
                 app:mrl_rippleHover="true"
                 app:mrl_rippleOverlay="true">
 
-                <Button
+
+                <RelativeLayout
                     android:id="@+id/signup_button"
-                    android:layout_width="250dp"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/signup_button_style"
-                    android:enabled="false"
-                    android:text="@string/create_account"
-                    android:textColor="#FFF" />
+                    android:layout_width="match_parent"
+                    android:layout_height="?android:attr/actionBarSize"
+                    android:background="@drawable/signup_button_disabled"
+                    android:clickable="false"
+                    android:text="@string/login"
+                    android:textColor="#FFF">
+
+                    <TextView
+                        android:id="@+id/sign_up_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_centerVertical="true"
+                        android:text="@string/create_account"
+                        android:textColor="#FFF"
+                        android:textSize="18sp" />
+
+                    <ProgressBar
+                        android:id="@+id/signup_progess"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_centerVertical="true"
+                        android:visibility="gone" />
+
+                </RelativeLayout>
 
             </com.balysv.materialripple.MaterialRippleLayout>
-
-            <ProgressBar
-                android:id="@+id/signup_progess"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_centerVertical="true"
-                android:visibility="gone" />
 
         </RelativeLayout>
 

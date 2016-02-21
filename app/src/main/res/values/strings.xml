@@ -21,7 +21,8 @@
     <string name="welcome_message">
         <![CDATA[Welcome to the Sakai Demo. The Demo configuration was created as a way to let you get an instance of Sakai up and running quickly and easily.
         For more information about installing a Sakai solution appropriate for production needs please read the readme files, and visit the Sakai website at
-        <a href="sakaiproject.org">sakaiproject.org</a>, and the Sakai Developer\'s site at <a href="collab.sakaiproject.org">collab.sakaiproject.org</a>.]]></string>
+        <a href="sakaiproject.org">sakaiproject.org</a>, and the Sakai Developer\'s site at <a href="http://collab.sakaiproject.org">collab.sakaiproject.org</a>.]]>
+    </string>
 
     <!-- About -->
     <string name="about_sakai_title">About Sakai</string>
@@ -32,7 +33,8 @@
         assignment.</li><li>A student can create a site for a study group or for extra curricular activities (depending on institutional policy).</li></ul><br />Sakai is a
         part of the <a href="http://www.apereo.org">Apereo Foundation</a> (www.apereo.org).<br /><br />An overview of Sakai can be found at
         <a href="http://www.sakaiproject.org">http://www.sakaiproject.org</a>. For more information, contact <a href="mailto:sakaicoordinator@apereo.org">the
-        Sakai Community Coordinator</a>.]]></string>
+        Sakai Community Coordinator</a>.]]>
+    </string>
 
     <!-- Features -->
     <string name="features_title">Capabilities</string>
@@ -304,6 +306,7 @@
     <string name="site">site</string>
     <string name="enter_user_id">Enter your user Id</string>
     <string name="enter_password">Enter your password</string>
+    <string name="new_to_comalat">New to Comalat? Sign up</string>
     <string name="search_user_sites_projects">Search for your sites and projects</string>
     <string name="say_something">Say something</string>
     <string name="say_it">Say it</string>
@@ -324,4 +327,7 @@
     <string name="no_descr">No site description has been provided</string>
     <string name="site_descr">Site Description</string>
     <string name="no_announcements">There are currently no announcements at this location.</string>
+    <string name="no_valid_email_address">Enter a valid email address</string>
+    <string name="password_not_match">Password doesn\'t match</string>
+
 </resources>

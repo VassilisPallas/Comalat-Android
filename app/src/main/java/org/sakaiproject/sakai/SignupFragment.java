@@ -7,17 +7,22 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
+import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import org.sakaiproject.api.internet.NetWork;
 import org.sakaiproject.api.signup.EidExistence;
@@ -32,11 +37,12 @@ public class SignupFragment extends Fragment implements EidExistence {
 
     private EidExistence existence = this;
     private EditText eidEditText, firstNameEditText, lastNameEditText, emailEditText, passwordEditText, confirmPasswordEditText, typeEditText;
-    private Button signupButton;
+    private TextInputLayout emailTextInputLayout, confirmPasswordTextInputLayout, passwordTextInputLayout;
+    private RelativeLayout signupButton;
     private ProgressBar userExistsProgressBar, signupProgressBar;
-    private ImageView userExistsImageView, emailValidationImageView, passwordEqualsImageView;
+    private ImageView userExistsImageView;
+    private TextView signupTextView;
 
-    private String emailRegex = "^\\w+([-+.']\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*$";
     private boolean isEidValid, isEmailValid = true, isPasswordEqual;
 
     private FrameLayout root;
@@ -55,6 +61,8 @@ public class SignupFragment extends Fragment implements EidExistence {
         View v = inflater.inflate(R.layout.fragment_signup, container, false);
 
         getActivity().setTitle(getContext().getResources().getString(R.string.new_account));
+
+        getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 
         findViewsById(v);
 
@@ -79,6 +87,12 @@ public class SignupFragment extends Fragment implements EidExistence {
         return v;
     }
 
+    private void requestFocus(View view) {
+        if (view.requestFocus()) {
+            getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+        }
+    }
+
     private void findViewsById(View v) {
         eidEditText = (EditText) v.findViewById(R.id.user_id_edittext);
         firstNameEditText = (EditText) v.findViewById(R.id.first_name_edittext);
@@ -87,20 +101,24 @@ public class SignupFragment extends Fragment implements EidExistence {
         passwordEditText = (EditText) v.findViewById(R.id.password_edittext);
         confirmPasswordEditText = (EditText) v.findViewById(R.id.confirm_password_edittext);
         typeEditText = (EditText) v.findViewById(R.id.type_edittext);
-        signupButton = (Button) v.findViewById(R.id.signup_button);
+        signupButton = (RelativeLayout) v.findViewById(R.id.signup_button);
+        emailTextInputLayout = (TextInputLayout) v.findViewById(R.id.input_layout_email);
+        confirmPasswordTextInputLayout = (TextInputLayout) v.findViewById(R.id.input_layout_confirm_password);
+        signupTextView = (TextView) v.findViewById(R.id.sign_up_text);
+        signupTextView.setTextColor(Color.parseColor("#80898989"));
+        passwordTextInputLayout = (TextInputLayout) v.findViewById(R.id.input_layout_password);
+
         userExistsProgressBar = (ProgressBar) v.findViewById(R.id.user_exists_progressbar);
         userExistsImageView = (ImageView) v.findViewById(R.id.user_exists_imageview);
-        emailValidationImageView = (ImageView) v.findViewById(R.id.email_validation_imageview);
-        passwordEqualsImageView = (ImageView) v.findViewById(R.id.password_equals_imageview);
         signupProgressBar = (ProgressBar) v.findViewById(R.id.signup_progess);
 
         root = (FrameLayout) v.findViewById(R.id.root);
 
         if (NetWork.getConnectionEstablished()) {
-            eidEditText.addTextChangedListener(userExistWatcher);
-            emailEditText.addTextChangedListener(emailValidationWatcher);
-            confirmPasswordEditText.addTextChangedListener(confirmPasswordWatcher);
-            passwordEditText.addTextChangedListener(passwordChangeWatcher);
+            eidEditText.addTextChangedListener(new Watcher(eidEditText));
+            emailEditText.addTextChangedListener(new Watcher(emailEditText));
+            confirmPasswordEditText.addTextChangedListener(new Watcher(confirmPasswordEditText));
+            passwordEditText.addTextChangedListener(new Watcher(passwordEditText));
         } else {
             Snackbar.make(root, getResources().getString(R.string.no_internet), Snackbar.LENGTH_LONG)
                     .setAction(getResources().getText(R.string.can_not_sync), null).show();
@@ -108,163 +126,76 @@ public class SignupFragment extends Fragment implements EidExistence {
         signup = new SignupService(getContext(), userExistsImageView, signupProgressBar, userExistsProgressBar);
     }
 
-    private TextWatcher userExistWatcher = new TextWatcher() {
-        @Override
-        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+    private void userEidValidation() {
+        String eid = eidEditText.getText().toString().trim();
 
+        userExistsImageView.setVisibility(View.INVISIBLE);
+        userExistsProgressBar.setVisibility(View.VISIBLE);
+
+        signup.eidExists(getContext().getResources().getString(R.string.url) + "user/" + eid + "/exists.json", existence);
+    }
+
+    private void emailValidation() {
+        String email = emailEditText.getText().toString();
+        if (email.isEmpty() || !isValidEmail(email)) {
+            emailTextInputLayout.setError(getString(R.string.no_valid_email_address));
+            requestFocus(emailEditText);
+            isEmailValid = false;
+        } else {
+            emailTextInputLayout.setErrorEnabled(false);
+            isEmailValid = true;
         }
+    }
 
-        @Override
-        public void onTextChanged(CharSequence s, int start, int before, int count) {
+    private boolean isValidEmail(String email) {
+        return !TextUtils.isEmpty(email) && android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
+    }
+
+    private void confirmPasswordValidation() {
+        String confirmPassword = confirmPasswordEditText.getText().toString();
+
+        if (!confirmPassword.equals(passwordEditText.getText().toString())) {
+            confirmPasswordTextInputLayout.setError(getString(R.string.password_not_match));
+            passwordTextInputLayout.setError(getString(R.string.password_not_match));
+            requestFocus(confirmPasswordEditText);
+            isPasswordEqual = false;
+        } else {
+            confirmPasswordTextInputLayout.setErrorEnabled(false);
+            passwordTextInputLayout.setErrorEnabled(false);
+            isPasswordEqual = true;
         }
+    }
 
-        @Override
-        public void afterTextChanged(Editable s) {
-            String eid = eidEditText.getText().toString().trim();
-
-            userExistsImageView.setVisibility(View.INVISIBLE);
-            userExistsProgressBar.setVisibility(View.VISIBLE);
-
-            signup.eidExists(getContext().getResources().getString(R.string.url) + "user/" + eid + "/exists.json", existence);
+    private void passwordValidation() {
+        String password = passwordEditText.getText().toString();
+        if (!password.equals(confirmPasswordEditText.getText().toString())) {
+            confirmPasswordTextInputLayout.setError(getString(R.string.password_not_match));
+            passwordTextInputLayout.setError(getString(R.string.password_not_match));
+            requestFocus(passwordEditText);
+            isPasswordEqual = false;
+        } else {
+            confirmPasswordTextInputLayout.setErrorEnabled(false);
+            passwordTextInputLayout.setErrorEnabled(false);
+            isPasswordEqual = true;
         }
-    };
-
-    private TextWatcher emailValidationWatcher = new TextWatcher() {
-        @Override
-        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-        }
-
-        @Override
-        public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            if (!s.toString().trim().matches(emailRegex)) {
-
-                isEmailValid = false;
-
-            } else {
-
-                isEmailValid = true;
-
-            }
-
-            if (emailEditText.getText().toString().length() == 0) {
-                isEmailValid = true;
-                emailValidationImageView.setVisibility(View.GONE);
-                validation();
-                return;
-            }
-
-            emailValidationImageView.setVisibility(View.VISIBLE);
-            emailValidationImageView.setImageDrawable(Actions.selectValidationImage(getContext(), isEmailValid));
-
-            validation();
-        }
-
-        @Override
-        public void afterTextChanged(Editable s) {
-
-            if (!s.toString().trim().matches(emailRegex)) {
-
-                isEmailValid = false;
-
-            } else {
-
-                isEmailValid = true;
-
-            }
-
-            if (emailEditText.getText().toString().length() == 0) {
-                isEmailValid = true;
-                emailValidationImageView.setVisibility(View.GONE);
-                validation();
-                return;
-            }
-
-            emailValidationImageView.setVisibility(View.VISIBLE);
-            emailValidationImageView.setImageDrawable(Actions.selectValidationImage(getContext(), isEmailValid));
-
-            validation();
-        }
-    };
-
-    private TextWatcher confirmPasswordWatcher = new TextWatcher() {
-        @Override
-        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-        }
-
-        @Override
-        public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            if (!s.toString().equals(passwordEditText.getText().toString()) || count == 0) {
-                isPasswordEqual = false;
-            } else {
-                isPasswordEqual = true;
-            }
-
-            passwordEqualsImageView.setVisibility(View.VISIBLE);
-            passwordEqualsImageView.setImageDrawable(Actions.selectValidationImage(getContext(), isPasswordEqual));
-
-            validation();
-        }
-
-        @Override
-        public void afterTextChanged(Editable s) {
-            if (!s.toString().equals(passwordEditText.getText().toString())) {
-                isPasswordEqual = false;
-            } else {
-                isPasswordEqual = true;
-            }
-
-            passwordEqualsImageView.setVisibility(View.VISIBLE);
-            passwordEqualsImageView.setImageDrawable(Actions.selectValidationImage(getContext(), isPasswordEqual));
-
-            validation();
-        }
-    };
-
-    private TextWatcher passwordChangeWatcher = new TextWatcher() {
-        @Override
-        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-        }
-
-        @Override
-        public void onTextChanged(CharSequence s, int start, int before, int count) {
-            if (!s.equals(confirmPasswordEditText.getText().toString())) {
-                isPasswordEqual = false;
-            } else {
-                isPasswordEqual = true;
-            }
-
-            passwordEqualsImageView.setVisibility(View.VISIBLE);
-            passwordEqualsImageView.setImageDrawable(Actions.selectValidationImage(getContext(), isPasswordEqual));
-
-            validation();
-        }
-
-        @Override
-        public void afterTextChanged(Editable s) {
-            if (!s.toString().equals(confirmPasswordEditText.getText().toString())) {
-                isPasswordEqual = false;
-            } else {
-                isPasswordEqual = true;
-            }
-
-            passwordEqualsImageView.setVisibility(View.VISIBLE);
-            passwordEqualsImageView.setImageDrawable(Actions.selectValidationImage(getContext(), isPasswordEqual));
-
-            validation();
-        }
-    };
+    }
 
     public void validation() {
         if (eidEditText.getText().toString().length() > 0 && passwordEditText.getText().toString().length() > 0
                 && isEidValid && isEmailValid && isPasswordEqual) {
-            signupButton.setEnabled(true);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                signupButton.setBackground(getContext().getResources().getDrawable(R.drawable.signup_button_normal, getContext().getTheme()));
+            } else {
+                signupButton.setBackground(getContext().getResources().getDrawable(R.drawable.signup_button_normal));
+            }
+            signupTextView.setTextColor(Color.parseColor("#FFFFFF"));
         } else {
-            signupButton.setEnabled(false);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                signupButton.setBackground(getContext().getResources().getDrawable(R.drawable.signup_button_disabled, getContext().getTheme()));
+            } else {
+                signupButton.setBackground(getContext().getResources().getDrawable(R.drawable.signup_button_disabled));
+            }
+            signupTextView.setTextColor(Color.parseColor("#80898989"));
         }
     }
 
@@ -272,5 +203,43 @@ public class SignupFragment extends Fragment implements EidExistence {
     public void signUpButton(boolean exists) {
         isEidValid = exists;
         validation();
+    }
+
+    private class Watcher implements TextWatcher {
+
+        View v;
+
+        public Watcher(View v) {
+            this.v = v;
+        }
+
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+            switch (v.getId()) {
+                case R.id.user_id_edittext:
+                    userEidValidation();
+                    break;
+                case R.id.email_edittext:
+                    emailValidation();
+                    break;
+                case R.id.confirm_password_edittext:
+                    confirmPasswordValidation();
+                    break;
+                case R.id.password_edittext:
+                    passwordValidation();
+                    break;
+            }
+            validation();
+        }
     }
 }

@@ -4,75 +4,111 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#f2f2f2"
-    android:padding="16dp"
     tools:context="org.sakaiproject.sakai.LoginFragment">
 
-    <ScrollView
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
 
-        <RelativeLayout
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:layout_marginTop="10dp"
-            android:padding="16dp">
+            android:layout_height="wrap_content">
 
-            <EditText
-                android:id="@+id/loginUsername_EditText"
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="20dp"
-                android:hint="@string/enter_user_id"
-                android:singleLine="true" />
+                android:layout_height="wrap_content">
 
+                <ImageView
+                    android:id="@+id/login_image"
+                    android:layout_width="wrap_content"
+                    android:layout_height="120dp"
+                    android:layout_centerHorizontal="true"
+                    android:paddingTop="20dp"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/comalat_motd" />
 
-            <EditText
-                android:id="@+id/loginPassword_EditText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/loginUsername_EditText"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="20dp"
-                android:fontFamily="sans-serif"
-                android:hint="@string/enter_password"
-                android:inputType="textPassword"
-                android:singleLine="true" />
-
-            <com.balysv.materialripple.MaterialRippleLayout
-                android:id="@+id/ripple"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/loginPassword_EditText"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="20dp"
-                app:mrl_rippleAlpha="0.2"
-                app:mrl_rippleColor="#f5f5f5"
-                app:mrl_rippleDelayClick="false"
-                app:mrl_rippleHover="true"
-                app:mrl_rippleOverlay="true">
-
-                <Button
-                    android:id="@+id/loginButton"
+                <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="#43C84E"
+                    android:layout_below="@+id/login_image"
+                    android:padding="16dp">
+
+                    <EditText
+                        android:id="@+id/loginUsername_EditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="20dp"
+                        android:hint="@string/enter_user_id"
+                        android:singleLine="true" />
+
+
+                    <EditText
+                        android:id="@+id/loginPassword_EditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/loginUsername_EditText"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="20dp"
+                        android:fontFamily="sans-serif"
+                        android:hint="@string/enter_password"
+                        android:inputType="textPassword"
+                        android:singleLine="true" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="60dp"
+                        android:layout_below="@+id/loginPassword_EditText" />
+
+                </RelativeLayout>
+
+            </RelativeLayout>
+
+        </ScrollView>
+
+
+        <com.balysv.materialripple.MaterialRippleLayout
+            android:id="@+id/ripple"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            app:mrl_rippleAlpha="0.2"
+            app:mrl_rippleColor="#f5f5f5"
+            app:mrl_rippleDelayClick="false"
+            app:mrl_rippleHover="true"
+            app:mrl_rippleOverlay="true">
+
+            <RelativeLayout
+                android:id="@+id/loginButton"
+                android:layout_width="match_parent"
+                android:layout_height="?android:attr/actionBarSize"
+                android:background="#43C84E"
+                android:clickable="true"
+                android:text="@string/login"
+                android:textColor="#FFF">
+
+                <TextView
+                    android:id="@+id/login_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
                     android:text="@string/login"
-                    android:textColor="#FFF" />
-            </com.balysv.materialripple.MaterialRippleLayout>
+                    android:textColor="#FFF"
+                    android:textSize="18sp" />
 
-            <ProgressBar
-                android:id="@+id/loginProgressBar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/ripple"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="20dp"
-                android:visibility="gone" />
+                <ProgressBar
+                    android:id="@+id/loginProgressBar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:visibility="gone" />
 
-        </RelativeLayout>
+            </RelativeLayout>
+        </com.balysv.materialripple.MaterialRippleLayout>
 
-    </ScrollView>
+    </RelativeLayout>
 
 </FrameLayout>

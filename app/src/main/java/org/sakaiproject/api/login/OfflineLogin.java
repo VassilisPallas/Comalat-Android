@@ -2,6 +2,9 @@ package org.sakaiproject.api.login;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.view.View;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.google.gson.Gson;
 
@@ -27,19 +30,25 @@ public class OfflineLogin implements ILogin {
     private String userDataJson;
     private String userProfileDataJson;
     private Context context;
-
+    private ProgressBar progressBar;
+    private TextView loginTextView;
     private LoginType loginType;
     private final Gson gson = new Gson();
 
     /**
      * the OfflineLogin constructor
      *
-     * @param context the context
+     * @param progressBar the progressbar
+     * @param context     the context
      */
-    public OfflineLogin(Context context) {
+    public OfflineLogin(ProgressBar progressBar, TextView loginTextView, Context context) {
+        this.progressBar = progressBar;
+        this.loginTextView = loginTextView;
         this.context = context;
         jsonParse = new JsonParser(context);
         passwordEncryption = new PasswordEncryption();
+        progressBar.setVisibility(View.VISIBLE);
+        loginTextView.setVisibility(View.GONE);
     }
 
 
@@ -62,6 +71,8 @@ public class OfflineLogin implements ILogin {
             e.printStackTrace();
         }
         loginType = LoginType.INVALID_ARGUMENTS;
+        progressBar.setVisibility(View.GONE);
+        loginTextView.setVisibility(View.VISIBLE);
     }
 
     @Override

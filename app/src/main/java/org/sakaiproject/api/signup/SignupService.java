@@ -59,7 +59,7 @@ public class SignupService {
             @Override
             public void onResponse(String response) {
                 userId = response;
-                new LoginService(signupProgressBar, context).login(url, eid, password);
+                //new LoginService(signupProgressBar, context).login(url, eid, password);
             }
         }, new Response.ErrorListener() {
             @Override

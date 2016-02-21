@@ -7,6 +7,7 @@ import android.graphics.Bitmap;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -53,14 +54,17 @@ public class LoginService implements ILogin {
     private ImageRequest userImage, userImagethumb;
 
     private ProgressBar progressBar;
+    private TextView loginTextView;
     private Context context;
 
     private final Gson gson = new Gson();
 
-    public LoginService(ProgressBar progressBar, Context context) {
+    public LoginService(ProgressBar progressBar, TextView loginTextView, Context context) {
         this.progressBar = progressBar;
+        this.loginTextView = loginTextView;
         this.context = context;
         progressBar.setVisibility(View.VISIBLE);
+        loginTextView.setVisibility(View.GONE);
     }
 
     @Override
@@ -94,6 +98,7 @@ public class LoginService implements ILogin {
                     Toast.makeText(context, context.getResources().getString(R.string.invalid_login), Toast.LENGTH_SHORT).show();
                 }
                 progressBar.setVisibility(View.GONE);
+                loginTextView.setVisibility(View.VISIBLE);
             }
         }) {
 
@@ -137,6 +142,7 @@ public class LoginService implements ILogin {
             @Override
             public void onErrorResponse(VolleyError error) {
                 progressBar.setVisibility(View.GONE);
+                loginTextView.setVisibility(View.VISIBLE);
                 VolleyLog.d(tag_login_json, error.getMessage());
             }
         });
@@ -168,6 +174,7 @@ public class LoginService implements ILogin {
             @Override
             public void onErrorResponse(VolleyError error) {
                 progressBar.setVisibility(View.GONE);
+                loginTextView.setVisibility(View.VISIBLE);
                 VolleyLog.d(tag_user_data_json, error.getMessage());
             }
         });
@@ -202,6 +209,7 @@ public class LoginService implements ILogin {
             @Override
             public void onErrorResponse(VolleyError error) {
                 progressBar.setVisibility(View.GONE);
+                loginTextView.setVisibility(View.VISIBLE);
                 VolleyLog.d(tag_user_data_json, error.getMessage());
             }
         });
@@ -226,6 +234,7 @@ public class LoginService implements ILogin {
             @Override
             public void onErrorResponse(VolleyError error) {
                 progressBar.setVisibility(View.GONE);
+                loginTextView.setVisibility(View.VISIBLE);
                 VolleyLog.d(tag_user_image, error.getMessage());
             }
         });
@@ -245,6 +254,7 @@ public class LoginService implements ILogin {
                         e.printStackTrace();
                     }
                 progressBar.setVisibility(View.GONE);
+                loginTextView.setVisibility(View.VISIBLE);
 
                 Intent i = new Intent(context, UserActivity.class);
                 i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -255,6 +265,7 @@ public class LoginService implements ILogin {
             @Override
             public void onErrorResponse(VolleyError error) {
                 progressBar.setVisibility(View.GONE);
+                loginTextView.setVisibility(View.VISIBLE);
                 VolleyLog.d(tag_user_image_thumb, error.getMessage());
             }
         });
