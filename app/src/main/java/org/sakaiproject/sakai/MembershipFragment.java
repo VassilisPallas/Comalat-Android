@@ -183,7 +183,6 @@ public class MembershipFragment extends Fragment implements IUnJoin, SwipeRefres
         MembershipDescriptionFragment dialogFragment = new MembershipDescriptionFragment().getData(userShortName, email, shortDescription, description, data);
         dialogFragment.setStyle(DialogFragment.STYLE_NO_TITLE, R.style.InfoDialogTheme);
         dialogFragment.show(fm, getContext().getResources().getString(R.string.site_descr));
-
     }
 
     @Override

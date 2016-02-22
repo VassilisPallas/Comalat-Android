@@ -4,12 +4,13 @@ import com.google.gson.annotations.SerializedName;
 
 import org.sakaiproject.api.pojos.Attachment;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by vspallas on 17/02/16.
  */
-public class Announcement {
+public class Announcement implements Serializable {
 
     @SerializedName("announcement_collection")
     List<AnnouncementItems> announcementCollection;
@@ -22,7 +23,7 @@ public class Announcement {
         this.announcementCollection = announcementCollection;
     }
 
-    public static class AnnouncementItems{
+    public static class AnnouncementItems implements Serializable {
         private String announcementId;
         private List<Attachment> attachments;
         private String body;

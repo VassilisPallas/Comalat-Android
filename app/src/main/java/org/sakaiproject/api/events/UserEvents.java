@@ -119,9 +119,9 @@ public class UserEvents implements Serializable, Cloneable {
             String name = attachments.get(i).getUrl().substring(attachments.get(i).getUrl().lastIndexOf('/') + 1).toLowerCase();
 
             if (name.startsWith("http")) {
-//                name = name.replaceAll("%3A|%3a", ":");
-//                name = name.replaceAll("_", "/");
-                name = "click to open url";
+                name = name.replaceAll("%3A|%3a", ":");
+                name = name.replaceAll("_", "/");
+                //name = "click to open url";
             }
 
             names.add(name);

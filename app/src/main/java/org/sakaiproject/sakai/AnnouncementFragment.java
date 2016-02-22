@@ -4,7 +4,9 @@ import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -21,10 +23,10 @@ import org.sakaiproject.api.internet.NetWork;
 import org.sakaiproject.api.memberships.SiteData;
 import org.sakaiproject.api.memberships.pages.announcements.MembershipAnnouncementHelper;
 import org.sakaiproject.api.memberships.pages.announcements.OfflineSiteAnnouncements;
-import org.sakaiproject.api.memberships.pages.announcements.SiteAnnouncementsService;
+import org.sakaiproject.api.memberships.pages.announcements.MembershipAnnouncementsService;
 import org.sakaiproject.api.sync.AnnouncementRefreshUI;
-import org.sakaiproject.api.sync.MembershipRefreshUI;
 import org.sakaiproject.customviews.adapters.AnnouncementAdapter;
+import org.sakaiproject.customviews.listeners.RecyclerItemClickListener;
 import org.sakaiproject.helpers.user_navigation_drawer_helpers.NavigationDrawerHelper;
 
 /**
@@ -112,6 +114,28 @@ public class AnnouncementFragment extends Fragment implements SwipeRefreshLayout
 
         mRecyclerView.setAdapter(mAdapter);
 
+        mRecyclerView.addOnItemTouchListener(new RecyclerItemClickListener(getContext(), mRecyclerView, new RecyclerItemClickListener.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+
+                FragmentManager fm = getFragmentManager();
+                AnnouncementDescriptionFragment dialogFragment;
+
+                if (siteName.equals(getContext().getResources().getString(R.string.my_workspace)))
+                    dialogFragment = new AnnouncementDescriptionFragment().setData(UserAnnouncementHelper.userAnnouncement.getAnnouncementCollection().get(position));
+                else
+                    dialogFragment = new AnnouncementDescriptionFragment().setData(MembershipAnnouncementHelper.membershipAnnouncement.getAnnouncementCollection().get(position));
+                dialogFragment.setStyle(DialogFragment.STYLE_NO_TITLE, R.style.InfoDialogTheme);
+                dialogFragment.show(fm, getContext().getResources().getString(R.string.event_info));
+
+            }
+
+            @Override
+            public void onItemLongClick(View view, int position) {
+
+            }
+        }));
+
         if (mAdapter.getItemCount() == 0) {
             noAnnouncements.setVisibility(View.VISIBLE);
         } else {
@@ -139,10 +163,10 @@ public class AnnouncementFragment extends Fragment implements SwipeRefreshLayout
                         url = getContext().getResources().getString(R.string.url) + "announcement/user.json";
                         userAnnouncementsService.getAnnouncements(url);
                     } else {
-                        SiteAnnouncementsService siteAnnouncementsService = new SiteAnnouncementsService(getContext(), siteData.getId(), delegate);
-                        siteAnnouncementsService.setSwipeRefreshLayout(swipeRefreshLayout);
+                        MembershipAnnouncementsService membershipAnnouncementsService = new MembershipAnnouncementsService(getContext(), siteData.getId(), delegate);
+                        membershipAnnouncementsService.setSwipeRefreshLayout(swipeRefreshLayout);
                         url = getContext().getResources().getString(R.string.url) + "announcement/site/" + siteData.getId() + ".json";
-                        siteAnnouncementsService.getAnnouncements(url);
+                        membershipAnnouncementsService.getAnnouncements(url);
                     }
 
                 } else {

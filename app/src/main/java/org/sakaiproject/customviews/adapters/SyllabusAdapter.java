@@ -155,7 +155,7 @@ public class SyllabusAdapter extends RecyclerView.Adapter<SyllabusAdapter.ViewHo
 
     @Override
     public int getItemCount() {
-        return syllabusItems.size();
+        return syllabusItems != null ? syllabusItems.size() : 0;
     }
 
     // Provide a reference to the views for each data item

@@ -230,7 +230,7 @@
     <string name="session_expiration_on_fifteen_minutes">Session will expire in less than 15 minutes</string>
 
     <!-- Toast messages -->
-    <string name="first_login_without_internet">You have never login again!\nTo login without internet\nyou have to access at least\none time with internet connection</string>
+    <string name="first_login_without_internet">This is your first attempt to login!\nTo login without internet\nyou have to access at least\none time with internet connection</string>
     <string name="invalid_login">Invalid login</string>
     <string name="successful_unjoined">Unjoined successfully</string>
     <string name="empty_fields">Empty fields</string>
@@ -330,5 +330,6 @@
     <string name="no_valid_email_address">Enter a valid email address</string>
     <string name="password_not_match">Password doesn\'t match</string>
     <string name="title_activity_web_view">WebViewActivity</string>
+    <string name="no_syllabus_info">No information</string>
 
 </resources>

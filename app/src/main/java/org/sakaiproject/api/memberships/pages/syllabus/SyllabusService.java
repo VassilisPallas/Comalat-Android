@@ -75,16 +75,5 @@ public class SyllabusService {
         });
 
         AppController.getInstance().addToRequestQueue(syllabusRequest, syllabus_tag);
-
-//        connection.openConnection(url, ConnectionType.GET, true, false, null);
-//        Integer status = connection.getResponseCode();
-//        if (status >= 200 && status < 300) {
-//            inputStream = new BufferedInputStream(connection.getInputStream());
-//            json = Actions.readJsonStream(inputStream);
-//            inputStream.close();
-//            if (Actions.createDirIfNotExists(context, User.getUserEid() + File.separator + "memberships" + File.separator + siteId + File.separator + "syllabus"))
-//                Actions.writeJsonFile(context, json, siteId + "_syllabus", User.getUserEid() + File.separator + "memberships" + File.separator + siteId + File.separator + "syllabus");
-//        }
     }
-
 }

@@ -63,7 +63,7 @@ public class MembershipAdapter extends RecyclerView.Adapter<MembershipAdapter.Vi
     public MembershipAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         // create a new view
         View v = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.site_item, parent, false);
+                .inflate(R.layout.membership_item, parent, false);
         // set the view's size, margins, paddings and layout parameters
 
         ViewHolder vh = new ViewHolder(v);

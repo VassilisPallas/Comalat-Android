@@ -111,6 +111,7 @@ public class UserActivity extends AppCompatActivity implements NavigationView.On
         } catch (IOException e) {
             e.printStackTrace();
         }
+
         initializeMainMenu();
     }
 
@@ -216,6 +217,8 @@ public class UserActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
+
+        sitesNavigationDrawer.unCheckFirstItem();
 
         // left drawer
         switch (item.getItemId()) {

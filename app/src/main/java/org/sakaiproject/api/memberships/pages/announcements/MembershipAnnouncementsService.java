@@ -25,7 +25,7 @@ import java.io.IOException;
 /**
  * Created by vspallas on 09/02/16.
  */
-public class SiteAnnouncementsService {
+public class MembershipAnnouncementsService {
 
     private Context context;
     private String siteId;
@@ -34,7 +34,7 @@ public class SiteAnnouncementsService {
     private org.sakaiproject.customviews.CustomSwipeRefreshLayout swipeRefreshLayout;
     private AnnouncementRefreshUI delegate;
 
-    public SiteAnnouncementsService(Context context, String id, AnnouncementRefreshUI delegate) {
+    public MembershipAnnouncementsService(Context context, String id, AnnouncementRefreshUI delegate) {
         this.context = context;
         siteId = id;
         this.delegate = delegate;

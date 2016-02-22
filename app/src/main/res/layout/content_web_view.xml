@@ -8,18 +8,16 @@
     tools:context="org.sakaiproject.sakai.WebViewActivity"
     tools:showIn="@layout/activity_web_view">
 
+    <WebView
+        android:id="@+id/webview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
     <ProgressBar
         android:id="@+id/webview_progressbar"
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="match_parent"
         android:layout_height="4dp"
+        android:layout_alignParentTop="true"
         android:focusable="false" />
-
-    <WebView
-        android:id="@+id/webview"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/webview_progressbar" />
-
-
 </RelativeLayout>

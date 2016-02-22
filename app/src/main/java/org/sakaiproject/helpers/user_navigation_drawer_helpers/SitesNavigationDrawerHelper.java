@@ -51,6 +51,11 @@ public class SitesNavigationDrawerHelper extends NavigationDrawerHelper {
         initializeSearch();
     }
 
+    public void unCheckFirstItem() {
+        if (sitesNavigationView.getMenu().getItem(0).getSubMenu().getItem(0).isChecked()) {
+            sitesNavigationView.getMenu().getItem(0).getSubMenu().getItem(0).setChecked(false);
+        }
+    }
 
     private void initialize() {
 
@@ -70,7 +75,8 @@ public class SitesNavigationDrawerHelper extends NavigationDrawerHelper {
             Field mCursorDrawableRes = TextView.class.getDeclaredField("mCursorDrawableRes");
             mCursorDrawableRes.setAccessible(true);
             mCursorDrawableRes.set(e, 0); //This sets the cursor resource ID to 0 or @null which will make it visible on white background
-        } catch (Exception ex) {}
+        } catch (Exception ex) {
+        }
 
         ((AppCompatActivity) context).findViewById(R.id.sites_drawer_button).setOnClickListener(new View.OnClickListener() {
             @Override

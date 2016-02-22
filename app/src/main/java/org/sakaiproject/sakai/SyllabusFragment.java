@@ -1,8 +1,10 @@
 package org.sakaiproject.sakai;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
@@ -40,7 +42,6 @@ public class SyllabusFragment extends Fragment implements SwipeRefreshLayout.OnR
     private RecyclerView mRecyclerView;
     private SyllabusAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
-    private ProgressBar refreshProgressBar;
     private FrameLayout root;
     private UpdateSyllabus callback;
     private SyllabusRefreshUI delegate = this;
@@ -88,13 +89,11 @@ public class SyllabusFragment extends Fragment implements SwipeRefreshLayout.OnR
         }
 
         if (syllabus != null && syllabus.getRedirectUrl() != null) {
-//            WebViewFragment webViewFragment = new WebViewFragment().getUrl(syllabus.getRedirectUrl());
-//            Actions.selectFragment(webViewFragment, R.id.user_frame, getContext());
+
+            startActivity(new Intent(getActivity(), WebViewActivity.class).putExtra("url", syllabus.getRedirectUrl()));
         }
 
         root = (FrameLayout) v.findViewById(R.id.root);
-
-        refreshProgressBar = (ProgressBar) v.findViewById(R.id.syllabus_refresh);
 
         swipeRefreshLayout = (org.sakaiproject.customviews.CustomSwipeRefreshLayout) getArguments().getSerializable("swipeRefresh");
 
@@ -119,20 +118,20 @@ public class SyllabusFragment extends Fragment implements SwipeRefreshLayout.OnR
             }
         });
 
-        showCreations = (FloatingActionButton) v.findViewById(R.id.show_creations);
-        showCreations.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-//                AnimatorSet s = new AnimatorSet();
-//                s.play(R.anim.button_rotation_move).before(anim3);
-//                s.play(anim4).after(anim3);
-//
-//                Animation rotation = AnimationUtils.loadAnimation(getContext(), R.anim.button_rotation_move);
-//                Animation rightRotation = AnimationUtils.loadAnimation(getContext(), R.anim.button_rotation_back);
-//                showCreations.startAnimation(rotation);
-//                showCreations.startAnimation(rightRotation);
-            }
-        });
+//        showCreations = (FloatingActionButton) v.findViewById(R.id.show_creations);
+//        showCreations.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+////                AnimatorSet s = new AnimatorSet();
+////                s.play(R.anim.button_rotation_move).before(anim3);
+////                s.play(anim4).after(anim3);
+////
+////                Animation rotation = AnimationUtils.loadAnimation(getContext(), R.anim.button_rotation_move);
+////                Animation rightRotation = AnimationUtils.loadAnimation(getContext(), R.anim.button_rotation_back);
+////                showCreations.startAnimation(rotation);
+////                showCreations.startAnimation(rightRotation);
+//            }
+//        });
 
         if (syllabus != null) {
             update(mRecyclerView, mAdapter, syllabus, siteData.getId());
@@ -152,15 +151,6 @@ public class SyllabusFragment extends Fragment implements SwipeRefreshLayout.OnR
             @Override
             public void run() {
                 if (NetWork.getConnectionEstablished()) {
-//                    SyllabusRefresh refresh = new SyllabusRefresh(getContext());
-//                    refresh.setSwipeRefreshLayout(swipeRefreshLayout);
-//                    refresh.setmAdapter(mAdapter);
-//                    refresh.setmRecyclerView(mRecyclerView);
-//                    refresh.setSiteId(siteData.getId());
-//                    refresh.setCallback(callback);
-//                    refresh.execute();
-
-
                     SyllabusService syllabusService = new SyllabusService(getContext(), siteData.getId(), delegate);
                     syllabusService.setSwipeRefreshLayout(swipeRefreshLayout);
                     try {
@@ -189,7 +179,7 @@ public class SyllabusFragment extends Fragment implements SwipeRefreshLayout.OnR
         Syllabus syllabus = null;
         try {
             syllabus = offlineSyllabus.getSyllabus();
-            if (syllabus.getItems().size() > 0) {
+            if (syllabus.getItems() != null && syllabus.getItems().size() > 0) {
                 callback.update(mRecyclerView, mAdapter, syllabus, siteData.getId());
             }
         } catch (IOException e) {
