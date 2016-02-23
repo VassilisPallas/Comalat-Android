@@ -37,10 +37,11 @@ public class SignupFragment extends Fragment implements EidExistence {
 
     private EidExistence existence = this;
     private EditText eidEditText, firstNameEditText, lastNameEditText, emailEditText, passwordEditText, confirmPasswordEditText, typeEditText;
-    private TextInputLayout emailTextInputLayout, confirmPasswordTextInputLayout, passwordTextInputLayout;
+    private TextInputLayout emailTextInputLayout, confirmPasswordTextInputLayout, passwordTextInputLayout, idInputLayout;
     private RelativeLayout signupButton;
-    private ProgressBar userExistsProgressBar, signupProgressBar;
-    private ImageView userExistsImageView;
+    //private ProgressBar userExistsProgressBar, signupProgressBar;
+    private ProgressBar signupProgressBar;
+    //private ImageView userExistsImageView;
     private TextView signupTextView;
 
     private boolean isEidValid, isEmailValid = true, isPasswordEqual;
@@ -107,9 +108,10 @@ public class SignupFragment extends Fragment implements EidExistence {
         signupTextView = (TextView) v.findViewById(R.id.sign_up_text);
         signupTextView.setTextColor(Color.parseColor("#80898989"));
         passwordTextInputLayout = (TextInputLayout) v.findViewById(R.id.input_layout_password);
+        idInputLayout = (TextInputLayout) v.findViewById(R.id.input_layout_user_id);
 
-        userExistsProgressBar = (ProgressBar) v.findViewById(R.id.user_exists_progressbar);
-        userExistsImageView = (ImageView) v.findViewById(R.id.user_exists_imageview);
+        //userExistsProgressBar = (ProgressBar) v.findViewById(R.id.user_exists_progressbar);
+        //userExistsImageView = (ImageView) v.findViewById(R.id.user_exists_imageview);
         signupProgressBar = (ProgressBar) v.findViewById(R.id.signup_progess);
 
         root = (FrameLayout) v.findViewById(R.id.root);
@@ -123,28 +125,27 @@ public class SignupFragment extends Fragment implements EidExistence {
             Snackbar.make(root, getResources().getString(R.string.no_internet), Snackbar.LENGTH_LONG)
                     .setAction(getResources().getText(R.string.can_not_sync), null).show();
         }
-        signup = new SignupService(getContext(), userExistsImageView, signupProgressBar, signupTextView, userExistsProgressBar);
+
+        signup = new SignupService(getContext(), signupProgressBar, signupTextView, idInputLayout);
     }
 
     private void userEidValidation() {
         String eid = eidEditText.getText().toString().trim();
-
-        userExistsImageView.setVisibility(View.INVISIBLE);
-        userExistsProgressBar.setVisibility(View.VISIBLE);
 
         signup.eidExists(getContext().getResources().getString(R.string.url) + "user/" + eid + "/exists.json", existence);
     }
 
     private void emailValidation() {
         String email = emailEditText.getText().toString();
-        if (email.isEmpty() || !isValidEmail(email)) {
-            emailTextInputLayout.setError(getString(R.string.no_valid_email_address));
-            requestFocus(emailEditText);
-            isEmailValid = false;
-        } else {
-            emailTextInputLayout.setErrorEnabled(false);
-            isEmailValid = true;
-        }
+        if (!TextUtils.isEmpty(email))
+            if (!isValidEmail(email)) {
+                emailTextInputLayout.setError(getString(R.string.no_valid_email_address));
+                requestFocus(emailEditText);
+                isEmailValid = false;
+                return;
+            }
+        emailTextInputLayout.setErrorEnabled(false);
+        isEmailValid = true;
     }
 
     private boolean isValidEmail(String email) {

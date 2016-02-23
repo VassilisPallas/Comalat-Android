@@ -258,6 +258,8 @@ public class RichTextView extends TextView implements Html.ImageGetter {
     }
 
     private Drawable findDrawableImage(String name) {
+        //int size = (int) (-getPaint().ascent());
+
         Drawable urlDrawable = new URLDrawable();
         Resources resources = context.getResources();
         int identifier;

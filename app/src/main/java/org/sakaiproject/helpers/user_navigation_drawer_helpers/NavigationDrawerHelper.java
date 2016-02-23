@@ -13,6 +13,7 @@ import org.sakaiproject.api.pojos.membership.SitePage;
 import org.sakaiproject.customviews.CustomSwipeRefreshLayout;
 import org.sakaiproject.general.Actions;
 import org.sakaiproject.sakai.AnnouncementFragment;
+import org.sakaiproject.sakai.AssignmentFragment;
 import org.sakaiproject.sakai.CalendarFragment;
 import org.sakaiproject.sakai.MembershipFragment;
 import org.sakaiproject.sakai.ProfileFragment;
@@ -283,7 +284,8 @@ public abstract class NavigationDrawerHelper {
         } else if (pageName.equals(ACCOUNT)) {
 
         } else if (pageName.equals(ASSIGNMENTS)) {
-
+            AssignmentFragment assignmentFragment = new AssignmentFragment().getSwipeRefreshLayout(mSwipeRefreshLayout);
+            Actions.selectFragment(assignmentFragment, R.id.user_frame, context);
         } else if (pageName.equals(CHAT_ROOM)) {
 
         } else if (pageName.equals(CONTACT_US)) {

@@ -5,13 +5,14 @@ import com.google.gson.annotations.SerializedName;
 import org.sakaiproject.api.pojos.Attachment;
 import org.sakaiproject.api.pojos.Time;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by vspallas on 22/02/16.
  */
-public class Assignment {
+public class Assignment implements Serializable {
 
     @SerializedName("assignment_collection")
     private List<AssignmentsCollection> assignmentsCollectionList = new ArrayList<>();
@@ -24,19 +25,19 @@ public class Assignment {
         this.assignmentsCollectionList = assignmentsCollectionList;
     }
 
-    public class AssignmentsCollection {
+    public class AssignmentsCollection implements Serializable {
         private Object access;
         private String allPurposeItemText;
         private List<Attachment> attachments;
         private String authorLastModified;
         private List<String> authors;
-        private String closeTimeString;
+        private String closeTimeString; /* Accept Until */
         private Object content;
         private String contentReference;
         private String context; /* siteId */
         private String creator;
         private String dropDeadTimeString;
-        private String dueTimeString;
+        private String dueTimeString; /* Due Date */
         private String gradeScale;
         private Double gradeScaleMaxPoints;
         private String gradebookItemId;
@@ -45,7 +46,7 @@ public class Assignment {
         private String id;
         private String instructions;
         private String modelAnswerText;
-        private String openTimeString;
+        private String openTimeString; /* Open Date */
         @SerializedName("position_order")
         private String positionOrder;
         private String privateNoteText;

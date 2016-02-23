@@ -15,12 +15,12 @@ import java.io.IOException;
 /**
  * Created by vspallas on 09/02/16.
  */
-public class OfflineSiteAnnouncements {
+public class OfflineMembershipAnnouncements {
     private Context context;
     private final Gson gson = new Gson();
     private String siteId;
 
-    public OfflineSiteAnnouncements(Context context, String siteId) {
+    public OfflineMembershipAnnouncements(Context context, String siteId) {
         this.context = context;
         this.siteId = siteId;
     }

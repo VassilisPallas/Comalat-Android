@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
 
 import org.sakaiproject.customviews.rich_textview.RichTextView;
@@ -85,10 +86,10 @@ public class EventInfoFragment extends DialogFragment {
             description.setText(descr);
 
         if (selectedEvent.getAttachments().size() > 0) {
+            (v.findViewById(R.id.attachment_row_txt)).setVisibility(View.VISIBLE);
+            (v.findViewById(R.id.attachment_row)).setVisibility(View.VISIBLE);
             attachment = (TextView) v.findViewById(R.id.attachments_txt);
-            attachment.setVisibility(View.VISIBLE);
             attachmentLinear = (LinearLayout) v.findViewById(R.id.attachments_linear);
-            attachmentLinear.setVisibility(View.VISIBLE);
 
             // add attachments to the attachment linear layout on the fly
             for (int i = 0; i < selectedEvent.getAttachmentNames().size(); i++) {
@@ -123,10 +124,8 @@ public class EventInfoFragment extends DialogFragment {
         site.setText(selectedEvent.getSiteName());
 
         if (selectedEvent.getLocation() != null && !selectedEvent.getLocation().equals("")) {
+            (v.findViewById(R.id.location_row)).setVisibility(View.VISIBLE);
             location = (TextView) v.findViewById(R.id.event_location);
-            TextView eventLocationTxt = (TextView) v.findViewById(R.id.event_location_txt);
-            eventLocationTxt.setVisibility(View.VISIBLE);
-            location.setVisibility(View.VISIBLE);
             location.setText(selectedEvent.getLocation());
         }
 

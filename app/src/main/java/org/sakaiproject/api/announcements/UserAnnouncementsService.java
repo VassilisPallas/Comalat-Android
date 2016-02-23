@@ -1,7 +1,6 @@
 package org.sakaiproject.api.announcements;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -13,7 +12,7 @@ import com.google.gson.Gson;
 import org.json.JSONObject;
 import org.sakaiproject.api.json.JsonParser;
 import org.sakaiproject.api.pojos.announcements.Announcement;
-import org.sakaiproject.api.pojos.announcements.SiteName;
+import org.sakaiproject.api.pojos.SiteName;
 import org.sakaiproject.api.sync.AnnouncementRefreshUI;
 import org.sakaiproject.api.user.User;
 import org.sakaiproject.customviews.CustomSwipeRefreshLayout;
@@ -72,10 +71,12 @@ public class UserAnnouncementsService {
 
                                 SiteName siteName = gson.fromJson(response.toString(), SiteName.class);
 
+                                // change value MyWorkspace with the real name of the membership
                                 announcement.getAnnouncementCollection().get(index).setSiteTitle(siteName.getEntityTitle());
 
                                 JsonParser.getUserAnnouncements(announcement);
 
+                                // make String with the "new" json
                                 announcementsJson = gson.toJson(announcement);
 
                                 if (Actions.createDirIfNotExists(context, User.getUserEid() + File.separator + "announcements"))

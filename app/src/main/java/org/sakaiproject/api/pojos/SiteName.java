@@ -1,4 +1,4 @@
-package org.sakaiproject.api.pojos.announcements;
+package org.sakaiproject.api.pojos;
 
 /**
  * Created by vspallas on 17/02/16.

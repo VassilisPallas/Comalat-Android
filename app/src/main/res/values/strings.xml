@@ -121,17 +121,17 @@
         This product includes copyrighted software developed by E. Wray Johnson for use and distribution by the Object Data Management Group
         <a href="http://www.odmg.org/">(http://www.odmg.org/)</a>.<br /><br />
 
-        Portions Copyright (c) 1999 Sun Microsystems, Inc. All Rights Reserved.<br /><br />
+        Portions Copyright &#169; 1999 Sun Microsystems, Inc. All Rights Reserved.<br /><br />
 
-        WebSPHINX is Copyright (c) 1998&#8211;2002 &#8211; Carnegie Mellon University.<br /><br />
+        WebSPHINX is Copyright &#169; 1998&#8211;2002 &#8211; Carnegie Mellon University.<br /><br />
 
         This product includes Silk Icons developed by Mark James and are available at <a href="http://www.famfamfam.com/lab/icons/silk/">
         (http://www.famfamfam.com/lab/icons/silk/)</a><br /><br />
 
-        This product includes both the CKEditor and FCKEditor, text editors for Internet software, Copyright (c) 2003 &#8211; 2011 CKSource &#8211; Frederico Knabben
+        This product includes both the CKEditor and FCKEditor, text editors for Internet software, Copyright &#169; 2003 &#8211; 2011 CKSource &#8211; Frederico Knabben
         <a href="http://ckeditor.com/">(http://ckeditor.com/)</a>.<br /><br />
 
-        This product includes jQuery &#8211; Copyright (c) 2006 John Resig <a href="http://www.jquery.com">http://www.jquery.com</a><br /><br />
+        This product includes jQuery &#8211; Copyright &#169; 2006 John Resig <a href="http://www.jquery.com">http://www.jquery.com</a><br /><br />
 
         Portions Copyright IMS Global Learning Consortium <a href="http://www.imsglobal.org/">(http://www.imsglobal.org/)</a><br /><br />
 
@@ -282,7 +282,6 @@
     <string name="subjects">Subjects</string>
 
     <!-- event info -->
-    <string name="event_title">Event Title</string>
     <string name="date">Date</string>
     <string name="time">Time</string>
     <string name="description">Description</string>
@@ -295,6 +294,19 @@
     <string name="event_location">Event Location</string>
     <string name="edit_event">edit event</string>
     <string name="remove_event">remove event</string>
+
+    <!-- assignment info -->
+    <string name="due_date">Due Date</string>
+    <string name="allow_resubmission">Allow\nResubmission</string>
+    <string name="close_date">Close Date</string>
+    <string name="status">Status</string>
+    <string name="grade_scale">Grade Scale</string>
+    <string name="instructor_modify">Modified by\ninstructor</string>
+    <string name="instructions">Instructions</string>
+    <string name="assignment_resources">Additional resources for assignment</string>
+    <string name="model_answer">Model answer</string>
+    <string name="private_notes">Private Notes</string>
+    <string name="purpose_item">All Purpose item</string>
 
     <!-- Other -->
     <string name="no_description">No description available</string>
@@ -315,11 +327,12 @@
     <string name="post_on_wall">Post on Wall</string>
     <string name="posts">Posts</string>
     <string name="add_comment">Add comment</string>
-    <string name="user_id">User Id *</string>
-    <string name="first_name">First Name</string>
-    <string name="last_name">Last Name</string>
-    <string name="password">Password *</string>
-    <string name="confirm_password">Confirm Password *</string>
+    <string name="user_id">User Id</string>
+    <string name="first_name">First Name (optional)</string>
+    <string name="last_name">Last Name (optional)</string>
+    <string name="sign_up_email">Email (optional)</string>
+    <string name="password">Password</string>
+    <string name="confirm_password">Confirm Password</string>
     <string name="new_account_type">type: registered</string>
     <string name="create_account">Create Account</string>
     <string name="no_events">No event on the selected day</string>
@@ -328,8 +341,10 @@
     <string name="site_descr">Site Description</string>
     <string name="no_announcements">There are currently no announcements at this location.</string>
     <string name="no_valid_email_address">Enter a valid email address</string>
+    <string name="eid_exists">The id already exists</string>
     <string name="password_not_match">Password doesn\'t match</string>
     <string name="title_activity_web_view">WebViewActivity</string>
     <string name="no_syllabus_info">No information</string>
+    <string name="no_assignments">There are currently no assignments at this location.</string>
 
 </resources>

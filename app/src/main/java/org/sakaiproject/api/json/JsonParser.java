@@ -15,9 +15,13 @@ import java.util.List;
 import java.util.Map;
 
 import org.sakaiproject.api.announcements.UserAnnouncementHelper;
+import org.sakaiproject.api.assignments.UserAssignmentsHelper;
 import org.sakaiproject.api.events.EventsCollection;
 import org.sakaiproject.api.memberships.pages.announcements.MembershipAnnouncementHelper;
+import org.sakaiproject.api.memberships.pages.assignments.MembershipAssignmentsHelper;
+import org.sakaiproject.api.pojos.SiteName;
 import org.sakaiproject.api.pojos.announcements.Announcement;
+import org.sakaiproject.api.pojos.assignments.Assignment;
 import org.sakaiproject.api.pojos.events.EventInfo;
 import org.sakaiproject.api.pojos.UserEventOwner;
 import org.sakaiproject.api.pojos.events.Event;
@@ -188,7 +192,7 @@ public class JsonParser {
     /**
      * parse user's events json
      * http://141.99.248.86:8089/direct/calendar/my.json
-     *
+     * <p/>
      * parse membership's events json
      * http://141.99.248.86:8089/direct/calendar/site/siteId.json
      *
@@ -217,7 +221,7 @@ public class JsonParser {
     /**
      * parse user's event's info json
      * http://141.99.248.86:8089/direct/calendar/event/~owner/eventId.json
-     *
+     * <p/>
      * parse membership's event's info json
      * http://141.99.248.86:8089/direct/calendar/event/siteId/eventId.json
      *
@@ -406,6 +410,30 @@ public class JsonParser {
 
     public static void getUserAnnouncements(Announcement announcement) {
         UserAnnouncementHelper.userAnnouncement = announcement;
+    }
+
+    public static void getMembershipAssignments(Assignment assignment) {
+        MembershipAssignmentsHelper.membershipAssignment = assignment;
+    }
+
+    public static void getUserAssignments(Assignment assignment) {
+        UserAssignmentsHelper.userAssignment = assignment;
+    }
+
+    /**
+     * get assignment's site name
+     * http://141.99.248.86:8089/direct/membership/site_id.json
+     *
+     * @param context
+     * @param siteName   the name of the site
+     * @param collection the assignment data
+     */
+    public static void getAssignmentSiteName(Context context, SiteName siteName, Assignment.AssignmentsCollection collection) {
+
+        SharedPreferences preferences = context.getSharedPreferences("assignment_site_names", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString(collection.getId(), siteName.getEntityTitle());
+        editor.apply();
     }
 
     /**

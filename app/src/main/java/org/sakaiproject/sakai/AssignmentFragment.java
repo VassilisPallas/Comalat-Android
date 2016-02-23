@@ -16,34 +16,37 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
-import org.sakaiproject.api.announcements.OfflineUserAnnouncements;
-import org.sakaiproject.api.announcements.UserAnnouncementHelper;
-import org.sakaiproject.api.announcements.UserAnnouncementsService;
+import org.sakaiproject.api.assignments.OfflineUserAssignments;
+import org.sakaiproject.api.assignments.UserAssignmentsHelper;
+import org.sakaiproject.api.assignments.UserAssignmentsService;
 import org.sakaiproject.api.internet.NetWork;
 import org.sakaiproject.api.memberships.SiteData;
-import org.sakaiproject.api.memberships.pages.announcements.MembershipAnnouncementHelper;
-import org.sakaiproject.api.memberships.pages.announcements.OfflineMembershipAnnouncements;
-import org.sakaiproject.api.memberships.pages.announcements.MembershipAnnouncementsService;
-import org.sakaiproject.api.sync.AnnouncementRefreshUI;
-import org.sakaiproject.customviews.adapters.AnnouncementAdapter;
+import org.sakaiproject.api.memberships.pages.assignments.MembershipAssignmentsHelper;
+import org.sakaiproject.api.memberships.pages.assignments.MembershipAssignmentsService;
+import org.sakaiproject.api.memberships.pages.assignments.OfflineMembershipAssignments;
+import org.sakaiproject.api.sync.AssignmentsRefreshUI;
+import org.sakaiproject.customviews.adapters.AssignmentAdapter;
 import org.sakaiproject.customviews.listeners.RecyclerItemClickListener;
 import org.sakaiproject.helpers.user_navigation_drawer_helpers.NavigationDrawerHelper;
 
 /**
- * Created by vspallas on 17/02/16.
+ * Created by vspallas on 23/02/16.
  */
-public class AnnouncementFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener, AnnouncementRefreshUI {
+public class AssignmentFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener, AssignmentsRefreshUI {
 
     private ISwipeRefresh swipeRefresh;
     private org.sakaiproject.customviews.CustomSwipeRefreshLayout swipeRefreshLayout;
     private String siteName;
     private SiteData siteData;
     private FrameLayout root;
-    private AnnouncementRefreshUI delegate = this;
+    private AssignmentsRefreshUI delegate = this;
     private RecyclerView mRecyclerView;
+    private AssignmentAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
-    private AnnouncementAdapter mAdapter;
-    private TextView noAnnouncements;
+    private TextView noAssignments;
+
+    public AssignmentFragment() {
+    }
 
     @Override
     public void onAttach(Context context) {
@@ -57,35 +60,32 @@ public class AnnouncementFragment extends Fragment implements SwipeRefreshLayout
      * @param swipeRefreshLayout the layout
      * @return the fragment with the data
      */
-    public AnnouncementFragment getSwipeRefreshLayout(org.sakaiproject.customviews.CustomSwipeRefreshLayout swipeRefreshLayout) {
-        AnnouncementFragment announcement = new AnnouncementFragment();
+    public AssignmentFragment getSwipeRefreshLayout(org.sakaiproject.customviews.CustomSwipeRefreshLayout swipeRefreshLayout) {
+        AssignmentFragment assignment = new AssignmentFragment();
         Bundle b = new Bundle();
         b.putSerializable("swipeRefresh", swipeRefreshLayout);
-        announcement.setArguments(b);
-        return announcement;
+        assignment.setArguments(b);
+        return assignment;
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View v = inflater.inflate(R.layout.fragment_assignment, container, false);
 
-        // Inflate the layout for this fragment
-        View v = inflater.inflate(R.layout.fragment_announcement, container, false);
-        getActivity().setTitle(getResources().getString(R.string.announcements));
+        getActivity().setTitle(getResources().getString(R.string.assignments));
 
         swipeRefreshLayout = (org.sakaiproject.customviews.CustomSwipeRefreshLayout) getArguments().getSerializable("swipeRefresh");
 
         siteData = NavigationDrawerHelper.getSelectedSiteData();
         siteName = NavigationDrawerHelper.getSelectedSite();
 
-        mRecyclerView = (RecyclerView) v.findViewById(R.id.announcement_recycler_view);
+        mRecyclerView = (RecyclerView) v.findViewById(R.id.assignment_recycler_view);
 
-        noAnnouncements = (TextView) v.findViewById(R.id.no_announcements);
+        noAssignments = (TextView) v.findViewById(R.id.no_assignments);
 
         // use a linear layout manager
         mLayoutManager = new LinearLayoutManager(v.getContext());
         mRecyclerView.setLayoutManager(mLayoutManager);
-
 
         // if the memberships recycle view is not on the top then the swipe refresh can not be done
         mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -103,14 +103,15 @@ public class AnnouncementFragment extends Fragment implements SwipeRefreshLayout
         });
 
         if (siteName.equals(getContext().getResources().getString(R.string.my_workspace))) {
-            OfflineUserAnnouncements offlineUserAnnouncements = new OfflineUserAnnouncements(getContext());
-            offlineUserAnnouncements.getAnnouncements();
-            mAdapter = new AnnouncementAdapter(UserAnnouncementHelper.userAnnouncement, null);
+            OfflineUserAssignments offlineUserAnnouncements = new OfflineUserAssignments(getContext());
+            offlineUserAnnouncements.getAssignments();
+            mAdapter = new AssignmentAdapter(getActivity(), UserAssignmentsHelper.userAssignment, null);
         } else {
-            OfflineMembershipAnnouncements announcements = new OfflineMembershipAnnouncements(getContext(), siteData.getId());
-            announcements.getAnnouncements();
-            mAdapter = new AnnouncementAdapter(MembershipAnnouncementHelper.membershipAnnouncement, siteData.getId());
+            OfflineMembershipAssignments offlineMembershipAssignments = new OfflineMembershipAssignments(getContext(), siteData.getId());
+            offlineMembershipAssignments.getAssignments();
+            mAdapter = new AssignmentAdapter(getActivity(), MembershipAssignmentsHelper.membershipAssignment, siteData.getId());
         }
+
 
         mRecyclerView.setAdapter(mAdapter);
 
@@ -119,15 +120,14 @@ public class AnnouncementFragment extends Fragment implements SwipeRefreshLayout
             public void onItemClick(View view, int position) {
 
                 FragmentManager fm = getFragmentManager();
-                AnnouncementDescriptionFragment dialogFragment;
+                AssignmentsDescriptionFragment dialogFragment;
 
                 if (siteName.equals(getContext().getResources().getString(R.string.my_workspace)))
-                    dialogFragment = new AnnouncementDescriptionFragment().setData(UserAnnouncementHelper.userAnnouncement.getAnnouncementCollection().get(position));
+                    dialogFragment = new AssignmentsDescriptionFragment().setData(UserAssignmentsHelper.userAssignment.getAssignmentsCollectionList().get(position), null);
                 else
-                    dialogFragment = new AnnouncementDescriptionFragment().setData(MembershipAnnouncementHelper.membershipAnnouncement.getAnnouncementCollection().get(position));
+                    dialogFragment = new AssignmentsDescriptionFragment().setData(MembershipAssignmentsHelper.membershipAssignment.getAssignmentsCollectionList().get(position), siteData);
                 dialogFragment.setStyle(DialogFragment.STYLE_NO_TITLE, R.style.InfoDialogTheme);
                 dialogFragment.show(fm, getContext().getResources().getString(R.string.event_info));
-
             }
 
             @Override
@@ -137,9 +137,9 @@ public class AnnouncementFragment extends Fragment implements SwipeRefreshLayout
         }));
 
         if (mAdapter.getItemCount() == 0) {
-            noAnnouncements.setVisibility(View.VISIBLE);
+            noAssignments.setVisibility(View.VISIBLE);
         } else {
-            noAnnouncements.setVisibility(View.GONE);
+            noAssignments.setVisibility(View.GONE);
         }
 
         swipeRefresh.Callback(this);
@@ -158,15 +158,15 @@ public class AnnouncementFragment extends Fragment implements SwipeRefreshLayout
 
                     String url = null;
                     if (siteName.equals(getContext().getResources().getString(R.string.my_workspace))) {
-                        UserAnnouncementsService userAnnouncementsService = new UserAnnouncementsService(getContext(), delegate);
-                        userAnnouncementsService.setSwipeRefreshLayout(swipeRefreshLayout);
-                        url = getContext().getResources().getString(R.string.url) + "announcement/user.json";
-                        userAnnouncementsService.getAnnouncements(url);
+                        UserAssignmentsService userAssignmentsService = new UserAssignmentsService(getContext(), delegate);
+                        userAssignmentsService.setSwipeRefreshLayout(swipeRefreshLayout);
+                        url = getContext().getResources().getString(R.string.url) + "assignment/my.json";
+                        userAssignmentsService.getAssignments(url);
                     } else {
-                        MembershipAnnouncementsService membershipAnnouncementsService = new MembershipAnnouncementsService(getContext(), siteData.getId(), delegate);
-                        membershipAnnouncementsService.setSwipeRefreshLayout(swipeRefreshLayout);
-                        url = getContext().getResources().getString(R.string.url) + "announcement/site/" + siteData.getId() + ".json";
-                        membershipAnnouncementsService.getAnnouncements(url);
+                        MembershipAssignmentsService membershipAssignmentsService = new MembershipAssignmentsService(getContext(), siteData.getId(), delegate);
+                        membershipAssignmentsService.setSwipeRefreshLayout(swipeRefreshLayout);
+                        url = getContext().getResources().getString(R.string.url) + "assignment/site/" + siteData.getId() + ".json";
+                        membershipAssignmentsService.getAssignments(url);
                     }
 
                 } else {
@@ -181,15 +181,15 @@ public class AnnouncementFragment extends Fragment implements SwipeRefreshLayout
     public void updateUI() {
         if (mAdapter != null && mRecyclerView != null) {
             if (siteName.equals(getContext().getResources().getString(R.string.my_workspace))) {
-                mAdapter.setAnnouncement(UserAnnouncementHelper.userAnnouncement);
+                mAdapter.setAssignment(UserAssignmentsHelper.userAssignment);
             } else {
-                mAdapter.setAnnouncement(MembershipAnnouncementHelper.membershipAnnouncement);
+                mAdapter.setAssignment(MembershipAssignmentsHelper.membershipAssignment);
             }
 
             if (mAdapter.getItemCount() == 0) {
-                noAnnouncements.setVisibility(View.VISIBLE);
+                noAssignments.setVisibility(View.VISIBLE);
             } else {
-                noAnnouncements.setVisibility(View.GONE);
+                noAssignments.setVisibility(View.GONE);
             }
 
             mRecyclerView.setAdapter(mAdapter);

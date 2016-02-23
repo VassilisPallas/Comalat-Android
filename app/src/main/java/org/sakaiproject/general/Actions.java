@@ -131,7 +131,6 @@ public class Actions {
 
     }
 
-
     /**
      * get image from internal storage
      *
@@ -146,7 +145,6 @@ public class Actions {
 
         return b;
     }
-
 
     /**
      * get the file type of the attachment
@@ -559,34 +557,5 @@ public class Actions {
             }
         }
         return ret;
-    }
-
-    public static Drawable selectValidationImage(Context context, boolean correct) {
-
-        try {
-            Drawable image;
-
-            int imageId = R.mipmap.ic_cancel;
-            int color = Color.RED;
-
-            if (correct) {
-                imageId = R.mipmap.ic_check_circle;
-                color = Color.parseColor("#03AD14");
-            }
-
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                image = context.getResources().getDrawable(imageId, context.getTheme());
-            } else {
-                image = context.getResources().getDrawable(imageId);
-            }
-
-            image.setColorFilter(color, PorterDuff.Mode.SRC_IN);
-
-            //return ((BitmapDrawable) image).getBitmap();
-            return image;
-        } catch (IllegalStateException e) {
-
-        }
-        return null;
     }
 }

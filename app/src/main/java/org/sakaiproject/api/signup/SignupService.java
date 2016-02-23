@@ -1,6 +1,7 @@
 package org.sakaiproject.api.signup;
 
 import android.content.Context;
+import android.support.design.widget.TextInputLayout;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -16,6 +17,7 @@ import com.android.volley.toolbox.StringRequest;
 import org.sakaiproject.sakai.AppController;
 import org.sakaiproject.api.login.LoginService;
 import org.sakaiproject.general.Actions;
+import org.sakaiproject.sakai.R;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -33,16 +35,15 @@ public class SignupService {
 
     private Context context;
 
-    private ProgressBar userExistsProgressBar, signupProgressBar;
-    private ImageView userExistsImageView;
+    private ProgressBar signupProgressBar;
     private TextView signupTextView;
+    private TextInputLayout idInputLayout;
 
-    public SignupService(Context context, ImageView userExistsImageView, ProgressBar signupProgressBar, TextView signupTextView, ProgressBar userExistsProgressBar) {
+    public SignupService(Context context, ProgressBar signupProgressBar, TextView signupTextView, TextInputLayout idInputLayout) {
         this.context = context;
-        this.userExistsImageView = userExistsImageView;
         this.signupProgressBar = signupProgressBar;
         this.signupTextView = signupTextView;
-        this.userExistsProgressBar = userExistsProgressBar;
+        this.idInputLayout = idInputLayout;
     }
 
     /**
@@ -99,18 +100,23 @@ public class SignupService {
             @Override
             public void onResponse(String response) {
                 exists = false;
-                userExistsImageView.setVisibility(View.VISIBLE);
-                userExistsProgressBar.setVisibility(View.GONE);
-                userExistsImageView.setImageDrawable(Actions.selectValidationImage(context, exists));
+
+                idInputLayout.setError(context.getResources().getString(R.string.eid_exists));
+
+//                userExistsImageView.setVisibility(View.VISIBLE);
+//                userExistsProgressBar.setVisibility(View.GONE);
+//                userExistsImageView.setImageDrawable(Actions.selectValidationImage(context, exists));
                 existence.signUpButton(exists);
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 exists = true;
-                userExistsImageView.setVisibility(View.VISIBLE);
-                userExistsProgressBar.setVisibility(View.GONE);
-                userExistsImageView.setImageDrawable(Actions.selectValidationImage(context, exists));
+                idInputLayout.setErrorEnabled(false);
+
+//                userExistsImageView.setVisibility(View.VISIBLE);
+//                userExistsProgressBar.setVisibility(View.GONE);
+//                userExistsImageView.setImageDrawable(Actions.selectValidationImage(context, exists));
                 existence.signUpButton(exists);
             }
         });

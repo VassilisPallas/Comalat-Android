@@ -12,44 +12,39 @@
     app:mrl_rippleHover="true"
     app:mrl_rippleOverlay="true">
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
         <TextView
-            android:id="@+id/announcement_title"
+            android:id="@+id/assignment_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/unjoin_ripple"
-            android:layout_centerHorizontal="true"
-            android:layout_margin="5dp"
-            android:gravity="center"
             android:text="Title"
             android:textSize="20sp"
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/announcement_owner"
+            android:id="@+id/assignment_membership"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_below="@id/announcement_title"
             android:layout_marginTop="5dp"
-            android:paddingBottom="7dp"
-            android:paddingLeft="10dp"
-            android:text="vasilis pallas"
-            android:textSize="15sp" />
+            android:text="Testing Site" />
 
         <TextView
-            android:id="@+id/announcement_site"
+            android:id="@+id/assignment_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_below="@id/announcement_owner"
-            android:paddingBottom="7dp"
-            android:paddingLeft="10dp"
-            android:text="Testing site"
-            android:textSize="15sp" />
+            android:layout_marginTop="5dp"
+            android:text="2016/01/28 13:15 PM - 2016/01/30 16:30 AM" />
+
+        <TextView
+            android:id="@+id/assignment_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="Open" />
 
         <View
             android:layout_width="match_parent"
@@ -57,6 +52,6 @@
             android:layout_below="@+id/announcement_site"
             android:background="#33000000" />
 
-    </RelativeLayout>
+    </LinearLayout>
 
 </com.balysv.materialripple.MaterialRippleLayout>

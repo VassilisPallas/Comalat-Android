@@ -66,7 +66,6 @@ public class MembershipDescriptionFragment extends DialogFragment {
 
         RichTextView shortDescr = (RichTextView) v.findViewById(R.id.membership_short_description);
         shortDescr.setContext(getContext());
-
         shortDescr.setSiteData(data.getId());
 
         if (shortDescription != null) {
