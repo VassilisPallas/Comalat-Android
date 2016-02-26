@@ -4,18 +4,21 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Spannable;
+import android.text.Spanned;
+import android.text.method.LinkMovementMethod;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
-import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import org.sakaiproject.api.internet.NetWork;
 import org.sakaiproject.api.memberships.pages.syllabus.OfflineSyllabus;
@@ -24,8 +27,8 @@ import org.sakaiproject.api.memberships.pages.syllabus.UpdateSyllabus;
 import org.sakaiproject.api.pojos.syllabus.Syllabus;
 import org.sakaiproject.api.memberships.SiteData;
 import org.sakaiproject.api.sync.SyllabusRefreshUI;
-import org.sakaiproject.customviews.adapters.SyllabusAdapter;
-import org.sakaiproject.general.Actions;
+import org.sakaiproject.adapters.SyllabusAdapter;
+import org.sakaiproject.customviews.rich_textview.RichTextView;
 
 import java.io.IOException;
 
@@ -45,6 +48,8 @@ public class SyllabusFragment extends Fragment implements SwipeRefreshLayout.OnR
     private FrameLayout root;
     private UpdateSyllabus callback;
     private SyllabusRefreshUI delegate = this;
+    private TextView noSyllabusItems;
+    private RichTextView reLaunchUrl;
 
     public SyllabusFragment() {
     }
@@ -80,6 +85,12 @@ public class SyllabusFragment extends Fragment implements SwipeRefreshLayout.OnR
 
         siteData = (SiteData) getArguments().getSerializable("siteData");
 
+        reLaunchUrl = (RichTextView) v.findViewById(R.id.relaunch_url);
+        reLaunchUrl.setContext(getContext());
+        reLaunchUrl.setSiteData(siteData.getId());
+
+        noSyllabusItems = (TextView) v.findViewById(R.id.no_syllabus);
+
         OfflineSyllabus offlineSyllabus = new OfflineSyllabus(getContext(), siteData.getId());
 
         try {
@@ -89,8 +100,11 @@ public class SyllabusFragment extends Fragment implements SwipeRefreshLayout.OnR
         }
 
         if (syllabus != null && syllabus.getRedirectUrl() != null) {
-
+            noSyllabusItems.setVisibility(View.GONE);
+            String message = "<a href=\"" + syllabus.getRedirectUrl() + "\">" + getContext().getResources().getString(R.string.re_launch_url) + "</a>";
+            reLaunchUrl.setText(message);
             startActivity(new Intent(getActivity(), WebViewActivity.class).putExtra("url", syllabus.getRedirectUrl()));
+            reLaunchUrl.setVisibility(View.VISIBLE);
         }
 
         root = (FrameLayout) v.findViewById(R.id.root);
@@ -135,8 +149,9 @@ public class SyllabusFragment extends Fragment implements SwipeRefreshLayout.OnR
 
         if (syllabus != null) {
             update(mRecyclerView, mAdapter, syllabus, siteData.getId());
+            noSyllabusItems.setVisibility(View.GONE);
         } else {
-
+            noSyllabusItems.setVisibility(View.VISIBLE);
         }
 
         swipeRefresh.Callback(this);
@@ -162,6 +177,7 @@ public class SyllabusFragment extends Fragment implements SwipeRefreshLayout.OnR
                 } else {
                     Snackbar.make(root, getResources().getString(R.string.no_internet), Snackbar.LENGTH_LONG)
                             .setAction(getResources().getText(R.string.can_not_sync), null).show();
+                    swipeRefreshLayout.setRefreshing(false);
                 }
             }
         });
@@ -181,6 +197,14 @@ public class SyllabusFragment extends Fragment implements SwipeRefreshLayout.OnR
             syllabus = offlineSyllabus.getSyllabus();
             if (syllabus.getItems() != null && syllabus.getItems().size() > 0) {
                 callback.update(mRecyclerView, mAdapter, syllabus, siteData.getId());
+                noSyllabusItems.setVisibility(View.GONE);
+                reLaunchUrl.setVisibility(View.GONE);
+            } else if (syllabus.getRedirectUrl() != null) {
+                noSyllabusItems.setVisibility(View.GONE);
+                reLaunchUrl.setVisibility(View.VISIBLE);
+            } else {
+                noSyllabusItems.setVisibility(View.VISIBLE);
+                reLaunchUrl.setVisibility(View.GONE);
             }
         } catch (IOException e) {
             e.printStackTrace();

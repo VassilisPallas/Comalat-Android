@@ -1,4 +1,4 @@
-package org.sakaiproject.general;
+package org.sakaiproject.customviews.rich_textview;
 
 /**
  * Created by vasilis on 1/28/16.

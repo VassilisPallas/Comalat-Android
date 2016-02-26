@@ -11,7 +11,7 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 
-import org.sakaiproject.general.Actions;
+import org.sakaiproject.helpers.ActionsHelper;
 import org.sakaiproject.general.Connection;
 import org.sakaiproject.api.internet.NetWork;
 import org.sakaiproject.api.session.RefreshSession;
@@ -45,7 +45,7 @@ public class UserAboutActivity extends AppCompatActivity implements View.OnClick
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_about);
 
-        editDrawable = Actions.setCustomDrawableColor(this, R.mipmap.ic_create, Color.parseColor("#29A031"));
+        editDrawable = ActionsHelper.setCustomDrawableColor(this, R.mipmap.ic_create, Color.parseColor("#29A031"));
 
         scrollView = (AboutScrollView) findViewById(R.id.about_scrollview);
 

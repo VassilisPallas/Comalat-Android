@@ -16,7 +16,7 @@ import org.sakaiproject.api.pojos.assignments.Assignment;
 import org.sakaiproject.api.sync.AssignmentsRefreshUI;
 import org.sakaiproject.api.user.User;
 import org.sakaiproject.customviews.CustomSwipeRefreshLayout;
-import org.sakaiproject.general.Actions;
+import org.sakaiproject.helpers.ActionsHelper;
 import org.sakaiproject.sakai.AppController;
 import org.sakaiproject.sakai.R;
 
@@ -33,11 +33,16 @@ public class UserAssignmentsService {
     private Gson gson = new Gson();
     private org.sakaiproject.customviews.CustomSwipeRefreshLayout swipeRefreshLayout;
     private AssignmentsRefreshUI delegate;
+    private boolean update = false;
 
     public UserAssignmentsService(Context context, AssignmentsRefreshUI delegate) {
         this.context = context;
         this.delegate = delegate;
         user_assignments_tag = User.getUserEid() + " assignments";
+    }
+
+    public void canUpdate(boolean canUpdate) {
+        this.update = canUpdate;
     }
 
     public void setSwipeRefreshLayout(CustomSwipeRefreshLayout swipeRefreshLayout) {
@@ -51,16 +56,17 @@ public class UserAssignmentsService {
 
                 Assignment assignment = gson.fromJson(response.toString(), Assignment.class);
                 JsonParser.getMembershipAssignments(assignment);
-                if (Actions.createDirIfNotExists(context, User.getUserEid() + File.separator + "assignments"))
+                if (ActionsHelper.createDirIfNotExists(context, User.getUserEid() + File.separator + "assignments"))
                     try {
-                        Actions.writeJsonFile(context, response.toString(), "assignments", User.getUserEid() + File.separator + "assignments");
+                        ActionsHelper.writeJsonFile(context, response.toString(), "assignments", User.getUserEid() + File.separator + "assignments");
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
 
-
                 if (assignment.getAssignmentsCollectionList().size() > 0) {
                     for (int i = 0; i < assignment.getAssignmentsCollectionList().size(); i++) {
+                        site_name_tag = User.getUserEid() + " " + assignment.getAssignmentsCollectionList().get(i).getContext() + " assignment name";
+
                         final Assignment.AssignmentsCollection collection = assignment.getAssignmentsCollectionList().get(i);
 
                         JsonObjectRequest siteNameRequest = new JsonObjectRequest(Request.Method.GET, context.getResources().getString(R.string.url) + "site/" + collection.getContext() + ".json", null, new Response.Listener<JSONObject>() {
@@ -71,10 +77,12 @@ public class UserAssignmentsService {
 
                                 JsonParser.getAssignmentSiteName(context, siteName, collection);
 
-                                delegate.updateUI();
+                                if (update) {
+                                    delegate.updateUI();
 
-                                if (swipeRefreshLayout != null)
-                                    swipeRefreshLayout.setRefreshing(false);
+                                    if (swipeRefreshLayout != null)
+                                        swipeRefreshLayout.setRefreshing(false);
+                                }
                             }
                         }, new Response.ErrorListener() {
                             @Override
@@ -88,9 +96,12 @@ public class UserAssignmentsService {
                     }
 
                 } else {
-                    delegate.updateUI();
-                    if (swipeRefreshLayout != null)
-                        swipeRefreshLayout.setRefreshing(false);
+                    if (update) {
+                        delegate.updateUI();
+
+                        if (swipeRefreshLayout != null)
+                            swipeRefreshLayout.setRefreshing(false);
+                    }
                 }
             }
         }, new Response.ErrorListener() {

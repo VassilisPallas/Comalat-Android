@@ -8,7 +8,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 
 import org.json.JSONObject;
-import org.sakaiproject.customviews.custom_volley.CustomJsonObjectRequest;
+import org.sakaiproject.customviews.custom_volley.EmptyRequest;
 import org.sakaiproject.sakai.AppController;
 
 /**
@@ -18,7 +18,7 @@ public class SiteJoin {
 
     public void join(String url) {
 
-        CustomJsonObjectRequest membershipJoinRequest = new CustomJsonObjectRequest(Request.Method.POST, url, null, new Response.Listener<JSONObject>() {
+        EmptyRequest membershipJoinRequest = new EmptyRequest(Request.Method.POST, url, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
             }

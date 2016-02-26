@@ -12,8 +12,8 @@ import com.android.volley.VolleyLog;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.sakaiproject.api.user.User;
-import org.sakaiproject.general.Actions;
-import org.sakaiproject.customviews.custom_volley.CustomJsonObjectRequest;
+import org.sakaiproject.helpers.ActionsHelper;
+import org.sakaiproject.customviews.custom_volley.EmptyRequest;
 import org.sakaiproject.sakai.AppController;
 
 import java.io.File;
@@ -43,9 +43,9 @@ public class RefreshSession {
 
         String loginJson = null;
         jsonBody = null;
-        if (Actions.createDirIfNotExists(context, User.getUserEid() + File.separator + "user"))
+        if (ActionsHelper.createDirIfNotExists(context, User.getUserEid() + File.separator + "user"))
             try {
-                loginJson = Actions.readJsonFile(context, "loginJson", User.getUserEid() + File.separator + "user");
+                loginJson = ActionsHelper.readJsonFile(context, "loginJson", User.getUserEid() + File.separator + "user");
                 jsonBody = new JSONObject(loginJson);
 
                 Log.i("json", jsonBody.toString());
@@ -53,7 +53,7 @@ public class RefreshSession {
             } catch (IOException | JSONException e) {
                 e.printStackTrace();
             }
-        CustomJsonObjectRequest refreshSessionRequest = new CustomJsonObjectRequest(Request.Method.PUT, url, jsonBody, new Response.Listener<JSONObject>() {
+        EmptyRequest refreshSessionRequest = new EmptyRequest(Request.Method.PUT, url, jsonBody, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 Log.i("session", "stored");

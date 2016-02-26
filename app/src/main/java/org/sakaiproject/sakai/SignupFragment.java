@@ -2,8 +2,6 @@ package org.sakaiproject.sakai;
 
 
 import android.graphics.Color;
-import android.graphics.PorterDuff;
-import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
@@ -16,18 +14,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.balysv.materialripple.MaterialRippleLayout;
+
 import org.sakaiproject.api.internet.NetWork;
 import org.sakaiproject.api.signup.EidExistence;
 import org.sakaiproject.api.signup.SignupService;
-import org.sakaiproject.general.Actions;
 
 
 /**
@@ -39,9 +36,8 @@ public class SignupFragment extends Fragment implements EidExistence {
     private EditText eidEditText, firstNameEditText, lastNameEditText, emailEditText, passwordEditText, confirmPasswordEditText, typeEditText;
     private TextInputLayout emailTextInputLayout, confirmPasswordTextInputLayout, passwordTextInputLayout, idInputLayout;
     private RelativeLayout signupButton;
-    //private ProgressBar userExistsProgressBar, signupProgressBar;
+    private MaterialRippleLayout rippleLayout;
     private ProgressBar signupProgressBar;
-    //private ImageView userExistsImageView;
     private TextView signupTextView;
 
     private boolean isEidValid, isEmailValid = true, isPasswordEqual;
@@ -109,9 +105,7 @@ public class SignupFragment extends Fragment implements EidExistence {
         signupTextView.setTextColor(Color.parseColor("#80898989"));
         passwordTextInputLayout = (TextInputLayout) v.findViewById(R.id.input_layout_password);
         idInputLayout = (TextInputLayout) v.findViewById(R.id.input_layout_user_id);
-
-        //userExistsProgressBar = (ProgressBar) v.findViewById(R.id.user_exists_progressbar);
-        //userExistsImageView = (ImageView) v.findViewById(R.id.user_exists_imageview);
+        rippleLayout = (MaterialRippleLayout) v.findViewById(R.id.ripple);
         signupProgressBar = (ProgressBar) v.findViewById(R.id.signup_progess);
 
         root = (FrameLayout) v.findViewById(R.id.root);
@@ -190,6 +184,9 @@ public class SignupFragment extends Fragment implements EidExistence {
                 signupButton.setBackground(getContext().getResources().getDrawable(R.drawable.signup_button_normal));
             }
             signupTextView.setTextColor(Color.parseColor("#FFFFFF"));
+            signupButton.setClickable(true);
+            rippleLayout.setClickable(true);
+
         } else {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 signupButton.setBackground(getContext().getResources().getDrawable(R.drawable.signup_button_disabled, getContext().getTheme()));
@@ -197,6 +194,8 @@ public class SignupFragment extends Fragment implements EidExistence {
                 signupButton.setBackground(getContext().getResources().getDrawable(R.drawable.signup_button_disabled));
             }
             signupTextView.setTextColor(Color.parseColor("#80898989"));
+            signupButton.setClickable(false);
+            rippleLayout.setClickable(false);
         }
     }
 

@@ -33,8 +33,8 @@ import org.sakaiproject.api.memberships.pages.events.SiteOfflineEvents;
 import org.sakaiproject.api.memberships.SiteData;
 import org.sakaiproject.api.sync.CalendarRefreshUI;
 import org.sakaiproject.customviews.listeners.RecyclerItemClickListener;
-import org.sakaiproject.customviews.adapters.SelectedDayEventsAdapter;
-import org.sakaiproject.customviews.adapters.CalendarAdapter;
+import org.sakaiproject.adapters.SelectedDayEventsAdapter;
+import org.sakaiproject.adapters.CalendarAdapter;
 import org.sakaiproject.api.events.UserEvents;
 import org.sakaiproject.helpers.user_navigation_drawer_helpers.NavigationDrawerHelper;
 
@@ -48,7 +48,6 @@ import java.util.List;
  * A simple {@link Fragment} subclass.
  */
 public class CalendarFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener, CalendarRefreshUI {
-
 
     public static GregorianCalendar cal_month, cal_month_copy;
     private CalendarAdapter cal_adapter;
@@ -78,11 +77,6 @@ public class CalendarFragment extends Fragment implements SwipeRefreshLayout.OnR
         super.onAttach(context);
         swipeRefresh = (ISwipeRefresh) context;
     }
-
-    public static GregorianCalendar getCal_month() {
-        return cal_month;
-    }
-
 
     /**
      * get the swipe refresh layout from activity
@@ -206,24 +200,25 @@ public class CalendarFragment extends Fragment implements SwipeRefreshLayout.OnR
                     mAdapter.notifyDataSetChanged();
                     mRecyclerView.setAdapter(mAdapter);
                 }
-                // if the events recycle view is not on the top then the swipe refresh can not be done
-                mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-                    @Override
-                    public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                        int topRowVerticalPosition =
-                                (recyclerView == null || recyclerView.getChildCount() == 0 || recyclerView.getChildCount() == 1) ? 0 : recyclerView.getChildAt(0).getTop();
-                        swipeRefreshLayout.setEnabled(topRowVerticalPosition >= 0);
-                    }
-
-                    @Override
-                    public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                        super.onScrollStateChanged(recyclerView, newState);
-                    }
-                });
             }
 
         });
 
+
+        // if the events recycle view is not on the top then the swipe refresh can not be done
+        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                int topRowVerticalPosition =
+                        (recyclerView == null || recyclerView.getChildCount() == 0 || recyclerView.getChildCount() == 1) ? 0 : recyclerView.getChildAt(0).getTop();
+                swipeRefreshLayout.setEnabled(topRowVerticalPosition >= 0);
+            }
+
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+        });
 
         mRecyclerView.addOnItemTouchListener(new RecyclerItemClickListener(getContext(), mRecyclerView, new RecyclerItemClickListener.OnItemClickListener() {
             @Override
@@ -340,6 +335,7 @@ public class CalendarFragment extends Fragment implements SwipeRefreshLayout.OnR
                 } else {
                     Snackbar.make(root, getResources().getString(R.string.no_internet), Snackbar.LENGTH_LONG)
                             .setAction(getResources().getText(R.string.can_not_sync), null).show();
+                    swipeRefreshLayout.setRefreshing(false);
                 }
             }
         });
@@ -358,7 +354,7 @@ public class CalendarFragment extends Fragment implements SwipeRefreshLayout.OnR
         gridview.setAdapter(cal_adapter);
     }
 
-    private class EventsAsync extends AsyncTask<Void, Void, List<UserEvents>> {
+    private class EventsAsync extends AsyncTask<Void, Void, Void> {
 
         @Override
         protected void onPreExecute() {
@@ -369,7 +365,7 @@ public class CalendarFragment extends Fragment implements SwipeRefreshLayout.OnR
         }
 
         @Override
-        protected List<UserEvents> doInBackground(Void... params) {
+        protected Void doInBackground(Void... params) {
 
             EventsCollection.getEventsList().clear();
             EventsCollection.getMonthEvents().clear();
@@ -379,13 +375,12 @@ public class CalendarFragment extends Fragment implements SwipeRefreshLayout.OnR
             else
                 siteSiteOfflineEvents.getEvents();
 
-            return EventsCollection.getEventsList();
+            return null;
         }
 
-
         @Override
-        protected void onPostExecute(List<UserEvents> userEvents) {
-            super.onPostExecute(userEvents);
+        protected void onPostExecute(Void avoid) {
+            super.onPostExecute(avoid);
 
             try {
                 EventsCollection.selectedMonthEvents(String.valueOf(cal_month.get(cal_month.MONTH) + 1), cal_month_copy);

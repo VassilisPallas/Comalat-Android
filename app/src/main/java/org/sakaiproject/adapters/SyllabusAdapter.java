@@ -1,4 +1,4 @@
-package org.sakaiproject.customviews.adapters;
+package org.sakaiproject.adapters;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -14,7 +14,7 @@ import android.widget.TextView;
 
 import org.sakaiproject.api.pojos.syllabus.Item;
 import org.sakaiproject.customviews.rich_textview.RichTextView;
-import org.sakaiproject.general.Actions;
+import org.sakaiproject.helpers.ActionsHelper;
 import org.sakaiproject.general.AttachmentType;
 import org.sakaiproject.sakai.R;
 
@@ -85,7 +85,7 @@ public class SyllabusAdapter extends RecyclerView.Adapter<SyllabusAdapter.ViewHo
 
         String data = null;
         if (syllabusItems.get(position).getData() != null) {
-            data = Actions.deleteHtmlTags(syllabusItems.get(position).getData());
+            data = ActionsHelper.deleteHtmlTags(syllabusItems.get(position).getData());
             holder.data.setVisibility(View.VISIBLE);
             holder.data.setText(data);
         } else {
@@ -93,7 +93,7 @@ public class SyllabusAdapter extends RecyclerView.Adapter<SyllabusAdapter.ViewHo
         }
 
 
-        holder.delete.setImageDrawable(Actions.setCustomDrawableColor(context, R.mipmap.ic_delete, Color.parseColor("#FF5457")));
+        holder.delete.setImageDrawable(ActionsHelper.setCustomDrawableColor(context, R.mipmap.ic_delete, Color.parseColor("#FF5457")));
         holder.deleteLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -131,7 +131,7 @@ public class SyllabusAdapter extends RecyclerView.Adapter<SyllabusAdapter.ViewHo
 
                     url = url.substring(url.lastIndexOf('/') + 1);
 
-                    if (Actions.getAttachmentType(url) != AttachmentType.URL) {
+                    if (ActionsHelper.getAttachmentType(url) != AttachmentType.URL) {
                         name.setText(URLDecoder.decode(url, "UTF-8").substring(url.lastIndexOf('/') + 1));
                     } else {
                         name.setText(URLDecoder.decode(url, "UTF-8").replaceAll("_", "/"));
@@ -144,7 +144,7 @@ public class SyllabusAdapter extends RecyclerView.Adapter<SyllabusAdapter.ViewHo
 
                 ImageView image = (ImageView) currentAttachment.findViewById(R.id.attachment_type_image);
 
-                image.setImageBitmap(Actions.getAttachmentTypeImage(context, url));
+                image.setImageBitmap(ActionsHelper.getAttachmentTypeImage(context, url));
 
                 holder.attachements.addView(currentAttachment);
             }

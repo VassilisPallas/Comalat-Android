@@ -1,7 +1,6 @@
 package org.sakaiproject.api.memberships;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -22,7 +21,7 @@ import org.sakaiproject.api.pojos.membership.SitePage;
 import org.sakaiproject.api.sync.MembershipRefreshUI;
 import org.sakaiproject.api.user.User;
 import org.sakaiproject.customviews.CustomSwipeRefreshLayout;
-import org.sakaiproject.general.Actions;
+import org.sakaiproject.helpers.ActionsHelper;
 import org.sakaiproject.api.json.JsonParser;
 import org.sakaiproject.sakai.AppController;
 import org.sakaiproject.sakai.R;
@@ -82,9 +81,9 @@ public class MembershipService {
 
                 JsonParser.parseSiteDataJson(membership);
 
-                if (Actions.createDirIfNotExists(context, User.getUserEid() + File.separator + "memberships"))
+                if (ActionsHelper.createDirIfNotExists(context, User.getUserEid() + File.separator + "memberships"))
                     try {
-                        Actions.writeJsonFile(context, response.toString(), "projectsAndSitesJson", User.getUserEid() + File.separator + "memberships");
+                        ActionsHelper.writeJsonFile(context, response.toString(), "projectsAndSitesJson", User.getUserEid() + File.separator + "memberships");
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -102,9 +101,9 @@ public class MembershipService {
                             MembershipData membershipData = gson.fromJson(response.toString(), MembershipData.class);
 
                             JsonParser.getSiteData(membershipData, index, null);
-                            if (Actions.createDirIfNotExists(context, User.getUserEid() + File.separator + "memberships" + File.separator + SiteData.getSites().get(index).getId()))
+                            if (ActionsHelper.createDirIfNotExists(context, User.getUserEid() + File.separator + "memberships" + File.separator + SiteData.getSites().get(index).getId()))
                                 try {
-                                    Actions.writeJsonFile(context, response.toString(), SiteData.getSites().get(index).getId(), User.getUserEid() + File.separator + "memberships" + File.separator + SiteData.getSites().get(index).getId());
+                                    ActionsHelper.writeJsonFile(context, response.toString(), SiteData.getSites().get(index).getId(), User.getUserEid() + File.separator + "memberships" + File.separator + SiteData.getSites().get(index).getId());
                                 } catch (IOException e) {
                                     e.printStackTrace();
                                 }
@@ -138,9 +137,9 @@ public class MembershipService {
 
                             JsonParser.getSitePageData(pages, index, null);
 
-                            if (Actions.createDirIfNotExists(context, User.getUserEid() + File.separator + "memberships" + File.separator + SiteData.getSites().get(index).getId()))
+                            if (ActionsHelper.createDirIfNotExists(context, User.getUserEid() + File.separator + "memberships" + File.separator + SiteData.getSites().get(index).getId()))
                                 try {
-                                    Actions.writeJsonFile(context, response.toString(), SiteData.getSites().get(index).getId() + "_pages", User.getUserEid() + File.separator + "memberships" + File.separator + SiteData.getSites().get(index).getId());
+                                    ActionsHelper.writeJsonFile(context, response.toString(), SiteData.getSites().get(index).getId() + "_pages", User.getUserEid() + File.separator + "memberships" + File.separator + SiteData.getSites().get(index).getId());
                                 } catch (IOException e) {
                                     e.printStackTrace();
                                 }
@@ -172,9 +171,9 @@ public class MembershipService {
                             PagePermissions pagePermissions = gson.fromJson(response.toString(), PagePermissions.class);
                             JsonParser.getSitePermissions(pagePermissions, index, null);
 
-                            if (Actions.createDirIfNotExists(context, User.getUserEid() + File.separator + "memberships" + File.separator + SiteData.getSites().get(index).getId()))
+                            if (ActionsHelper.createDirIfNotExists(context, User.getUserEid() + File.separator + "memberships" + File.separator + SiteData.getSites().get(index).getId()))
                                 try {
-                                    Actions.writeJsonFile(context, response.toString(), SiteData.getSites().get(index).getId() + "_perms", User.getUserEid() + File.separator + "memberships" + File.separator + SiteData.getSites().get(index).getId());
+                                    ActionsHelper.writeJsonFile(context, response.toString(), SiteData.getSites().get(index).getId() + "_perms", User.getUserEid() + File.separator + "memberships" + File.separator + SiteData.getSites().get(index).getId());
                                 } catch (IOException e) {
                                     e.printStackTrace();
                                 }
@@ -197,9 +196,9 @@ public class MembershipService {
                             PageUserPermissions pageUserPermissions = gson.fromJson(response.toString(), PageUserPermissions.class);
                             JsonParser.getUserSitePermissions(pageUserPermissions, index, null);
 
-                            if (Actions.createDirIfNotExists(context, User.getUserEid() + File.separator + "memberships" + File.separator + SiteData.getSites().get(index).getId()))
+                            if (ActionsHelper.createDirIfNotExists(context, User.getUserEid() + File.separator + "memberships" + File.separator + SiteData.getSites().get(index).getId()))
                                 try {
-                                    Actions.writeJsonFile(context, response.toString(), SiteData.getSites().get(index).getId() + "_userPerms", User.getUserEid() + File.separator + "memberships" + File.separator + SiteData.getSites().get(index).getId());
+                                    ActionsHelper.writeJsonFile(context, response.toString(), SiteData.getSites().get(index).getId() + "_userPerms", User.getUserEid() + File.separator + "memberships" + File.separator + SiteData.getSites().get(index).getId());
                                 } catch (IOException e) {
                                     e.printStackTrace();
                                 }
@@ -230,9 +229,9 @@ public class MembershipService {
                             MembershipData membershipData = gson.fromJson(response.toString(), MembershipData.class);
 
                             JsonParser.getSiteData(membershipData, index, "project");
-                            if (Actions.createDirIfNotExists(context, User.getUserEid() + File.separator + "memberships" + File.separator + SiteData.getProjects().get(index).getId()))
+                            if (ActionsHelper.createDirIfNotExists(context, User.getUserEid() + File.separator + "memberships" + File.separator + SiteData.getProjects().get(index).getId()))
                                 try {
-                                    Actions.writeJsonFile(context, response.toString(), SiteData.getProjects().get(index).getId(), User.getUserEid() + File.separator + "memberships" + File.separator + SiteData.getProjects().get(index).getId());
+                                    ActionsHelper.writeJsonFile(context, response.toString(), SiteData.getProjects().get(index).getId(), User.getUserEid() + File.separator + "memberships" + File.separator + SiteData.getProjects().get(index).getId());
                                 } catch (IOException e) {
                                     e.printStackTrace();
                                 }
@@ -267,9 +266,9 @@ public class MembershipService {
 
                             JsonParser.getSitePageData(pages, index, "project");
 
-                            if (Actions.createDirIfNotExists(context, User.getUserEid() + File.separator + "memberships" + File.separator + SiteData.getProjects().get(index).getId()))
+                            if (ActionsHelper.createDirIfNotExists(context, User.getUserEid() + File.separator + "memberships" + File.separator + SiteData.getProjects().get(index).getId()))
                                 try {
-                                    Actions.writeJsonFile(context, response.toString(), SiteData.getProjects().get(index).getId() + "_pages", User.getUserEid() + File.separator + "memberships" + File.separator + SiteData.getProjects().get(index).getId());
+                                    ActionsHelper.writeJsonFile(context, response.toString(), SiteData.getProjects().get(index).getId() + "_pages", User.getUserEid() + File.separator + "memberships" + File.separator + SiteData.getProjects().get(index).getId());
                                 } catch (IOException e) {
                                     e.printStackTrace();
                                 }
@@ -300,9 +299,9 @@ public class MembershipService {
                             PagePermissions pagePermissions = gson.fromJson(response.toString(), PagePermissions.class);
                             JsonParser.getSitePermissions(pagePermissions, index, "project");
 
-                            if (Actions.createDirIfNotExists(context, User.getUserEid() + File.separator + "memberships" + File.separator + SiteData.getProjects().get(index).getId()))
+                            if (ActionsHelper.createDirIfNotExists(context, User.getUserEid() + File.separator + "memberships" + File.separator + SiteData.getProjects().get(index).getId()))
                                 try {
-                                    Actions.writeJsonFile(context, response.toString(), SiteData.getProjects().get(index).getId() + "_perms", User.getUserEid() + File.separator + "memberships" + File.separator + SiteData.getProjects().get(index).getId());
+                                    ActionsHelper.writeJsonFile(context, response.toString(), SiteData.getProjects().get(index).getId() + "_perms", User.getUserEid() + File.separator + "memberships" + File.separator + SiteData.getProjects().get(index).getId());
                                 } catch (IOException e) {
                                     e.printStackTrace();
                                 }
@@ -325,9 +324,9 @@ public class MembershipService {
                             PageUserPermissions pageUserPermissions = gson.fromJson(response.toString(), PageUserPermissions.class);
                             JsonParser.getUserSitePermissions(pageUserPermissions, index, "project");
 
-                            if (Actions.createDirIfNotExists(context, User.getUserEid() + File.separator + "memberships" + File.separator + SiteData.getProjects().get(index).getId()))
+                            if (ActionsHelper.createDirIfNotExists(context, User.getUserEid() + File.separator + "memberships" + File.separator + SiteData.getProjects().get(index).getId()))
                                 try {
-                                    Actions.writeJsonFile(context, response.toString(), SiteData.getProjects().get(index).getId() + "_userPerms", User.getUserEid() + File.separator + "memberships" + File.separator + SiteData.getProjects().get(index).getId());
+                                    ActionsHelper.writeJsonFile(context, response.toString(), SiteData.getProjects().get(index).getId() + "_userPerms", User.getUserEid() + File.separator + "memberships" + File.separator + SiteData.getProjects().get(index).getId());
                                 } catch (IOException e) {
                                     e.printStackTrace();
                                 }

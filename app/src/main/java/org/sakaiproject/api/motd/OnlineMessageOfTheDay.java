@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 
-import org.sakaiproject.general.Actions;
+import org.sakaiproject.helpers.ActionsHelper;
 import org.sakaiproject.general.ConnectionType;
 import org.sakaiproject.api.json.JsonParser;
 import org.sakaiproject.general.Connection;
@@ -64,7 +64,7 @@ public class OnlineMessageOfTheDay {
             Integer status = connection.getResponseCode();
             if (status >= 200 && status < 300) {
                 inputStream = new BufferedInputStream(connection.getInputStream());
-                String mothJson = Actions.readJsonStream(inputStream);
+                String mothJson = ActionsHelper.readJsonStream(inputStream);
                 inputStream.close();
                 onlineMessageOfTheDay = jsonParse.parseMotdJson(mothJson);
             }

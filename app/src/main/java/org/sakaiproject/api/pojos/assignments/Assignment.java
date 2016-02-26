@@ -26,23 +26,23 @@ public class Assignment implements Serializable {
     }
 
     public class AssignmentsCollection implements Serializable {
-        private Object access;
+        private AssignmentAccess access;
         private String allPurposeItemText;
         private List<Attachment> attachments;
         private String authorLastModified;
         private List<String> authors;
         private String closeTimeString; /* Accept Until */
-        private Object content;
+        private AssignmentContent content;
         private String contentReference;
         private String context; /* siteId */
         private String creator;
         private String dropDeadTimeString;
         private String dueTimeString; /* Due Date */
         private String gradeScale;
-        private Double gradeScaleMaxPoints;
-        private String gradebookItemId;
+        private String gradeScaleMaxPoints;
+        private long gradebookItemId;
         private String gradebookItemName;
-        private List<Object> groups;
+        private List<?> groups;
         private String id;
         private String instructions;
         private String modelAnswerText;
@@ -59,11 +59,11 @@ public class Assignment implements Serializable {
         private boolean allowResubmission;
         private boolean draft;
 
-        public Object getAccess() {
+        public AssignmentAccess getAccess() {
             return access;
         }
 
-        public void setAccess(Object access) {
+        public void setAccess(AssignmentAccess access) {
             this.access = access;
         }
 
@@ -107,11 +107,11 @@ public class Assignment implements Serializable {
             this.closeTimeString = closeTimeString;
         }
 
-        public Object getContent() {
+        public AssignmentContent getContent() {
             return content;
         }
 
-        public void setContent(Object content) {
+        public void setContent(AssignmentContent content) {
             this.content = content;
         }
 
@@ -163,19 +163,19 @@ public class Assignment implements Serializable {
             this.gradeScale = gradeScale;
         }
 
-        public Double getGradeScaleMaxPoints() {
+        public String getGradeScaleMaxPoints() {
             return gradeScaleMaxPoints;
         }
 
-        public void setGradeScaleMaxPoints(Double gradeScaleMaxPoints) {
+        public void setGradeScaleMaxPoints(String gradeScaleMaxPoints) {
             this.gradeScaleMaxPoints = gradeScaleMaxPoints;
         }
 
-        public String getGradebookItemId() {
+        public long getGradebookItemId() {
             return gradebookItemId;
         }
 
-        public void setGradebookItemId(String gradebookItemId) {
+        public void setGradebookItemId(long gradebookItemId) {
             this.gradebookItemId = gradebookItemId;
         }
 
@@ -187,11 +187,11 @@ public class Assignment implements Serializable {
             this.gradebookItemName = gradebookItemName;
         }
 
-        public List<Object> getGroups() {
+        public List<?> getGroups() {
             return groups;
         }
 
-        public void setGroups(List<Object> groups) {
+        public void setGroups(List<?> groups) {
             this.groups = groups;
         }
 

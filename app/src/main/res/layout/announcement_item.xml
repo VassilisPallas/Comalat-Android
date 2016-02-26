@@ -3,60 +3,65 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginLeft="10dp"
-    android:layout_marginRight="10dp"
-    android:layout_marginTop="5dp"
+    android:background="@android:color/white"
     app:mrl_rippleAlpha="0.2"
     app:mrl_rippleColor="#8f8f8f"
     app:mrl_rippleDelayClick="false"
     app:mrl_rippleHover="true"
     app:mrl_rippleOverlay="true">
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/announcement_title"
-            android:layout_width="wrap_content"
+        <RelativeLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/unjoin_ripple"
-            android:layout_centerHorizontal="true"
-            android:layout_margin="5dp"
-            android:gravity="center"
-            android:text="Title"
-            android:textSize="20sp"
-            android:textStyle="bold" />
+            android:padding="10dp">
 
-        <TextView
-            android:id="@+id/announcement_owner"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_below="@id/announcement_title"
-            android:layout_marginTop="5dp"
-            android:paddingBottom="7dp"
-            android:paddingLeft="10dp"
-            android:text="vasilis pallas"
-            android:textSize="15sp" />
+            <TextView
+                android:id="@+id/announcement_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/unjoin_ripple"
+                android:layout_centerHorizontal="true"
+                android:layout_margin="5dp"
+                android:gravity="center"
+                android:text="Title"
+                android:textSize="20sp"
+                android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/announcement_site"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_below="@id/announcement_owner"
-            android:paddingBottom="7dp"
-            android:paddingLeft="10dp"
-            android:text="Testing site"
-            android:textSize="15sp" />
+            <TextView
+                android:id="@+id/announcement_owner"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@id/announcement_title"
+                android:layout_marginTop="5dp"
+                android:paddingBottom="7dp"
+                android:paddingLeft="10dp"
+                android:text="vasilis pallas"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/announcement_site"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@id/announcement_owner"
+                android:paddingBottom="7dp"
+                android:paddingLeft="10dp"
+                android:text="Testing site"
+                android:textSize="15sp" />
+
+        </RelativeLayout>
 
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:layout_below="@+id/announcement_site"
             android:background="#33000000" />
 
-    </RelativeLayout>
+    </LinearLayout>
 
 </com.balysv.materialripple.MaterialRippleLayout>

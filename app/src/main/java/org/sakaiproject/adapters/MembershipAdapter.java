@@ -1,4 +1,4 @@
-package org.sakaiproject.customviews.adapters;
+package org.sakaiproject.adapters;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -22,7 +22,7 @@ import org.sakaiproject.api.memberships.SiteData;
 import org.sakaiproject.api.memberships.actions.IUnJoin;
 import org.sakaiproject.api.user.User;
 import org.sakaiproject.customviews.rich_textview.RichTextView;
-import org.sakaiproject.general.Actions;
+import org.sakaiproject.helpers.ActionsHelper;
 import org.sakaiproject.sakai.IMembershipDialog;
 import org.sakaiproject.sakai.R;
 
@@ -96,9 +96,9 @@ public class MembershipAdapter extends RecyclerView.Adapter<MembershipAdapter.Vi
             holder.description.setText(context.getString(R.string.no_description));
         } else {
 
-            List<String> sounds = Actions.findAudios(memberships.get(position).getDescription());
+            List<String> sounds = ActionsHelper.findAudios(memberships.get(position).getDescription());
 
-            description = Actions.deleteHtmlTags(memberships.get(position).getDescription());
+            description = ActionsHelper.deleteHtmlTags(memberships.get(position).getDescription());
 
 
             holder.description.setSiteData(memberships.get(position).getId());
@@ -129,7 +129,7 @@ public class MembershipAdapter extends RecyclerView.Adapter<MembershipAdapter.Vi
             holder.unjoinLayout.setVisibility(View.VISIBLE);
             holder.ripple.setVisibility(View.VISIBLE);
 
-            holder.unjoin.setImageDrawable(Actions.setCustomDrawableColor(context, R.mipmap.ic_unjoin, Color.parseColor("#FE6363")));
+            holder.unjoin.setImageDrawable(ActionsHelper.setCustomDrawableColor(context, R.mipmap.ic_unjoin, Color.parseColor("#FE6363")));
 
             holder.unjoinLayout.setOnClickListener(new View.OnClickListener() {
                 @Override

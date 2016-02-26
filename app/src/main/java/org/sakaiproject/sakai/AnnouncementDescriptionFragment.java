@@ -2,7 +2,6 @@ package org.sakaiproject.sakai;
 
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +11,7 @@ import android.widget.TextView;
 
 import org.sakaiproject.api.pojos.announcements.Announcement;
 import org.sakaiproject.customviews.rich_textview.RichTextView;
-import org.sakaiproject.general.Actions;
+import org.sakaiproject.helpers.ActionsHelper;
 import org.sakaiproject.general.AttachmentType;
 
 import java.io.UnsupportedEncodingException;
@@ -63,7 +62,7 @@ public class AnnouncementDescriptionFragment extends DialogFragment {
                 TextView name = (TextView) currentAttachment.findViewById(R.id.attachment_name);
                 String url = announcement.getAttachments().get(i).getUrl();
                 try {
-                    if (Actions.getAttachmentType(url) != AttachmentType.URL) {
+                    if (ActionsHelper.getAttachmentType(url) != AttachmentType.URL) {
                         name.setText(URLDecoder.decode(url.replace("_", "/"), "UTF-8").substring(url.lastIndexOf('/') + 1));
                     } else {
                         name.setText(URLDecoder.decode(url, "UTF-8").replaceAll("_", "/"));
@@ -75,7 +74,7 @@ public class AnnouncementDescriptionFragment extends DialogFragment {
 
                 ImageView image = (ImageView) currentAttachment.findViewById(R.id.attachment_type_image);
 
-                image.setImageBitmap(Actions.getAttachmentTypeImage(getContext(), announcement.getAttachments().get(i).getUrl()));
+                image.setImageBitmap(ActionsHelper.getAttachmentTypeImage(getContext(), announcement.getAttachments().get(i).getUrl()));
 
                 attachments.addView(currentAttachment);
             }

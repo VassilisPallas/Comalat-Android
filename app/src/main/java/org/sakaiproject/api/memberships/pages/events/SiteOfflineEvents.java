@@ -10,7 +10,7 @@ import org.sakaiproject.api.pojos.events.EventInfo;
 import org.sakaiproject.api.pojos.events.Event;
 import org.sakaiproject.api.json.JsonParser;
 import org.sakaiproject.api.user.User;
-import org.sakaiproject.general.Actions;
+import org.sakaiproject.helpers.ActionsHelper;
 
 import java.io.File;
 import java.io.IOException;
@@ -42,15 +42,15 @@ public class SiteOfflineEvents {
      */
     public void getEvents() {
         try {
-            if (Actions.createDirIfNotExists(context, User.getUserEid() + File.separator + "memberships" + File.separator + siteId + File.separator + "calendar")) {
-                siteEventsJson = Actions.readJsonFile(context, "siteEventsJson", User.getUserEid() + File.separator + "memberships" + File.separator + siteId + File.separator + "calendar");
+            if (ActionsHelper.createDirIfNotExists(context, User.getUserEid() + File.separator + "memberships" + File.separator + siteId + File.separator + "calendar")) {
+                siteEventsJson = ActionsHelper.readJsonFile(context, "siteEventsJson", User.getUserEid() + File.separator + "memberships" + File.separator + siteId + File.separator + "calendar");
                 Event event = gson.fromJson(siteEventsJson, Event.class);
                 JsonParser.parseEventJson(event);
             }
 
             for (int i = 0; i < EventsCollection.getEventsList().size(); i++) {
-                if (Actions.createDirIfNotExists(context, User.getUserEid() + File.separator + "memberships" + File.separator + siteId + File.separator + "calendar")) {
-                    siteEventInfoJson = Actions.readJsonFile(context, EventsCollection.getEventsList().get(i).getEventId(), User.getUserEid() + File.separator + "memberships" + File.separator + siteId + File.separator + "calendar");
+                if (ActionsHelper.createDirIfNotExists(context, User.getUserEid() + File.separator + "memberships" + File.separator + siteId + File.separator + "calendar")) {
+                    siteEventInfoJson = ActionsHelper.readJsonFile(context, EventsCollection.getEventsList().get(i).getEventId(), User.getUserEid() + File.separator + "memberships" + File.separator + siteId + File.separator + "calendar");
                     EventInfo eventInfo = gson.fromJson(siteEventInfoJson, EventInfo.class);
                     JsonParser.parseEventInfoJson(eventInfo, i);
                 }

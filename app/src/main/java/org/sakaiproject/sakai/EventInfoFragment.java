@@ -9,11 +9,10 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TableRow;
 import android.widget.TextView;
 
 import org.sakaiproject.customviews.rich_textview.RichTextView;
-import org.sakaiproject.general.Actions;
+import org.sakaiproject.helpers.ActionsHelper;
 import org.sakaiproject.api.user.User;
 import org.sakaiproject.api.events.UserEvents;
 import org.sakaiproject.api.user.profile.Profile;
@@ -80,7 +79,7 @@ public class EventInfoFragment extends DialogFragment {
 
         description.setSiteData(selectedEvent.getEventId());
 
-        String descr = Actions.deleteHtmlTags(selectedEvent.getDescription());
+        String descr = ActionsHelper.deleteHtmlTags(selectedEvent.getDescription());
 
         if (descr != null && !descr.equals(""))
             description.setText(descr);
@@ -100,7 +99,7 @@ public class EventInfoFragment extends DialogFragment {
 
                 ImageView image = (ImageView) currentAttachment.findViewById(R.id.attachment_type_image);
 
-                image.setImageBitmap(Actions.getAttachmentTypeImage(getContext(), selectedEvent.getAttachmentNames().get(i)));
+                image.setImageBitmap(ActionsHelper.getAttachmentTypeImage(getContext(), selectedEvent.getAttachmentNames().get(i)));
 
                 attachmentLinear.addView(currentAttachment);
             }

@@ -12,6 +12,8 @@ import android.view.SubMenu;
 
 import org.sakaiproject.api.pojos.membership.SitePage;
 import org.sakaiproject.customviews.CustomSwipeRefreshLayout;
+import org.sakaiproject.helpers.ActionsHelper;
+import org.sakaiproject.sakai.DashboardFragment;
 import org.sakaiproject.sakai.R;
 
 import java.io.Serializable;
@@ -56,6 +58,13 @@ public class UserMainNavigationDrawerHelper extends NavigationDrawerHelper imple
         return myWorkSpaceItems;
     }
 
+    public void unCheckFirstItem() {
+        if (navigationView.getMenu().getItem(0).getSubMenu().getItem(0).isChecked()) {
+            navigationView.getMenu().getItem(0).getSubMenu().getItem(0).setChecked(false);
+        }
+    }
+
+
     public void createDrawer(String title, List<SitePage> list) {
 
         MenuItem mainItem = navigationView.getMenu().findItem(R.id.main_item);
@@ -72,12 +81,24 @@ public class UserMainNavigationDrawerHelper extends NavigationDrawerHelper imple
             // make visible the items which are on the My Workspace
             for (String page : myWorkSpaceItems) {
                 int iconId = findIcon(page);
-                // add new item to menu
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    subMenu.add(R.id.main_group, ++id, Menu.NONE, page).setIcon(context.getResources().getDrawable(iconId, context.getTheme())).setCheckable(true);
-                } else {
-                    subMenu.add(R.id.main_group, ++id, Menu.NONE, page).setIcon(context.getResources().getDrawable(iconId)).setCheckable(true);
-                }
+                if (page.equals(context.getString(R.string.dashboard)))
+                    // add new item to menu
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        subMenu.add(R.id.main_group, ++id, Menu.NONE, page).setIcon(context.getResources().getDrawable(iconId, context.getTheme())).setCheckable(true).setChecked(true);
+                    } else {
+                        subMenu.add(R.id.main_group, ++id, Menu.NONE, page).setIcon(context.getResources().getDrawable(iconId)).setCheckable(true).setChecked(true);
+                    }
+                else
+                    // add new item to menu
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        subMenu.add(R.id.main_group, ++id, Menu.NONE, page).setIcon(context.getResources().getDrawable(iconId, context.getTheme())).setCheckable(true);
+                    } else {
+                        subMenu.add(R.id.main_group, ++id, Menu.NONE, page).setIcon(context.getResources().getDrawable(iconId)).setCheckable(true);
+                    }
+
+
+                DashboardFragment dashboardFragment = new DashboardFragment().getSwipeRefreshLayout(super.mSwipeRefreshLayout);
+                ActionsHelper.selectFragment(dashboardFragment, R.id.user_frame, context);
                 myWorkspaceIds.put(id, page);
             }
         } else {

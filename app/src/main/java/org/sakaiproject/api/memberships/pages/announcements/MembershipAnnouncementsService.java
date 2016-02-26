@@ -1,7 +1,6 @@
 package org.sakaiproject.api.memberships.pages.announcements;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -16,7 +15,7 @@ import org.sakaiproject.api.pojos.announcements.Announcement;
 import org.sakaiproject.api.sync.AnnouncementRefreshUI;
 import org.sakaiproject.api.user.User;
 import org.sakaiproject.customviews.CustomSwipeRefreshLayout;
-import org.sakaiproject.general.Actions;
+import org.sakaiproject.helpers.ActionsHelper;
 import org.sakaiproject.sakai.AppController;
 
 import java.io.File;
@@ -55,9 +54,9 @@ public class MembershipAnnouncementsService {
 
                 Announcement announcement = gson.fromJson(response.toString(), Announcement.class);
                 JsonParser.getMembershipAnnouncements(announcement);
-                if (Actions.createDirIfNotExists(context, User.getUserEid() + File.separator + "memberships" + File.separator + siteId + File.separator + "announcements"))
+                if (ActionsHelper.createDirIfNotExists(context, User.getUserEid() + File.separator + "memberships" + File.separator + siteId + File.separator + "announcements"))
                     try {
-                        Actions.writeJsonFile(context, response.toString(), siteId + "_announcements", User.getUserEid() + File.separator + "memberships" + File.separator + siteId + File.separator + "announcements");
+                        ActionsHelper.writeJsonFile(context, response.toString(), siteId + "_announcements", User.getUserEid() + File.separator + "memberships" + File.separator + siteId + File.separator + "announcements");
                     } catch (IOException e) {
                         e.printStackTrace();
                     }

@@ -7,7 +7,7 @@ import com.google.gson.Gson;
 
 import org.sakaiproject.api.pojos.events.EventInfo;
 import org.sakaiproject.api.pojos.events.Event;
-import org.sakaiproject.general.Actions;
+import org.sakaiproject.helpers.ActionsHelper;
 import org.sakaiproject.api.json.JsonParser;
 import org.sakaiproject.api.user.User;
 
@@ -38,8 +38,8 @@ public class OfflineEvents {
      */
     public void getEvents() {
         try {
-            if (Actions.createDirIfNotExists(context, User.getUserEid() + File.separator + "events")) {
-                userEventsJson = Actions.readJsonFile(context, "userEventsJson", User.getUserEid() + File.separator + "events");
+            if (ActionsHelper.createDirIfNotExists(context, User.getUserEid() + File.separator + "events")) {
+                userEventsJson = ActionsHelper.readJsonFile(context, "userEventsJson", User.getUserEid() + File.separator + "events");
 
                 Event event = gson.fromJson(userEventsJson, Event.class);
 
@@ -47,8 +47,8 @@ public class OfflineEvents {
             }
 
             for (int i = 0; i < EventsCollection.getEventsList().size(); i++) {
-                if (Actions.createDirIfNotExists(context, User.getUserEid() + File.separator + "events")) {
-                    userEventInfoJson = Actions.readJsonFile(context, EventsCollection.getEventsList().get(i).getEventId(), User.getUserEid() + File.separator + "events");
+                if (ActionsHelper.createDirIfNotExists(context, User.getUserEid() + File.separator + "events")) {
+                    userEventInfoJson = ActionsHelper.readJsonFile(context, EventsCollection.getEventsList().get(i).getEventId(), User.getUserEid() + File.separator + "events");
                     EventInfo eventInfo = gson.fromJson(userEventInfoJson, EventInfo.class);
                     JsonParser.parseEventInfoJson(eventInfo, i);
                 }

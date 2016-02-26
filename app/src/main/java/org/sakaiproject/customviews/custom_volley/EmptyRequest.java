@@ -14,12 +14,13 @@ import java.io.UnsupportedEncodingException;
 /**
  * Created by vspallas on 16/02/16.
  */
-public class CustomJsonObjectRequest extends JsonObjectRequest {
-    public CustomJsonObjectRequest(int method, String url, JSONObject jsonRequest, Response.Listener<JSONObject> listener, Response.ErrorListener errorListener) {
+public class EmptyRequest extends JsonObjectRequest {
+
+    public EmptyRequest(int method, String url, JSONObject jsonRequest, Response.Listener<JSONObject> listener, Response.ErrorListener errorListener) {
         super(method, url, jsonRequest, listener, errorListener);
     }
 
-    public CustomJsonObjectRequest(String url, JSONObject jsonRequest, Response.Listener<JSONObject> listener, Response.ErrorListener errorListener) {
+    public EmptyRequest(String url, JSONObject jsonRequest, Response.Listener<JSONObject> listener, Response.ErrorListener errorListener) {
         super(url, jsonRequest, listener, errorListener);
     }
 

@@ -25,7 +25,7 @@ import org.sakaiproject.api.memberships.pages.announcements.MembershipAnnounceme
 import org.sakaiproject.api.memberships.pages.announcements.OfflineMembershipAnnouncements;
 import org.sakaiproject.api.memberships.pages.announcements.MembershipAnnouncementsService;
 import org.sakaiproject.api.sync.AnnouncementRefreshUI;
-import org.sakaiproject.customviews.adapters.AnnouncementAdapter;
+import org.sakaiproject.adapters.AnnouncementAdapter;
 import org.sakaiproject.customviews.listeners.RecyclerItemClickListener;
 import org.sakaiproject.helpers.user_navigation_drawer_helpers.NavigationDrawerHelper;
 
@@ -172,6 +172,7 @@ public class AnnouncementFragment extends Fragment implements SwipeRefreshLayout
                 } else {
                     Snackbar.make(root, getResources().getString(R.string.no_internet), Snackbar.LENGTH_LONG)
                             .setAction(getResources().getText(R.string.can_not_sync), null).show();
+                    swipeRefreshLayout.setRefreshing(false);
                 }
             }
         });

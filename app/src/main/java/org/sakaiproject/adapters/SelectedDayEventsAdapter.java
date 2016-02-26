@@ -1,4 +1,4 @@
-package org.sakaiproject.customviews.adapters;
+package org.sakaiproject.adapters;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -25,7 +25,8 @@ public class SelectedDayEventsAdapter extends RecyclerView.Adapter<SelectedDayEv
 
     /**
      * SelectedDayEventsAdapter constructor
-     * @param context the context
+     *
+     * @param context        the context
      * @param userEventsList the list with the events
      */
     public SelectedDayEventsAdapter(Context context, List<UserEvents> userEventsList) {
@@ -34,6 +35,10 @@ public class SelectedDayEventsAdapter extends RecyclerView.Adapter<SelectedDayEv
     }
 
 
+    public void setUserEventsList(List<UserEvents> userEventsList) {
+        this.userEventsList = userEventsList;
+    }
+
     @Override
     public SelectedDayEventsAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         // create a new view
@@ -41,9 +46,7 @@ public class SelectedDayEventsAdapter extends RecyclerView.Adapter<SelectedDayEv
                 .inflate(R.layout.selected_day_events, parent, false);
         // set the view's size, margins, paddings and layout parameters
 
-
-        ViewHolder vh = new ViewHolder(v);
-        return vh;
+        return new ViewHolder(v);
 
     }
 
@@ -57,9 +60,7 @@ public class SelectedDayEventsAdapter extends RecyclerView.Adapter<SelectedDayEv
 
     @Override
     public int getItemCount() {
-        if (userEventsList != null)
-            return userEventsList.size();
-        return 0;
+        return userEventsList != null ? userEventsList.size() : 0;
     }
 
     /**

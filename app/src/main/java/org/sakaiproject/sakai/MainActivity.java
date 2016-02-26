@@ -4,8 +4,6 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -16,7 +14,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import org.sakaiproject.api.internet.NetWork;
-import org.sakaiproject.general.Actions;
+import org.sakaiproject.helpers.ActionsHelper;
 
 
 public class MainActivity extends AppCompatActivity
@@ -32,7 +30,7 @@ public class MainActivity extends AppCompatActivity
 
         if (savedInstanceState == null) {
             WelcomeFragment welcomeFragment = new WelcomeFragment();
-            Actions.selectFragment(welcomeFragment, R.id.content_frame, this);
+            ActionsHelper.selectFragment(welcomeFragment, R.id.content_frame, this);
         }
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -113,36 +111,36 @@ public class MainActivity extends AppCompatActivity
         switch (item.getItemId()) {
             case R.id.welcome:
                 WelcomeFragment welcomeFragment = new WelcomeFragment();
-                Actions.selectFragment(welcomeFragment, R.id.content_frame, this);
+                ActionsHelper.selectFragment(welcomeFragment, R.id.content_frame, this);
                 break;
             case R.id.about:
                 AboutFragment aboutFragment = new AboutFragment();
-                Actions.selectFragment(aboutFragment, R.id.content_frame, this);
+                ActionsHelper.selectFragment(aboutFragment, R.id.content_frame, this);
                 break;
             case R.id.features:
                 FeaturesFragment featuresFragment = new FeaturesFragment();
-                Actions.selectFragment(featuresFragment, R.id.content_frame, this);
+                ActionsHelper.selectFragment(featuresFragment, R.id.content_frame, this);
                 break;
             case R.id.site_browser:
                 break;
             case R.id.training:
                 TrainingFragment trainingFragment = new TrainingFragment();
-                Actions.selectFragment(trainingFragment, R.id.content_frame, this);
+                ActionsHelper.selectFragment(trainingFragment, R.id.content_frame, this);
                 break;
             case R.id.acknowledgements:
                 AcknowledgementsFragment acknowledgementsFragment = new AcknowledgementsFragment();
-                Actions.selectFragment(acknowledgementsFragment, R.id.content_frame, this);
+                ActionsHelper.selectFragment(acknowledgementsFragment, R.id.content_frame, this);
                 break;
             case R.id.help:
                 startActivity(new Intent(this, WebViewActivity.class).putExtra("url", getResources().getString(R.string.help_url)));
                 break;
             case R.id.login:
                 LoginFragment loginFragment = new LoginFragment();
-                Actions.selectFragment(loginFragment, R.id.content_frame, this);
+                ActionsHelper.selectFragment(loginFragment, R.id.content_frame, this);
                 break;
             case R.id.new_user:
                 SignupFragment signupFragment = new SignupFragment();
-                Actions.selectFragment(signupFragment, R.id.content_frame, this);
+                ActionsHelper.selectFragment(signupFragment, R.id.content_frame, this);
                 break;
             case R.id.reset_password:
                 break;

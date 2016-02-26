@@ -18,7 +18,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.FrameLayout;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import org.sakaiproject.api.internet.NetWork;
@@ -27,7 +26,7 @@ import org.sakaiproject.api.memberships.SiteData;
 import org.sakaiproject.api.memberships.actions.IUnJoin;
 import org.sakaiproject.api.memberships.actions.SiteUnJoin;
 import org.sakaiproject.api.sync.MembershipRefreshUI;
-import org.sakaiproject.customviews.adapters.MembershipAdapter;
+import org.sakaiproject.adapters.MembershipAdapter;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -172,6 +171,7 @@ public class MembershipFragment extends Fragment implements IUnJoin, SwipeRefres
                 } else {
                     Snackbar.make(root, getResources().getString(R.string.no_internet), Snackbar.LENGTH_LONG)
                             .setAction(getResources().getText(R.string.can_not_sync), null).show();
+                    swipeRefreshLayout.setRefreshing(false);
                 }
             }
         });

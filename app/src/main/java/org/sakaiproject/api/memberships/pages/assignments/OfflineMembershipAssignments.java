@@ -5,10 +5,10 @@ import android.content.Context;
 import com.google.gson.Gson;
 
 import org.sakaiproject.api.json.JsonParser;
-import org.sakaiproject.api.pojos.announcements.Announcement;
 import org.sakaiproject.api.pojos.assignments.Assignment;
+import org.sakaiproject.api.sync.AssignmentsRefreshUI;
 import org.sakaiproject.api.user.User;
-import org.sakaiproject.general.Actions;
+import org.sakaiproject.helpers.ActionsHelper;
 
 import java.io.File;
 import java.io.IOException;
@@ -20,18 +20,21 @@ public class OfflineMembershipAssignments {
     private Context context;
     private final Gson gson = new Gson();
     private String siteId;
+    private AssignmentsRefreshUI delegate;
 
-    public OfflineMembershipAssignments(Context context, String siteId) {
+    public OfflineMembershipAssignments(Context context, String siteId, AssignmentsRefreshUI delegate) {
         this.context = context;
         this.siteId = siteId;
+        this.delegate = delegate;
     }
 
     public void getAssignments(){
-        if (Actions.createDirIfNotExists(context, User.getUserEid() + File.separator + "memberships" + File.separator + siteId + File.separator + "assignments")) {
+        if (ActionsHelper.createDirIfNotExists(context, User.getUserEid() + File.separator + "memberships" + File.separator + siteId + File.separator + "assignments")) {
             try {
-                String a = Actions.readJsonFile(context, siteId + "_assignments", User.getUserEid() + File.separator + "memberships" + File.separator + siteId + File.separator + "assignments");
+                String a = ActionsHelper.readJsonFile(context, siteId + "_assignments", User.getUserEid() + File.separator + "memberships" + File.separator + siteId + File.separator + "assignments");
                 Assignment assignment = gson.fromJson(a, Assignment.class);
                 JsonParser.getMembershipAssignments(assignment);
+                delegate.updateUI();
             } catch (IOException e) {
                 e.printStackTrace();
             }

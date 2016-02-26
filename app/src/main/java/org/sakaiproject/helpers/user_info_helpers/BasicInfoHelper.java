@@ -17,7 +17,7 @@ import android.widget.TextView;
 
 import org.sakaiproject.api.user.User;
 import org.sakaiproject.api.user.profile.update.UpdateUserInfo;
-import org.sakaiproject.general.Actions;
+import org.sakaiproject.helpers.ActionsHelper;
 import org.sakaiproject.api.user.profile.Profile;
 import org.sakaiproject.sakai.R;
 
@@ -60,7 +60,7 @@ public class BasicInfoHelper implements IUserAbout {
         this.activity = activity;
         this.clickListener = clickListener;
         this.editDrawable = editDrawable;
-        calendarDrawable = Actions.setCustomDrawableColor(activity.getApplicationContext(), R.mipmap.ic_today, Color.parseColor("#43C84E"));
+        calendarDrawable = ActionsHelper.setCustomDrawableColor(activity.getApplicationContext(), R.mipmap.ic_today, Color.parseColor("#43C84E"));
         initialize(activity);
         fillValues();
         checkVisibilities(activity);
@@ -89,7 +89,7 @@ public class BasicInfoHelper implements IUserAbout {
                 month = monthOfYear;
                 day = dayOfMonth;
                 year = Year;
-                birthdayTextView.setText(Actions.getMonthfromIndex(month));
+                birthdayTextView.setText(ActionsHelper.getMonthfromIndex(month));
                 birthdayTextView.append(" ");
                 birthdayTextView.append(String.valueOf(day));
                 birthdayTextView.append(", ");
@@ -126,7 +126,7 @@ public class BasicInfoHelper implements IUserAbout {
         }
 
         if (Profile.getDateOfBirth() != null) {// if year is > 20 eg 80 then 1980, else eg 04 then 2004
-            birthdayTextView.setText(Actions.getMonthfromIndex(month));
+            birthdayTextView.setText(ActionsHelper.getMonthfromIndex(month));
             birthdayTextView.append(" " + day);
             birthdayTextView.append(", " + year);
         } else {

@@ -2,8 +2,6 @@ package org.sakaiproject.api.memberships.actions;
 
 import android.content.Context;
 import android.util.Log;
-import android.view.View;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -14,8 +12,8 @@ import com.android.volley.VolleyLog;
 import org.json.JSONObject;
 import org.sakaiproject.api.memberships.MembershipService;
 import org.sakaiproject.api.sync.MembershipRefreshUI;
-import org.sakaiproject.customviews.adapters.MembershipAdapter;
-import org.sakaiproject.customviews.custom_volley.CustomJsonObjectRequest;
+import org.sakaiproject.adapters.MembershipAdapter;
+import org.sakaiproject.customviews.custom_volley.EmptyRequest;
 import org.sakaiproject.sakai.AppController;
 import org.sakaiproject.sakai.R;
 
@@ -44,7 +42,7 @@ public class SiteUnJoin {
     }
 
     public void unJoin() {
-        CustomJsonObjectRequest membershipUnJoinRequest = new CustomJsonObjectRequest(Request.Method.POST, context.getString(R.string.url) + "/membership/unjoin/site/" + siteId, null, new Response.Listener<JSONObject>() {
+        EmptyRequest membershipUnJoinRequest = new EmptyRequest(Request.Method.POST, context.getString(R.string.url) + "/membership/unjoin/site/" + siteId, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
 

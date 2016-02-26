@@ -9,7 +9,7 @@ import android.widget.TextView;
 
 import org.sakaiproject.api.memberships.SiteData;
 import org.sakaiproject.customviews.rich_textview.RichTextView;
-import org.sakaiproject.general.Actions;
+import org.sakaiproject.helpers.ActionsHelper;
 
 /**
  * Created by vasilis on 1/26/16.
@@ -69,7 +69,7 @@ public class MembershipDescriptionFragment extends DialogFragment {
         shortDescr.setSiteData(data.getId());
 
         if (shortDescription != null) {
-            shortDescription = Actions.deleteHtmlTags(shortDescription);
+            shortDescription = ActionsHelper.deleteHtmlTags(shortDescription);
             shortDescr.setText(shortDescription);
         } else {
             shortDescr.setText(getContext().getResources().getString(R.string.no_short_descr));
@@ -80,7 +80,7 @@ public class MembershipDescriptionFragment extends DialogFragment {
         descr.setSiteData(data.getId());
 
         if (description != null) {
-            description = Actions.deleteHtmlTags(description);
+            description = ActionsHelper.deleteHtmlTags(description);
             descr.setText(description);
         } else {
             descr.setText(getContext().getResources().getString(R.string.no_descr));

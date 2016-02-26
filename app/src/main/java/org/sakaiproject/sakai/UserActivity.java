@@ -2,6 +2,7 @@ package org.sakaiproject.sakai;
 
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.Snackbar;
@@ -18,10 +19,10 @@ import android.widget.TextView;
 
 import org.sakaiproject.api.memberships.OfflineMemberships;
 import org.sakaiproject.api.memberships.SiteData;
-import org.sakaiproject.api.pojos.membership.SitePage;
+import org.sakaiproject.api.session.IdleModeCheckService;
 import org.sakaiproject.api.sync.Refresh;
 import org.sakaiproject.customviews.ImageViewRounded;
-import org.sakaiproject.general.Actions;
+import org.sakaiproject.helpers.ActionsHelper;
 import org.sakaiproject.general.Connection;
 import org.sakaiproject.api.internet.NetWork;
 import org.sakaiproject.api.session.RefreshSession;
@@ -71,6 +72,8 @@ public class UserActivity extends AppCompatActivity implements NavigationView.On
            so the thread for the idle mode will start
         */
         if (NetWork.getConnectionEstablished()) {
+            Intent idleService = new Intent(this, IdleModeCheckService.class);
+
             waiter = Waiter.getInstance();
             waiter.stop = false;
             waiter.setActivity(UserActivity.class);
@@ -97,8 +100,8 @@ public class UserActivity extends AppCompatActivity implements NavigationView.On
         displayNameTextView.setText(Profile.getDisplayName());
         emailTextView.setText(User.getEmail());
         try {
-            if (Actions.createDirIfNotExists(this, User.getUserEid() + File.separator + "user"))
-                userImage.setImageBitmap(Actions.getImage(this, "user_thumbnail_image", User.getUserEid() + File.separator + "user"));
+            if (ActionsHelper.createDirIfNotExists(this, User.getUserEid() + File.separator + "user"))
+                userImage.setImageBitmap(ActionsHelper.getImage(this, "user_thumbnail_image", User.getUserEid() + File.separator + "user"));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -137,6 +140,7 @@ public class UserActivity extends AppCompatActivity implements NavigationView.On
                 } else {
                     Snackbar.make(root, getResources().getString(R.string.no_internet), Snackbar.LENGTH_LONG)
                             .setAction(getResources().getText(R.string.can_not_sync), null).show();
+                    mSwipeRefreshLayout.setRefreshing(false);
                 }
             }
         });
@@ -175,7 +179,7 @@ public class UserActivity extends AppCompatActivity implements NavigationView.On
         } else if (NavigationDrawerHelper.getDrawer().isDrawerOpen(GravityCompat.END)) {
             NavigationDrawerHelper.getDrawer().closeDrawer(GravityCompat.END);
         } else {
-            Actions.logout(this, waiter);
+            ActionsHelper.logout(this, waiter);
         }
     }
 
@@ -211,19 +215,19 @@ public class UserActivity extends AppCompatActivity implements NavigationView.On
 
             //mSwipeRefreshLayout.setRefreshing(true);
         }
-        Log.i("visible", "true");
     }
 
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
 
-        sitesNavigationDrawer.unCheckFirstItem();
+//        sitesNavigationDrawer.unCheckFirstItem();
+//        mainNavigationDrawer.unCheckFirstItem();
 
         // left drawer
         switch (item.getItemId()) {
             case R.id.logout:
-                Actions.logout(this, waiter);
+                ActionsHelper.logout(this, waiter);
                 break;
             case R.id.my_workspace:
                 initializeMainMenu();

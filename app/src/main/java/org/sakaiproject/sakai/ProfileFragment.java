@@ -18,7 +18,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import org.sakaiproject.api.user.User;
-import org.sakaiproject.general.Actions;
+import org.sakaiproject.helpers.ActionsHelper;
 import org.sakaiproject.api.user.profile.Profile;
 import org.sakaiproject.customviews.ProfileScrollView;
 
@@ -72,8 +72,8 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         profileImage = (ImageView) v.findViewById(R.id.profile_image);
 
         try {
-            if (Actions.createDirIfNotExists(getContext(), User.getUserEid() + File.separator + "user"))
-                profileImage.setImageBitmap(Actions.getImage(getContext(), "user_image", User.getUserEid() + File.separator + "user"));
+            if (ActionsHelper.createDirIfNotExists(getContext(), User.getUserEid() + File.separator + "user"))
+                profileImage.setImageBitmap(ActionsHelper.getImage(getContext(), "user_image", User.getUserEid() + File.separator + "user"));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }

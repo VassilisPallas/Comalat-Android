@@ -11,7 +11,7 @@ import com.google.gson.Gson;
 import org.sakaiproject.api.pojos.login.Login;
 import org.sakaiproject.api.pojos.login.Profile;
 import org.sakaiproject.api.pojos.login.UserData;
-import org.sakaiproject.general.Actions;
+import org.sakaiproject.helpers.ActionsHelper;
 import org.sakaiproject.api.cryptography.PasswordEncryption;
 import org.sakaiproject.api.json.JsonParser;
 
@@ -77,9 +77,9 @@ public class OfflineLogin implements ILogin {
 
     @Override
     public void getLoginJson(String... params) throws IOException {
-        if (Actions.createDirIfNotExists(context, params[0] + File.separator + "user")) {
+        if (ActionsHelper.createDirIfNotExists(context, params[0] + File.separator + "user")) {
 
-            loginJson = Actions.readJsonFile(context, "loginJson", params[0] + File.separator + "user");
+            loginJson = ActionsHelper.readJsonFile(context, "loginJson", params[0] + File.separator + "user");
 
             Login login = gson.fromJson(loginJson, Login.class);
 
@@ -89,8 +89,8 @@ public class OfflineLogin implements ILogin {
 
     @Override
     public void getUserDataJson(String... params) throws IOException {
-        if (Actions.createDirIfNotExists(context, params[0] + File.separator + "user")) {
-            userDataJson = Actions.readJsonFile(context, "fullUserDataJson", params[0] + File.separator + "user");
+        if (ActionsHelper.createDirIfNotExists(context, params[0] + File.separator + "user")) {
+            userDataJson = ActionsHelper.readJsonFile(context, "fullUserDataJson", params[0] + File.separator + "user");
 
             UserData userData = gson.fromJson(userDataJson, UserData.class);
 
@@ -100,8 +100,8 @@ public class OfflineLogin implements ILogin {
 
     @Override
     public void getUserProfileDataJson(String... params) throws IOException {
-        if (Actions.createDirIfNotExists(context, params[0] + File.separator + "user")) {
-            userProfileDataJson = Actions.readJsonFile(context, "userProfileDataJson", params[0] + File.separator + "user");
+        if (ActionsHelper.createDirIfNotExists(context, params[0] + File.separator + "user")) {
+            userProfileDataJson = ActionsHelper.readJsonFile(context, "userProfileDataJson", params[0] + File.separator + "user");
 
             Profile profile = gson.fromJson(userProfileDataJson, Profile.class);
 

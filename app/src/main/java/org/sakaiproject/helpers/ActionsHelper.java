@@ -1,4 +1,4 @@
-package org.sakaiproject.general;
+package org.sakaiproject.helpers;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -22,6 +22,8 @@ import org.sakaiproject.api.session.Waiter;
 import org.sakaiproject.api.memberships.SiteData;
 import org.sakaiproject.api.user.User;
 import org.sakaiproject.api.user.profile.Profile;
+import org.sakaiproject.general.AttachmentType;
+import org.sakaiproject.general.Connection;
 import org.sakaiproject.helpers.user_navigation_drawer_helpers.UserMainNavigationDrawerHelper;
 import org.sakaiproject.sakai.MainActivity;
 import org.sakaiproject.sakai.R;
@@ -44,7 +46,7 @@ import java.util.regex.Pattern;
 /**
  * Created by vasilis on 10/18/15.
  */
-public class Actions {
+public class ActionsHelper {
 
     /**
      * Convert InputStream to String
@@ -545,6 +547,15 @@ public class Actions {
         return audioPaths;
     }
 
+    /**
+     * try to find the directory on the given path. If the directory does not exists,
+     * then creates the directory and returns true. If exists returns true. Otherwise
+     * if it can't create the directory returns false
+     *
+     * @param context
+     * @param path the given path
+     * @return true if the directory exists or if it has created successfully, otherwise returns false
+     */
     public static boolean createDirIfNotExists(Context context, String path) {
         boolean ret = true;
 

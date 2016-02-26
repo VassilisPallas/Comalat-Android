@@ -1,34 +1,26 @@
 package org.sakaiproject.sakai;
 
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.sakaiproject.api.cryptography.PasswordEncryption;
 import org.sakaiproject.api.internet.NetWork;
 import org.sakaiproject.api.login.ILogin;
 import org.sakaiproject.api.login.LoginService;
 import org.sakaiproject.api.login.LoginType;
 import org.sakaiproject.api.login.OfflineLogin;
-import org.sakaiproject.general.Actions;
-import org.sakaiproject.helpers.user_navigation_drawer_helpers.NavigationDrawerHelper;
 
 
 public class LoginFragment extends Fragment implements View.OnClickListener {

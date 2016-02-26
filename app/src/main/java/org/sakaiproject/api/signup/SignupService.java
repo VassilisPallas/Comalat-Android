@@ -3,7 +3,6 @@ package org.sakaiproject.api.signup;
 import android.content.Context;
 import android.support.design.widget.TextInputLayout;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -16,7 +15,6 @@ import com.android.volley.toolbox.StringRequest;
 
 import org.sakaiproject.sakai.AppController;
 import org.sakaiproject.api.login.LoginService;
-import org.sakaiproject.general.Actions;
 import org.sakaiproject.sakai.R;
 
 import java.util.HashMap;

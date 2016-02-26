@@ -1,18 +1,13 @@
-package org.sakaiproject.customviews.adapters;
+package org.sakaiproject.adapters;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.TextView;
 
-import org.sakaiproject.api.memberships.SiteData;
 import org.sakaiproject.api.pojos.announcements.Announcement;
 import org.sakaiproject.sakai.R;
-
-import java.util.List;
 
 /**
  * Created by vspallas on 17/02/16.

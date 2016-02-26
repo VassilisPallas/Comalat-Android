@@ -340,11 +340,22 @@
     <string name="no_descr">No site description has been provided</string>
     <string name="site_descr">Site Description</string>
     <string name="no_announcements">There are currently no announcements at this location.</string>
-    <string name="no_valid_email_address">Enter a valid email address</string>
-    <string name="eid_exists">The id already exists</string>
-    <string name="password_not_match">Password doesn\'t match</string>
+    <string name="no_valid_email_address">Enter a valid email address.</string>
+    <string name="eid_exists">The id already exists.</string>
+    <string name="password_not_match">Password doesn\'t match.</string>
     <string name="title_activity_web_view">WebViewActivity</string>
-    <string name="no_syllabus_info">No information</string>
-    <string name="no_assignments">There are currently no assignments at this location.</string>
-
+    <string name="no_assignments">There are currently no assignments at this location</string>
+    <string name="events">Events</string>
+    <string name="no_syllabus">There are currently no syllabus items at this location</string>
+    <string name="re_launch_url">Re-launch page in new window</string>
+    <string name="open">Open</string>
+    <string name="due">Due</string>
+    <string name="closed">Closed</string>
+    <string name="no_grade">No Grade</string>
+    <string name="letter_grade">Letter grade</string>
+    <string name="points">Points</string>
+    <string name="pass_fail">Pass/Fail</string>
+    <string name="checkmark">Checkmark</string>
+    <string name="no_upcoming_assignments">You have no upcoming assignments</string>
+    <string name="no_upcoming_events">You have no upcoming events</string>
 </resources>

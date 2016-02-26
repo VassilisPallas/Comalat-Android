@@ -12,7 +12,7 @@ import android.widget.TextView;
 import org.sakaiproject.api.memberships.SiteData;
 import org.sakaiproject.api.pojos.assignments.Assignment;
 import org.sakaiproject.customviews.rich_textview.RichTextView;
-import org.sakaiproject.general.Actions;
+import org.sakaiproject.helpers.ActionsHelper;
 import org.sakaiproject.general.AttachmentType;
 
 import java.io.UnsupportedEncodingException;
@@ -23,7 +23,7 @@ import java.net.URLDecoder;
  */
 public class AssignmentsDescriptionFragment extends DialogFragment {
 
-    private TextView dueDate, submissionType, allowResubmission, closeDate, status, gradeScale, lastModified, modelAnswer, privateNotes, allPurposeItem;
+    private TextView title, dueDate, submissionType, allowResubmission, closeDate, status, gradeScale, lastModified, modelAnswer, privateNotes, allPurposeItem;
     private RichTextView instructions;
     private LinearLayout attachmentsLinear;
 
@@ -49,6 +49,9 @@ public class AssignmentsDescriptionFragment extends DialogFragment {
         assignment = (Assignment.AssignmentsCollection) getArguments().getSerializable("assignment");
         siteData = (SiteData) getArguments().getSerializable("siteData");
 
+        title = (TextView) v.findViewById(R.id.assignment_title);
+        title.setText(assignment.getTitle());
+
         dueDate = (TextView) v.findViewById(R.id.due_date);
         dueDate.setText(assignment.getDueTimeString());
 
@@ -65,11 +68,18 @@ public class AssignmentsDescriptionFragment extends DialogFragment {
         status.setText(assignment.getStatus());
 
         gradeScale = (TextView) v.findViewById(R.id.grades_scale);
+
         gradeScale.setText(assignment.getGradeScale());
-        if (assignment.getGradeScale().equals("Points")) {
+        if (assignment.getGradeScale().equals(getContext().getResources().getString(R.string.points))) {
             gradeScale.append(" (");
-            gradeScale.append(assignment.getGradeScaleMaxPoints().toString());
+            gradeScale.append(assignment.getGradeScaleMaxPoints());
             gradeScale.append(" )");
+        } else if (assignment.getGradeScale().equals(getContext().getResources().getString(R.string.letter_grade))) {
+            gradeScale.setText("A-F");
+        } else if (assignment.getGradeScale().equals(getContext().getResources().getString(R.string.pass_fail))) {
+            gradeScale.setText("P-F");
+        } else if (assignment.getGradeScale().equals(getContext().getResources().getString(R.string.checkmark))) {
+            gradeScale.setText("✔");
         }
 
         lastModified = (TextView) v.findViewById(R.id.modified);
@@ -101,9 +111,13 @@ public class AssignmentsDescriptionFragment extends DialogFragment {
 
         instructions = (RichTextView) v.findViewById(R.id.instructions);
         instructions.setContext(getContext());
-        instructions.setSiteData(siteData.getId());
+        if (siteData != null)
+            instructions.setSiteData(siteData.getId());
+        else
+            instructions.setSiteData(assignment.getContext());
+
         String instruct = assignment.getInstructions();
-        instruct = Actions.deleteHtmlTags(instruct);
+        instruct = ActionsHelper.deleteHtmlTags(instruct);
         instructions.setText(instruct);
 
         attachmentsLinear = (LinearLayout) v.findViewById(R.id.attachments_linear);
@@ -114,7 +128,7 @@ public class AssignmentsDescriptionFragment extends DialogFragment {
                 TextView name = (TextView) currentAttachment.findViewById(R.id.attachment_name);
                 String url = assignment.getAttachments().get(i).getUrl();
                 try {
-                    if (Actions.getAttachmentType(url) != AttachmentType.URL) {
+                    if (ActionsHelper.getAttachmentType(url) != AttachmentType.URL) {
                         name.setText(URLDecoder.decode(url.replace("_", "/"), "UTF-8").substring(url.lastIndexOf('/') + 1));
                     } else {
                         name.setText(URLDecoder.decode(url, "UTF-8").replaceAll("_", "/"));
@@ -126,7 +140,7 @@ public class AssignmentsDescriptionFragment extends DialogFragment {
 
                 ImageView image = (ImageView) currentAttachment.findViewById(R.id.attachment_type_image);
 
-                image.setImageBitmap(Actions.getAttachmentTypeImage(getContext(), assignment.getAttachments().get(i).getUrl()));
+                image.setImageBitmap(ActionsHelper.getAttachmentTypeImage(getContext(), assignment.getAttachments().get(i).getUrl()));
 
                 attachmentsLinear.addView(currentAttachment);
             }

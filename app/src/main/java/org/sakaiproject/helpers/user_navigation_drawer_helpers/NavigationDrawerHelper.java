@@ -11,10 +11,11 @@ import android.view.View;
 import org.sakaiproject.api.memberships.SiteData;
 import org.sakaiproject.api.pojos.membership.SitePage;
 import org.sakaiproject.customviews.CustomSwipeRefreshLayout;
-import org.sakaiproject.general.Actions;
+import org.sakaiproject.helpers.ActionsHelper;
 import org.sakaiproject.sakai.AnnouncementFragment;
 import org.sakaiproject.sakai.AssignmentFragment;
 import org.sakaiproject.sakai.CalendarFragment;
+import org.sakaiproject.sakai.DashboardFragment;
 import org.sakaiproject.sakai.MembershipFragment;
 import org.sakaiproject.sakai.ProfileFragment;
 import org.sakaiproject.sakai.R;
@@ -33,7 +34,7 @@ public abstract class NavigationDrawerHelper {
     protected static Map<Integer, SitePage> pagesIds;
     protected static Map<Integer, String> myWorkspaceIds;
     private static Context context;
-    private static CustomSwipeRefreshLayout mSwipeRefreshLayout;
+    protected static CustomSwipeRefreshLayout mSwipeRefreshLayout;
     protected static DrawerLayout drawer;
     private static SiteData selectedSiteData;
     private static String selectedSite;
@@ -261,31 +262,33 @@ public abstract class NavigationDrawerHelper {
      * @param pageName the page name
      */
     public static void doAction(String pageName) {
-        if (pageName.equals(DASHBOARD)) {
 
+        if (pageName.equals(DASHBOARD)) {
+            DashboardFragment dashboardFragment = new DashboardFragment().getSwipeRefreshLayout(mSwipeRefreshLayout);
+            ActionsHelper.selectFragment(dashboardFragment, R.id.user_frame, context);
         } else if (pageName.equals(HOME)) {
 
         } else if (pageName.equals(PROFILE)) {
             ProfileFragment profileFragment = new ProfileFragment().getSwipeRefreshLayout(mSwipeRefreshLayout);
-            Actions.selectFragment(profileFragment, R.id.user_frame, context);
+            ActionsHelper.selectFragment(profileFragment, R.id.user_frame, context);
         } else if (pageName.equals(MEMBERSHIP)) {
             MembershipFragment membershipFragment = new MembershipFragment().getSwipeRefreshLayout(mSwipeRefreshLayout);
-            Actions.selectFragment(membershipFragment, R.id.user_frame, context);
+            ActionsHelper.selectFragment(membershipFragment, R.id.user_frame, context);
         } else if (pageName.equals(CALENDAR)) {
             CalendarFragment calendarFragment = new CalendarFragment().getSwipeRefreshLayout(mSwipeRefreshLayout);
-            Actions.selectFragment(calendarFragment, R.id.user_frame, context);
+            ActionsHelper.selectFragment(calendarFragment, R.id.user_frame, context);
         } else if (pageName.equals(RESOURCES)) {
 
         } else if (pageName.equals(ANNOUNCEMENTS)) {
             AnnouncementFragment announcementFragment = new AnnouncementFragment().getSwipeRefreshLayout(mSwipeRefreshLayout);
-            Actions.selectFragment(announcementFragment, R.id.user_frame, context);
+            ActionsHelper.selectFragment(announcementFragment, R.id.user_frame, context);
         } else if (pageName.equals(PREFERENCES)) {
 
         } else if (pageName.equals(ACCOUNT)) {
 
         } else if (pageName.equals(ASSIGNMENTS)) {
             AssignmentFragment assignmentFragment = new AssignmentFragment().getSwipeRefreshLayout(mSwipeRefreshLayout);
-            Actions.selectFragment(assignmentFragment, R.id.user_frame, context);
+            ActionsHelper.selectFragment(assignmentFragment, R.id.user_frame, context);
         } else if (pageName.equals(CHAT_ROOM)) {
 
         } else if (pageName.equals(CONTACT_US)) {
@@ -328,7 +331,7 @@ public abstract class NavigationDrawerHelper {
 
         } else if (pageName.equals(SYLLABUS)) {
             SyllabusFragment syllabusFragment = new SyllabusFragment().getData(mSwipeRefreshLayout, selectedSiteData);
-            Actions.selectFragment(syllabusFragment, R.id.user_frame, context);
+            ActionsHelper.selectFragment(syllabusFragment, R.id.user_frame, context);
         } else if (pageName.equals(TESTS_QUIZZES)) {
 
         } else if (pageName.equals(WIKI)) {

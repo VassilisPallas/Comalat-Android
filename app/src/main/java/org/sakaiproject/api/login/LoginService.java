@@ -28,7 +28,7 @@ import org.sakaiproject.sakai.AppController;
 import org.sakaiproject.api.cryptography.PasswordEncryption;
 import org.sakaiproject.api.json.JsonParser;
 import org.sakaiproject.api.user.User;
-import org.sakaiproject.general.Actions;
+import org.sakaiproject.helpers.ActionsHelper;
 import org.sakaiproject.general.Connection;
 import org.sakaiproject.sakai.R;
 import org.sakaiproject.sakai.UserActivity;
@@ -128,9 +128,9 @@ public class LoginService implements ILogin {
 
                 JsonParser.parseLoginResult(login);
 
-                if (Actions.createDirIfNotExists(context, User.getUserEid() + File.separator + "user"))
+                if (ActionsHelper.createDirIfNotExists(context, User.getUserEid() + File.separator + "user"))
                     try {
-                        Actions.writeJsonFile(context, response.toString(), "loginJson", User.getUserEid() + File.separator + "user");
+                        ActionsHelper.writeJsonFile(context, response.toString(), "loginJson", User.getUserEid() + File.separator + "user");
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -161,9 +161,9 @@ public class LoginService implements ILogin {
 
                 JsonParser.parseUserDataJson(userData);
 
-                if (Actions.createDirIfNotExists(context, User.getUserEid() + File.separator + "user"))
+                if (ActionsHelper.createDirIfNotExists(context, User.getUserEid() + File.separator + "user"))
                     try {
-                        Actions.writeJsonFile(context, response.toString(), "fullUserDataJson", User.getUserEid() + File.separator + "user");
+                        ActionsHelper.writeJsonFile(context, response.toString(), "fullUserDataJson", User.getUserEid() + File.separator + "user");
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -194,9 +194,9 @@ public class LoginService implements ILogin {
 
                 JsonParser.parseUserProfileDataJson(profile);
 
-                if (Actions.createDirIfNotExists(context, User.getUserEid() + File.separator + "user"))
+                if (ActionsHelper.createDirIfNotExists(context, User.getUserEid() + File.separator + "user"))
                     try {
-                        Actions.writeJsonFile(context, response.toString(), "userProfileDataJson", User.getUserEid() + File.separator + "user");
+                        ActionsHelper.writeJsonFile(context, response.toString(), "userProfileDataJson", User.getUserEid() + File.separator + "user");
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -223,9 +223,9 @@ public class LoginService implements ILogin {
         userImage = new ImageRequest(params[0], new Response.Listener<Bitmap>() {
             @Override
             public void onResponse(Bitmap response) {
-                if (Actions.createDirIfNotExists(context, User.getUserEid() + File.separator + "user"))
+                if (ActionsHelper.createDirIfNotExists(context, User.getUserEid() + File.separator + "user"))
                     try {
-                        Actions.saveImage(context, response, "user_image.jpg", User.getUserEid() + File.separator + "user");
+                        ActionsHelper.saveImage(context, response, "user_image.jpg", User.getUserEid() + File.separator + "user");
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -247,9 +247,9 @@ public class LoginService implements ILogin {
         userImagethumb = new ImageRequest(params[0], new Response.Listener<Bitmap>() {
             @Override
             public void onResponse(Bitmap response) {
-                if (Actions.createDirIfNotExists(context, User.getUserEid() + File.separator + "user"))
+                if (ActionsHelper.createDirIfNotExists(context, User.getUserEid() + File.separator + "user"))
                     try {
-                        Actions.saveImage(context, response, "user_thumbnail_image.jpg", User.getUserEid() + File.separator + "user");
+                        ActionsHelper.saveImage(context, response, "user_thumbnail_image.jpg", User.getUserEid() + File.separator + "user");
                     } catch (IOException e) {
                         e.printStackTrace();
                     }

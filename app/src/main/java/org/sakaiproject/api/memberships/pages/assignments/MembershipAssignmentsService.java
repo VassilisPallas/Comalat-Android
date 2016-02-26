@@ -11,12 +11,11 @@ import com.google.gson.Gson;
 
 import org.json.JSONObject;
 import org.sakaiproject.api.json.JsonParser;
-import org.sakaiproject.api.pojos.announcements.Announcement;
 import org.sakaiproject.api.pojos.assignments.Assignment;
 import org.sakaiproject.api.sync.AssignmentsRefreshUI;
 import org.sakaiproject.api.user.User;
 import org.sakaiproject.customviews.CustomSwipeRefreshLayout;
-import org.sakaiproject.general.Actions;
+import org.sakaiproject.helpers.ActionsHelper;
 import org.sakaiproject.sakai.AppController;
 
 import java.io.File;
@@ -51,9 +50,9 @@ public class MembershipAssignmentsService {
 
                 Assignment assignment = gson.fromJson(response.toString(), Assignment.class);
                 JsonParser.getMembershipAssignments(assignment);
-                if (Actions.createDirIfNotExists(context, User.getUserEid() + File.separator + "memberships" + File.separator + siteId + File.separator + "assignments"))
+                if (ActionsHelper.createDirIfNotExists(context, User.getUserEid() + File.separator + "memberships" + File.separator + siteId + File.separator + "assignments"))
                     try {
-                        Actions.writeJsonFile(context, response.toString(), siteId + "_assignments", User.getUserEid() + File.separator + "memberships" + File.separator + siteId + File.separator + "assignments");
+                        ActionsHelper.writeJsonFile(context, response.toString(), siteId + "_assignments", User.getUserEid() + File.separator + "memberships" + File.separator + siteId + File.separator + "assignments");
                     } catch (IOException e) {
                         e.printStackTrace();
                     }

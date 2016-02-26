@@ -16,7 +16,7 @@ import org.sakaiproject.api.pojos.SiteName;
 import org.sakaiproject.api.sync.AnnouncementRefreshUI;
 import org.sakaiproject.api.user.User;
 import org.sakaiproject.customviews.CustomSwipeRefreshLayout;
-import org.sakaiproject.general.Actions;
+import org.sakaiproject.helpers.ActionsHelper;
 import org.sakaiproject.sakai.AppController;
 import org.sakaiproject.sakai.R;
 
@@ -79,9 +79,9 @@ public class UserAnnouncementsService {
                                 // make String with the "new" json
                                 announcementsJson = gson.toJson(announcement);
 
-                                if (Actions.createDirIfNotExists(context, User.getUserEid() + File.separator + "announcements"))
+                                if (ActionsHelper.createDirIfNotExists(context, User.getUserEid() + File.separator + "announcements"))
                                     try {
-                                        Actions.writeJsonFile(context, announcementsJson, "announcements", User.getUserEid() + File.separator + "announcements");
+                                        ActionsHelper.writeJsonFile(context, announcementsJson, "announcements", User.getUserEid() + File.separator + "announcements");
                                     } catch (IOException e) {
                                         e.printStackTrace();
                                     }
@@ -101,9 +101,9 @@ public class UserAnnouncementsService {
                         AppController.getInstance().addToRequestQueue(siteNameRequest, site_name_tag);
                     }
                 } else {
-                    if (Actions.createDirIfNotExists(context, User.getUserEid() + File.separator + "announcements"))
+                    if (ActionsHelper.createDirIfNotExists(context, User.getUserEid() + File.separator + "announcements"))
                         try {
-                            Actions.writeJsonFile(context, announcementsJson, "announcements", User.getUserEid() + File.separator + "announcements");
+                            ActionsHelper.writeJsonFile(context, announcementsJson, "announcements", User.getUserEid() + File.separator + "announcements");
                         } catch (IOException e) {
                             e.printStackTrace();
                         }

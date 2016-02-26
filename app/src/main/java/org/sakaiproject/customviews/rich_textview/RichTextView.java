@@ -4,20 +4,15 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
-import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.Html;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
-import android.text.method.LinkMovementMethod;
 import android.text.style.ForegroundColorSpan;
-import android.text.style.ImageSpan;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.widget.TextView;
 
 import com.android.volley.Response;
@@ -26,8 +21,7 @@ import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.ImageRequest;
 
 import org.sakaiproject.api.user.User;
-import org.sakaiproject.general.Actions;
-import org.sakaiproject.general.Image;
+import org.sakaiproject.helpers.ActionsHelper;
 import org.sakaiproject.sakai.AppController;
 import org.sakaiproject.sakai.R;
 
@@ -87,7 +81,7 @@ public class RichTextView extends TextView implements Html.ImageGetter {
 
     private void addImage(final Context context, final Spannable spannable) {
         if (id != null)
-            if (Actions.createDirIfNotExists(context, User.getUserEid() + File.separator + "memberships" + File.separator + id)) {
+            if (ActionsHelper.createDirIfNotExists(context, User.getUserEid() + File.separator + "memberships" + File.separator + id)) {
                 path = new File(context.getFilesDir(), User.getUserEid() + File.separator + "memberships" + File.separator + id);
             }
 
@@ -161,9 +155,9 @@ public class RichTextView extends TextView implements Html.ImageGetter {
             public void onResponse(Bitmap response) {
 
                 if (id != null) {
-                    if (Actions.createDirIfNotExists(context, User.getUserEid() + File.separator + "memberships" + File.separator + id))
+                    if (ActionsHelper.createDirIfNotExists(context, User.getUserEid() + File.separator + "memberships" + File.separator + id))
                         try {
-                            Actions.saveImage(context, response, img.getName(), User.getUserEid() + File.separator + "memberships" + File.separator + id);
+                            ActionsHelper.saveImage(context, response, img.getName(), User.getUserEid() + File.separator + "memberships" + File.separator + id);
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
@@ -282,7 +276,7 @@ public class RichTextView extends TextView implements Html.ImageGetter {
     @Override
     public Drawable getDrawable(String source) {
         if (id != null)
-            if (Actions.createDirIfNotExists(context, User.getUserEid() + File.separator + "memberships" + File.separator + id)) {
+            if (ActionsHelper.createDirIfNotExists(context, User.getUserEid() + File.separator + "memberships" + File.separator + id)) {
                 path = new File(context.getFilesDir(), User.getUserEid() + File.separator + "memberships" + File.separator + id);
             }
 

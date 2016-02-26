@@ -12,7 +12,7 @@ import org.json.JSONObject;
 import org.sakaiproject.api.sync.SyllabusRefreshUI;
 import org.sakaiproject.api.user.User;
 import org.sakaiproject.customviews.CustomSwipeRefreshLayout;
-import org.sakaiproject.general.Actions;
+import org.sakaiproject.helpers.ActionsHelper;
 import org.sakaiproject.sakai.AppController;
 
 import java.io.File;
@@ -52,9 +52,9 @@ public class SyllabusService {
         JsonObjectRequest syllabusRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
-                if (Actions.createDirIfNotExists(context, User.getUserEid() + File.separator + "memberships" + File.separator + siteId + File.separator + "syllabus"))
+                if (ActionsHelper.createDirIfNotExists(context, User.getUserEid() + File.separator + "memberships" + File.separator + siteId + File.separator + "syllabus"))
                     try {
-                        Actions.writeJsonFile(context, response.toString(), siteId + "_syllabus", User.getUserEid() + File.separator + "memberships" + File.separator + siteId + File.separator + "syllabus");
+                        ActionsHelper.writeJsonFile(context, response.toString(), siteId + "_syllabus", User.getUserEid() + File.separator + "memberships" + File.separator + siteId + File.separator + "syllabus");
                     } catch (IOException e) {
                         e.printStackTrace();
                     }

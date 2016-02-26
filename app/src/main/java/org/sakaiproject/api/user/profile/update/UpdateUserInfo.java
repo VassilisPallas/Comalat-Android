@@ -4,7 +4,6 @@ import android.content.Context;
 import android.util.Log;
 
 import org.sakaiproject.api.json.JsonWriter;
-import org.sakaiproject.general.Actions;
 import org.sakaiproject.general.Connection;
 import org.sakaiproject.general.ConnectionType;
 

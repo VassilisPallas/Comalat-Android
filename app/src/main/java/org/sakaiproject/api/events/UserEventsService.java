@@ -16,7 +16,7 @@ import org.sakaiproject.api.pojos.events.Event;
 import org.sakaiproject.api.json.JsonParser;
 import org.sakaiproject.api.sync.CalendarRefreshUI;
 import org.sakaiproject.customviews.CustomSwipeRefreshLayout;
-import org.sakaiproject.general.Actions;
+import org.sakaiproject.helpers.ActionsHelper;
 import org.sakaiproject.api.user.User;
 import org.sakaiproject.sakai.AppController;
 import org.sakaiproject.sakai.R;
@@ -68,9 +68,9 @@ public class UserEventsService {
             public void onResponse(JSONObject response) {
                 Event event = gson.fromJson(response.toString(), Event.class);
                 JsonParser.parseEventJson(event);
-                if (Actions.createDirIfNotExists(context, User.getUserEid() + File.separator + "events"))
+                if (ActionsHelper.createDirIfNotExists(context, User.getUserEid() + File.separator + "events"))
                     try {
-                        Actions.writeJsonFile(context, response.toString(), "userEventsJson", User.getUserEid() + File.separator + "events");
+                        ActionsHelper.writeJsonFile(context, response.toString(), "userEventsJson", User.getUserEid() + File.separator + "events");
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -131,9 +131,9 @@ public class UserEventsService {
             public void onResponse(JSONObject response) {
                 EventInfo userEventOwnerPojo = gson.fromJson(response.toString(), EventInfo.class);
                 JsonParser.parseEventInfoJson(userEventOwnerPojo, index);
-                if (Actions.createDirIfNotExists(context, User.getUserEid() + File.separator + "events"))
+                if (ActionsHelper.createDirIfNotExists(context, User.getUserEid() + File.separator + "events"))
                     try {
-                        Actions.writeJsonFile(context, response.toString(), EventsCollection.getEventsList().get(index).getEventId(), User.getUserEid() + File.separator + "events");
+                        ActionsHelper.writeJsonFile(context, response.toString(), EventsCollection.getEventsList().get(index).getEventId(), User.getUserEid() + File.separator + "events");
                     } catch (IOException e) {
                         e.printStackTrace();
                     }

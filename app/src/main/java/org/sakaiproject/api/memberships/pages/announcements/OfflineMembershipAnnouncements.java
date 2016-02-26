@@ -7,7 +7,7 @@ import com.google.gson.Gson;
 import org.sakaiproject.api.json.JsonParser;
 import org.sakaiproject.api.pojos.announcements.Announcement;
 import org.sakaiproject.api.user.User;
-import org.sakaiproject.general.Actions;
+import org.sakaiproject.helpers.ActionsHelper;
 
 import java.io.File;
 import java.io.IOException;
@@ -26,9 +26,9 @@ public class OfflineMembershipAnnouncements {
     }
 
     public void getAnnouncements() {
-        if (Actions.createDirIfNotExists(context, User.getUserEid() + File.separator + "memberships" + File.separator + siteId + File.separator + "announcements")) {
+        if (ActionsHelper.createDirIfNotExists(context, User.getUserEid() + File.separator + "memberships" + File.separator + siteId + File.separator + "announcements")) {
             try {
-                String announce = Actions.readJsonFile(context, siteId + "_announcements", User.getUserEid() + File.separator + "memberships" + File.separator + siteId + File.separator + "announcements");
+                String announce = ActionsHelper.readJsonFile(context, siteId + "_announcements", User.getUserEid() + File.separator + "memberships" + File.separator + siteId + File.separator + "announcements");
                 Announcement announcement = gson.fromJson(announce, Announcement.class);
                 JsonParser.getMembershipAnnouncements(announcement);
             } catch (IOException e) {

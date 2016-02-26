@@ -45,6 +45,10 @@
             </intent-filter>
         </receiver>
 
+        <service
+            android:name="org.sakaiproject.api.session.IdleModeCheckService"
+            android:exported="false"/>
+
         <activity
             android:name=".WebViewActivity"
             android:label="@string/title_activity_web_view"
