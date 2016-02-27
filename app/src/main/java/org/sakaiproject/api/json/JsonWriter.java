@@ -2,11 +2,18 @@ package org.sakaiproject.api.json;
 
 import android.content.Context;
 
+import com.google.gson.Gson;
+
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.sakaiproject.api.pojos.login.UserData;
 import org.sakaiproject.api.user.User;
 import org.sakaiproject.api.user.profile.Profile;
+import org.sakaiproject.helpers.ActionsHelper;
 import org.sakaiproject.sakai.R;
+
+import java.io.File;
+import java.io.IOException;
 
 /**
  * Created by vasilis on 1/13/16.
@@ -17,11 +24,31 @@ public class JsonWriter {
 
     /**
      * the JsonWriter constructor
+     *
      * @param context the context
      */
     public JsonWriter(Context context) {
         this.context = context;
     }
+
+
+    public static String updateUserAccountJson(Context context, String name, String surname, String email, String pass) throws IOException {
+        Gson gson = new Gson();
+        if (ActionsHelper.createDirIfNotExists(context, User.getUserEid() + File.separator + "user")) {
+            String userDataJson = ActionsHelper.readJsonFile(context, "fullUserDataJson", User.getUserEid() + File.separator + "user");
+
+            UserData userData = gson.fromJson(userDataJson, UserData.class);
+            userData.setFirstName(name);
+            userData.setLastName(surname);
+            userData.setEmail(email);
+            if (pass != null)
+                userData.setPassword(pass);
+
+            return gson.toJson(userData);
+        }
+        return null;
+    }
+
 
     public String updateUserProfileInfo() {
         JSONObject root = new JSONObject();

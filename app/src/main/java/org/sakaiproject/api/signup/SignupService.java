@@ -101,9 +101,6 @@ public class SignupService {
 
                 idInputLayout.setError(context.getResources().getString(R.string.eid_exists));
 
-//                userExistsImageView.setVisibility(View.VISIBLE);
-//                userExistsProgressBar.setVisibility(View.GONE);
-//                userExistsImageView.setImageDrawable(Actions.selectValidationImage(context, exists));
                 existence.signUpButton(exists);
             }
         }, new Response.ErrorListener() {
@@ -112,9 +109,6 @@ public class SignupService {
                 exists = true;
                 idInputLayout.setErrorEnabled(false);
 
-//                userExistsImageView.setVisibility(View.VISIBLE);
-//                userExistsProgressBar.setVisibility(View.GONE);
-//                userExistsImageView.setImageDrawable(Actions.selectValidationImage(context, exists));
                 existence.signUpButton(exists);
             }
         });

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/action_open_inbox"
+        android:icon="@mipmap/ic_inbox"
+        android:title="@string/action_open_inbox"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/action_search"
+        android:icon="@mipmap/ic_search_white"
+        android:title="@string/action_search"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/action_open_right_drawer"
+        android:icon="@mipmap/ic_sites_drawer"
+        android:title="@string/action_open_right_drawer"
+        app:showAsAction="always" />
+</menu>

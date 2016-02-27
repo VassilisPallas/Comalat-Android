@@ -1,0 +1,533 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:card_view="http://schemas.android.com/tools"
+    android:id="@+id/root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="10dp">
+
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        card_view:cardCornerRadius="4dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- Header -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#dedede"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_centerVertical="true"
+                        android:padding="8dp"
+                        android:text="@string/basic_information"
+                        android:textSize="17sp"
+                        android:textStyle="bold" />
+
+                    <com.balysv.materialripple.MaterialRippleLayout
+                        android:id="@+id/edit_basic_ripple"
+                        android:layout_width="50dp"
+                        android:layout_height="40dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        app:mrl_rippleAlpha="0.2"
+                        app:mrl_rippleColor="#ffffff"
+                        app:mrl_rippleDelayClick="false"
+                        app:mrl_rippleHover="true"
+                        app:mrl_rippleOverlay="true"
+                        app:mrl_rippleRoundedCorners="@dimen/fab_margin">
+
+                        <FrameLayout
+                            android:id="@+id/edit_basic_button"
+                            android:layout_width="50dp"
+                            android:layout_height="40dp"
+                            android:clickable="true">
+
+                            <ImageView
+                                android:id="@+id/edit_account"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_horizontal|center_vertical" />
+                        </FrameLayout>
+
+                    </com.balysv.materialripple.MaterialRippleLayout>
+
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#b4b4b4" />
+
+            </LinearLayout>
+
+            <!-- User Id -->
+            <LinearLayout
+                android:id="@+id/nickname_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/user_id_textview"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_centerVertical="true"
+                        android:padding="8dp"
+                        android:text="@string/user_id" />
+
+                    <TextView
+                        android:id="@+id/user_id_value"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_toRightOf="@+id/user_id_textview"
+                        android:gravity="left"
+                        android:padding="8dp" />
+
+                    <EditText
+                        android:id="@+id/user_id_change"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_toRightOf="@+id/user_id_textview"
+                        android:gravity="left"
+                        android:padding="8dp"
+                        android:singleLine="true"
+                        android:textColor="#8f8f8f"
+                        android:visibility="gone" />
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#d7d7d7" />
+
+            </LinearLayout>
+
+            <!-- First Name -->
+            <LinearLayout
+                android:id="@+id/first_name_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/first_name_textview"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_centerVertical="true"
+                        android:padding="8dp"
+                        android:text="@string/first_name_account" />
+
+                    <TextView
+                        android:id="@+id/first_name_value"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_toRightOf="@+id/first_name_textview"
+                        android:gravity="left"
+                        android:padding="8dp" />
+
+                    <EditText
+                        android:id="@+id/first_name_change"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_toRightOf="@+id/first_name_textview"
+                        android:gravity="left"
+                        android:padding="8dp"
+                        android:singleLine="true"
+                        android:textColor="#8f8f8f"
+                        android:visibility="gone" />
+
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#d7d7d7" />
+
+            </LinearLayout>
+
+            <!-- Last Name -->
+            <LinearLayout
+                android:id="@+id/last_name_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/last_name_textview"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_centerVertical="true"
+                        android:padding="8dp"
+                        android:text="@string/last_name_account" />
+
+                    <TextView
+                        android:id="@+id/last_name_value"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_toRightOf="@+id/last_name_textview"
+                        android:gravity="left"
+                        android:padding="8dp" />
+
+                    <EditText
+                        android:id="@+id/last_name_change"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_toRightOf="@+id/last_name_textview"
+                        android:gravity="left"
+                        android:padding="8dp"
+                        android:singleLine="true"
+                        android:textColor="#8f8f8f"
+                        android:visibility="gone" />
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#d7d7d7" />
+
+            </LinearLayout>
+
+            <!-- Email -->
+            <LinearLayout
+                android:id="@+id/email_name_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/email_textview"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_centerVertical="true"
+                        android:padding="8dp"
+                        android:text="@string/email" />
+
+                    <TextView
+                        android:id="@+id/email_value"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_toRightOf="@+id/email_textview"
+                        android:gravity="left"
+                        android:padding="8dp" />
+
+                    <EditText
+                        android:id="@+id/email_change"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="30dp"
+                        android:layout_toRightOf="@+id/email_textview"
+                        android:gravity="left"
+                        android:padding="8dp"
+                        android:singleLine="true"
+                        android:textColor="#8f8f8f"
+                        android:visibility="gone" />
+
+                    <TextView
+                        android:id="@+id/email_error"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/email_change"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_toRightOf="@+id/email_textview"
+                        android:text="@string/no_valid_email_address"
+                        android:textColor="@color/error"
+                        android:visibility="gone" />
+
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#d7d7d7" />
+
+            </LinearLayout>
+
+            <!-- Password -->
+            <LinearLayout
+                android:id="@+id/password_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/password_textview"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_centerVertical="true"
+                        android:padding="8dp"
+                        android:text="@string/password" />
+
+                    <TextView
+                        android:id="@+id/password_value"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_toRightOf="@+id/password_textview"
+                        android:gravity="left"
+                        android:padding="8dp"
+                        android:text="@string/password_value" />
+
+                    <EditText
+                        android:id="@+id/old_password"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="30dp"
+                        android:layout_toRightOf="@+id/password_textview"
+                        android:fontFamily="sans-serif"
+                        android:gravity="left"
+                        android:inputType="textPassword"
+                        android:padding="8dp"
+                        android:singleLine="true"
+                        android:textColor="#8f8f8f"
+                        android:visibility="gone" />
+
+
+                    <ProgressBar
+                        android:id="@+id/valid_password_progressbar"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="5dp"
+                        android:visibility="gone" />
+
+                    <TextView
+                        android:id="@+id/password_error"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/old_password"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_toRightOf="@+id/password_textview"
+                        android:text="@string/wrong_password"
+                        android:textColor="@color/error"
+                        android:visibility="gone" />
+
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#d7d7d7" />
+
+            </LinearLayout>
+
+            <!-- new password -->
+            <LinearLayout
+                android:id="@+id/new_password_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/new_password_textview"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_centerVertical="true"
+                        android:padding="8dp"
+                        android:text="@string/new_password" />
+
+                    <EditText
+                        android:id="@+id/new_password_change"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_toRightOf="@+id/new_password_textview"
+                        android:fontFamily="sans-serif"
+                        android:gravity="left"
+                        android:inputType="textPassword"
+                        android:padding="8dp"
+                        android:textColor="#8f8f8f" />
+
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#d7d7d7" />
+
+            </LinearLayout>
+
+            <!-- confirm new password -->
+            <LinearLayout
+                android:id="@+id/confirm_new_password_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/confirm_new_password_textview"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_centerVertical="true"
+                        android:padding="8dp"
+                        android:text="@string/verify_new_password" />
+
+                    <EditText
+                        android:id="@+id/confirm_new_password_change"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_toRightOf="@+id/confirm_new_password_textview"
+                        android:fontFamily="sans-serif"
+                        android:gravity="left"
+                        android:inputType="textPassword"
+                        android:padding="8dp"
+                        android:textColor="#8f8f8f" />
+
+                    <TextView
+                        android:id="@+id/verify_new_password_error"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/confirm_new_password_change"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_toRightOf="@+id/confirm_new_password_textview"
+                        android:text="@string/password_not_match"
+                        android:textColor="@color/error"
+                        android:visibility="gone" />
+
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#d7d7d7" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/account_info_buttons"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal"
+                android:visibility="gone">
+
+                <com.balysv.materialripple.MaterialRippleLayout
+                    android:id="@+id/account_save_changes_button_ripple"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="5dp"
+                    app:mrl_rippleAlpha="0.2"
+                    app:mrl_rippleColor="#f5f5f5"
+                    app:mrl_rippleDelayClick="false"
+                    app:mrl_rippleHover="true"
+                    app:mrl_rippleOverlay="true">
+
+                    <Button
+                        android:id="@+id/account_save_changes_button"
+                        android:layout_width="130dp"
+                        android:layout_height="40dp"
+                        android:background="#43C84E"
+                        android:text="@string/save_changes"
+                        android:textColor="#FFFFFF" />
+
+                </com.balysv.materialripple.MaterialRippleLayout>
+
+
+                <com.balysv.materialripple.MaterialRippleLayout
+                    android:id="@+id/account_cancel_button_ripple"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginTop="5dp"
+                    app:mrl_rippleAlpha="0.2"
+                    app:mrl_rippleColor="#f5f5f5"
+                    app:mrl_rippleDelayClick="false"
+                    app:mrl_rippleHover="true"
+                    app:mrl_rippleOverlay="true">
+
+                    <Button
+                        android:id="@+id/account_cancel_button"
+                        android:layout_width="110dp"
+                        android:layout_height="40dp"
+                        android:background="#43C84E"
+                        android:text="@string/cancel"
+                        android:textColor="#FFFFFF" />
+
+                </com.balysv.materialripple.MaterialRippleLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </android.support.v7.widget.CardView>
+
+</FrameLayout>

@@ -12,6 +12,7 @@ import org.sakaiproject.api.memberships.SiteData;
 import org.sakaiproject.api.pojos.membership.SitePage;
 import org.sakaiproject.customviews.CustomSwipeRefreshLayout;
 import org.sakaiproject.helpers.ActionsHelper;
+import org.sakaiproject.sakai.AccountFragment;
 import org.sakaiproject.sakai.AnnouncementFragment;
 import org.sakaiproject.sakai.AssignmentFragment;
 import org.sakaiproject.sakai.CalendarFragment;
@@ -35,7 +36,7 @@ public abstract class NavigationDrawerHelper {
     protected static Map<Integer, String> myWorkspaceIds;
     private static Context context;
     protected static CustomSwipeRefreshLayout mSwipeRefreshLayout;
-    protected static DrawerLayout drawer;
+    public static DrawerLayout drawer;
     private static SiteData selectedSiteData;
     private static String selectedSite;
 
@@ -285,7 +286,8 @@ public abstract class NavigationDrawerHelper {
         } else if (pageName.equals(PREFERENCES)) {
 
         } else if (pageName.equals(ACCOUNT)) {
-
+            AccountFragment accountFragment = new AccountFragment();
+            ActionsHelper.selectFragment(accountFragment, R.id.user_frame, context);
         } else if (pageName.equals(ASSIGNMENTS)) {
             AssignmentFragment assignmentFragment = new AssignmentFragment().getSwipeRefreshLayout(mSwipeRefreshLayout);
             ActionsHelper.selectFragment(assignmentFragment, R.id.user_frame, context);

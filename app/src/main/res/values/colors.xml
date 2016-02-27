@@ -4,8 +4,11 @@
     <color name="colorPrimaryDark">#29A031</color>
     <color name="colorAccent">#43C84E</color>
 
+    <color name="bg_msg_from">#E9E9E9</color>
     <color name="green">#34A853</color>
     <color name="red">#EA4335</color>
     <color name="blue">#4285F4</color>
     <color name="orange">#FBBC05</color>
+
+    <color name="error">#C61E21</color>
 </resources>

@@ -2,6 +2,7 @@ package org.sakaiproject.sakai;
 
 
 import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
@@ -25,6 +26,7 @@ import com.balysv.materialripple.MaterialRippleLayout;
 import org.sakaiproject.api.internet.NetWork;
 import org.sakaiproject.api.signup.EidExistence;
 import org.sakaiproject.api.signup.SignupService;
+import org.sakaiproject.api.user.update.OldPasswordMatch;
 
 
 /**
@@ -107,6 +109,11 @@ public class SignupFragment extends Fragment implements EidExistence {
         idInputLayout = (TextInputLayout) v.findViewById(R.id.input_layout_user_id);
         rippleLayout = (MaterialRippleLayout) v.findViewById(R.id.ripple);
         signupProgressBar = (ProgressBar) v.findViewById(R.id.signup_progess);
+
+        if (signupProgressBar != null) {
+            signupProgressBar.setIndeterminate(true);
+            signupProgressBar.getIndeterminateDrawable().setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_IN);
+        }
 
         root = (FrameLayout) v.findViewById(R.id.root);
 

@@ -80,23 +80,25 @@ public class BasicInfoHelper implements IUserAbout {
         datePickerImageView.setImageDrawable(calendarDrawable);
         datePickerImageView.setOnClickListener(clickListener);
 
-        month = Profile.getDateOfBirth().getMonth();
-        day = Profile.getDateOfBirth().getDate();
-        year = Integer.valueOf(Profile.getDateOfBirth().getYear() > 20 ? "19" + Profile.getDateOfBirth().getYear() : "20" + Profile.getDateOfBirth().getYear());
-        birthdayPicker.init(year, month, day, new DatePicker.OnDateChangedListener() {
-            @Override
-            public void onDateChanged(DatePicker view, int Year, int monthOfYear, int dayOfMonth) {
-                month = monthOfYear;
-                day = dayOfMonth;
-                year = Year;
-                birthdayTextView.setText(ActionsHelper.getMonthfromIndex(month));
-                birthdayTextView.append(" ");
-                birthdayTextView.append(String.valueOf(day));
-                birthdayTextView.append(", ");
-                birthdayTextView.append(String.valueOf(year));
-                birthdayPicker.setVisibility(View.GONE);
-            }
-        });
+        if (Profile.getDateOfBirth() != null) {
+            month = Profile.getDateOfBirth().getMonth();
+            day = Profile.getDateOfBirth().getDate();
+            year = Integer.valueOf(Profile.getDateOfBirth().getYear() > 20 ? "19" + Profile.getDateOfBirth().getYear() : "20" + Profile.getDateOfBirth().getYear());
+            birthdayPicker.init(year, month, day, new DatePicker.OnDateChangedListener() {
+                @Override
+                public void onDateChanged(DatePicker view, int Year, int monthOfYear, int dayOfMonth) {
+                    month = monthOfYear;
+                    day = dayOfMonth;
+                    year = Year;
+                    birthdayTextView.setText(ActionsHelper.getMonthfromIndex(month));
+                    birthdayTextView.append(" ");
+                    birthdayTextView.append(String.valueOf(day));
+                    birthdayTextView.append(", ");
+                    birthdayTextView.append(String.valueOf(year));
+                    birthdayPicker.setVisibility(View.GONE);
+                }
+            });
+        }
 
         nicknameTextView = (TextView) activity.findViewById(R.id.nickname_value);
         birthdayTextView = (TextView) activity.findViewById(R.id.birthday_value);

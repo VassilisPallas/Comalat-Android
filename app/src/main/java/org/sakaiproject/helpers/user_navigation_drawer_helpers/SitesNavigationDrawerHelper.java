@@ -2,6 +2,7 @@ package org.sakaiproject.helpers.user_navigation_drawer_helpers;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -22,6 +23,7 @@ import android.widget.TextView;
 
 import org.sakaiproject.api.memberships.SiteData;
 import org.sakaiproject.customviews.CustomSwipeRefreshLayout;
+import org.sakaiproject.sakai.ChatActivity;
 import org.sakaiproject.sakai.R;
 
 import java.lang.reflect.Field;
@@ -77,14 +79,6 @@ public class SitesNavigationDrawerHelper extends NavigationDrawerHelper {
             mCursorDrawableRes.set(e, 0); //This sets the cursor resource ID to 0 or @null which will make it visible on white background
         } catch (Exception ex) {
         }
-
-        ((AppCompatActivity) context).findViewById(R.id.sites_drawer_button).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // open sites drawer
-                drawer.openDrawer(GravityCompat.END);
-            }
-        });
 
         e.addTextChangedListener(new TextWatcher() {
             MenuItem sitesItem = sitesNavigationView.getMenu().findItem(R.id.sites);

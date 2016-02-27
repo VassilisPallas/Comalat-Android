@@ -96,8 +96,8 @@ public class StaffInfoHelper implements IUserAbout {
             schoolLayout.setVisibility(View.GONE);
         }
 
-        if (Profile.getRoom().trim() != null) {
-            roomTextView.setText(Profile.getRoom());
+        if (Profile.getRoom() != null) {
+            roomTextView.setText(Profile.getRoom().trim());
         } else {
             roomLayout.setVisibility(View.GONE);
         }

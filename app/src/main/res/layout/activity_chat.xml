@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="org.sakaiproject.sakai.ChatActivity">
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/chat_recycle_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="50dp" />
+
+    <LinearLayout
+        android:id="@+id/form"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:weightSum="1">
+
+        <EditText
+            android:id="@+id/chat_message"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:inputType="textMultiLine"
+            android:layout_weight="0.85"
+            android:hint="@string/write_message"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp" />
+
+        <ImageView
+            android:id="@+id/chat_send"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.15"
+            android:scaleType="center"
+            android:src="@mipmap/ic_send" />
+
+    </LinearLayout>
+
+</RelativeLayout>

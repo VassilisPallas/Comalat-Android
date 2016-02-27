@@ -12,6 +12,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
@@ -72,7 +73,6 @@ public class UserActivity extends AppCompatActivity implements NavigationView.On
            so the thread for the idle mode will start
         */
         if (NetWork.getConnectionEstablished()) {
-            Intent idleService = new Intent(this, IdleModeCheckService.class);
 
             waiter = Waiter.getInstance();
             waiter.stop = false;
@@ -116,6 +116,32 @@ public class UserActivity extends AppCompatActivity implements NavigationView.On
         }
 
         initializeMainMenu();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.user, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+
+        switch (id) {
+            case R.id.action_open_right_drawer:
+                NavigationDrawerHelper.drawer.openDrawer(GravityCompat.END);
+                return true;
+            case R.id.action_open_inbox:
+                startActivity(new Intent(this, ChatActivity.class));
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     private void initializeMainMenu() {
@@ -204,7 +230,6 @@ public class UserActivity extends AppCompatActivity implements NavigationView.On
         }
         Log.i("visible", "false");
     }
-
 
     @Override
     protected void onResume() {

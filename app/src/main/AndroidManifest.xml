@@ -47,7 +47,7 @@
 
         <service
             android:name="org.sakaiproject.api.session.IdleModeCheckService"
-            android:exported="false"/>
+            android:exported="false" />
 
         <activity
             android:name=".WebViewActivity"
@@ -60,6 +60,7 @@
                 <data android:scheme="https" />
             </intent-filter>
         </activity>
+        <activity android:name=".ChatActivity"></activity>
     </application>
 
 </manifest>

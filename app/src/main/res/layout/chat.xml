@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="3dp"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/message_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="TUE at 12:15"
+        android:textColor="#B0B0B0" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="5dp">
+
+        <org.sakaiproject.customviews.ImageViewRounded
+            android:id="@+id/from_image"
+            android:layout_width="50dp"
+            android:layout_height="45dp"
+            android:layout_centerVertical="true"
+            android:drawingCacheQuality="high"
+            android:scaleType="centerCrop"
+            android:src="@drawable/profile" />
+
+        <LinearLayout
+            android:id="@+id/message_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="30dp"
+            android:layout_marginLeft="8dp"
+            android:layout_toRightOf="@+id/from_image"
+            android:background="@drawable/background_message_from"
+            android:padding="10dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="vlepw troxo tis tuxis me tous dikous mou? ti kaneis? kala eimai esy? ola kala? kala mwre edw arazw? esy?" />
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</LinearLayout>
