@@ -60,7 +60,13 @@
                 <data android:scheme="https" />
             </intent-filter>
         </activity>
-        <activity android:name=".ChatActivity"></activity>
+        <activity android:name=".ChatActivity" />
+        <activity android:name=".ConfirmAccountUpdateActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".UserActivity" />
+        </activity>
+        <activity android:name=".CommentsActivity"></activity>
     </application>
 
 </manifest>

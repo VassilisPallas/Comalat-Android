@@ -368,4 +368,17 @@
     <string name="verify_new_password">Verify New Password</string>
     <string name="wrong_password">Wrong password</string>
     <string name="data_changed">Data changed</string>
+    <string name="confirm_changes">Confirm your changes</string>
+    <string name="ask_pass">To save this settings, please enter your password.</string>
+    <string name="wrong_values">Wrong values</string>
+    <string name="change_pass">Change password</string>
+    <string name="current_pass">Current password</string>
+    <string name="new_pass_not_set">You haven\'t set new password</string>
+    <string name="comments">comments</string>
+    <string name="no_wiki">No wiki available at this location</string>
+    <string name="no_comments">No comments</string>
+    <string name="view">View</string>
+    <string name="more_replies">more replies</string>
+    <string name="Comments">Comments</string>
+    <string name="replies">Replies</string>
 </resources>

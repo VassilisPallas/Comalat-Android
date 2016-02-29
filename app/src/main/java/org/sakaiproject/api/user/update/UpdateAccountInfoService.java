@@ -1,6 +1,8 @@
 package org.sakaiproject.api.user.update;
 
 import android.content.Context;
+import android.view.View;
+import android.widget.ProgressBar;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -25,20 +27,23 @@ public class UpdateAccountInfoService {
     private String name, surname, email, pass;
     private final String update_tag = User.getUserEid() + " account update";
     private OnDataChanged callback;
+    private ProgressBar progressBar;
 
-    public UpdateAccountInfoService(Context context, String name, String surname, String email, String pass, OnDataChanged callback) {
+    public UpdateAccountInfoService(Context context, String name, String surname, String email, String pass, OnDataChanged callback, ProgressBar progressBar) {
         this.context = context;
         this.name = name;
         this.surname = surname;
         this.email = email;
         this.pass = pass;
         this.callback = callback;
+        this.progressBar = progressBar;
     }
 
     public void update(String url) throws IOException, JSONException {
 
         JSONObject jsonObj = new JSONObject(JsonWriter.updateUserAccountJson(context, name, surname, email, pass));
 
+        progressBar.setVisibility(View.VISIBLE);
         EmptyRequest updateRequest = new EmptyRequest(Request.Method.PUT, url, jsonObj, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {

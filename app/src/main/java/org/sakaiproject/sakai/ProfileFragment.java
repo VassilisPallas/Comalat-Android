@@ -3,6 +3,7 @@ package org.sakaiproject.sakai;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
@@ -20,7 +21,7 @@ import android.widget.TextView;
 import org.sakaiproject.api.user.User;
 import org.sakaiproject.helpers.ActionsHelper;
 import org.sakaiproject.api.user.profile.Profile;
-import org.sakaiproject.customviews.ProfileScrollView;
+import org.sakaiproject.customviews.scrollview.CustomScrollView;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -28,7 +29,7 @@ import java.io.FileNotFoundException;
 public class ProfileFragment extends Fragment implements View.OnClickListener {
 
     private ImageView profileImage;
-    private ProfileScrollView profileScrollview;
+    private CustomScrollView customScrollview;
     private EditText saySomethingEditText, newPostEditText;
     private Button saySomethingButton, newPostButton;
     private TextView saySomethingCount;
@@ -78,8 +79,8 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
             e.printStackTrace();
         }
 
-        profileScrollview = (ProfileScrollView) v.findViewById(R.id.profile_scrollview);
-        profileScrollview.setSwipeRefreshLayout((org.sakaiproject.customviews.CustomSwipeRefreshLayout) getArguments().getSerializable("swipeRefresh"));
+        customScrollview = (CustomScrollView) v.findViewById(R.id.profile_scrollview);
+        customScrollview.setSwipeRefreshLayout((org.sakaiproject.customviews.CustomSwipeRefreshLayout) getArguments().getSerializable("swipeRefresh"));
 
         saySomethingCount = (TextView) v.findViewById(R.id.say_something_count);
 
@@ -144,7 +145,11 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
             if (c <= 10) {
                 saySomethingCount.setTextColor(Color.RED);
             } else {
-                saySomethingCount.setTextColor(Color.parseColor("#808080"));
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    saySomethingCount.setTextColor(getContext().getResources().getColor(R.color.say_something_gray, getContext().getTheme()));
+                } else {
+                    saySomethingCount.setTextColor(getContext().getResources().getColor(R.color.say_something_gray));
+                }
             }
 
             if (c < 0) {

@@ -26,13 +26,13 @@ public class Assignment implements Serializable {
     }
 
     public class AssignmentsCollection implements Serializable {
-        private AssignmentAccess access;
+        private Object access;
         private String allPurposeItemText;
         private List<Attachment> attachments;
         private String authorLastModified;
         private List<String> authors;
         private String closeTimeString; /* Accept Until */
-        private AssignmentContent content;
+        private Object content;
         private String contentReference;
         private String context; /* siteId */
         private String creator;
@@ -59,11 +59,11 @@ public class Assignment implements Serializable {
         private boolean allowResubmission;
         private boolean draft;
 
-        public AssignmentAccess getAccess() {
+        public Object getAccess() {
             return access;
         }
 
-        public void setAccess(AssignmentAccess access) {
+        public void setAccess(Object access) {
             this.access = access;
         }
 
@@ -107,11 +107,11 @@ public class Assignment implements Serializable {
             this.closeTimeString = closeTimeString;
         }
 
-        public AssignmentContent getContent() {
+        public Object getContent() {
             return content;
         }
 
-        public void setContent(AssignmentContent content) {
+        public void setContent(Object content) {
             this.content = content;
         }
 

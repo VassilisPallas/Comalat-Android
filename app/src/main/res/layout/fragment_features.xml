@@ -65,7 +65,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_marginTop="5dp"
-                    android:background="#dadada" />
+                    android:background="@color/separator_light" />
 
                 <!-- Announcements -->
                 <TableRow android:layout_marginTop="10dp">
@@ -94,7 +94,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_marginTop="5dp"
-                    android:background="#dadada" />
+                    android:background="@color/separator_light" />
 
                 <!-- Assignments -->
                 <TableRow android:layout_marginTop="10dp">
@@ -123,7 +123,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_marginTop="5dp"
-                    android:background="#dadada" />
+                    android:background="@color/separator_light" />
 
                 <!-- Basiclti -->
                 <TableRow android:layout_marginTop="10dp">
@@ -152,7 +152,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_marginTop="5dp"
-                    android:background="#dadada" />
+                    android:background="@color/separator_light" />
 
                 <!-- Chat room -->
                 <TableRow android:layout_marginTop="10dp">
@@ -181,7 +181,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_marginTop="5dp"
-                    android:background="#dadada" />
+                    android:background="@color/separator_light" />
 
                 <!-- Drop Box -->
                 <TableRow android:layout_marginTop="10dp">
@@ -210,7 +210,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_marginTop="5dp"
-                    android:background="#dadada" />
+                    android:background="@color/separator_light" />
 
                 <!-- Entity Broker -->
                 <TableRow android:layout_marginTop="10dp">
@@ -239,7 +239,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_marginTop="5dp"
-                    android:background="#dadada" />
+                    android:background="@color/separator_light" />
 
                 <!-- Email Archive -->
                 <TableRow android:layout_marginTop="10dp">
@@ -268,7 +268,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_marginTop="5dp"
-                    android:background="#dadada" />
+                    android:background="@color/separator_light" />
 
                 <!-- Gradebook -->
                 <TableRow android:layout_marginTop="10dp">
@@ -297,7 +297,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_marginTop="5dp"
-                    android:background="#dadada" />
+                    android:background="@color/separator_light" />
 
                 <!-- Help -->
                 <TableRow android:layout_marginTop="10dp">
@@ -326,7 +326,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_marginTop="5dp"
-                    android:background="#dadada" />
+                    android:background="@color/separator_light" />
 
                 <!-- Lessons -->
                 <TableRow android:layout_marginTop="10dp">
@@ -355,7 +355,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_marginTop="5dp"
-                    android:background="#dadada" />
+                    android:background="@color/separator_light" />
 
                 <!-- Membership -->
                 <TableRow android:layout_marginTop="10dp">
@@ -384,7 +384,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_marginTop="5dp"
-                    android:background="#dadada" />
+                    android:background="@color/separator_light" />
 
                 <!-- Messages and Forums -->
                 <TableRow android:layout_marginTop="10dp">
@@ -413,7 +413,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_marginTop="5dp"
-                    android:background="#dadada" />
+                    android:background="@color/separator_light" />
 
                 <!-- News -->
                 <TableRow android:layout_marginTop="10dp">
@@ -442,7 +442,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_marginTop="5dp"
-                    android:background="#dadada" />
+                    android:background="@color/separator_light" />
 
                 <!-- Podcasts -->
                 <TableRow android:layout_marginTop="10dp">
@@ -471,7 +471,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_marginTop="5dp"
-                    android:background="#dadada" />
+                    android:background="@color/separator_light" />
 
                 <!-- Polls -->
                 <TableRow android:layout_marginTop="10dp">
@@ -500,7 +500,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_marginTop="5dp"
-                    android:background="#dadada" />
+                    android:background="@color/separator_light" />
 
                 <!-- Portfolios -->
                 <TableRow android:layout_marginTop="10dp">
@@ -529,7 +529,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_marginTop="5dp"
-                    android:background="#dadada" />
+                    android:background="@color/separator_light" />
 
                 <!-- Post'em -->
                 <TableRow android:layout_marginTop="10dp">
@@ -558,7 +558,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_marginTop="5dp"
-                    android:background="#dadada" />
+                    android:background="@color/separator_light" />
 
                 <!-- Preferences -->
                 <TableRow android:layout_marginTop="10dp">
@@ -587,7 +587,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_marginTop="5dp"
-                    android:background="#dadada" />
+                    android:background="@color/separator_light" />
 
                 <!-- Profile -->
                 <TableRow android:layout_marginTop="10dp">
@@ -616,7 +616,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_marginTop="5dp"
-                    android:background="#dadada" />
+                    android:background="@color/separator_light" />
 
                 <!-- Quartz Scheduler -->
                 <TableRow android:layout_marginTop="10dp">
@@ -645,7 +645,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_marginTop="5dp"
-                    android:background="#dadada" />
+                    android:background="@color/separator_light" />
 
                 <!-- Resources -->
                 <TableRow android:layout_marginTop="10dp">
@@ -674,7 +674,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_marginTop="5dp"
-                    android:background="#dadada" />
+                    android:background="@color/separator_light" />
 
                 <!-- Roster -->
                 <TableRow android:layout_marginTop="10dp">
@@ -703,7 +703,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_marginTop="5dp"
-                    android:background="#dadada" />
+                    android:background="@color/separator_light" />
 
                 <!-- Calendar -->
                 <TableRow android:layout_marginTop="10dp">
@@ -732,7 +732,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_marginTop="5dp"
-                    android:background="#dadada" />
+                    android:background="@color/separator_light" />
 
                 <!-- Search -->
                 <TableRow android:layout_marginTop="10dp">
@@ -761,7 +761,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_marginTop="5dp"
-                    android:background="#dadada" />
+                    android:background="@color/separator_light" />
 
                 <!-- Section Info -->
                 <TableRow android:layout_marginTop="10dp">
@@ -790,7 +790,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_marginTop="5dp"
-                    android:background="#dadada" />
+                    android:background="@color/separator_light" />
 
                 <!-- Shortened URL Service -->
                 <TableRow android:layout_marginTop="10dp">
@@ -819,7 +819,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_marginTop="5dp"
-                    android:background="#dadada" />
+                    android:background="@color/separator_light" />
 
                 <!-- Signup tool -->
                 <TableRow android:layout_marginTop="10dp">
@@ -848,7 +848,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_marginTop="5dp"
-                    android:background="#dadada" />
+                    android:background="@color/separator_light" />
 
                 <!-- Site Info -->
                 <TableRow android:layout_marginTop="10dp">
@@ -877,7 +877,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_marginTop="5dp"
-                    android:background="#dadada" />
+                    android:background="@color/separator_light" />
 
                 <!-- Site Stats -->
                 <TableRow android:layout_marginTop="10dp">
@@ -906,7 +906,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_marginTop="5dp"
-                    android:background="#dadada" />
+                    android:background="@color/separator_light" />
 
                 <!-- Syllabus -->
                 <TableRow android:layout_marginTop="10dp">
@@ -935,7 +935,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_marginTop="5dp"
-                    android:background="#dadada" />
+                    android:background="@color/separator_light" />
 
                 <!-- Tests & Quizzes -->
                 <TableRow android:layout_marginTop="10dp">
@@ -964,7 +964,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_marginTop="5dp"
-                    android:background="#dadada" />
+                    android:background="@color/separator_light" />
 
                 <!-- Web Content -->
                 <TableRow android:layout_marginTop="10dp">
@@ -993,7 +993,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_marginTop="5dp"
-                    android:background="#dadada" />
+                    android:background="@color/separator_light" />
 
                 <!-- Wiki -->
                 <TableRow android:layout_marginTop="10dp">
@@ -1022,7 +1022,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_marginTop="5dp"
-                    android:background="#dadada" />
+                    android:background="@color/separator_light" />
 
                 <!-- Worksite Setup -->
                 <TableRow android:layout_marginTop="10dp">
@@ -1051,7 +1051,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_marginTop="5dp"
-                    android:background="#dadada" />
+                    android:background="@color/separator_light" />
 
                 <!-- Webservices -->
                 <TableRow android:layout_marginTop="10dp">

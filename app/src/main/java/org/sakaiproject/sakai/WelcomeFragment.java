@@ -44,6 +44,7 @@ public class WelcomeFragment extends Fragment {
 
     private void findViewsById(View v) {
         progressBar = (ProgressBar) v.findViewById(R.id.motd_progressbar);
+
         RichTextView welcomeMessage = (RichTextView) v.findViewById(R.id.welcome_message);
         welcomeMessage.setContext(getContext());
     }

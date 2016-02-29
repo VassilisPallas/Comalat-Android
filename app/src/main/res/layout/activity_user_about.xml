@@ -7,7 +7,7 @@
     android:paddingRight="10dp"
     tools:context=".UserAboutActivity">
 
-    <org.sakaiproject.customviews.AboutScrollView
+    <org.sakaiproject.customviews.scrollview.AboutScrollView
         android:id="@+id/about_scrollview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -62,6 +62,6 @@
 
         </LinearLayout>
 
-    </org.sakaiproject.customviews.AboutScrollView>
+    </org.sakaiproject.customviews.scrollview.AboutScrollView>
 
 </RelativeLayout>

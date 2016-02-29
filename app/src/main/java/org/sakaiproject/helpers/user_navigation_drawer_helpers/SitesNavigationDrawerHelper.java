@@ -4,6 +4,7 @@ package org.sakaiproject.helpers.user_navigation_drawer_helpers;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Build;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -23,6 +24,7 @@ import android.widget.TextView;
 
 import org.sakaiproject.api.memberships.SiteData;
 import org.sakaiproject.customviews.CustomSwipeRefreshLayout;
+import org.sakaiproject.helpers.ActionsHelper;
 import org.sakaiproject.sakai.ChatActivity;
 import org.sakaiproject.sakai.R;
 
@@ -72,7 +74,14 @@ public class SitesNavigationDrawerHelper extends NavigationDrawerHelper {
 
 
         final EditText e = (EditText) sitesSearchView.findViewById(sitesSearchView.getContext().getResources().getIdentifier("android:id/search_src_text", null, null));
-        e.setHintTextColor(Color.parseColor("#808080"));
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            e.setHintTextColor(context.getResources().getColor(R.color.hint, context.getTheme()));
+        } else {
+            e.setHintTextColor(context.getResources().getColor(R.color.hint));
+        }
+
+
         try {
             Field mCursorDrawableRes = TextView.class.getDeclaredField("mCursorDrawableRes");
             mCursorDrawableRes.setAccessible(true);

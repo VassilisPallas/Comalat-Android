@@ -19,7 +19,7 @@
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             app:mrl_rippleAlpha="0.2"
-            app:mrl_rippleColor="#686868"
+            app:mrl_rippleColor="@color/ripple_webview_actionbar"
             app:mrl_rippleDelayClick="true"
             app:mrl_rippleHover="true"
             app:mrl_rippleOverlay="true">
@@ -28,7 +28,7 @@
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                android:background="#f7f7f7"
+                android:background="@color/webview_actionbar"
 
                 app:layout_collapseMode="pin"
                 app:layout_scrollFlags="scroll|enterAlways"
@@ -55,7 +55,7 @@
                         android:paddingLeft="10dp"
                         android:paddingRight="10dp"
                         android:singleLine="true"
-                        android:textColor="#000"
+                        android:textColor="@android:color/black"
                         android:textSize="18sp" />
 
 
@@ -68,7 +68,7 @@
                         android:paddingLeft="15dp"
                         android:paddingRight="15dp"
                         android:singleLine="true"
-                        android:textColor="#7e7e7e" />
+                        android:textColor="@color/webview_url" />
 
                 </RelativeLayout>
 

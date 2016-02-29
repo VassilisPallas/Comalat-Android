@@ -4,7 +4,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.graphics.Color;
+import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -129,7 +129,12 @@ public class MembershipAdapter extends RecyclerView.Adapter<MembershipAdapter.Vi
             holder.unjoinLayout.setVisibility(View.VISIBLE);
             holder.ripple.setVisibility(View.VISIBLE);
 
-            holder.unjoin.setImageDrawable(ActionsHelper.setCustomDrawableColor(context, R.mipmap.ic_unjoin, Color.parseColor("#FE6363")));
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                holder.unjoin.setImageDrawable(ActionsHelper.setCustomDrawableColor(context, R.mipmap.ic_unjoin, context.getResources().getColor(R.color.delete_red, context.getTheme())));
+            } else {
+                holder.unjoin.setImageDrawable(ActionsHelper.setCustomDrawableColor(context, R.mipmap.ic_unjoin, context.getResources().getColor(R.color.delete_red)));
+            }
+
 
             holder.unjoinLayout.setOnClickListener(new View.OnClickListener() {
                 @Override

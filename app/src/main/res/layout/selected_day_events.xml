@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:mrl_rippleAlpha="0.2"
-        app:mrl_rippleColor="#808080"
+        app:mrl_rippleColor="@color/ripple_medium"
         app:mrl_rippleDelayClick="false"
         app:mrl_rippleHover="true"
         app:mrl_rippleOverlay="true">
@@ -36,7 +36,7 @@
                 android:layout_height="wrap_content"
                 android:layout_toRightOf="@+id/activity_type_event"
                 android:padding="3dp"
-                android:textColor="#000000"
+                android:textColor="@android:color/black"
                 android:textSize="16dp"
                 android:textStyle="bold" />
 
@@ -54,6 +54,6 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="#33000000" />
+        android:background="@color/separator_light" />
 
 </LinearLayout>

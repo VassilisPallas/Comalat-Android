@@ -3,6 +3,7 @@ package org.sakaiproject.adapters;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.os.Build;
 import android.text.SpannableString;
 import android.text.style.StyleSpan;
 import android.text.style.UnderlineSpan;
@@ -136,10 +137,18 @@ public class CalendarAdapter extends BaseAdapter {
         dateColor(dayView, position, gridvalue);
 
         if (day_string.get(position).equals(curentDateString)) {
-            v.setBackgroundColor(Color.parseColor("#43C84E"));
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                v.setBackgroundColor(context.getResources().getColor(R.color.colorAccent, context.getTheme()));
+            } else {
+                v.setBackgroundColor(context.getResources().getColor(R.color.colorAccent));
+            }
             todayPosition = position;
         } else {
-            v.setBackgroundColor(Color.parseColor("#343434"));
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                v.setBackgroundColor(context.getResources().getColor(R.color.calendar_previous_month, context.getTheme()));
+            } else {
+                v.setBackgroundColor(context.getResources().getColor(R.color.calendar_previous_month));
+            }
         }
 
         dayView.setText(gridvalue);
@@ -171,15 +180,28 @@ public class CalendarAdapter extends BaseAdapter {
 
     public View setSelected(View view, int pos) {
         if (previousView != null) {
-            previousView.setBackgroundColor(Color.parseColor("#343434"));
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                previousView.setBackgroundColor(context.getResources().getColor(R.color.calendar_previous_month, context.getTheme()));
+            }else{
+                previousView.setBackgroundColor(context.getResources().getColor(R.color.calendar_previous_month));
+            }
         }
 
-        view.setBackgroundColor(Color.parseColor("#29A031"));
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            view.setBackgroundColor(context.getResources().getColor(R.color.colorPrimaryDark, context.getTheme()));
+        }else{
+            view.setBackgroundColor(context.getResources().getColor(R.color.colorPrimaryDark));
+        }
 
         int len = day_string.size();
         if (len > pos) {
             if (day_string.get(pos).equals(curentDateString)) {
-                view.setBackgroundColor(Color.parseColor("#43C84E"));
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    view.setBackgroundColor(context.getResources().getColor(R.color.colorAccent, context.getTheme()));
+                }else{
+                    view.setBackgroundColor(context.getResources().getColor(R.color.colorAccent));
+                }
+
                 todayPosition = pos;
             } else {
                 previousView = view;
@@ -253,7 +275,11 @@ public class CalendarAdapter extends BaseAdapter {
             if (len1 > pos) {
 
                 if (day_string.get(pos).equals(date) && !day_string.get(pos).equals(curentDateString)) {
-                    v.setBackgroundColor(Color.parseColor("#343434"));
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        v.setBackgroundColor(context.getResources().getColor(R.color.calendar_previous_month, context.getTheme()));
+                    } else {
+                        v.setBackgroundColor(context.getResources().getColor(R.color.calendar_previous_month));
+                    }
                     SpannableString spanString = new SpannableString(txt.getText());
                     spanString.setSpan(new UnderlineSpan(), 0, spanString.length(), 0);
                     spanString.setSpan(new StyleSpan(Typeface.ITALIC), 0, spanString.length(), 0);
@@ -264,7 +290,11 @@ public class CalendarAdapter extends BaseAdapter {
                     txt.setText(spanString);
                 } else if (day_string.get(pos).equals(date) && day_string.get(pos).equals(curentDateString)) {
                     todayPosition = pos;
-                    v.setBackgroundColor(Color.parseColor("#43C84E"));
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        v.setBackgroundColor(context.getResources().getColor(R.color.colorAccent, context.getTheme()));
+                    } else {
+                        v.setBackgroundColor(context.getResources().getColor(R.color.colorAccent));
+                    }
                     SpannableString spanString = new SpannableString(txt.getText());
                     spanString.setSpan(new UnderlineSpan(), 0, spanString.length(), 0);
                     spanString.setSpan(new StyleSpan(Typeface.ITALIC), 0, spanString.length(), 0);

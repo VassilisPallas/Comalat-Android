@@ -17,7 +17,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#dedede"
+            android:background="@color/cardview_title"
             android:orientation="vertical">
 
             <RelativeLayout
@@ -39,7 +39,7 @@
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     app:mrl_rippleAlpha="0.2"
-                    app:mrl_rippleColor="#ffffff"
+                    app:mrl_rippleColor="@android:color/white"
                     app:mrl_rippleDelayClick="false"
                     app:mrl_rippleHover="true"
                     app:mrl_rippleOverlay="true"
@@ -65,7 +65,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="#b4b4b4" />
+                android:background="@color/separator_dark" />
 
         </LinearLayout>
 
@@ -122,14 +122,14 @@
                     android:gravity="center"
                     android:inputType="textEmailAddress"
                     android:padding="8dp"
-                    android:textColor="#8f8f8f"
+                    android:textColor="@color/gray_text"
                     android:visibility="gone" />
             </RelativeLayout>
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="#d7d7d7" />
+                android:background="@color/separator_light" />
 
         </LinearLayout>
 
@@ -173,14 +173,14 @@
                     android:layout_toRightOf="@+id/home_page_value"
                     android:gravity="center"
                     android:padding="8dp"
-                    android:textColor="#8f8f8f"
+                    android:textColor="@color/gray_text"
                     android:visibility="gone" />
             </RelativeLayout>
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="#d7d7d7" />
+                android:background="@color/separator_light" />
 
         </LinearLayout>
 
@@ -224,14 +224,14 @@
                     android:layout_toRightOf="@+id/work_phone_value"
                     android:gravity="center"
                     android:padding="8dp"
-                    android:textColor="#8f8f8f"
+                    android:textColor="@color/gray_text"
                     android:visibility="gone" />
             </RelativeLayout>
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="#d7d7d7" />
+                android:background="@color/separator_light" />
 
         </LinearLayout>
 
@@ -275,14 +275,14 @@
                     android:layout_toRightOf="@+id/home_phone_value"
                     android:gravity="center"
                     android:padding="8dp"
-                    android:textColor="#8f8f8f"
+                    android:textColor="@color/gray_text"
                     android:visibility="gone" />
             </RelativeLayout>
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="#d7d7d7" />
+                android:background="@color/separator_light" />
 
         </LinearLayout>
 
@@ -326,14 +326,14 @@
                     android:layout_toRightOf="@+id/mobile_phone_value"
                     android:gravity="center"
                     android:padding="8dp"
-                    android:textColor="#8f8f8f"
+                    android:textColor="@color/gray_text"
                     android:visibility="gone" />
             </RelativeLayout>
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="#d7d7d7" />
+                android:background="@color/separator_light" />
 
         </LinearLayout>
 
@@ -377,14 +377,14 @@
                     android:layout_toRightOf="@+id/facsimile_value"
                     android:gravity="center"
                     android:padding="8dp"
-                    android:textColor="#8f8f8f"
+                    android:textColor="@color/gray_text"
                     android:visibility="gone" />
             </RelativeLayout>
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="#d7d7d7" />
+                android:background="@color/separator_light" />
 
         </LinearLayout>
 
@@ -404,7 +404,7 @@
                 android:layout_marginLeft="5dp"
                 android:layout_marginTop="5dp"
                 app:mrl_rippleAlpha="0.2"
-                app:mrl_rippleColor="#f5f5f5"
+                app:mrl_rippleColor="@color/ripple_light"
                 app:mrl_rippleDelayClick="false"
                 app:mrl_rippleHover="true"
                 app:mrl_rippleOverlay="true">
@@ -413,9 +413,9 @@
                     android:id="@+id/contact_info_save_changes_button"
                     android:layout_width="130dp"
                     android:layout_height="40dp"
-                    android:background="#43C84E"
+                    android:background="@color/colorAccent"
                     android:text="@string/save_changes"
-                    android:textColor="#FFFFFF" />
+                    android:textColor="@android:color/white" />
 
             </com.balysv.materialripple.MaterialRippleLayout>
 
@@ -427,7 +427,7 @@
                 android:layout_marginLeft="15dp"
                 android:layout_marginTop="5dp"
                 app:mrl_rippleAlpha="0.2"
-                app:mrl_rippleColor="#f5f5f5"
+                app:mrl_rippleColor="@color/ripple_light"
                 app:mrl_rippleDelayClick="false"
                 app:mrl_rippleHover="true"
                 app:mrl_rippleOverlay="true">
@@ -436,9 +436,9 @@
                     android:id="@+id/contact_info_cancel_button"
                     android:layout_width="110dp"
                     android:layout_height="40dp"
-                    android:background="#43C84E"
+                    android:background="@color/colorAccent"
                     android:text="@string/cancel"
-                    android:textColor="#FFFFFF" />
+                    android:textColor="@android:color/white" />
 
             </com.balysv.materialripple.MaterialRippleLayout>
 

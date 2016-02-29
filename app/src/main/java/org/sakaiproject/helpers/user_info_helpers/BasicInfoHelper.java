@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
@@ -60,7 +61,13 @@ public class BasicInfoHelper implements IUserAbout {
         this.activity = activity;
         this.clickListener = clickListener;
         this.editDrawable = editDrawable;
-        calendarDrawable = ActionsHelper.setCustomDrawableColor(activity.getApplicationContext(), R.mipmap.ic_today, Color.parseColor("#43C84E"));
+
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            calendarDrawable = ActionsHelper.setCustomDrawableColor(activity.getApplicationContext(), R.mipmap.ic_today, activity.getResources().getColor(R.color.colorAccent, activity.getTheme()));
+        } else {
+            calendarDrawable = ActionsHelper.setCustomDrawableColor(activity.getApplicationContext(), R.mipmap.ic_today, activity.getResources().getColor(R.color.colorAccent));
+        }
         initialize(activity);
         fillValues();
         checkVisibilities(activity);

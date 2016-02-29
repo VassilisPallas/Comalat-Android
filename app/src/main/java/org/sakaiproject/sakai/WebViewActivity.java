@@ -16,6 +16,8 @@ import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import org.sakaiproject.helpers.ActionsHelper;
+
 public class WebViewActivity extends AppCompatActivity {
 
     private AppCompatActivity activity = this;
@@ -39,7 +41,12 @@ public class WebViewActivity extends AppCompatActivity {
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
 
             // finally change the color
-            window.setStatusBarColor(Color.parseColor("#FFDFDFDF"));
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                window.setStatusBarColor(getResources().getColor(R.color.webview_status_color, getTheme()));
+            } else {
+                window.setStatusBarColor(getResources().getColor(R.color.webview_status_color));
+            }
+
         }
 
         setTitle("");

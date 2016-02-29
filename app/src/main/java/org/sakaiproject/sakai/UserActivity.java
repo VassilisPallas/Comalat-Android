@@ -14,9 +14,11 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.sakaiproject.api.memberships.OfflineMemberships;
 import org.sakaiproject.api.memberships.SiteData;
@@ -40,7 +42,7 @@ import java.io.IOException;
 
 public class UserActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, ISwipeRefresh {
 
-    private TextView displayNameTextView, emailTextView;
+    static TextView displayNameTextView, emailTextView;
     private ImageViewRounded userImage;
     private Waiter waiter;  //Thread which controls idle time
     private Connection connection = Connection.getInstance();
@@ -305,5 +307,4 @@ public class UserActivity extends AppCompatActivity implements NavigationView.On
         SiteData.getProjects().clear();
         UserMainNavigationDrawerHelper.getMyWorkSpaceItems().clear();
     }
-
 }

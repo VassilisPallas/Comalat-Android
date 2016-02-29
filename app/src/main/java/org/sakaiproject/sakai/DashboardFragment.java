@@ -2,7 +2,9 @@ package org.sakaiproject.sakai;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -13,8 +15,10 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.Toast;
 
 import org.sakaiproject.adapters.DashboardTabAdapter;
+import org.sakaiproject.helpers.ActionsHelper;
 
 /**
  * Created by vspallas on 23/02/16.
@@ -56,14 +60,19 @@ public class DashboardFragment extends Fragment implements SwipeRefreshLayout.On
         getActivity().setTitle(getResources().getString(R.string.dashboard));
 
         swipeRefreshLayout = (org.sakaiproject.customviews.CustomSwipeRefreshLayout) getArguments().getSerializable("swipeRefresh");
-
         root = (FrameLayout) v.findViewById(R.id.root);
 
         TabLayout tabLayout = (TabLayout) v.findViewById(R.id.tab_layout);
         tabLayout.addTab(tabLayout.newTab().setText(getContext().getResources().getString(R.string.assignments)));
         tabLayout.addTab(tabLayout.newTab().setText(getContext().getResources().getString(R.string.events)));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
-        tabLayout.setSelectedTabIndicatorColor(Color.parseColor("#29A031"));
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            tabLayout.setSelectedTabIndicatorColor(getContext().getResources().getColor(R.color.colorPrimaryDark, getContext().getTheme()));
+        } else {
+            tabLayout.setSelectedTabIndicatorColor(getContext().getResources().getColor(R.color.colorPrimaryDark));
+        }
+
 
         final ViewPager viewPager = (ViewPager) v.findViewById(R.id.pager);
 
@@ -103,11 +112,16 @@ public class DashboardFragment extends Fragment implements SwipeRefreshLayout.On
         return v;
     }
 
-
     @Override
     public void onRefresh() {
-        Snackbar.make(root, getResources().getString(R.string.no_internet), Snackbar.LENGTH_LONG)
-                .setAction(getResources().getText(R.string.can_not_sync), null).show();
-        swipeRefreshLayout.setRefreshing(false);
+        new Handler().post(new Runnable() {
+            @Override
+            public void run() {
+                Snackbar.make(root, getResources().getString(R.string.no_internet), Snackbar.LENGTH_LONG)
+                        .setAction(getResources().getText(R.string.can_not_sync), null).show();
+
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        });
     }
 }

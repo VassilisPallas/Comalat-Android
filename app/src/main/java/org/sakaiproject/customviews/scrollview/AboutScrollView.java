@@ -1,4 +1,4 @@
-package org.sakaiproject.customviews;
+package org.sakaiproject.customviews.scrollview;
 
 import android.content.Context;
 import android.util.AttributeSet;

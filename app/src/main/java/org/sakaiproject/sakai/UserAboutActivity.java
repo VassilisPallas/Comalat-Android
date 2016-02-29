@@ -3,6 +3,7 @@ package org.sakaiproject.sakai;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -16,7 +17,7 @@ import org.sakaiproject.general.Connection;
 import org.sakaiproject.api.internet.NetWork;
 import org.sakaiproject.api.session.RefreshSession;
 import org.sakaiproject.api.session.Waiter;
-import org.sakaiproject.customviews.AboutScrollView;
+import org.sakaiproject.customviews.scrollview.AboutScrollView;
 import org.sakaiproject.helpers.user_info_helpers.BasicInfoHelper;
 import org.sakaiproject.helpers.user_info_helpers.ContactInfoHelper;
 import org.sakaiproject.helpers.user_info_helpers.PersonalInfoHelper;
@@ -45,7 +46,11 @@ public class UserAboutActivity extends AppCompatActivity implements View.OnClick
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_about);
 
-        editDrawable = ActionsHelper.setCustomDrawableColor(this, R.mipmap.ic_create, Color.parseColor("#29A031"));
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            editDrawable = ActionsHelper.setCustomDrawableColor(this, R.mipmap.ic_create, getResources().getColor(R.color.colorPrimaryDark, getTheme()));
+        } else {
+            editDrawable = ActionsHelper.setCustomDrawableColor(this, R.mipmap.ic_create, getResources().getColor(R.color.colorPrimaryDark));
+        }
 
         scrollView = (AboutScrollView) findViewById(R.id.about_scrollview);
 

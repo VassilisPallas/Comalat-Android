@@ -42,14 +42,13 @@
                         android:textSize="20sp"
                         android:textStyle="bold" />
 
-                    <TextView
+                    <org.sakaiproject.customviews.rich_textview.RichTextView
                         android:id="@+id/motd"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/message_of_the_day"
                         android:layout_marginTop="10dp"
-                        android:clickable="true"
-                        android:text="@string/motd" />
+                        android:text="@string/motd"/>
 
                     <ImageView
                         android:id="@+id/message_of_the_day_image"

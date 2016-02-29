@@ -6,6 +6,7 @@ import com.google.gson.Gson;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.sakaiproject.api.pojos.Time;
 import org.sakaiproject.api.pojos.login.UserData;
 import org.sakaiproject.api.user.User;
 import org.sakaiproject.api.user.profile.Profile;
@@ -14,6 +15,8 @@ import org.sakaiproject.sakai.R;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * Created by vasilis on 1/13/16.
@@ -41,6 +44,7 @@ public class JsonWriter {
             userData.setFirstName(name);
             userData.setLastName(surname);
             userData.setEmail(email);
+
             if (pass != null)
                 userData.setPassword(pass);
 

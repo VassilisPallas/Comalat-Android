@@ -97,7 +97,7 @@ public class UserMainNavigationDrawerHelper extends NavigationDrawerHelper imple
                     }
 
 
-                DashboardFragment dashboardFragment = new DashboardFragment().getSwipeRefreshLayout(super.mSwipeRefreshLayout);
+                DashboardFragment dashboardFragment = new DashboardFragment().getSwipeRefreshLayout(mSwipeRefreshLayout);
                 ActionsHelper.selectFragment(dashboardFragment, R.id.user_frame, context);
                 myWorkspaceIds.put(id, page);
             }

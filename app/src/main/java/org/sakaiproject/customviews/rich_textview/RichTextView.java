@@ -267,7 +267,6 @@ public class RichTextView extends TextView implements Html.ImageGetter {
         if (urlDrawable != null) {
             urlDrawable.setBounds(0, 0, urlDrawable.getIntrinsicWidth(), urlDrawable.getIntrinsicHeight());
             return urlDrawable;
-
         }
         return null;
     }

@@ -2,6 +2,7 @@ package org.sakaiproject.adapters;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.os.Build;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -93,7 +94,13 @@ public class SyllabusAdapter extends RecyclerView.Adapter<SyllabusAdapter.ViewHo
         }
 
 
-        holder.delete.setImageDrawable(ActionsHelper.setCustomDrawableColor(context, R.mipmap.ic_delete, Color.parseColor("#FF5457")));
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            holder.delete.setImageDrawable(ActionsHelper.setCustomDrawableColor(context, R.mipmap.ic_delete, context.getResources().getColor(R.color.delete_red, context.getTheme())));
+        } else {
+            holder.delete.setImageDrawable(ActionsHelper.setCustomDrawableColor(context, R.mipmap.ic_delete, context.getResources().getColor(R.color.delete_red)));
+        }
+
+
         holder.deleteLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

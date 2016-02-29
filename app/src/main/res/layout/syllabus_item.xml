@@ -17,7 +17,7 @@
             android:layout_height="35dp"
             android:layout_alignParentRight="true"
             app:mrl_rippleAlpha="0.2"
-            app:mrl_rippleColor="#b4b4b4"
+            app:mrl_rippleColor="@color/ripple_medium"
             app:mrl_rippleDelayClick="false"
             app:mrl_rippleHover="true"
             app:mrl_rippleOverlay="true"
@@ -80,5 +80,5 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_below="@id/main_item_layout"
-        android:background="#dadada" />
+        android:background="@color/separator_light" />
 </RelativeLayout>

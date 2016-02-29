@@ -27,7 +27,7 @@
                 android:layout_weight="0.6"
                 android:drawableLeft="@mipmap/ic_search_white"
                 android:hint="@string/search_user_sites_projects"
-                android:textColor="#FFF"
+                android:textColor="@android:color/white"
                 android:theme="@style/MembershipEditTextTheme" />
 
         </LinearLayout>

@@ -1,6 +1,7 @@
 package org.sakaiproject.sakai;
 
 import android.graphics.Color;
+import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -30,7 +31,12 @@ public class ChatActivity extends AppCompatActivity {
 
         chatMessage = (EditText) findViewById(R.id.chat_message);
         chatSendButton = (ImageView) findViewById(R.id.chat_send);
-        chatSendButton.setImageDrawable(ActionsHelper.setCustomDrawableColor(this, R.mipmap.ic_send, Color.parseColor("#43C84E")));
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            chatSendButton.setImageDrawable(ActionsHelper.setCustomDrawableColor(this, R.mipmap.ic_send, getResources().getColor(R.color.colorAccent, getTheme())));
+        } else {
+            chatSendButton.setImageDrawable(ActionsHelper.setCustomDrawableColor(this, R.mipmap.ic_send, getResources().getColor(R.color.colorAccent)));
+        }
 
         chatSendButton.setOnClickListener(new View.OnClickListener() {
             @Override

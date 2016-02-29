@@ -37,7 +37,7 @@
                 android:layout_height="35dp"
                 android:layout_alignParentRight="true"
                 app:mrl_rippleAlpha="0.2"
-                app:mrl_rippleColor="#f4f4f4"
+                app:mrl_rippleColor="@color/ripple_medium"
                 app:mrl_rippleDelayClick="false"
                 app:mrl_rippleHover="true"
                 app:mrl_rippleOverlay="true"

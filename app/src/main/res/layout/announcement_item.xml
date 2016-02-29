@@ -5,7 +5,7 @@
     android:layout_height="wrap_content"
     android:background="@android:color/white"
     app:mrl_rippleAlpha="0.2"
-    app:mrl_rippleColor="#8f8f8f"
+    app:mrl_rippleColor="@color/ripple_medium"
     app:mrl_rippleDelayClick="false"
     app:mrl_rippleHover="true"
     app:mrl_rippleOverlay="true">
@@ -60,7 +60,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="#33000000" />
+            android:background="@color/separator_light" />
 
     </LinearLayout>
 

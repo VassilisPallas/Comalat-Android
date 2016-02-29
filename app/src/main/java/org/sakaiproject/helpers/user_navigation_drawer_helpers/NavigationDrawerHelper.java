@@ -21,6 +21,7 @@ import org.sakaiproject.sakai.MembershipFragment;
 import org.sakaiproject.sakai.ProfileFragment;
 import org.sakaiproject.sakai.R;
 import org.sakaiproject.sakai.SyllabusFragment;
+import org.sakaiproject.sakai.WikiFragment;
 
 import java.util.Hashtable;
 import java.util.Map;
@@ -286,7 +287,7 @@ public abstract class NavigationDrawerHelper {
         } else if (pageName.equals(PREFERENCES)) {
 
         } else if (pageName.equals(ACCOUNT)) {
-            AccountFragment accountFragment = new AccountFragment();
+            AccountFragment accountFragment = new AccountFragment().getSwipeRefreshLayout(mSwipeRefreshLayout);
             ActionsHelper.selectFragment(accountFragment, R.id.user_frame, context);
         } else if (pageName.equals(ASSIGNMENTS)) {
             AssignmentFragment assignmentFragment = new AssignmentFragment().getSwipeRefreshLayout(mSwipeRefreshLayout);
@@ -337,7 +338,8 @@ public abstract class NavigationDrawerHelper {
         } else if (pageName.equals(TESTS_QUIZZES)) {
 
         } else if (pageName.equals(WIKI)) {
-
+            WikiFragment wikiFragment = new WikiFragment().getSwipeRefreshLayout(mSwipeRefreshLayout);
+            ActionsHelper.selectFragment(wikiFragment, R.id.user_frame, context);
         } else if (pageName.equals(WEB_CONTENT)) {
 
         } else {

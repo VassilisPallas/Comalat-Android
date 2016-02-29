@@ -26,7 +26,7 @@ import com.balysv.materialripple.MaterialRippleLayout;
 import org.sakaiproject.api.internet.NetWork;
 import org.sakaiproject.api.signup.EidExistence;
 import org.sakaiproject.api.signup.SignupService;
-import org.sakaiproject.api.user.update.OldPasswordMatch;
+import org.sakaiproject.helpers.ActionsHelper;
 
 
 /**
@@ -104,7 +104,14 @@ public class SignupFragment extends Fragment implements EidExistence {
         emailTextInputLayout = (TextInputLayout) v.findViewById(R.id.input_layout_email);
         confirmPasswordTextInputLayout = (TextInputLayout) v.findViewById(R.id.input_layout_confirm_password);
         signupTextView = (TextView) v.findViewById(R.id.sign_up_text);
-        signupTextView.setTextColor(Color.parseColor("#80898989"));
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            signupTextView.setTextColor(getContext().getResources().getColor(R.color.sign_up_text_gray, getContext().getTheme()));
+        } else {
+            signupTextView.setTextColor(getContext().getResources().getColor(R.color.sign_up_text_gray));
+        }
+
+
         passwordTextInputLayout = (TextInputLayout) v.findViewById(R.id.input_layout_password);
         idInputLayout = (TextInputLayout) v.findViewById(R.id.input_layout_user_id);
         rippleLayout = (MaterialRippleLayout) v.findViewById(R.id.ripple);
@@ -186,21 +193,27 @@ public class SignupFragment extends Fragment implements EidExistence {
         if (eidEditText.getText().toString().length() > 0 && passwordEditText.getText().toString().length() > 0
                 && isEidValid && isEmailValid && isPasswordEqual) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                signupButton.setBackground(getContext().getResources().getDrawable(R.drawable.signup_button_normal, getContext().getTheme()));
+                signupButton.setBackground(getContext().getResources().getDrawable(R.drawable.layout_button_normal, getContext().getTheme()));
             } else {
-                signupButton.setBackground(getContext().getResources().getDrawable(R.drawable.signup_button_normal));
+                signupButton.setBackground(getContext().getResources().getDrawable(R.drawable.layout_button_normal));
             }
-            signupTextView.setTextColor(Color.parseColor("#FFFFFF"));
+            signupTextView.setTextColor(Color.WHITE);
             signupButton.setClickable(true);
             rippleLayout.setClickable(true);
 
         } else {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                signupButton.setBackground(getContext().getResources().getDrawable(R.drawable.signup_button_disabled, getContext().getTheme()));
+                signupButton.setBackground(getContext().getResources().getDrawable(R.drawable.layout_button_disabled, getContext().getTheme()));
             } else {
-                signupButton.setBackground(getContext().getResources().getDrawable(R.drawable.signup_button_disabled));
+                signupButton.setBackground(getContext().getResources().getDrawable(R.drawable.layout_button_disabled));
             }
-            signupTextView.setTextColor(Color.parseColor("#80898989"));
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                signupTextView.setBackground(getContext().getResources().getDrawable(R.drawable.layout_button_disabled, getContext().getTheme()));
+            } else {
+                signupTextView.setBackground(getContext().getResources().getDrawable(R.drawable.layout_button_disabled));
+            }
+
             signupButton.setClickable(false);
             rippleLayout.setClickable(false);
         }

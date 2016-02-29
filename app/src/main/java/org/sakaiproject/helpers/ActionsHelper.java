@@ -505,7 +505,7 @@ public class ActionsHelper {
     public static String deleteHtmlTags(String text) {
         //text = URLDecoder.decode(text, "UTF-8");
 
-        text = text.replaceAll("<p>", "");
+        text = text.replaceAll("<p .+?>", "");
         text = text.replaceAll("<\\/p>", "");
         //text = text.replaceAll("<span .+?>", "");
         //text = text.replaceAll("<\\/span>", "");

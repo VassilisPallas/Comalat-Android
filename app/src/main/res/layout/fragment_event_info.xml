@@ -260,7 +260,7 @@
                     android:layout_marginBottom="10dp"
                     android:layout_marginTop="10dp"
                     app:mrl_rippleAlpha="0.2"
-                    app:mrl_rippleColor="#f5f5f5"
+                    app:mrl_rippleColor="@color/ripple_light"
                     app:mrl_rippleDelayClick="false"
                     app:mrl_rippleHover="true"
                     app:mrl_rippleOverlay="true">
@@ -269,10 +269,10 @@
                         android:id="@+id/edit_event"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:background="#43C84E"
+                        android:background="@color/colorAccent"
                         android:padding="8dp"
                         android:text="@string/edit_event"
-                        android:textColor="#FFF"
+                        android:textColor="@android:color/white"
                         android:visibility="gone" />
 
                 </com.balysv.materialripple.MaterialRippleLayout>
@@ -287,7 +287,7 @@
                     android:layout_marginTop="10dp"
                     android:layout_toRightOf="@+id/edit_ripple"
                     app:mrl_rippleAlpha="0.2"
-                    app:mrl_rippleColor="#f5f5f5"
+                    app:mrl_rippleColor="@color/ripple_light"
                     app:mrl_rippleDelayClick="false"
                     app:mrl_rippleHover="true"
                     app:mrl_rippleOverlay="true">
@@ -296,10 +296,10 @@
                         android:id="@+id/remove_event"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:background="#43C84E"
+                        android:background="@color/colorAccent"
                         android:padding="8dp"
                         android:text="@string/remove_event"
-                        android:textColor="#FFF"
+                        android:textColor="@android:color/white"
                         android:visibility="gone" />
 
                 </com.balysv.materialripple.MaterialRippleLayout>

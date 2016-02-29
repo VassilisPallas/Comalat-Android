@@ -7,7 +7,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.balysv.materialripple.MaterialRippleLayout;
@@ -62,9 +61,9 @@ public class AssignmentAdapter extends RecyclerView.Adapter<AssignmentAdapter.Vi
 
         if (assignment.getAssignmentsCollectionList().get(position).getStatus().equals(context.getResources().getString(R.string.closed))) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                holder.root.setBackground(context.getResources().getDrawable(R.drawable.signup_button_disabled, context.getTheme()));
+                holder.root.setBackground(context.getResources().getDrawable(R.drawable.button_disabled, context.getTheme()));
             } else {
-                holder.root.setBackground(context.getResources().getDrawable(R.drawable.signup_button_disabled));
+                holder.root.setBackground(context.getResources().getDrawable(R.drawable.button_disabled));
             }
 
         }

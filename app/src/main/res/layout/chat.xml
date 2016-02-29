@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:text="TUE at 12:15"
-        android:textColor="#B0B0B0" />
+        android:textColor="@color/chat_time" />
 
     <RelativeLayout
         android:layout_width="match_parent"
