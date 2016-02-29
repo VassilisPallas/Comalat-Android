@@ -16,8 +16,10 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
+import org.sakaiproject.api.assignments.UserAssignmentsHelper;
 import org.sakaiproject.api.internet.NetWork;
 import org.sakaiproject.api.logout.Logout;
+import org.sakaiproject.api.memberships.pages.assignments.MembershipAssignmentsHelper;
 import org.sakaiproject.api.session.Waiter;
 import org.sakaiproject.api.memberships.SiteData;
 import org.sakaiproject.api.user.User;
@@ -444,12 +446,7 @@ public class ActionsHelper {
                             try {
                                 Logout logout = new Logout();
                                 logout.logout(context.getResources().getString(R.string.url) + "session/" + Connection.getSessionId());
-                                User.nullInstance();
-                                Profile.nullInstance();
-                                Connection.nullSessionId();
-                                SiteData.getSites().clear();
-                                SiteData.getProjects().clear();
-                                UserMainNavigationDrawerHelper.getMyWorkSpaceItems().clear();
+                                clear();
 
                                 Intent i = new Intent(((AppCompatActivity) context).getApplication(), MainActivity.class);
                                 context.startActivity(i);
@@ -458,12 +455,7 @@ public class ActionsHelper {
                                 e.printStackTrace();
                             }
                         } else {
-                            User.nullInstance();
-                            Profile.nullInstance();
-                            Connection.nullSessionId();
-                            SiteData.getSites().clear();
-                            SiteData.getProjects().clear();
-                            UserMainNavigationDrawerHelper.getMyWorkSpaceItems().clear();
+                            clear();
 
                             Intent i = new Intent(((AppCompatActivity) context).getApplication(), MainActivity.class);
                             context.startActivity(i);
@@ -481,6 +473,21 @@ public class ActionsHelper {
         adb.setNegativeButton(((AppCompatActivity) context).getResources().getString(R.string.cancel), null);
 
         Dialog d = adb.show();
+    }
+
+    public static void clear() {
+        User.nullInstance();
+        Profile.nullInstance();
+        Connection.nullSessionId();
+        SiteData.getSites().clear();
+        SiteData.getProjects().clear();
+        UserMainNavigationDrawerHelper.getMyWorkSpaceItems().clear();
+
+        if (UserAssignmentsHelper.userAssignment != null && UserAssignmentsHelper.userAssignment.getAssignmentsCollectionList() != null)
+            UserAssignmentsHelper.userAssignment.getAssignmentsCollectionList().clear();
+
+        if (MembershipAssignmentsHelper.membershipAssignment != null && MembershipAssignmentsHelper.membershipAssignment.getAssignmentsCollectionList() != null)
+            MembershipAssignmentsHelper.membershipAssignment.getAssignmentsCollectionList().clear();
     }
 
     /**
@@ -553,7 +560,7 @@ public class ActionsHelper {
      * if it can't create the directory returns false
      *
      * @param context
-     * @param path the given path
+     * @param path    the given path
      * @return true if the directory exists or if it has created successfully, otherwise returns false
      */
     public static boolean createDirIfNotExists(Context context, String path) {

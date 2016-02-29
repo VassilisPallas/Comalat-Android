@@ -21,13 +21,24 @@ public class CommentsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_comments);
-        setTitle(getIntent().getStringExtra("title"));
+        overridePendingTransition(R.anim.trans_left_in, R.anim.trans_left_out);
 
+        setTitle(getIntent().getStringExtra("title"));
         recyclerView = (RecyclerView) findViewById(R.id.comments_recycle);
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
 
         adapter = new CommentsAdapter(this, (List<Comment>) getIntent().getSerializableExtra("comments"));
         recyclerView.setAdapter(adapter);
+    }
+
+    private void goBack(){
+        super.onBackPressed();
+        overridePendingTransition(R.anim.trans_right_in, R.anim.trans_right_out);
+    }
+
+    @Override
+    public void onBackPressed() {
+        goBack();
     }
 }

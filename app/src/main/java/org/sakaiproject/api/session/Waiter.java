@@ -11,6 +11,7 @@ import org.sakaiproject.api.internet.NetWork;
 import org.sakaiproject.api.logout.Logout;
 import org.sakaiproject.api.user.profile.Profile;
 import org.sakaiproject.api.user.User;
+import org.sakaiproject.helpers.ActionsHelper;
 import org.sakaiproject.helpers.user_navigation_drawer_helpers.UserMainNavigationDrawerHelper;
 import org.sakaiproject.sakai.MainActivity;
 import org.sakaiproject.sakai.R;
@@ -96,12 +97,7 @@ public class Waiter extends Thread {
                         try {
 
                             logout.logout(context.getResources().getString(R.string.url) + "session/" + Connection.getSessionId());
-                            User.nullInstance();
-                            Profile.nullInstance();
-                            Connection.nullSessionId();
-                            SiteData.getSites().clear();
-                            SiteData.getProjects().clear();
-                            UserMainNavigationDrawerHelper.getMyWorkSpaceItems().clear();
+                            ActionsHelper.clear();
 
                             Intent i = new Intent(context, MainActivity.class);
                             context.startActivity(i);
@@ -109,12 +105,7 @@ public class Waiter extends Thread {
                             e.printStackTrace();
                         }
                     } else {
-                        User.nullInstance();
-                        Profile.nullInstance();
-                        Connection.nullSessionId();
-                        SiteData.getSites().clear();
-                        SiteData.getProjects().clear();
-                        UserMainNavigationDrawerHelper.getMyWorkSpaceItems().clear();
+                        ActionsHelper.clear();
 
                         Intent i = new Intent(context, MainActivity.class);
                         context.startActivity(i);

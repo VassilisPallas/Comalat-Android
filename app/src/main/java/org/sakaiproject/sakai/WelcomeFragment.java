@@ -31,7 +31,6 @@ public class WelcomeFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_welcome, container, false);
-
         getActivity().setTitle(getContext().getResources().getString(R.string.welcome));
 
         findViewsById(v);

@@ -30,6 +30,7 @@ public class WebViewActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_web_view);
+        overridePendingTransition(R.anim.trans_left_in, R.anim.trans_left_out);
 
         Window window = activity.getWindow();
 
@@ -43,7 +44,7 @@ public class WebViewActivity extends AppCompatActivity {
             // finally change the color
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 window.setStatusBarColor(getResources().getColor(R.color.webview_status_color, getTheme()));
-            } else {
+            } else if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
                 window.setStatusBarColor(getResources().getColor(R.color.webview_status_color));
             }
 
@@ -93,6 +94,7 @@ public class WebViewActivity extends AppCompatActivity {
 
     private void goBack() {
         super.onBackPressed();
+        overridePendingTransition(R.anim.trans_right_in, R.anim.trans_right_out);
     }
 
     @Override
@@ -100,7 +102,7 @@ public class WebViewActivity extends AppCompatActivity {
         if (webView.canGoBack())
             webView.goBack();
         else
-            super.onBackPressed();
+            goBack();
     }
 
     public class WebClient extends WebViewClient {
