@@ -10,11 +10,17 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.google.gson.Gson;
 
 import org.json.JSONObject;
+import org.sakaiproject.api.json.JsonParser;
+import org.sakaiproject.api.pojos.assignments.Assignment;
 import org.sakaiproject.api.pojos.wiki.Wiki;
 import org.sakaiproject.api.sync.WikiRefreshUI;
 import org.sakaiproject.api.user.User;
+import org.sakaiproject.helpers.ActionsHelper;
 import org.sakaiproject.sakai.AppController;
 import org.sakaiproject.sakai.R;
+
+import java.io.File;
+import java.io.IOException;
 
 /**
  * Created by vspallas on 28/02/16.
@@ -27,11 +33,13 @@ public class MembershipWikiService {
     private final String wiki_page_data = User.getUserEid() + " wiki page data";
     private org.sakaiproject.customviews.CustomSwipeRefreshLayout swipeRefreshLayout;
     private WikiRefreshUI callback;
+    private String siteId;
 
-    public MembershipWikiService(Context context, org.sakaiproject.customviews.CustomSwipeRefreshLayout swipeRefreshLayout, WikiRefreshUI callback) {
+    public MembershipWikiService(Context context, org.sakaiproject.customviews.CustomSwipeRefreshLayout swipeRefreshLayout, WikiRefreshUI callback, String siteId) {
         this.context = context;
         this.swipeRefreshLayout = swipeRefreshLayout;
         this.callback = callback;
+        this.siteId = siteId;
     }
 
     public void getWiki(final String url) {
@@ -41,7 +49,16 @@ public class MembershipWikiService {
             @Override
             public void onResponse(JSONObject response) {
                 wiki = gson.fromJson(response.toString(), Wiki.class);
+
+                if (ActionsHelper.createDirIfNotExists(context, User.getUserEid() + File.separator + "memberships" + File.separator + siteId + File.separator + "wiki"))
+                    try {
+                        ActionsHelper.writeJsonFile(context, response.toString(), siteId + "_wiki", User.getUserEid() + File.separator + "memberships" + File.separator + siteId + File.separator + "wiki");
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
                 getPageData(url.replaceFirst(".json", "") + "/page/" + wiki.getName() + ".json");
+
             }
         }, new Response.ErrorListener() {
             @Override
@@ -60,6 +77,14 @@ public class MembershipWikiService {
                 Wiki temp = gson.fromJson(response.toString(), Wiki.class);
                 wiki.setComments(temp.getComments());
                 wiki.setHtml(temp.getHtml());
+
+                if (ActionsHelper.createDirIfNotExists(context, User.getUserEid() + File.separator + "memberships" + File.separator + siteId + File.separator + "wiki"))
+                    try {
+                        ActionsHelper.writeJsonFile(context, response.toString(), siteId + "_wiki_data", User.getUserEid() + File.separator + "memberships" + File.separator + siteId + File.separator + "wiki");
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
                 callback.updateUI(wiki);
             }
         }, new Response.ErrorListener() {

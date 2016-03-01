@@ -91,6 +91,16 @@ public class SyllabusFragment extends Fragment implements SwipeRefreshLayout.OnR
 
         noSyllabusItems = (TextView) v.findViewById(R.id.no_syllabus);
 
+        root = (FrameLayout) v.findViewById(R.id.root);
+
+        swipeRefreshLayout = (org.sakaiproject.customviews.CustomSwipeRefreshLayout) getArguments().getSerializable("swipeRefresh");
+
+        mRecyclerView = (RecyclerView) v.findViewById(R.id.syllabus_recycler_view);
+
+        // use a linear layout manager
+        mLayoutManager = new LinearLayoutManager(v.getContext());
+        mRecyclerView.setLayoutManager(mLayoutManager);
+
         OfflineSyllabus offlineSyllabus = new OfflineSyllabus(getContext(), siteData.getId());
 
         try {
@@ -107,15 +117,12 @@ public class SyllabusFragment extends Fragment implements SwipeRefreshLayout.OnR
             reLaunchUrl.setVisibility(View.VISIBLE);
         }
 
-        root = (FrameLayout) v.findViewById(R.id.root);
-
-        swipeRefreshLayout = (org.sakaiproject.customviews.CustomSwipeRefreshLayout) getArguments().getSerializable("swipeRefresh");
-
-        mRecyclerView = (RecyclerView) v.findViewById(R.id.syllabus_recycler_view);
-
-        // use a linear layout manager
-        mLayoutManager = new LinearLayoutManager(v.getContext());
-        mRecyclerView.setLayoutManager(mLayoutManager);
+        if (syllabus != null) {
+            update(mRecyclerView, mAdapter, syllabus, siteData.getId());
+            noSyllabusItems.setVisibility(View.GONE);
+        } else {
+            noSyllabusItems.setVisibility(View.VISIBLE);
+        }
 
         // if the memberships recycle view is not on the top then the swipe refresh can not be done
         mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -146,14 +153,6 @@ public class SyllabusFragment extends Fragment implements SwipeRefreshLayout.OnR
 ////                showCreations.startAnimation(rightRotation);
 //            }
 //        });
-
-        if (syllabus != null) {
-            update(mRecyclerView, mAdapter, syllabus, siteData.getId());
-            noSyllabusItems.setVisibility(View.GONE);
-        } else {
-            noSyllabusItems.setVisibility(View.VISIBLE);
-        }
-
         swipeRefresh.Callback(this);
         callback = this;
 

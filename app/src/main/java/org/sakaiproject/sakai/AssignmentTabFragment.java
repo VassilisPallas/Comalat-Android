@@ -91,10 +91,6 @@ public class AssignmentTabFragment extends Fragment implements AssignmentsRefres
             }
         });
 
-        fillList();
-        mAdapter = new AssignmentAdapter(getActivity(), assignment, null);
-
-        mRecyclerView.setAdapter(mAdapter);
 
         mRecyclerView.addOnItemTouchListener(new RecyclerItemClickListener(getContext(), mRecyclerView, new RecyclerItemClickListener.OnItemClickListener() {
             @Override
@@ -127,14 +123,23 @@ public class AssignmentTabFragment extends Fragment implements AssignmentsRefres
             }
         }));
 
+        return v;
+    }
+
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        fillList();
+        mAdapter = new AssignmentAdapter(getActivity(), assignment, null);
+
+        mRecyclerView.setAdapter(mAdapter);
+
         if (mAdapter.getItemCount() == 0) {
             noAssignments.setVisibility(View.VISIBLE);
         } else {
             noAssignments.setVisibility(View.GONE);
         }
-
-
-        return v;
     }
 
     private void fillList() {

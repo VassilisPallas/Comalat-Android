@@ -102,17 +102,6 @@ public class AnnouncementFragment extends Fragment implements SwipeRefreshLayout
             }
         });
 
-        if (siteName.equals(getContext().getResources().getString(R.string.my_workspace))) {
-            OfflineUserAnnouncements offlineUserAnnouncements = new OfflineUserAnnouncements(getContext());
-            offlineUserAnnouncements.getAnnouncements();
-            mAdapter = new AnnouncementAdapter(UserAnnouncementHelper.userAnnouncement, null);
-        } else {
-            OfflineMembershipAnnouncements announcements = new OfflineMembershipAnnouncements(getContext(), siteData.getId());
-            announcements.getAnnouncements();
-            mAdapter = new AnnouncementAdapter(MembershipAnnouncementHelper.membershipAnnouncement, siteData.getId());
-        }
-
-        mRecyclerView.setAdapter(mAdapter);
 
         mRecyclerView.addOnItemTouchListener(new RecyclerItemClickListener(getContext(), mRecyclerView, new RecyclerItemClickListener.OnItemClickListener() {
             @Override
@@ -136,17 +125,34 @@ public class AnnouncementFragment extends Fragment implements SwipeRefreshLayout
             }
         }));
 
-        if (mAdapter.getItemCount() == 0) {
-            noAnnouncements.setVisibility(View.VISIBLE);
-        } else {
-            noAnnouncements.setVisibility(View.GONE);
-        }
-
         swipeRefresh.Callback(this);
 
         root = (FrameLayout) v.findViewById(R.id.root);
 
         return v;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        if (siteName.equals(getContext().getResources().getString(R.string.my_workspace))) {
+            OfflineUserAnnouncements offlineUserAnnouncements = new OfflineUserAnnouncements(getContext());
+            offlineUserAnnouncements.getAnnouncements();
+            mAdapter = new AnnouncementAdapter(UserAnnouncementHelper.userAnnouncement, null);
+        } else {
+            OfflineMembershipAnnouncements announcements = new OfflineMembershipAnnouncements(getContext(), siteData.getId());
+            announcements.getAnnouncements();
+            mAdapter = new AnnouncementAdapter(MembershipAnnouncementHelper.membershipAnnouncement, siteData.getId());
+        }
+
+        mRecyclerView.setAdapter(mAdapter);
+
+        if (mAdapter.getItemCount() == 0) {
+            noAnnouncements.setVisibility(View.VISIBLE);
+        } else {
+            noAnnouncements.setVisibility(View.GONE);
+        }
     }
 
     @Override

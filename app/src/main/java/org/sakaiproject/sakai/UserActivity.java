@@ -39,6 +39,9 @@ import org.sakaiproject.helpers.user_navigation_drawer_helpers.UserMainNavigatio
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 public class UserActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, ISwipeRefresh {
 
@@ -49,7 +52,7 @@ public class UserActivity extends AppCompatActivity implements NavigationView.On
     private org.sakaiproject.customviews.CustomSwipeRefreshLayout mSwipeRefreshLayout;
     private RelativeLayout root;
     private FrameLayout searchFrame;
-
+    int samePagesCount = 1;
     private UserMainNavigationDrawerHelper mainNavigationDrawer;
     private static SitesNavigationDrawerHelper sitesNavigationDrawer;
 
@@ -278,9 +281,13 @@ public class UserActivity extends AppCompatActivity implements NavigationView.On
             }
         }
 
+
         for (Integer ids : NavigationDrawerHelper.getPagesIds().keySet()) {
             if (item.getItemId() == ids) {
-                NavigationDrawerHelper.doAction(NavigationDrawerHelper.getPagesIds().get(ids).getTitle());
+                if (findSamePages(item) > 1)
+                    NavigationDrawerHelper.doAction(NavigationDrawerHelper.getPagesIds().get(ids).getTitle(), samePagesCount);
+                else
+                    NavigationDrawerHelper.doAction(NavigationDrawerHelper.getPagesIds().get(ids).getTitle());
             }
         }
 
@@ -292,6 +299,28 @@ public class UserActivity extends AppCompatActivity implements NavigationView.On
         return true;
     }
 
+    private int findSamePages(MenuItem item) {
+        samePagesCount = 1;
+        Map<Integer, String> temp = new HashMap<>();
+
+        String name = NavigationDrawerHelper.getPagesIds().get(item.getItemId()).getTitle();
+
+        for (Integer ids : NavigationDrawerHelper.getPagesIds().keySet()) {
+            if (NavigationDrawerHelper.getPagesIds().get(ids).getTitle().equals(name))
+                temp.put(ids, NavigationDrawerHelper.getPagesIds().get(ids).getTitle());
+        }
+
+        if (temp.size() > 1) {
+            for (Integer ids : temp.keySet()) {
+                if (ids != item.getItemId()) {
+                    samePagesCount++;
+                } else
+                    break;
+            }
+        }
+
+        return temp.size();
+    }
 
     @Override
     public void Callback(SwipeRefreshLayout.OnRefreshListener listener) {

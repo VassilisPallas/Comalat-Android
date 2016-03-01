@@ -21,6 +21,7 @@ import org.sakaiproject.sakai.MembershipFragment;
 import org.sakaiproject.sakai.ProfileFragment;
 import org.sakaiproject.sakai.R;
 import org.sakaiproject.sakai.SyllabusFragment;
+import org.sakaiproject.sakai.WebContentFragment;
 import org.sakaiproject.sakai.WikiFragment;
 
 import java.util.Hashtable;
@@ -263,7 +264,7 @@ public abstract class NavigationDrawerHelper {
      *
      * @param pageName the page name
      */
-    public static void doAction(String pageName) {
+    public static void doAction(String pageName, int... params) {
 
         if (pageName.equals(DASHBOARD)) {
             DashboardFragment dashboardFragment = new DashboardFragment().getSwipeRefreshLayout(mSwipeRefreshLayout);
@@ -341,7 +342,12 @@ public abstract class NavigationDrawerHelper {
             WikiFragment wikiFragment = new WikiFragment().getSwipeRefreshLayout(mSwipeRefreshLayout);
             ActionsHelper.selectFragment(wikiFragment, R.id.user_frame, context);
         } else if (pageName.equals(WEB_CONTENT)) {
-
+            WebContentFragment webContentFragment;
+            if (params.length > 0)
+                webContentFragment = new WebContentFragment().getData(mSwipeRefreshLayout, params[0]);
+            else
+                webContentFragment = new WebContentFragment().getData(mSwipeRefreshLayout, 1);
+            ActionsHelper.selectFragment(webContentFragment, R.id.user_frame, context);
         } else {
 
         }

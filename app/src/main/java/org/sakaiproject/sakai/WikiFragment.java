@@ -19,6 +19,7 @@ import org.sakaiproject.api.assignments.UserAssignmentsService;
 import org.sakaiproject.api.internet.NetWork;
 import org.sakaiproject.api.memberships.SiteData;
 import org.sakaiproject.api.memberships.pages.assignments.MembershipAssignmentsService;
+import org.sakaiproject.api.memberships.pages.wiki.MembershipOfflineWiki;
 import org.sakaiproject.api.memberships.pages.wiki.MembershipWikiService;
 import org.sakaiproject.api.pojos.wiki.Wiki;
 import org.sakaiproject.api.sync.WikiRefreshUI;
@@ -88,16 +89,20 @@ public class WikiFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+        MembershipOfflineWiki membershipOfflineWiki = new MembershipOfflineWiki(callback, getContext(), siteData.getId());
+        membershipOfflineWiki.getWiki();
+    }
+
+    @Override
     public void onRefresh() {
         new Handler().post(new Runnable() {
             @Override
             public void run() {
                 if (NetWork.getConnectionEstablished()) {
-
-
                     String url = null;
-
-                    MembershipWikiService membershipWikiService = new MembershipWikiService(getContext(), swipeRefreshLayout, callback);
+                    MembershipWikiService membershipWikiService = new MembershipWikiService(getContext(), swipeRefreshLayout, callback, siteData.getId());
                     membershipWikiService.getWiki(getContext().getResources().getString(R.string.url) + "wiki/site/" + siteData.getId() + ".json");
 
                 } else {
