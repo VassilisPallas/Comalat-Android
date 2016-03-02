@@ -85,14 +85,10 @@ public class WikiFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         scrollView = (CustomScrollView) v.findViewById(R.id.scrollView);
         scrollView.setSwipeRefreshLayout(swipeRefreshLayout);
 
-        return v;
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
         MembershipOfflineWiki membershipOfflineWiki = new MembershipOfflineWiki(callback, getContext(), siteData.getId());
         membershipOfflineWiki.getWiki();
+
+        return v;
     }
 
     @Override

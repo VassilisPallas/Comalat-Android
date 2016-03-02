@@ -79,6 +79,7 @@ public class OfflineMemberships {
         }
 
         for (int i = 0; i < SiteData.getProjects().size(); i++) {
+            int x = SiteData.getProjects().size();
 
             if (ActionsHelper.createDirIfNotExists(context, User.getUserEid() + File.separator + "memberships" + File.separator + SiteData.getProjects().get(i).getId())) {
                 sitesJson = ActionsHelper.readJsonFile(context, SiteData.getProjects().get(i).getId(), User.getUserEid() + File.separator + "memberships" + File.separator + SiteData.getProjects().get(i).getId());

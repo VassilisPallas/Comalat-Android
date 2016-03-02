@@ -1,9 +1,11 @@
 package org.sakaiproject.api.memberships.pages.web_content;
 
 import android.content.Context;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
+import com.android.volley.ServerError;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
@@ -17,6 +19,7 @@ import org.sakaiproject.api.user.User;
 import org.sakaiproject.customviews.CustomSwipeRefreshLayout;
 import org.sakaiproject.helpers.ActionsHelper;
 import org.sakaiproject.sakai.AppController;
+import org.sakaiproject.sakai.R;
 
 import java.io.File;
 import java.io.IOException;
@@ -62,8 +65,11 @@ public class WebContentService {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                VolleyLog.d(web_content_tag, error);
-                swipeRefreshLayout.setRefreshing(false);
+                if (error instanceof ServerError) {
+                    Toast.makeText(context, context.getResources().getString(R.string.server_error), Toast.LENGTH_SHORT).show();
+                }
+                if (swipeRefreshLayout != null)
+                    swipeRefreshLayout.setRefreshing(false);
             }
         });
         AppController.getInstance().addToRequestQueue(webContentRequest, web_content_tag);

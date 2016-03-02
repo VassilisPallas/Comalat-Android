@@ -76,6 +76,12 @@ public class AssignmentTabFragment extends Fragment implements AssignmentsRefres
         mLayoutManager = new LinearLayoutManager(v.getContext());
         mRecyclerView.setLayoutManager(mLayoutManager);
 
+
+        fillList();
+        mAdapter = new AssignmentAdapter(getActivity(), assignment, null);
+
+        mRecyclerView.setAdapter(mAdapter);
+
         // if the memberships recycle view is not on the top then the swipe refresh can not be done
         mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -123,23 +129,13 @@ public class AssignmentTabFragment extends Fragment implements AssignmentsRefres
             }
         }));
 
-        return v;
-    }
-
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        fillList();
-        mAdapter = new AssignmentAdapter(getActivity(), assignment, null);
-
-        mRecyclerView.setAdapter(mAdapter);
-
         if (mAdapter.getItemCount() == 0) {
             noAssignments.setVisibility(View.VISIBLE);
         } else {
             noAssignments.setVisibility(View.GONE);
         }
+
+        return v;
     }
 
     private void fillList() {

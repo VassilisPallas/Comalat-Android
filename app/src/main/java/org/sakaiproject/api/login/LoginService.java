@@ -81,7 +81,7 @@ public class LoginService implements ILogin {
 
                 PasswordEncryption passwordEncryption = new PasswordEncryption();
 
-                SharedPreferences.Editor editor = context.getSharedPreferences("user_data", context.MODE_PRIVATE).edit();
+                SharedPreferences.Editor editor = context.getSharedPreferences(name + "_user_data", context.MODE_PRIVATE).edit();
                 editor.putString("user_id", name);
                 editor.putString("password", passwordEncryption.encrypt(pass));
                 editor.apply();
@@ -143,7 +143,9 @@ public class LoginService implements ILogin {
             public void onErrorResponse(VolleyError error) {
                 progressBar.setVisibility(View.GONE);
                 loginTextView.setVisibility(View.VISIBLE);
-                VolleyLog.d(tag_login_json, error.getMessage());
+                if (error instanceof ServerError) {
+                    Toast.makeText(context, context.getResources().getString(R.string.server_error), Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -175,7 +177,9 @@ public class LoginService implements ILogin {
             public void onErrorResponse(VolleyError error) {
                 progressBar.setVisibility(View.GONE);
                 loginTextView.setVisibility(View.VISIBLE);
-                VolleyLog.d(tag_user_data_json, error.getMessage());
+                if (error instanceof ServerError) {
+                    Toast.makeText(context, context.getResources().getString(R.string.server_error), Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -210,7 +214,9 @@ public class LoginService implements ILogin {
             public void onErrorResponse(VolleyError error) {
                 progressBar.setVisibility(View.GONE);
                 loginTextView.setVisibility(View.VISIBLE);
-                VolleyLog.d(tag_user_data_json, error.getMessage());
+                if (error instanceof ServerError) {
+                    Toast.makeText(context, context.getResources().getString(R.string.server_error), Toast.LENGTH_SHORT).show();
+                }
             }
         });
         userProfileDataJson.setShouldCache(false);
@@ -235,7 +241,9 @@ public class LoginService implements ILogin {
             public void onErrorResponse(VolleyError error) {
                 progressBar.setVisibility(View.GONE);
                 loginTextView.setVisibility(View.VISIBLE);
-                VolleyLog.d(tag_user_image, error.getMessage());
+                if (error instanceof ServerError) {
+                    Toast.makeText(context, context.getResources().getString(R.string.server_error), Toast.LENGTH_SHORT).show();
+                }
             }
         });
         userImage.setShouldCache(false);
@@ -266,7 +274,9 @@ public class LoginService implements ILogin {
             public void onErrorResponse(VolleyError error) {
                 progressBar.setVisibility(View.GONE);
                 loginTextView.setVisibility(View.VISIBLE);
-                VolleyLog.d(tag_user_image_thumb, error.getMessage());
+                if (error instanceof ServerError) {
+                    Toast.makeText(context, context.getResources().getString(R.string.server_error), Toast.LENGTH_SHORT).show();
+                }
             }
         });
         userImagethumb.setShouldCache(false);

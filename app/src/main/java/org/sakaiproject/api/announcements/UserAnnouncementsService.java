@@ -1,9 +1,11 @@
 package org.sakaiproject.api.announcements;
 
 import android.content.Context;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
+import com.android.volley.ServerError;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
@@ -60,45 +62,8 @@ public class UserAnnouncementsService {
 
                     for (int i = 0; i < announcement.getAnnouncementCollection().size(); i++) {
 
-                        final int index = i;
-
                         Announcement.AnnouncementItems item = announcement.getAnnouncementCollection().get(i);
-
-                        site_name_tag = User.getUserEid() + " " + item.getSiteId() + " name";
-                        JsonObjectRequest siteNameRequest = new JsonObjectRequest(Request.Method.GET, context.getResources().getString(R.string.url) + "site/" + item.getSiteId() + ".json", null, new Response.Listener<JSONObject>() {
-                            @Override
-                            public void onResponse(JSONObject response) {
-
-                                SiteName siteName = gson.fromJson(response.toString(), SiteName.class);
-
-                                // change value MyWorkspace with the real name of the membership
-                                announcement.getAnnouncementCollection().get(index).setSiteTitle(siteName.getEntityTitle());
-
-                                JsonParser.getUserAnnouncements(announcement);
-
-                                // make String with the "new" json
-                                announcementsJson = gson.toJson(announcement);
-
-                                if (ActionsHelper.createDirIfNotExists(context, User.getUserEid() + File.separator + "announcements"))
-                                    try {
-                                        ActionsHelper.writeJsonFile(context, announcementsJson, "announcements", User.getUserEid() + File.separator + "announcements");
-                                    } catch (IOException e) {
-                                        e.printStackTrace();
-                                    }
-                                delegate.updateUI();
-
-                                if (swipeRefreshLayout != null)
-                                    swipeRefreshLayout.setRefreshing(false);
-                            }
-                        }, new Response.ErrorListener() {
-                            @Override
-                            public void onErrorResponse(VolleyError error) {
-                                VolleyLog.d(site_name_tag, error.getMessage());
-                                if (swipeRefreshLayout != null)
-                                    swipeRefreshLayout.setRefreshing(false);
-                            }
-                        });
-                        AppController.getInstance().addToRequestQueue(siteNameRequest, site_name_tag);
+                        getSiteName(item, i);
                     }
                 } else {
                     if (ActionsHelper.createDirIfNotExists(context, User.getUserEid() + File.separator + "announcements"))
@@ -117,11 +82,54 @@ public class UserAnnouncementsService {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                VolleyLog.d(user_announcement_tag, error.getMessage());
+                if (error instanceof ServerError) {
+                    Toast.makeText(context, context.getResources().getString(R.string.server_error), Toast.LENGTH_SHORT).show();
+                }
                 if (swipeRefreshLayout != null)
                     swipeRefreshLayout.setRefreshing(false);
             }
         });
         AppController.getInstance().addToRequestQueue(userAnnouncementsRequest, user_announcement_tag);
+    }
+
+
+    private void getSiteName(Announcement.AnnouncementItems item, final int index) {
+        site_name_tag = User.getUserEid() + " " + item.getSiteId() + " name";
+        JsonObjectRequest siteNameRequest = new JsonObjectRequest(Request.Method.GET, context.getResources().getString(R.string.url) + "site/" + item.getSiteId() + ".json", null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+
+                SiteName siteName = gson.fromJson(response.toString(), SiteName.class);
+
+                // change value MyWorkspace with the real name of the membership
+                announcement.getAnnouncementCollection().get(index).setSiteTitle(siteName.getEntityTitle());
+
+                JsonParser.getUserAnnouncements(announcement);
+
+                // make String with the "new" json
+                announcementsJson = gson.toJson(announcement);
+
+                if (ActionsHelper.createDirIfNotExists(context, User.getUserEid() + File.separator + "announcements"))
+                    try {
+                        ActionsHelper.writeJsonFile(context, announcementsJson, "announcements", User.getUserEid() + File.separator + "announcements");
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                delegate.updateUI();
+
+                if (swipeRefreshLayout != null)
+                    swipeRefreshLayout.setRefreshing(false);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                if (error instanceof ServerError) {
+                    Toast.makeText(context, context.getResources().getString(R.string.server_error), Toast.LENGTH_SHORT).show();
+                }
+                if (swipeRefreshLayout != null)
+                    swipeRefreshLayout.setRefreshing(false);
+            }
+        });
+        AppController.getInstance().addToRequestQueue(siteNameRequest, site_name_tag);
     }
 }

@@ -44,7 +44,7 @@ public class WebViewActivity extends AppCompatActivity {
             // finally change the color
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 window.setStatusBarColor(getResources().getColor(R.color.webview_status_color, getTheme()));
-            } else if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
+            } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 window.setStatusBarColor(getResources().getColor(R.color.webview_status_color));
             }
 
@@ -95,6 +95,7 @@ public class WebViewActivity extends AppCompatActivity {
     private void goBack() {
         super.onBackPressed();
         overridePendingTransition(R.anim.trans_right_in, R.anim.trans_right_out);
+        finish();
     }
 
     @Override

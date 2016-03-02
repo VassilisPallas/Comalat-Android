@@ -35,7 +35,7 @@ public class Logout {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                VolleyLog.d(logout_tag, error.getMessage());
+
             }
         });
 

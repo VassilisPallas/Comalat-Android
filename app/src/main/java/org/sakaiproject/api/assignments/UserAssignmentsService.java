@@ -1,9 +1,11 @@
 package org.sakaiproject.api.assignments;
 
 import android.content.Context;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
+import com.android.volley.ServerError;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
@@ -33,7 +35,6 @@ public class UserAssignmentsService {
     private Gson gson = new Gson();
     private org.sakaiproject.customviews.CustomSwipeRefreshLayout swipeRefreshLayout;
     private AssignmentsRefreshUI delegate;
-    private boolean update = false;
 
     public UserAssignmentsService(Context context, AssignmentsRefreshUI delegate) {
         this.context = context;
@@ -41,9 +42,6 @@ public class UserAssignmentsService {
         user_assignments_tag = User.getUserEid() + " assignments";
     }
 
-    public void canUpdate(boolean canUpdate) {
-        this.update = canUpdate;
-    }
 
     public void setSwipeRefreshLayout(CustomSwipeRefreshLayout swipeRefreshLayout) {
         this.swipeRefreshLayout = swipeRefreshLayout;
@@ -65,53 +63,60 @@ public class UserAssignmentsService {
 
                 if (assignment.getAssignmentsCollectionList().size() > 0) {
                     for (int i = 0; i < assignment.getAssignmentsCollectionList().size(); i++) {
-                        site_name_tag = User.getUserEid() + " " + assignment.getAssignmentsCollectionList().get(i).getContext() + " assignment name";
 
                         final Assignment.AssignmentsCollection collection = assignment.getAssignmentsCollectionList().get(i);
 
-                        JsonObjectRequest siteNameRequest = new JsonObjectRequest(Request.Method.GET, context.getResources().getString(R.string.url) + "site/" + collection.getContext() + ".json", null, new Response.Listener<JSONObject>() {
-                            @Override
-                            public void onResponse(JSONObject response) {
-
-                                SiteName siteName = gson.fromJson(response.toString(), SiteName.class);
-
-                                JsonParser.getAssignmentSiteName(context, siteName, collection);
-
-                                if (update) {
-                                    delegate.updateUI();
-
-                                    if (swipeRefreshLayout != null)
-                                        swipeRefreshLayout.setRefreshing(false);
-                                }
-                            }
-                        }, new Response.ErrorListener() {
-                            @Override
-                            public void onErrorResponse(VolleyError error) {
-                                VolleyLog.d(site_name_tag, error.getMessage());
-                                if (swipeRefreshLayout != null)
-                                    swipeRefreshLayout.setRefreshing(false);
-                            }
-                        });
-                        AppController.getInstance().addToRequestQueue(siteNameRequest, site_name_tag);
+                        getSiteName(collection);
                     }
 
                 } else {
-                    if (update) {
-                        delegate.updateUI();
 
-                        if (swipeRefreshLayout != null)
-                            swipeRefreshLayout.setRefreshing(false);
-                    }
+                    delegate.updateUI();
+
+                    if (swipeRefreshLayout != null)
+                        swipeRefreshLayout.setRefreshing(false);
+
                 }
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                VolleyLog.d(user_assignments_tag, error.getMessage());
+                if (error instanceof ServerError) {
+                    Toast.makeText(context, context.getResources().getString(R.string.server_error), Toast.LENGTH_SHORT).show();
+                }
                 if (swipeRefreshLayout != null)
                     swipeRefreshLayout.setRefreshing(false);
             }
         });
         AppController.getInstance().addToRequestQueue(assignmentsRequest, user_assignments_tag);
+    }
+
+    private void getSiteName(final Assignment.AssignmentsCollection collection) {
+        site_name_tag = User.getUserEid() + " " + collection.getContext() + " assignment name";
+        JsonObjectRequest siteNameRequest = new JsonObjectRequest(Request.Method.GET, context.getResources().getString(R.string.url) + "site/" + collection.getContext() + ".json", null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+
+                SiteName siteName = gson.fromJson(response.toString(), SiteName.class);
+
+                JsonParser.getAssignmentSiteName(context, siteName, collection);
+
+                delegate.updateUI();
+
+                if (swipeRefreshLayout != null)
+                    swipeRefreshLayout.setRefreshing(false);
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                if (error instanceof ServerError) {
+                    Toast.makeText(context, context.getResources().getString(R.string.server_error), Toast.LENGTH_SHORT).show();
+                }
+                if (swipeRefreshLayout != null)
+                    swipeRefreshLayout.setRefreshing(false);
+            }
+        });
+        AppController.getInstance().addToRequestQueue(siteNameRequest, site_name_tag);
     }
 }

@@ -6,6 +6,7 @@ import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
+import com.android.volley.ServerError;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 
@@ -13,6 +14,7 @@ import org.json.JSONObject;
 import org.sakaiproject.api.memberships.MembershipService;
 import org.sakaiproject.api.sync.MembershipRefreshUI;
 import org.sakaiproject.adapters.MembershipAdapter;
+import org.sakaiproject.api.user.User;
 import org.sakaiproject.customviews.custom_volley.EmptyRequest;
 import org.sakaiproject.sakai.AppController;
 import org.sakaiproject.sakai.R;
@@ -30,7 +32,7 @@ public class SiteUnJoin {
     private int position;
     private org.sakaiproject.customviews.CustomSwipeRefreshLayout customSwipeRefreshLayout;
     private MembershipRefreshUI delegate;
-
+    private final String unjoin_tag;
 
     public SiteUnJoin(String siteId, Context context, MembershipAdapter mAdapter, int position, org.sakaiproject.customviews.CustomSwipeRefreshLayout customSwipeRefreshLayout, MembershipRefreshUI delegate) {
         this.mAdapter = mAdapter;
@@ -39,6 +41,7 @@ public class SiteUnJoin {
         this.position = position;
         this.customSwipeRefreshLayout = customSwipeRefreshLayout;
         this.delegate = delegate;
+        unjoin_tag = User.getUserEid() + " " + siteId + " unjoin";
     }
 
     public void unJoin() {
@@ -57,18 +60,16 @@ public class SiteUnJoin {
                 mAdapter.notifyItemRemoved(position);
 
                 Toast.makeText(context, context.getResources().getString(R.string.successful_unjoined), Toast.LENGTH_SHORT).show();
-
-                Log.i("unjoin", "true");
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                VolleyLog.d("unjoin", error.getMessage());
-                Log.i("unjoin", "false");
-                Toast.makeText(context, context.getResources().getString(R.string.server_error), Toast.LENGTH_SHORT).show();
+                if (error instanceof ServerError) {
+                    Toast.makeText(context, context.getResources().getString(R.string.server_error), Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
-        AppController.getInstance().addToRequestQueue(membershipUnJoinRequest, "join");
+        AppController.getInstance().addToRequestQueue(membershipUnJoinRequest, unjoin_tag);
     }
 }

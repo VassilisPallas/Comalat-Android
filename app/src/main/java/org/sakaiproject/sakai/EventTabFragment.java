@@ -84,6 +84,29 @@ public class EventTabFragment extends Fragment implements CalendarRefreshUI {
         mLayoutManager = new LinearLayoutManager(v.getContext());
         mRecyclerView.setLayoutManager(mLayoutManager);
 
+        EventsCollection.getEventsList().clear();
+        EventsCollection.getMonthEvents().clear();
+
+        if (siteName.equals(getContext().getResources().getString(R.string.my_workspace))) {
+            OfflineEvents offlineEvents = new OfflineEvents(getContext());
+            offlineEvents.getEvents();
+        } else {
+            SiteOfflineEvents siteOfflineEvents = new SiteOfflineEvents(getContext(), siteData.getId());
+            siteOfflineEvents.getEvents();
+        }
+
+        try {
+            EventsCollection.selectedMonthEvents(String.valueOf(cal_month.get(cal_month.MONTH) + 1), cal_month);
+        } catch (ParseException | CloneNotSupportedException e) {
+            e.printStackTrace();
+        }
+
+        monthlyEvents = EventsCollection.getMonthEvents();
+
+        mAdapter = new SelectedDayEventsAdapter(getContext(), monthlyEvents);
+
+        mRecyclerView.setAdapter(mAdapter);
+
         // if the events recycle view is not on the top then the swipe refresh can not be done
         mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -126,41 +149,13 @@ public class EventTabFragment extends Fragment implements CalendarRefreshUI {
             }
         }));
 
-        return v;
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-
-        EventsCollection.getEventsList().clear();
-        EventsCollection.getMonthEvents().clear();
-
-        if (siteName.equals(getContext().getResources().getString(R.string.my_workspace))) {
-            OfflineEvents offlineEvents = new OfflineEvents(getContext());
-            offlineEvents.getEvents();
-        } else {
-            SiteOfflineEvents siteOfflineEvents = new SiteOfflineEvents(getContext(), siteData.getId());
-            siteOfflineEvents.getEvents();
-        }
-
-        try {
-            EventsCollection.selectedMonthEvents(String.valueOf(cal_month.get(cal_month.MONTH) + 1), cal_month);
-        } catch (ParseException | CloneNotSupportedException e) {
-            e.printStackTrace();
-        }
-
-        monthlyEvents = EventsCollection.getMonthEvents();
-
-        mAdapter = new SelectedDayEventsAdapter(getContext(), monthlyEvents);
-
-        mRecyclerView.setAdapter(mAdapter);
-
         if (mAdapter.getItemCount() == 0) {
             noEvents.setVisibility(View.VISIBLE);
         } else {
             noEvents.setVisibility(View.GONE);
         }
+
+        return v;
     }
 
     @Override

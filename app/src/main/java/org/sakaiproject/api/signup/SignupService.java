@@ -5,10 +5,12 @@ import android.support.design.widget.TextInputLayout;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
+import com.android.volley.ServerError;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.StringRequest;
@@ -66,7 +68,9 @@ public class SignupService {
             @Override
             public void onErrorResponse(VolleyError error) {
                 signupProgressBar.setVisibility(View.GONE);
-                VolleyLog.d(tag_sign_up, error.getMessage());
+                if (error instanceof ServerError) {
+                    Toast.makeText(context, context.getResources().getString(R.string.server_error), Toast.LENGTH_SHORT).show();
+                }
             }
         }) {
             @Override

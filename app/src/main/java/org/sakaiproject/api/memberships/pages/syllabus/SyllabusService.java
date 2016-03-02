@@ -1,9 +1,11 @@
 package org.sakaiproject.api.memberships.pages.syllabus;
 
 import android.content.Context;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
+import com.android.volley.ServerError;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
@@ -14,6 +16,7 @@ import org.sakaiproject.api.user.User;
 import org.sakaiproject.customviews.CustomSwipeRefreshLayout;
 import org.sakaiproject.helpers.ActionsHelper;
 import org.sakaiproject.sakai.AppController;
+import org.sakaiproject.sakai.R;
 
 import java.io.File;
 import java.io.IOException;
@@ -46,7 +49,7 @@ public class SyllabusService {
     }
 
     public void getSyllabus(String url) throws IOException {
-        if(swipeRefreshLayout != null)
+        if (swipeRefreshLayout != null)
             swipeRefreshLayout.setRefreshing(true);
 
         JsonObjectRequest syllabusRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
@@ -61,15 +64,17 @@ public class SyllabusService {
 
                 delegate.updateUI();
 
-                if(swipeRefreshLayout != null)
+                if (swipeRefreshLayout != null)
                     swipeRefreshLayout.setRefreshing(false);
 
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                VolleyLog.d(syllabus_tag, error.getMessage());
-                if(swipeRefreshLayout != null)
+                if (error instanceof ServerError) {
+                    Toast.makeText(context, context.getResources().getString(R.string.server_error), Toast.LENGTH_SHORT).show();
+                }
+                if (swipeRefreshLayout != null)
                     swipeRefreshLayout.setRefreshing(false);
             }
         });

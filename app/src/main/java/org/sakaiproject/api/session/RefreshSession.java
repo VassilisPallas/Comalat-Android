@@ -2,10 +2,12 @@ package org.sakaiproject.api.session;
 
 import android.content.Context;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
+import com.android.volley.ServerError;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 
@@ -15,6 +17,7 @@ import org.sakaiproject.api.user.User;
 import org.sakaiproject.helpers.ActionsHelper;
 import org.sakaiproject.customviews.custom_volley.EmptyRequest;
 import org.sakaiproject.sakai.AppController;
+import org.sakaiproject.sakai.R;
 
 import java.io.File;
 import java.io.IOException;
@@ -62,8 +65,9 @@ public class RefreshSession {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.i("session", "didn't stored");
-                VolleyLog.d(refresh_session_tag, error.getMessage());
-                error.printStackTrace();
+                if (error instanceof ServerError) {
+                    Toast.makeText(context, context.getResources().getString(R.string.server_error), Toast.LENGTH_SHORT).show();
+                }
             }
         }) {
             /**
@@ -85,26 +89,6 @@ public class RefreshSession {
 
         refreshSessionRequest.setShouldCache(false);
         AppController.getInstance().addToRequestQueue(refreshSessionRequest, refresh_session_tag);
-
-//        try {
-//            String loginJson = null;
-//            if (Actions.createDirIfNotExists(context, User.getUserEid() + File.separator + "user"))
-//                loginJson = Actions.readJsonFile(context, "loginJson", User.getUserEid() + File.separator + "user");
-//
-//            connection.openConnection(url, ConnectionType.PUT, false, true, loginJson);
-//            Integer status = connection.getResponseCode();
-//
-//            if (status >= 200 && status < 300)
-//                Log.i("session", "stored");
-//            else
-//                Log.i("session", "didn't stored");
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        } finally {
-//            connection.closeConnection();
-//        }
-
-
     }
 
 }

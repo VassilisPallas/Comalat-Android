@@ -87,6 +87,18 @@ public class AnnouncementFragment extends Fragment implements SwipeRefreshLayout
         mRecyclerView.setLayoutManager(mLayoutManager);
 
 
+        if (siteName.equals(getContext().getResources().getString(R.string.my_workspace))) {
+            OfflineUserAnnouncements offlineUserAnnouncements = new OfflineUserAnnouncements(getContext());
+            offlineUserAnnouncements.getAnnouncements();
+            mAdapter = new AnnouncementAdapter(UserAnnouncementHelper.userAnnouncement, null);
+        } else {
+            OfflineMembershipAnnouncements announcements = new OfflineMembershipAnnouncements(getContext(), siteData.getId());
+            announcements.getAnnouncements();
+            mAdapter = new AnnouncementAdapter(MembershipAnnouncementHelper.membershipAnnouncement, siteData.getId());
+        }
+
+        mRecyclerView.setAdapter(mAdapter);
+
         // if the memberships recycle view is not on the top then the swipe refresh can not be done
         mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -129,30 +141,13 @@ public class AnnouncementFragment extends Fragment implements SwipeRefreshLayout
 
         root = (FrameLayout) v.findViewById(R.id.root);
 
-        return v;
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-
-        if (siteName.equals(getContext().getResources().getString(R.string.my_workspace))) {
-            OfflineUserAnnouncements offlineUserAnnouncements = new OfflineUserAnnouncements(getContext());
-            offlineUserAnnouncements.getAnnouncements();
-            mAdapter = new AnnouncementAdapter(UserAnnouncementHelper.userAnnouncement, null);
-        } else {
-            OfflineMembershipAnnouncements announcements = new OfflineMembershipAnnouncements(getContext(), siteData.getId());
-            announcements.getAnnouncements();
-            mAdapter = new AnnouncementAdapter(MembershipAnnouncementHelper.membershipAnnouncement, siteData.getId());
-        }
-
-        mRecyclerView.setAdapter(mAdapter);
-
         if (mAdapter.getItemCount() == 0) {
             noAnnouncements.setVisibility(View.VISIBLE);
         } else {
             noAnnouncements.setVisibility(View.GONE);
         }
+
+        return v;
     }
 
     @Override

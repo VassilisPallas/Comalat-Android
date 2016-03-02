@@ -54,10 +54,10 @@ public class OfflineLogin implements ILogin {
 
     @Override
     public void login(String... params) {
-        SharedPreferences prefs = context.getSharedPreferences("user_data", context.MODE_PRIVATE);
+        SharedPreferences prefs = context.getSharedPreferences(params[0] + "_user_data", context.MODE_PRIVATE);
         try {
             if (prefs.getString("user_id", null) != null && prefs.getString("password", null) != null) {
-                if (prefs.getString("user_id", null).equals(params[0]) && passwordEncryption.check(params[1], prefs.getString("password", null))) {
+                if (params[0].equals(prefs.getString("user_id", null)) && passwordEncryption.check(params[1], prefs.getString("password", null))) {
                     getLoginJson(params[0]);
                     getUserDataJson(params[0]);
                     getUserProfileDataJson(params[0]);
