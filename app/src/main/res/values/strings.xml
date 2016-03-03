@@ -163,6 +163,7 @@
     <string name="new_account">New Account</string>
     <string name="reset_password">Reset Password</string>
     <string name="other">Other</string>
+    <string name="delegated_access">Delegated Access</string>
 
     <!-- user navigation drawer's data -->
     <string name="dashboard">Dashboard</string>
@@ -381,4 +382,12 @@
     <string name="more_replies">more replies</string>
     <string name="Comments">Comments</string>
     <string name="replies">Replies</string>
+    <string name="connection_request">Connection requested</string>
+    <string name="accept_connection">Accept Connection</string>
+    <string name="download_roster_to_excel">Download roster to excel</string>
+    <string name="file_download">File Download</string>
+    <string name="download_in_progress">Download in progress</string>
+    <string name="download_complete">Download complete</string>
+    <string name="open_file_with">Open file with</string>
+    <string name="no_intent_app">No app can perform this action.</string>
 </resources>

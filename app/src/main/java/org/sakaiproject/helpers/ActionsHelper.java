@@ -10,7 +10,9 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Build;
+import android.os.Environment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
@@ -24,13 +26,16 @@ import org.sakaiproject.api.session.Waiter;
 import org.sakaiproject.api.memberships.SiteData;
 import org.sakaiproject.api.user.User;
 import org.sakaiproject.api.user.profile.Profile;
+import org.sakaiproject.customviews.custom_volley.InputStreamVolleyRequest;
 import org.sakaiproject.general.AttachmentType;
 import org.sakaiproject.general.Connection;
 import org.sakaiproject.helpers.user_navigation_drawer_helpers.UserMainNavigationDrawerHelper;
 import org.sakaiproject.sakai.MainActivity;
 import org.sakaiproject.sakai.R;
 
+import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -41,7 +46,9 @@ import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.StringTokenizer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -133,6 +140,45 @@ public class ActionsHelper {
         out.flush();
         out.close();
 
+    }
+
+    public static File saveFile(Context context, byte[] response, String path, InputStreamVolleyRequest request) {
+        HashMap<String, Object> map = new HashMap<String, Object>();
+        File file = null;
+        try {
+            if (response != null) {
+                String content = request.responseHeaders.get("Content-Disposition");
+                StringTokenizer st = new StringTokenizer(content, "=");
+                //String[] arrTag = st.toArray();
+
+                //String filename = arrTag[1];
+                String filename = st.nextToken();
+                filename = st.nextToken();
+                filename = filename.replace(":", ".");
+
+                //covert response to input stream
+                InputStream input = new ByteArrayInputStream(response);
+                if (ActionsHelper.createExternalDirIfNotExists(path))
+                    file = new File(path, filename);
+                map.put("resume_path", file.toString());
+                BufferedOutputStream output = new BufferedOutputStream(new FileOutputStream(file));
+                byte data[] = new byte[1024];
+                long total = 0;
+                int count;
+                while ((count = input.read(data)) != -1) {
+                    total += count;
+                    output.write(data, 0, count);
+                }
+
+                output.flush();
+
+                output.close();
+                input.close();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return file;
     }
 
     /**
@@ -253,6 +299,38 @@ public class ActionsHelper {
         if (file.startsWith("http") || file.startsWith("ftp") || file.startsWith("https"))
             return AttachmentType.URL;
         return AttachmentType.UNKwOWN;
+    }
+
+
+    public static Intent openFile(Context context, File file) {
+        String fileName = file.getName();
+
+        String extension = fileName.substring(fileName.lastIndexOf(".") + 1);
+
+        String type = "application/" + extension;
+
+        if (getAttachmentType(fileName) == AttachmentType.IMAGE) {
+            type = "image/*";
+        } else if (getAttachmentType(fileName) == AttachmentType.AUDIO) {
+            type = "audio/*";
+        } else if (getAttachmentType(fileName) == AttachmentType.VIDEO) {
+            type = "video/*";
+        } else if (getAttachmentType(fileName) == AttachmentType.WORD) {
+            type = "application/msword";
+        } else if (getAttachmentType(fileName) == AttachmentType.EXCEL) {
+            type = "application/vnd.ms-excel";
+        } else if (getAttachmentType(fileName) == AttachmentType.POWERPOINT) {
+            type = "application/vnd.ms-powerpoint";
+        } else if (getAttachmentType(fileName) == AttachmentType.TXT) {
+            type = "text/*";
+        }
+
+        Uri path = Uri.fromFile(file);
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        Intent chooser = Intent.createChooser(intent, context.getResources().getString(R.string.open_file_with));
+        intent.setDataAndType(path, type);
+        return chooser;
     }
 
     /**
@@ -568,6 +646,27 @@ public class ActionsHelper {
 
         File externalStoragePath = context.getFilesDir();
         File file = new File(externalStoragePath, path);
+        if (!file.exists()) {
+            if (!file.mkdirs()) {
+                Log.e("Log :: ", "Problem creating folder");
+                ret = false;
+            }
+        }
+        return ret;
+    }
+
+    /**
+     * try to find the directory on the given path. If the directory does not exists,
+     * then creates the directory and returns true. If exists returns true. Otherwise
+     * if it can't create the directory returns false
+     *
+     * @param path the given path
+     * @return true if the directory exists or if it has created successfully, otherwise returns false
+     */
+    public static boolean createExternalDirIfNotExists(String path) {
+        boolean ret = true;
+
+        File file = new File(path);
         if (!file.exists()) {
             if (!file.mkdirs()) {
                 Log.e("Log :: ", "Problem creating folder");

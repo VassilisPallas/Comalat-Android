@@ -20,6 +20,7 @@ import org.sakaiproject.sakai.DashboardFragment;
 import org.sakaiproject.sakai.MembershipFragment;
 import org.sakaiproject.sakai.ProfileFragment;
 import org.sakaiproject.sakai.R;
+import org.sakaiproject.sakai.RosterFragment;
 import org.sakaiproject.sakai.SyllabusFragment;
 import org.sakaiproject.sakai.WebContentFragment;
 import org.sakaiproject.sakai.WikiFragment;
@@ -43,6 +44,7 @@ public abstract class NavigationDrawerHelper {
     private static String selectedSite;
 
     private static String DASHBOARD;
+    private static String DELEGATED_ACCESS;
     private static String HOME;
     private static String PROFILE;
     private static String MEMBERSHIP;
@@ -81,6 +83,7 @@ public abstract class NavigationDrawerHelper {
         this.context = context;
 
         DASHBOARD = context.getString(R.string.dashboard);
+        DELEGATED_ACCESS = context.getString(R.string.delegated_access);
         HOME = context.getString(R.string.home);
         PROFILE = context.getString(R.string.profile);
         MEMBERSHIP = context.getString(R.string.membership);
@@ -188,6 +191,8 @@ public abstract class NavigationDrawerHelper {
     protected final int findIcon(String pageName) {
         if (pageName.equals(DASHBOARD)) {
             return R.mipmap.ic_dashboard;
+        } else if (pageName.equals(DELEGATED_ACCESS)) {
+            return R.mipmap.ic_settings;
         } else if (pageName.equals(HOME)) {
             return R.mipmap.ic_home;
         } else if (pageName.equals(PROFILE)) {
@@ -269,6 +274,8 @@ public abstract class NavigationDrawerHelper {
         if (pageName.equals(DASHBOARD)) {
             DashboardFragment dashboardFragment = new DashboardFragment().getSwipeRefreshLayout(mSwipeRefreshLayout);
             ActionsHelper.selectFragment(dashboardFragment, R.id.user_frame, context);
+        } else if (pageName.equals(DELEGATED_ACCESS)) {
+
         } else if (pageName.equals(HOME)) {
 
         } else if (pageName.equals(PROFILE)) {
@@ -322,7 +329,8 @@ public abstract class NavigationDrawerHelper {
         } else if (pageName.equals(POSTEM)) {
 
         } else if (pageName.equals(ROSTER)) {
-
+            RosterFragment rosterFragment = new RosterFragment().getSwipeRefreshLayout(mSwipeRefreshLayout);
+            ActionsHelper.selectFragment(rosterFragment, R.id.user_frame, context);
         } else if (pageName.equals(SEARCH)) {
 
         } else if (pageName.equals(SECTION_INFO)) {

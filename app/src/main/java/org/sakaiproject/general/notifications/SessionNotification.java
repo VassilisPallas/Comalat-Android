@@ -1,4 +1,4 @@
-package org.sakaiproject.general;
+package org.sakaiproject.general.notifications;
 
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -13,7 +13,7 @@ import org.sakaiproject.sakai.R;
 /**
  * Created by vasilis on 10/31/15.
  */
-public class SystemNotifications {
+public class SessionNotification {
 
     private Context context;
     private Class<?> activity;
@@ -24,7 +24,7 @@ public class SystemNotifications {
      * @param context the context
      * @param activity the Class<?> type of activity (MyActivity.class)
      */
-    public SystemNotifications(Context context, Class<?> activity) {
+    public SessionNotification(Context context, Class<?> activity) {
         this.context = context;
         this.activity = activity;
     }
@@ -38,6 +38,7 @@ public class SystemNotifications {
     public void showSessionNotification() {
         // define sound URI, the sound to be played when there's a notification
         Uri soundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+
 
         // intent triggered
         Intent intent = new Intent(context, activity);

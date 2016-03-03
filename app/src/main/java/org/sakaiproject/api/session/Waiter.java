@@ -4,15 +4,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
-import org.sakaiproject.api.memberships.SiteData;
-import org.sakaiproject.general.SystemNotifications;
+import org.sakaiproject.general.notifications.SessionNotification;
 import org.sakaiproject.general.Connection;
 import org.sakaiproject.api.internet.NetWork;
 import org.sakaiproject.api.logout.Logout;
 import org.sakaiproject.api.user.profile.Profile;
 import org.sakaiproject.api.user.User;
 import org.sakaiproject.helpers.ActionsHelper;
-import org.sakaiproject.helpers.user_navigation_drawer_helpers.UserMainNavigationDrawerHelper;
 import org.sakaiproject.sakai.MainActivity;
 import org.sakaiproject.sakai.R;
 
@@ -76,8 +74,8 @@ public class Waiter extends Thread {
             */
             if (idle == (period / 2) && !notificationShowed) {
                 notificationShowed = true;
-                SystemNotifications systemNotifications = new SystemNotifications(context, activity);
-                systemNotifications.showSessionNotification();
+                SessionNotification sessionNotification = new SessionNotification(context, activity);
+                sessionNotification.showSessionNotification();
             }
 
             /* if idle is equals with the expiration time of the session

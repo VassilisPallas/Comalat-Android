@@ -120,9 +120,6 @@ public class MembershipAdapter extends RecyclerView.Adapter<MembershipAdapter.Vi
             }
         });
 
-
-        SiteData s = memberships.get(position);
-
         if (memberships.get(position).getOwner().equals(User.getUserId())) {
 
             holder.unjoinLayout.setVisibility(View.INVISIBLE);
