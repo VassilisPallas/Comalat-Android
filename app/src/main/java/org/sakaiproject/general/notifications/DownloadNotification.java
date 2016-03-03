@@ -48,7 +48,7 @@ public class DownloadNotification {
 
         Intent intent = ActionsHelper.openFile(context, file);
         if (intent != null) {
-            PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
+            PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
             mBuilder.setContentIntent(pendingIntent);
         } else {
             Toast.makeText(context, context.getResources().getString(R.string.no_intent_app), Toast.LENGTH_SHORT).show();
