@@ -55,7 +55,8 @@ public class DownloadNotification {
         }
         // updates the notification
         mBuilder.setContentText(context.getResources().getString(R.string.download_complete))
-                // Removes the progress bar
+                .setAutoCancel(true)
+                        // Removes the progress bar
                 .setProgress(0, 0, false);
         notificationManager.notify(id, mBuilder.build());
 
