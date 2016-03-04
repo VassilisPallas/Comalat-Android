@@ -37,4 +37,6 @@
     <color name="calendar_cache_hint">#80000000</color>
     <color name="gray_layout">#a1a1a1</color>
     <color name="gradient_green">#3de64b</color>
+    <color name="file_descr_background">#8C000000</color>
+    <color name="gridview_background">#717171</color>
 </resources>

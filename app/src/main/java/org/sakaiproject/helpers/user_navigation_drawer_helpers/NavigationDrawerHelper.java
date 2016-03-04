@@ -17,6 +17,7 @@ import org.sakaiproject.sakai.AnnouncementFragment;
 import org.sakaiproject.sakai.AssignmentFragment;
 import org.sakaiproject.sakai.CalendarFragment;
 import org.sakaiproject.sakai.DashboardFragment;
+import org.sakaiproject.sakai.DropboxFragment;
 import org.sakaiproject.sakai.MembershipFragment;
 import org.sakaiproject.sakai.ProfileFragment;
 import org.sakaiproject.sakai.R;
@@ -305,7 +306,8 @@ public abstract class NavigationDrawerHelper {
         } else if (pageName.equals(CONTACT_US)) {
 
         } else if (pageName.equals(DROPBOX)) {
-
+            DropboxFragment dropboxFragment = new DropboxFragment().getSwipeRefreshLayout(mSwipeRefreshLayout);
+            ActionsHelper.selectFragment(dropboxFragment, R.id.user_frame, context);
         } else if (pageName.equals(EMAIL)) {
 
         } else if (pageName.equals(EMAIL_ARCHIVE)) {
