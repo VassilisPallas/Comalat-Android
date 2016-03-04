@@ -120,7 +120,7 @@ public class LoginService implements ILogin {
 
     @Override
     public void getLoginJson(final String... params) {
-        JsonObjectRequest loginJson = new JsonObjectRequest(Request.Method.GET, params[0] + "session/" + params[1] + ".json", null, new Response.Listener<JSONObject>() {
+        JsonObjectRequest loginJson = new JsonObjectRequest(Request.Method.GET, params[0] + "session/" + params[1] + ".json", (String)null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
 
@@ -156,7 +156,7 @@ public class LoginService implements ILogin {
     @Override
     public void getUserDataJson(final String... params) {
 
-        JsonObjectRequest userDataJson = new JsonObjectRequest(Request.Method.GET, params[0] + "user/" + params[1] + ".json", null, new Response.Listener<JSONObject>() {
+        JsonObjectRequest userDataJson = new JsonObjectRequest(Request.Method.GET, params[0] + "user/" + params[1] + ".json", (String)null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 UserData userData = gson.fromJson(response.toString(), UserData.class);
@@ -191,7 +191,7 @@ public class LoginService implements ILogin {
     @Override
     public void getUserProfileDataJson(String... params) {
 
-        JsonObjectRequest userProfileDataJson = new JsonObjectRequest(Request.Method.GET, params[0] + "profile/" + params[1] + ".json", null, new Response.Listener<JSONObject>() {
+        JsonObjectRequest userProfileDataJson = new JsonObjectRequest(Request.Method.GET, params[0] + "profile/" + params[1] + ".json", (String)null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 Profile profile = gson.fromJson(response.toString(), Profile.class);

@@ -52,7 +52,7 @@ public class SyllabusService {
         if (swipeRefreshLayout != null)
             swipeRefreshLayout.setRefreshing(true);
 
-        JsonObjectRequest syllabusRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+        JsonObjectRequest syllabusRequest = new JsonObjectRequest(Request.Method.GET, url, (String)null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 if (ActionsHelper.createDirIfNotExists(context, User.getUserEid() + File.separator + "memberships" + File.separator + siteId + File.separator + "syllabus"))

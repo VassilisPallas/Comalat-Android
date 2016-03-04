@@ -52,7 +52,7 @@ public class UserAnnouncementsService {
         if (swipeRefreshLayout != null)
             swipeRefreshLayout.setRefreshing(true);
 
-        JsonObjectRequest userAnnouncementsRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+        JsonObjectRequest userAnnouncementsRequest = new JsonObjectRequest(Request.Method.GET, url, (String)null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 announcementsJson = response.toString();
@@ -95,7 +95,7 @@ public class UserAnnouncementsService {
 
     private void getSiteName(Announcement.AnnouncementItems item, final int index) {
         site_name_tag = User.getUserEid() + " " + item.getSiteId() + " name";
-        JsonObjectRequest siteNameRequest = new JsonObjectRequest(Request.Method.GET, context.getResources().getString(R.string.url) + "site/" + item.getSiteId() + ".json", null, new Response.Listener<JSONObject>() {
+        JsonObjectRequest siteNameRequest = new JsonObjectRequest(Request.Method.GET, context.getResources().getString(R.string.url) + "site/" + item.getSiteId() + ".json", (String)null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
 

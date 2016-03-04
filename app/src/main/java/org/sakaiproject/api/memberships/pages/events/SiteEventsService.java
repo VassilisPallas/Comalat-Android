@@ -71,7 +71,7 @@ public class SiteEventsService {
         if (swipeRefreshLayout != null)
             swipeRefreshLayout.setRefreshing(true);
 
-        JsonObjectRequest eventsRequest = new JsonObjectRequest(Request.Method.GET, eventUrl, null, new Response.Listener<JSONObject>() {
+        JsonObjectRequest eventsRequest = new JsonObjectRequest(Request.Method.GET, eventUrl, (String)null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 Event event = gson.fromJson(response.toString(), Event.class);
@@ -117,7 +117,7 @@ public class SiteEventsService {
     }
 
     private void getOwnerData(String url, final int index, final String tag) {
-        ownerDataRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+        ownerDataRequest = new JsonObjectRequest(Request.Method.GET, url, (String)null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 UserEventOwner userEventOwner = gson.fromJson(response.toString(), UserEventOwner.class);
@@ -136,7 +136,7 @@ public class SiteEventsService {
 
     private void getEventInfo(String url, final int index, final String tag) {
 
-        JsonObjectRequest eventInfoRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+        JsonObjectRequest eventInfoRequest = new JsonObjectRequest(Request.Method.GET, url, (String)null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 EventInfo userEventOwnerPojo = gson.fromJson(response.toString(), EventInfo.class);

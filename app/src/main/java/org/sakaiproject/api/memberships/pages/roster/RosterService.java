@@ -51,7 +51,7 @@ public class RosterService {
     public void getRoster(String url) {
         swipeRefreshLayout.setRefreshing(true);
 
-        JsonObjectRequest rosterRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+        JsonObjectRequest rosterRequest = new JsonObjectRequest(Request.Method.GET, url, (String)null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 Roster roster = gson.fromJson(response.toString(), Roster.class);
@@ -85,7 +85,7 @@ public class RosterService {
     private void getUserProfile(final String userId, final Roster roster, final int index) {
         final String tag_user_image_url = userId + " image url";
         String url = context.getResources().getString(R.string.url) + "profile/" + userId + ".json";
-        userProfileImageUrlRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+        userProfileImageUrlRequest = new JsonObjectRequest(Request.Method.GET, url, (String)null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 UserProfileImage userProfileImage = gson.fromJson(response.toString(), UserProfileImage.class);
