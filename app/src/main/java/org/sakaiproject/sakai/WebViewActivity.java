@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.webkit.WebChromeClient;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
@@ -87,6 +88,13 @@ public class WebViewActivity extends AppCompatActivity {
             }
         });
         webView.setWebViewClient(new WebClient());
+        webView.getSettings().setLoadWithOverviewMode(true);
+        webView.getSettings().setAppCacheEnabled(false);
+        webView.getSettings().setUseWideViewPort(true);
+        webView.setScrollBarStyle(WebView.SCROLLBARS_OUTSIDE_OVERLAY);
+        webView.setScrollbarFadingEnabled(true);
+        webView.getSettings().setSupportZoom(true);
+        webView.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
         webView.getSettings().setJavaScriptEnabled(true);
         webView.loadUrl(url);
     }
