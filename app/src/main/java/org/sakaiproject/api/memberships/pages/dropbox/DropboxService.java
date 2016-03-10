@@ -18,13 +18,13 @@ import org.sakaiproject.api.pojos.roster.Member;
 import org.sakaiproject.api.pojos.roster.Roster;
 import org.sakaiproject.api.sync.DropboxRefreshUI;
 import org.sakaiproject.api.user.User;
+import org.sakaiproject.helpers.ActionsHelper;
 import org.sakaiproject.sakai.AppController;
 import org.sakaiproject.sakai.R;
 
-import java.util.ArrayList;
+import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -34,7 +34,7 @@ public class DropboxService {
     private Context context;
     private SiteData siteData;
     private Gson gson = new Gson();
-    private LinkedHashMap<Member, Dropbox> dropboxList = new LinkedHashMap<>();
+    private Map<String, Integer> dropboxList = new HashMap<>();
     private DropboxRefreshUI callback;
     private Roster roster;
     private org.sakaiproject.customviews.CustomSwipeRefreshLayout swipeRefreshLayout;
@@ -58,14 +58,38 @@ public class DropboxService {
     }
 
     private void getItem(String url, String tag, final int index, final Member member) {
-        JsonObjectRequest dropboxRequest = new JsonObjectRequest(Request.Method.GET, url, (String)null, new Response.Listener<JSONObject>() {
+        JsonObjectRequest dropboxRequest = new JsonObjectRequest(Request.Method.GET, url, (String) null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 Dropbox dropbox = gson.fromJson(response.toString(), Dropbox.class);
 
-                if (dropbox.getCollection() != null) {
-                    dropboxList.put(member, dropbox);
-                    // save on internal storage
+                if (dropbox != null && dropbox.getCollection() != null) {
+
+                    if (ActionsHelper.createDirIfNotExists(context, User.getUserEid() + File.separator + "memberships" + File.separator + siteData.getId() + File.separator + "dropbox"))
+                        try {
+                            ActionsHelper.writeJsonFile(context, response.toString(), member.getUserId() + "_dropbox", User.getUserEid() + File.separator + "memberships" + File.separator + siteData.getId() + File.separator + "dropbox");
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+
+                    for (int i = 0; i < dropbox.getCollection().size(); i++) {
+                        String url = dropbox.getCollection().get(i).getUrl();
+                        File externalStoragePath = context.getFilesDir();
+                        String tempUrl = (context.getResources().getString(R.string.url).replaceFirst("direct", "access")) + "content/group-user/" + siteData.getId();
+                        url = url.replaceFirst(tempUrl, "");
+                        url = url.replaceAll(member.getUserId(), member.getEid());
+                        url = User.getUserEid() + File.separator + "memberships" + File.separator + siteData.getId() + File.separator + "dropbox" + File.separator + "files" + url;
+                        File f = new File(externalStoragePath, url);
+                        if (!f.exists()) {
+                            try {
+                                f.getParentFile().mkdirs();
+                                f.createNewFile();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                        dropboxList.put(f.getAbsolutePath(), dropbox.getCollection().get(i).getSize());
+                    }
                 }
                 if (index == roster.getMembersTotal() - 1)
                     callback.updateUI(dropboxList);

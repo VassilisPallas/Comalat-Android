@@ -8,34 +8,26 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.StaggeredGridLayoutManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
-import android.widget.TextView;
-import android.widget.Toast;
 
-import org.sakaiproject.adapters.DropboxAdapter;
+import org.sakaiproject.adapters.dropbox.DropboxAdapter;
+import org.sakaiproject.adapters.dropbox.FillGridView;
 import org.sakaiproject.api.internet.NetWork;
 import org.sakaiproject.api.memberships.SiteData;
 import org.sakaiproject.api.memberships.pages.dropbox.DropboxService;
+import org.sakaiproject.api.memberships.pages.dropbox.OfflineDropbox;
 import org.sakaiproject.api.memberships.pages.roster.OfflineRoster;
-import org.sakaiproject.api.pojos.dropbox.Dropbox;
-import org.sakaiproject.api.pojos.roster.Member;
 import org.sakaiproject.api.pojos.roster.Roster;
 import org.sakaiproject.api.sync.DropboxRefreshUI;
 import org.sakaiproject.api.sync.RosterRefreshUI;
 import org.sakaiproject.api.user.User;
-import org.sakaiproject.customviews.listeners.RecyclerItemClickListener;
 import org.sakaiproject.helpers.user_navigation_drawer_helpers.NavigationDrawerHelper;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
@@ -49,11 +41,9 @@ public class DropboxFragment extends Fragment implements SwipeRefreshLayout.OnRe
     private FrameLayout root;
     private RecyclerView mRecyclerView;
     private RecyclerView.LayoutManager layoutManager;
-    private DropboxAdapter dropboxAdapter;
     private DropboxRefreshUI callback = this;
     private Roster roster;
     private RosterRefreshUI rosterCallback = this;
-    private LinkedHashMap<Member, Dropbox> dropboxList;
 
     public DropboxFragment() {
     }
@@ -107,29 +97,16 @@ public class DropboxFragment extends Fragment implements SwipeRefreshLayout.OnRe
             }
         });
 
-        mRecyclerView.addOnItemTouchListener(new RecyclerItemClickListener(getContext(), mRecyclerView, new RecyclerItemClickListener.OnItemClickListener() {
-            @Override
-            public void onItemClick(View view, int position) {
+        File externalStoragePath = getContext().getFilesDir();
+        File file = new File(externalStoragePath, User.getUserEid() + File.separator + "memberships" + File.separator + siteData.getId() + File.separator + "roster" + File.separator + siteData.getId() + "_roster.json");
 
-                String previous = ((TextView) view.findViewById(R.id.file_name)).getText().toString();
-                Log.i("previous", previous);
-                Member member = (new ArrayList<>(dropboxList.keySet())).get(position);
-                System.out.println("you have clicked " + member.getEid() + " with files ");
-                Dropbox dropbox = dropboxList.get(member);
-                for (Dropbox.Collection collection : dropbox.getCollection()) {
-                    System.out.println(collection.getTitle());
-                }
-
-                dropboxAdapter.setClickedMemberDir(member);
-                dropboxAdapter.setPreviousPlace(previous);
-
-            }
-
-            @Override
-            public void onItemLongClick(View view, int position) {
-
-            }
-        }));
+        if (file.exists()) {
+            OfflineRoster offlineRoster = new OfflineRoster(getContext(), siteData, rosterCallback);
+            offlineRoster.getRoster();
+            new OfflineDropbox(getContext(), siteData, callback, roster).getDropboxItems();
+        } else {
+            // download roster and make call
+        }
 
         swipeRefresh.Callback(this);
         return v;
@@ -162,10 +139,8 @@ public class DropboxFragment extends Fragment implements SwipeRefreshLayout.OnRe
     }
 
     @Override
-    public void updateUI(LinkedHashMap<Member, Dropbox> dropboxList) {
-        this.dropboxList = dropboxList;
-        dropboxAdapter = new DropboxAdapter(dropboxList, getContext(), siteData.getId(), true);
-        mRecyclerView.setAdapter(dropboxAdapter);
+    public void updateUI(Map<String, Integer> dropboxList) {
+        new FillGridView(getContext(), siteData, dropboxList, mRecyclerView).loadFiles();
         swipeRefreshLayout.setRefreshing(false);
     }
 

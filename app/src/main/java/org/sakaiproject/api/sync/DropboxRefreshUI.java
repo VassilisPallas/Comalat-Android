@@ -11,5 +11,5 @@ import java.util.Map;
  * Created by vspallas on 03/03/16.
  */
 public interface DropboxRefreshUI {
-    void updateUI(LinkedHashMap<Member, Dropbox> dropboxList);
+    void updateUI(Map<String, Integer> dropboxList);
 }
