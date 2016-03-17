@@ -91,17 +91,20 @@ public class DropboxService {
                         dropboxList.put(f.getAbsolutePath(), dropbox.getCollection().get(i).getSize());
                     }
                 }
-                if (index == roster.getMembersTotal() - 1)
-                    callback.updateUI(dropboxList);
+                callback.updateUI(dropboxList);
+                if (index == roster.getMembersTotal() - 1) {
+                    swipeRefreshLayout.setRefreshing(false);
+                }
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 if (error instanceof ServerError)
                     Toast.makeText(context, context.getResources().getString(R.string.server_error), Toast.LENGTH_SHORT).show();
-                if (index == roster.getMembersTotal() - 1)
+                if (index == roster.getMembersTotal() - 1) {
                     callback.updateUI(dropboxList);
-                swipeRefreshLayout.setRefreshing(false);
+                    swipeRefreshLayout.setRefreshing(false);
+                }
             }
         });
         AppController.getInstance().addToRequestQueue(dropboxRequest, tag);

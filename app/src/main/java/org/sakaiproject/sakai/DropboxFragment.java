@@ -141,7 +141,6 @@ public class DropboxFragment extends Fragment implements SwipeRefreshLayout.OnRe
     @Override
     public void updateUI(Map<String, Integer> dropboxList) {
         new FillGridView(getContext(), siteData, dropboxList, mRecyclerView).loadFiles();
-        swipeRefreshLayout.setRefreshing(false);
     }
 
     @Override

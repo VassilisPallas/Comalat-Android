@@ -63,6 +63,7 @@ public class FillGridView {
                 }
             };
             String[] fileList = rootPath.list(filter);
+
             imageItems = new ArrayList<>();
 
             for (int i = 0; i < fileList.length; i++) {
@@ -97,7 +98,7 @@ public class FillGridView {
     }
 
     private void fillList() {
-        if (imageItems == null) {
+        if (imageItems == null || imageItems.size() == 0) {
             return;
         }
 
@@ -115,7 +116,7 @@ public class FillGridView {
                     imageItems = null;
                     rootPath = new File(selectedFile + "");
                     loadFiles();
-                }// Checks if '..' was clicked
+                } // Checks if '..' was clicked
                 else if (chosenFile.equalsIgnoreCase("..")) {
                     backButtonPressed();
                 } // Do something with the selected file here
