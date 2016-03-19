@@ -112,7 +112,9 @@ public class MembershipAdapter extends RecyclerView.Adapter<MembershipAdapter.Vi
             public void onClick(View v) {
 
                 String displayName = memberships.get(position).getSiteOwner().getUserDisplayName();
-                String email = memberships.get(position).getProps().get("contact-email");
+                String email = "";
+                if (memberships.get(position).getProps() != null)
+                    email = memberships.get(position).getProps().get("contact-email");
                 String shortDescr = memberships.get(position).getShortDescription();
                 String descr = memberships.get(position).getDescription();
                 SiteData data = memberships.get(position);
@@ -121,7 +123,6 @@ public class MembershipAdapter extends RecyclerView.Adapter<MembershipAdapter.Vi
         });
 
         if (memberships.get(position).getOwner().equals(User.getUserId())) {
-
             holder.unjoinLayout.setVisibility(View.INVISIBLE);
             holder.ripple.setVisibility(View.INVISIBLE);
 

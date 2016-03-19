@@ -151,7 +151,7 @@ public class SitesNavigationDrawerHelper extends NavigationDrawerHelper {
         });
     }
 
-    public void fillSitesDrawer() {
+    public void fillSitesDrawer(boolean login) {
 
         sitesIds.clear();
 
@@ -165,11 +165,17 @@ public class SitesNavigationDrawerHelper extends NavigationDrawerHelper {
         sitesSubMenu.clear();
         projectsSubMenu.clear();
 
-        sitesSubMenu.add(R.id.sites, R.id.my_workspace, Menu.NONE, context.getResources().getString(R.string.my_workspace)).setCheckable(true).setChecked(true);
-
         for (int i = 0; i < SiteData.getSites().size(); i++) {
             sitesSubMenu.add(R.id.sites, ++id, Menu.NONE, SiteData.getSites().get(i).getTitle()).setCheckable(true);
             sitesIds.put(id, SiteData.getSites().get(i));
+
+            if (i == 0) {
+                sitesSubMenu.performIdentifierAction(id, 0);
+                sitesSubMenu.getItem(0).setChecked(true);
+
+                if (login)
+                    NavigationDrawerHelper.doAction(SiteData.getSites().get(i).getPages().get(0).getTitle());
+            }
         }
 
         for (int i = 0; i < SiteData.getProjects().size(); i++) {

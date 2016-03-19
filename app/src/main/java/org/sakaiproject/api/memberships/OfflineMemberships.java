@@ -1,6 +1,8 @@
 package org.sakaiproject.api.memberships;
 
 import android.content.Context;
+import android.content.Intent;
+import android.support.v7.app.AppCompatActivity;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -13,6 +15,7 @@ import org.sakaiproject.api.pojos.membership.SitePage;
 import org.sakaiproject.api.user.User;
 import org.sakaiproject.helpers.ActionsHelper;
 import org.sakaiproject.api.json.JsonParser;
+import org.sakaiproject.sakai.UserActivity;
 
 import java.io.File;
 import java.io.IOException;
@@ -26,6 +29,7 @@ public class OfflineMemberships {
 
     private Context context;
     private Gson gson = new Gson();
+    private boolean login = false;
 
     /**
      * OfflineSite constructor
@@ -34,6 +38,10 @@ public class OfflineMemberships {
      */
     public OfflineMemberships(Context context) {
         this.context = context;
+    }
+
+    public void setLogin(boolean login) {
+        this.login = login;
     }
 
     /**
@@ -50,7 +58,7 @@ public class OfflineMemberships {
             JsonParser.parseSiteDataJson(membership);
         }
 
-        for (int i = 0; i < SiteData.getSites().size(); i++) {
+        for (int i = 1; i < SiteData.getSites().size(); i++) {
             if (ActionsHelper.createDirIfNotExists(context, User.getUserEid() + File.separator + "memberships" + File.separator + SiteData.getSites().get(i).getId())) {
                 sitesJson = ActionsHelper.readJsonFile(context, SiteData.getSites().get(i).getId(), User.getUserEid() + File.separator + "memberships" + File.separator + SiteData.getSites().get(i).getId());
                 MembershipData membershipData = gson.fromJson(sitesJson, MembershipData.class);
@@ -105,6 +113,13 @@ public class OfflineMemberships {
                 sitesJson = ActionsHelper.readJsonFile(context, SiteData.getProjects().get(i).getId() + "_userPerms", User.getUserEid() + File.separator + "memberships" + File.separator + SiteData.getProjects().get(i).getId());
                 PageUserPermissions pageUserPermissions = gson.fromJson(sitesJson, PageUserPermissions.class);
                 JsonParser.getUserSitePermissions(pageUserPermissions, i, "project");
+            }
+
+            if (i == SiteData.getProjects().size() - 1 && login) {
+                Intent intent = new Intent(context, UserActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(intent);
+                ((AppCompatActivity) context).finish();
             }
         }
     }

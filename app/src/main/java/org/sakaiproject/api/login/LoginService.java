@@ -1,10 +1,8 @@
 package org.sakaiproject.api.login;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -14,23 +12,15 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.ServerError;
 import com.android.volley.VolleyError;
-import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.ImageRequest;
-import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 import org.sakaiproject.api.pojos.login.Login;
 import org.sakaiproject.api.pojos.login.Profile;
 import org.sakaiproject.api.pojos.login.UserData;
-import org.sakaiproject.api.pojos.membership.MembershipData;
-import org.sakaiproject.api.pojos.membership.PagePermissions;
-import org.sakaiproject.api.pojos.membership.PageUserPermissions;
-import org.sakaiproject.api.pojos.membership.SitePage;
 import org.sakaiproject.api.user.workspace.WorkspaceService;
 import org.sakaiproject.sakai.AppController;
 import org.sakaiproject.api.cryptography.PasswordEncryption;
@@ -39,13 +29,10 @@ import org.sakaiproject.api.user.User;
 import org.sakaiproject.helpers.ActionsHelper;
 import org.sakaiproject.general.Connection;
 import org.sakaiproject.sakai.R;
-import org.sakaiproject.sakai.UserActivity;
 
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.Type;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -148,6 +135,7 @@ public class LoginService implements ILogin {
                 WorkspaceService workspaceService = new WorkspaceService(context, User.getUserId());
                 workspaceService.setProgressBar(progressBar);
                 workspaceService.setLoginTextView(loginTextView);
+                workspaceService.setLogin(true);
                 workspaceService.getWorkspace();
 
                 getUserDataJson(params[0], User.getUserEid());
@@ -278,10 +266,7 @@ public class LoginService implements ILogin {
                 progressBar.setVisibility(View.GONE);
                 loginTextView.setVisibility(View.VISIBLE);
 
-                Intent i = new Intent(context, UserActivity.class);
-                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                context.startActivity(i);
-                ((AppCompatActivity) context).finish();
+
             }
         }, 0, 0, null, Bitmap.Config.RGB_565, new Response.ErrorListener() {
             @Override

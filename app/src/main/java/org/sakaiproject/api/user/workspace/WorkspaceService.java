@@ -18,11 +18,14 @@ import com.google.gson.reflect.TypeToken;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.sakaiproject.api.json.JsonParser;
+import org.sakaiproject.api.memberships.MembershipService;
 import org.sakaiproject.api.pojos.membership.MembershipData;
 import org.sakaiproject.api.pojos.membership.PagePermissions;
 import org.sakaiproject.api.pojos.membership.PageUserPermissions;
 import org.sakaiproject.api.pojos.membership.SitePage;
+import org.sakaiproject.api.sync.MembershipRefreshUI;
 import org.sakaiproject.api.user.User;
+import org.sakaiproject.customviews.CustomSwipeRefreshLayout;
 import org.sakaiproject.helpers.ActionsHelper;
 import org.sakaiproject.sakai.AppController;
 import org.sakaiproject.sakai.R;
@@ -43,6 +46,11 @@ public class WorkspaceService {
     private ProgressBar progressBar;
     private TextView loginTextView;
 
+    private MembershipRefreshUI delegate;
+    private org.sakaiproject.customviews.CustomSwipeRefreshLayout swipeRefreshLayout;
+
+    private boolean login = false;
+
     public WorkspaceService(Context context, String id) {
         this.context = context;
         this.id = id;
@@ -54,6 +62,18 @@ public class WorkspaceService {
 
     public void setLoginTextView(TextView loginTextView) {
         this.loginTextView = loginTextView;
+    }
+
+    public void setDelegate(MembershipRefreshUI delegate) {
+        this.delegate = delegate;
+    }
+
+    public void setSwipeRefreshLayout(CustomSwipeRefreshLayout swipeRefreshLayout) {
+        this.swipeRefreshLayout = swipeRefreshLayout;
+    }
+
+    public void setLogin(boolean login) {
+        this.login = login;
     }
 
     public void getWorkspace() {
@@ -74,6 +94,16 @@ public class WorkspaceService {
                 getPages();
                 getPermissions();
                 getUserPermissions();
+
+                MembershipService membershipService = new MembershipService(context);
+                membershipService.setDelegate(delegate);
+                membershipService.setSwipeRefreshLayout(swipeRefreshLayout);
+                membershipService.setLogin(login);
+                try {
+                    membershipService.getSites(context.getString(R.string.url) + "membership.json");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         }, new Response.ErrorListener() {
             @Override
@@ -82,6 +112,9 @@ public class WorkspaceService {
                     progressBar.setVisibility(View.GONE);
                     loginTextView.setVisibility(View.VISIBLE);
                 }
+                if (swipeRefreshLayout != null)
+                    swipeRefreshLayout.setRefreshing(false);
+
                 if (error instanceof ServerError) {
                     Toast.makeText(context, context.getResources().getString(R.string.server_error), Toast.LENGTH_SHORT).show();
                 }
@@ -115,6 +148,9 @@ public class WorkspaceService {
                     progressBar.setVisibility(View.GONE);
                     loginTextView.setVisibility(View.VISIBLE);
                 }
+                if (swipeRefreshLayout != null)
+                    swipeRefreshLayout.setRefreshing(false);
+
                 if (error instanceof ServerError) {
                     Toast.makeText(context, context.getResources().getString(R.string.server_error), Toast.LENGTH_SHORT).show();
                 }
@@ -144,6 +180,10 @@ public class WorkspaceService {
                     progressBar.setVisibility(View.GONE);
                     loginTextView.setVisibility(View.VISIBLE);
                 }
+
+                if (swipeRefreshLayout != null)
+                    swipeRefreshLayout.setRefreshing(false);
+
                 if (error instanceof ServerError) {
                     Toast.makeText(context, context.getResources().getString(R.string.server_error), Toast.LENGTH_SHORT).show();
                 }
@@ -174,6 +214,10 @@ public class WorkspaceService {
                     progressBar.setVisibility(View.GONE);
                     loginTextView.setVisibility(View.VISIBLE);
                 }
+
+                if (swipeRefreshLayout != null)
+                    swipeRefreshLayout.setRefreshing(false);
+
                 if (error instanceof ServerError) {
                     Toast.makeText(context, context.getResources().getString(R.string.server_error), Toast.LENGTH_SHORT).show();
                 }

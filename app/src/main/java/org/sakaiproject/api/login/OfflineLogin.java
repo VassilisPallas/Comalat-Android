@@ -11,6 +11,8 @@ import com.google.gson.Gson;
 import org.sakaiproject.api.pojos.login.Login;
 import org.sakaiproject.api.pojos.login.Profile;
 import org.sakaiproject.api.pojos.login.UserData;
+import org.sakaiproject.api.user.User;
+import org.sakaiproject.api.user.workspace.OfflineWorkspace;
 import org.sakaiproject.helpers.ActionsHelper;
 import org.sakaiproject.api.cryptography.PasswordEncryption;
 import org.sakaiproject.api.json.JsonParser;
@@ -61,6 +63,10 @@ public class OfflineLogin implements ILogin {
                     getLoginJson(params[0]);
                     getUserDataJson(params[0]);
                     getUserProfileDataJson(params[0]);
+                    OfflineWorkspace offlineWorkspace = new OfflineWorkspace(context, User.getUserId());
+                    offlineWorkspace.setLogin(true);
+                    offlineWorkspace.getWorkspace();
+                    
                     return;
                 }
             } else {

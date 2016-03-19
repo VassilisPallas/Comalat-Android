@@ -7,10 +7,6 @@
         android:title="@string/other">
         <menu>
             <group android:checkableBehavior="single">
-                <item
-                    android:id="@+id/my_workspace"
-                    android:checked="true"
-                    android:title="@string/my_workspace" />
             </group>
         </menu>
     </item>

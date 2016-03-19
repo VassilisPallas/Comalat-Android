@@ -386,10 +386,6 @@ public class JsonParser {
      * @param type  "project" for project type, and "site" for site type
      */
     public static void getSitePageData(List<SitePage> pages, int index, String type) {
-        // make index++ because the first item on pages is my workspace
-        if (index < SiteData.getSites().size() - 1 && index < SiteData.getProjects().size() - 1)
-            index++;
-//        Log.i("index", String.valueOf(index));
         for (int i = 0; i < pages.size(); i++) {
             SitePage page;
             if (type == null) {
@@ -448,9 +444,6 @@ public class JsonParser {
      * @param type            "project" for project type, and "site" for site type
      */
     public static void getSitePermissions(PagePermissions pagePermissions, int index, String type) {
-        // make index++ because the first item on pages is my workspace
-        if (index < SiteData.getSites().size() - 1 && index < SiteData.getProjects().size() - 1)
-            index++;
 
         if (type == null) {
             SiteData.getSites().get(index).setAccess(pagePermissions.getData().getAccess());
@@ -481,9 +474,6 @@ public class JsonParser {
      * @param type                "project" for project type, and "site" for site type
      */
     public static void getUserSitePermissions(PageUserPermissions pageUserPermissions, int index, String type) {
-        // make index++ because the first item on pages is my workspace
-        if (index < SiteData.getSites().size() - 1 && index < SiteData.getProjects().size() - 1)
-            index++;
 
         if (type == null) {
             SiteData.getSites().get(index).setUserSitePermissions(pageUserPermissions.getData());

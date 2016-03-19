@@ -1,6 +1,8 @@
 package org.sakaiproject.api.memberships;
 
 import android.content.Context;
+import android.content.Intent;
+import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -26,6 +28,7 @@ import org.sakaiproject.helpers.ActionsHelper;
 import org.sakaiproject.api.json.JsonParser;
 import org.sakaiproject.sakai.AppController;
 import org.sakaiproject.sakai.R;
+import org.sakaiproject.sakai.UserActivity;
 
 import java.io.File;
 import java.io.IOException;
@@ -43,19 +46,27 @@ public class MembershipService {
     private Gson gson = new Gson();
     private MembershipRefreshUI delegate;
     private org.sakaiproject.customviews.CustomSwipeRefreshLayout swipeRefreshLayout;
+    private boolean login = false;
 
     /**
      * OnlineSite constructor
      *
      * @param context the context
      */
-    public MembershipService(Context context, MembershipRefreshUI delegate) {
+    public MembershipService(Context context) {
         this.context = context;
-        this.delegate = delegate;
     }
 
     public void setSwipeRefreshLayout(CustomSwipeRefreshLayout swipeRefreshLayout) {
         this.swipeRefreshLayout = swipeRefreshLayout;
+    }
+
+    public void setDelegate(MembershipRefreshUI delegate) {
+        this.delegate = delegate;
+    }
+
+    public void setLogin(boolean login) {
+        this.login = login;
     }
 
     /**
@@ -70,7 +81,7 @@ public class MembershipService {
         if (swipeRefreshLayout != null)
             swipeRefreshLayout.setRefreshing(true);
 
-        JsonObjectRequest membershipRequest = new JsonObjectRequest(Request.Method.GET, url, (String)null, new Response.Listener<JSONObject>() {
+        JsonObjectRequest membershipRequest = new JsonObjectRequest(Request.Method.GET, url, (String) null, new Response.Listener<JSONObject>() {
 
             @Override
             public void onResponse(JSONObject response) {
@@ -86,7 +97,8 @@ public class MembershipService {
                         e.printStackTrace();
                     }
 
-                for (int i = 0; i < SiteData.getSites().size(); i++) {
+                // starting from 1 because 0 is My Workspace
+                for (int i = 1; i < SiteData.getSites().size(); i++) {
                     getData(SiteData.getSites().get(i), null, i);
                 }
 
@@ -110,7 +122,7 @@ public class MembershipService {
     private void getData(final SiteData siteData, final String type, final int index) {
         membership_id_tag = User.getUserEid() + " membership " + siteData.getId() + " data";
 
-        final JsonObjectRequest membershipDataRequest = new JsonObjectRequest(Request.Method.GET, context.getResources().getString(R.string.url) + "site/" + siteData.getId() + ".json", (String)null, new Response.Listener<JSONObject>() {
+        final JsonObjectRequest membershipDataRequest = new JsonObjectRequest(Request.Method.GET, context.getResources().getString(R.string.url) + "site/" + siteData.getId() + ".json", (String) null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
 
@@ -144,7 +156,7 @@ public class MembershipService {
     private void getPages(final SiteData siteData, final String type, final int index) {
         membership_page_tag = User.getUserEid() + " membership " + siteData.getId() + " pages";
 
-        JsonArrayRequest pagesRequest = new JsonArrayRequest(Request.Method.GET, context.getResources().getString(R.string.url) + "site/" + siteData.getId() + "/pages.json", (String)null, new Response.Listener<JSONArray>() {
+        JsonArrayRequest pagesRequest = new JsonArrayRequest(Request.Method.GET, context.getResources().getString(R.string.url) + "site/" + siteData.getId() + "/pages.json", (String) null, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
                 Type collectionType = new TypeToken<List<SitePage>>() {
@@ -178,7 +190,7 @@ public class MembershipService {
 
         membership_perms_tag = User.getUserEid() + " membership " + siteData.getId() + " perms";
 
-        JsonObjectRequest pagePermissionsRequest = new JsonObjectRequest(Request.Method.GET, context.getResources().getString(R.string.url) + "site/" + siteData.getId() + "/perms.json", (String)null, new Response.Listener<JSONObject>() {
+        JsonObjectRequest pagePermissionsRequest = new JsonObjectRequest(Request.Method.GET, context.getResources().getString(R.string.url) + "site/" + siteData.getId() + "/perms.json", (String) null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 PagePermissions pagePermissions = gson.fromJson(response.toString(), PagePermissions.class);
@@ -207,7 +219,7 @@ public class MembershipService {
 
     private void getUserPermissions(final SiteData siteData, final String type, final int index) {
         membership_user_perms_tag = User.getUserEid() + " membership " + siteData.getId() + " user perms";
-        JsonObjectRequest pageUserPermissionsRequest = new JsonObjectRequest(Request.Method.GET, context.getResources().getString(R.string.url) + "site/" + siteData.getId() + "/userPerms.json", (String)null, new Response.Listener<JSONObject>() {
+        JsonObjectRequest pageUserPermissionsRequest = new JsonObjectRequest(Request.Method.GET, context.getResources().getString(R.string.url) + "site/" + siteData.getId() + "/userPerms.json", (String) null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 PageUserPermissions pageUserPermissions = gson.fromJson(response.toString(), PageUserPermissions.class);
@@ -220,10 +232,19 @@ public class MembershipService {
                         e.printStackTrace();
                     }
 
-                if (index == SiteData.getProjects().size() - 1) {
-                    delegate.updateUI();
-                    if (swipeRefreshLayout != null)
-                        swipeRefreshLayout.setRefreshing(false);
+                if (index == SiteData.getProjects().size() - 1 && type != null) {
+                    if (login) {
+                        Intent i = new Intent(context, UserActivity.class);
+                        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        context.startActivity(i);
+                        ((AppCompatActivity) context).finish();
+                    } else {
+                        if (delegate != null)
+                            delegate.updateUI();
+
+                        if (swipeRefreshLayout != null)
+                            swipeRefreshLayout.setRefreshing(false);
+                    }
                 }
 
             }

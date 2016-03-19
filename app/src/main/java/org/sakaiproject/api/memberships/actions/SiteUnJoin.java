@@ -15,6 +15,7 @@ import org.sakaiproject.api.memberships.MembershipService;
 import org.sakaiproject.api.sync.MembershipRefreshUI;
 import org.sakaiproject.adapters.MembershipAdapter;
 import org.sakaiproject.api.user.User;
+import org.sakaiproject.api.user.workspace.WorkspaceService;
 import org.sakaiproject.customviews.custom_volley.EmptyRequest;
 import org.sakaiproject.sakai.AppController;
 import org.sakaiproject.sakai.R;
@@ -49,13 +50,9 @@ public class SiteUnJoin {
             @Override
             public void onResponse(JSONObject response) {
 
-                MembershipService membershipService = new MembershipService(context, delegate);
-                membershipService.setSwipeRefreshLayout(customSwipeRefreshLayout);
-                try {
-                    membershipService.getSites(context.getString(R.string.url) + "membership.json");
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                WorkspaceService workspaceService = new WorkspaceService(context, User.getUserId());
+                workspaceService.setDelegate(delegate);
+                workspaceService.getWorkspace();
 
                 mAdapter.notifyItemRemoved(position);
 

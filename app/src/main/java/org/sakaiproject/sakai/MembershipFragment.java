@@ -13,6 +13,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -167,15 +168,10 @@ public class MembershipFragment extends Fragment implements IUnJoin, SwipeRefres
                     SiteData.getProjects().clear();
 
                     WorkspaceService workspaceService = new WorkspaceService(getContext(), User.getUserId());
+                    workspaceService.setDelegate(delegate);
+                    workspaceService.setSwipeRefreshLayout(swipeRefreshLayout);
                     workspaceService.getWorkspace();
 
-                    MembershipService membershipService = new MembershipService(getContext(), delegate);
-                    membershipService.setSwipeRefreshLayout(swipeRefreshLayout);
-                    try {
-                        membershipService.getSites(getContext().getString(R.string.url) + "membership.json");
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
                 } else {
                     Snackbar.make(root, getResources().getString(R.string.no_internet), Snackbar.LENGTH_LONG)
                             .setAction(getResources().getText(R.string.can_not_sync), null).show();
@@ -195,7 +191,7 @@ public class MembershipFragment extends Fragment implements IUnJoin, SwipeRefres
 
     @Override
     public void updateUI() {
-        UserActivity.getSitesNavigationDrawer().fillSitesDrawer();
+        UserActivity.getSitesNavigationDrawer().fillSitesDrawer(false);
         if (mAdapter != null && mRecyclerView != null) {
             List<SiteData> temp = new ArrayList<>(SiteData.getSites());
             temp.addAll(SiteData.getProjects());

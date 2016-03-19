@@ -103,10 +103,6 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
                         }
 
                         clearEditTexts();
-                        Intent i = new Intent(getContext(), UserActivity.class);
-                        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        getContext().startActivity(i);
-                        getActivity().finish();
                     }
 
 

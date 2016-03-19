@@ -559,7 +559,6 @@ public class ActionsHelper {
         Connection.nullSessionId();
         SiteData.getSites().clear();
         SiteData.getProjects().clear();
-        UserMainNavigationDrawerHelper.getMyWorkSpaceItems().clear();
 
         if (UserAssignmentsHelper.userAssignment != null && UserAssignmentsHelper.userAssignment.getAssignmentsCollectionList() != null)
             UserAssignmentsHelper.userAssignment.getAssignmentsCollectionList().clear();

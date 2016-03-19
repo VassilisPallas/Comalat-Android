@@ -24,6 +24,7 @@ import org.sakaiproject.api.memberships.OfflineMemberships;
 import org.sakaiproject.api.memberships.SiteData;
 import org.sakaiproject.api.session.IdleModeCheckService;
 import org.sakaiproject.api.sync.Refresh;
+import org.sakaiproject.api.user.workspace.OfflineWorkspace;
 import org.sakaiproject.customviews.ImageViewRounded;
 import org.sakaiproject.helpers.ActionsHelper;
 import org.sakaiproject.general.Connection;
@@ -112,18 +113,9 @@ public class UserActivity extends AppCompatActivity implements NavigationView.On
             e.printStackTrace();
         }
 
-
         if (!hasFilled) {
             hasFilled = true;
-            OfflineMemberships offlineSites = new OfflineMemberships(this);
-            try {
-                offlineSites.getSites();
-                sitesNavigationDrawer.fillSitesDrawer();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            initializeMainMenu();
+            sitesNavigationDrawer.fillSitesDrawer(true);
         }
     }
 
@@ -141,7 +133,6 @@ public class UserActivity extends AppCompatActivity implements NavigationView.On
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-
         switch (id) {
             case R.id.action_open_right_drawer:
                 NavigationDrawerHelper.drawer.openDrawer(GravityCompat.END);
@@ -153,10 +144,6 @@ public class UserActivity extends AppCompatActivity implements NavigationView.On
         return super.onOptionsItemSelected(item);
     }
 
-    private void initializeMainMenu() {
-        mainNavigationDrawer.createDrawer(getResources().getString(R.string.my_workspace), null);
-        NavigationDrawerHelper.setSelectedSite(getResources().getString(R.string.my_workspace));
-    }
 
     public static SitesNavigationDrawerHelper getSitesNavigationDrawer() {
         return sitesNavigationDrawer;
@@ -247,8 +234,6 @@ public class UserActivity extends AppCompatActivity implements NavigationView.On
         if (NetWork.getConnectionEstablished()) {
             waiter.setActivityIsVisible(true);
             waiter.touch();
-
-            //mSwipeRefreshLayout.setRefreshing(true);
         }
     }
 
@@ -264,18 +249,9 @@ public class UserActivity extends AppCompatActivity implements NavigationView.On
             case R.id.logout:
                 ActionsHelper.logout(this, waiter);
                 break;
-            case R.id.my_workspace:
-                initializeMainMenu();
-                break;
             case R.id.help:
                 startActivity(new Intent(this, WebViewActivity.class).putExtra("url", getResources().getString(R.string.help_url)));
                 break;
-        }
-
-        for (Integer ids : NavigationDrawerHelper.getMyWorkspaceIds().keySet()) {
-            if (item.getItemId() == ids) {
-                NavigationDrawerHelper.doAction(NavigationDrawerHelper.getMyWorkspaceIds().get(ids));
-            }
         }
 
         for (Integer ids : NavigationDrawerHelper.getSitesIds().keySet()) {
@@ -283,6 +259,8 @@ public class UserActivity extends AppCompatActivity implements NavigationView.On
                 NavigationDrawerHelper.setSelectedSite(NavigationDrawerHelper.getSitesIds().get(ids).getTitle());
                 NavigationDrawerHelper.setSelectedSiteData(NavigationDrawerHelper.getSitesIds().get(ids));
                 mainNavigationDrawer.createDrawer(NavigationDrawerHelper.getSitesIds().get(ids).getTitle(), NavigationDrawerHelper.getSitesIds().get(ids).getPages());
+
+                NavigationDrawerHelper.doAction(NavigationDrawerHelper.getSitesIds().get(ids).getPages().get(0).getTitle());
             }
         }
 
@@ -339,6 +317,5 @@ public class UserActivity extends AppCompatActivity implements NavigationView.On
 
         SiteData.getSites().clear();
         SiteData.getProjects().clear();
-        UserMainNavigationDrawerHelper.getMyWorkSpaceItems().clear();
     }
 }

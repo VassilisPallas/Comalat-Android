@@ -37,7 +37,6 @@ public abstract class NavigationDrawerHelper {
     protected static int id = -1;
     protected static Map<Integer, SiteData> sitesIds;
     protected static Map<Integer, SitePage> pagesIds;
-    protected static Map<Integer, String> myWorkspaceIds;
     private static Context context;
     protected static CustomSwipeRefreshLayout mSwipeRefreshLayout;
     public static DrawerLayout drawer;
@@ -123,7 +122,6 @@ public abstract class NavigationDrawerHelper {
         this.mSwipeRefreshLayout = mSwipeRefreshLayout;
         sitesIds = new Hashtable<>();
         pagesIds = new Hashtable<>();
-        myWorkspaceIds = new Hashtable<>();
 
 
         drawer = (DrawerLayout) ((AppCompatActivity) context).findViewById(R.id.drawer_layout);
@@ -149,10 +147,6 @@ public abstract class NavigationDrawerHelper {
 
         drawer.setDrawerListener(toggle);
         toggle.syncState();
-    }
-
-    public static Map<Integer, String> getMyWorkspaceIds() {
-        return myWorkspaceIds;
     }
 
     public static Map<Integer, SitePage> getPagesIds() {

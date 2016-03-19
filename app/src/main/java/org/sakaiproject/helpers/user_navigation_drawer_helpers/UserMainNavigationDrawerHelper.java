@@ -27,7 +27,6 @@ public class UserMainNavigationDrawerHelper extends NavigationDrawerHelper imple
 
     private NavigationView navigationView;
     private Context context;
-    private static List<String> myWorkSpaceItems = new ArrayList<>();
 
     /**
      * UserMainNavigationDrawerHelper constructor
@@ -40,22 +39,8 @@ public class UserMainNavigationDrawerHelper extends NavigationDrawerHelper imple
         super(context, mSwipeRefreshLayout, toolbar);
         this.context = context;
 
-        myWorkSpaceItems.add(context.getResources().getString(R.string.dashboard));
-        myWorkSpaceItems.add(context.getResources().getString(R.string.home));
-        myWorkSpaceItems.add(context.getResources().getString(R.string.profile));
-        myWorkSpaceItems.add(context.getResources().getString(R.string.membership));
-        myWorkSpaceItems.add(context.getResources().getString(R.string.calendar));
-        myWorkSpaceItems.add(context.getResources().getString(R.string.resources));
-        myWorkSpaceItems.add(context.getResources().getString(R.string.announcements));
-        myWorkSpaceItems.add(context.getResources().getString(R.string.preferences));
-        myWorkSpaceItems.add(context.getResources().getString(R.string.account));
-
         navigationView = (NavigationView) ((AppCompatActivity) context).findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(onNavigationItemSelectedListener);
-    }
-
-    public static List<String> getMyWorkSpaceItems() {
-        return myWorkSpaceItems;
     }
 
     public void unCheckFirstItem() {
@@ -75,34 +60,9 @@ public class UserMainNavigationDrawerHelper extends NavigationDrawerHelper imple
         subMenu.clear();
 
         pagesIds.clear();
-        myWorkspaceIds.clear();
 
-        if (list == null) {
-            // make visible the items which are on the My Workspace
-            for (String page : myWorkSpaceItems) {
-                int iconId = findIcon(page);
-                if (page.equals(context.getString(R.string.dashboard)))
-                    // add new item to menu
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                        subMenu.add(R.id.main_group, ++id, Menu.NONE, page).setIcon(context.getResources().getDrawable(iconId, context.getTheme())).setCheckable(true).setChecked(true);
-                    } else {
-                        subMenu.add(R.id.main_group, ++id, Menu.NONE, page).setIcon(context.getResources().getDrawable(iconId)).setCheckable(true).setChecked(true);
-                    }
-                else
-                    // add new item to menu
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                        subMenu.add(R.id.main_group, ++id, Menu.NONE, page).setIcon(context.getResources().getDrawable(iconId, context.getTheme())).setCheckable(true);
-                    } else {
-                        subMenu.add(R.id.main_group, ++id, Menu.NONE, page).setIcon(context.getResources().getDrawable(iconId)).setCheckable(true);
-                    }
-
-
-                DashboardFragment dashboardFragment = new DashboardFragment().getSwipeRefreshLayout(mSwipeRefreshLayout);
-                ActionsHelper.selectFragment(dashboardFragment, R.id.user_frame, context);
-                myWorkspaceIds.put(id, page);
-            }
-        } else {
-            for (SitePage page : list) {
+        for (SitePage page : list) {
+            if (!page.getTitle().equals(context.getResources().getString(R.string.worksite_setup))) {
                 if (page.getTitle().equals(context.getResources().getString(R.string.comalat_guide))) {
                     subMenu.add(R.id.main_group, ++id, page.getPosition(), page.getTitle()).setCheckable(true);
                 } else {
@@ -116,6 +76,7 @@ public class UserMainNavigationDrawerHelper extends NavigationDrawerHelper imple
                 pagesIds.put(id, page);
             }
         }
+
 
         // add new item to menu
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
