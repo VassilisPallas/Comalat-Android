@@ -51,12 +51,11 @@ public class MembershipAnnouncementsService {
         if (swipeRefreshLayout != null)
             swipeRefreshLayout.setRefreshing(true);
 
-        JsonObjectRequest announcementsRequest = new JsonObjectRequest(Request.Method.GET, url, (String)null, new Response.Listener<JSONObject>() {
+        JsonObjectRequest announcementsRequest = new JsonObjectRequest(Request.Method.GET, url, (String) null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
 
                 Announcement announcement = gson.fromJson(response.toString(), Announcement.class);
-                JsonParser.getMembershipAnnouncements(announcement);
                 if (ActionsHelper.createDirIfNotExists(context, User.getUserEid() + File.separator + "memberships" + File.separator + siteId + File.separator + "announcements"))
                     try {
                         ActionsHelper.writeJsonFile(context, response.toString(), siteId + "_announcements", User.getUserEid() + File.separator + "memberships" + File.separator + siteId + File.separator + "announcements");
@@ -64,7 +63,7 @@ public class MembershipAnnouncementsService {
                         e.printStackTrace();
                     }
 
-                delegate.updateUI();
+                delegate.updateUI(announcement);
 
                 if (swipeRefreshLayout != null)
                     swipeRefreshLayout.setRefreshing(false);

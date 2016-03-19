@@ -18,7 +18,15 @@ import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import org.sakaiproject.adapters.DashboardTabAdapter;
+import org.sakaiproject.api.assignments.UserAssignmentsService;
+import org.sakaiproject.api.events.UserEventsService;
+import org.sakaiproject.api.internet.NetWork;
+import org.sakaiproject.api.memberships.SiteData;
+import org.sakaiproject.api.memberships.pages.assignments.MembershipAssignmentsService;
+import org.sakaiproject.api.memberships.pages.events.SiteEventsService;
+import org.sakaiproject.api.sync.CalendarRefreshUI;
 import org.sakaiproject.helpers.ActionsHelper;
+import org.sakaiproject.helpers.user_navigation_drawer_helpers.NavigationDrawerHelper;
 
 /**
  * Created by vspallas on 23/02/16.
@@ -27,6 +35,9 @@ public class DashboardFragment extends Fragment implements SwipeRefreshLayout.On
 
     private ISwipeRefresh swipeRefresh;
     private org.sakaiproject.customviews.CustomSwipeRefreshLayout swipeRefreshLayout;
+    private SiteData siteData;
+    private String siteName;
+    private DashboardTabAdapter adapter;
 
     private FrameLayout root;
 
@@ -59,6 +70,9 @@ public class DashboardFragment extends Fragment implements SwipeRefreshLayout.On
 
         getActivity().setTitle(getResources().getString(R.string.dashboard));
 
+        siteData = NavigationDrawerHelper.getSelectedSiteData();
+        siteName = NavigationDrawerHelper.getSelectedSite();
+
         swipeRefreshLayout = (org.sakaiproject.customviews.CustomSwipeRefreshLayout) getArguments().getSerializable("swipeRefresh");
         root = (FrameLayout) v.findViewById(R.id.root);
 
@@ -73,10 +87,9 @@ public class DashboardFragment extends Fragment implements SwipeRefreshLayout.On
             tabLayout.setSelectedTabIndicatorColor(getContext().getResources().getColor(R.color.colorPrimaryDark));
         }
 
-
         final ViewPager viewPager = (ViewPager) v.findViewById(R.id.pager);
 
-        final DashboardTabAdapter adapter = new DashboardTabAdapter(getActivity().getSupportFragmentManager(), tabLayout.getTabCount(), swipeRefreshLayout);
+        adapter = new DashboardTabAdapter(getActivity().getSupportFragmentManager(), tabLayout.getTabCount(), swipeRefreshLayout);
         viewPager.setAdapter(adapter);
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
@@ -117,10 +130,38 @@ public class DashboardFragment extends Fragment implements SwipeRefreshLayout.On
         new Handler().post(new Runnable() {
             @Override
             public void run() {
-                Snackbar.make(root, getResources().getString(R.string.no_internet), Snackbar.LENGTH_LONG)
-                        .setAction(getResources().getText(R.string.can_not_sync), null).show();
 
-                swipeRefreshLayout.setRefreshing(false);
+                if (NetWork.getConnectionEstablished()) {
+                    String url;
+                    if (siteName.equals(getContext().getResources().getString(R.string.my_workspace))) {
+                        UserAssignmentsService userAssignmentsService = new UserAssignmentsService(getContext(), null/*delegate*/);
+                        userAssignmentsService.setSwipeRefreshLayout(swipeRefreshLayout);
+                        url = getContext().getResources().getString(R.string.url) + "assignment/my.json";
+                        userAssignmentsService.getAssignments(url);
+
+                        UserEventsService userEventsService = new UserEventsService(getContext(), null /*calendarRefreshUI*/);
+                        userEventsService.setSwipeRefreshLayout(swipeRefreshLayout);
+                        url = getContext().getResources().getString(R.string.url) + "calendar/my.json";
+                        userEventsService.getEvents(url);
+
+                    } else {
+                        MembershipAssignmentsService membershipAssignmentsService = new MembershipAssignmentsService(getContext(), siteData.getId(), null/*delegate*/);
+                        membershipAssignmentsService.setSwipeRefreshLayout(swipeRefreshLayout);
+                        url = getContext().getResources().getString(R.string.url) + "assignment/site/" + siteData.getId() + ".json";
+                        membershipAssignmentsService.getAssignments(url);
+
+                        SiteEventsService siteSiteEventsService = new SiteEventsService(getContext(), siteData.getId(), null /*calendarRefreshUI*/);
+                        siteSiteEventsService.setSwipeRefreshLayout(swipeRefreshLayout);
+                        url = getContext().getResources().getString(R.string.url) + "calendar/site/" + siteData.getId() + ".json";
+                        siteSiteEventsService.getEvents(url);
+                    }
+
+                } else {
+                    Snackbar.make(root, getResources().getString(R.string.no_internet), Snackbar.LENGTH_LONG)
+                            .setAction(getResources().getText(R.string.can_not_sync), null).show();
+
+                    swipeRefreshLayout.setRefreshing(false);
+                }
             }
         });
     }

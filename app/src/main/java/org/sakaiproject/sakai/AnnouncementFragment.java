@@ -17,13 +17,12 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import org.sakaiproject.api.announcements.OfflineUserAnnouncements;
-import org.sakaiproject.api.announcements.UserAnnouncementHelper;
 import org.sakaiproject.api.announcements.UserAnnouncementsService;
 import org.sakaiproject.api.internet.NetWork;
 import org.sakaiproject.api.memberships.SiteData;
-import org.sakaiproject.api.memberships.pages.announcements.MembershipAnnouncementHelper;
 import org.sakaiproject.api.memberships.pages.announcements.OfflineMembershipAnnouncements;
 import org.sakaiproject.api.memberships.pages.announcements.MembershipAnnouncementsService;
+import org.sakaiproject.api.pojos.announcements.Announcement;
 import org.sakaiproject.api.sync.AnnouncementRefreshUI;
 import org.sakaiproject.adapters.AnnouncementAdapter;
 import org.sakaiproject.customviews.listeners.RecyclerItemClickListener;
@@ -44,6 +43,7 @@ public class AnnouncementFragment extends Fragment implements SwipeRefreshLayout
     private RecyclerView.LayoutManager mLayoutManager;
     private AnnouncementAdapter mAdapter;
     private TextView noAnnouncements;
+    private Announcement announcement;
 
     @Override
     public void onAttach(Context context) {
@@ -88,13 +88,11 @@ public class AnnouncementFragment extends Fragment implements SwipeRefreshLayout
 
 
         if (siteName.equals(getContext().getResources().getString(R.string.my_workspace))) {
-            OfflineUserAnnouncements offlineUserAnnouncements = new OfflineUserAnnouncements(getContext());
+            OfflineUserAnnouncements offlineUserAnnouncements = new OfflineUserAnnouncements(getContext(), delegate);
             offlineUserAnnouncements.getAnnouncements();
-            mAdapter = new AnnouncementAdapter(UserAnnouncementHelper.userAnnouncement, null);
         } else {
-            OfflineMembershipAnnouncements announcements = new OfflineMembershipAnnouncements(getContext(), siteData.getId());
+            OfflineMembershipAnnouncements announcements = new OfflineMembershipAnnouncements(getContext(), siteData.getId(), delegate);
             announcements.getAnnouncements();
-            mAdapter = new AnnouncementAdapter(MembershipAnnouncementHelper.membershipAnnouncement, siteData.getId());
         }
 
         mRecyclerView.setAdapter(mAdapter);
@@ -122,10 +120,7 @@ public class AnnouncementFragment extends Fragment implements SwipeRefreshLayout
                 FragmentManager fm = getFragmentManager();
                 AnnouncementDescriptionFragment dialogFragment;
 
-                if (siteName.equals(getContext().getResources().getString(R.string.my_workspace)))
-                    dialogFragment = new AnnouncementDescriptionFragment().setData(UserAnnouncementHelper.userAnnouncement.getAnnouncementCollection().get(position));
-                else
-                    dialogFragment = new AnnouncementDescriptionFragment().setData(MembershipAnnouncementHelper.membershipAnnouncement.getAnnouncementCollection().get(position));
+                dialogFragment = new AnnouncementDescriptionFragment().setData(announcement.getAnnouncementCollection().get(position));
                 dialogFragment.setStyle(DialogFragment.STYLE_NO_TITLE, R.style.InfoDialogTheme);
                 dialogFragment.show(fm, getContext().getResources().getString(R.string.event_info));
 
@@ -157,7 +152,7 @@ public class AnnouncementFragment extends Fragment implements SwipeRefreshLayout
             public void run() {
                 if (NetWork.getConnectionEstablished()) {
 
-                    String url = null;
+                    String url;
                     if (siteName.equals(getContext().getResources().getString(R.string.my_workspace))) {
                         UserAnnouncementsService userAnnouncementsService = new UserAnnouncementsService(getContext(), delegate);
                         userAnnouncementsService.setSwipeRefreshLayout(swipeRefreshLayout);
@@ -180,14 +175,15 @@ public class AnnouncementFragment extends Fragment implements SwipeRefreshLayout
     }
 
     @Override
-    public void updateUI() {
-        if (mAdapter != null && mRecyclerView != null) {
-            if (siteName.equals(getContext().getResources().getString(R.string.my_workspace))) {
-                mAdapter.setAnnouncement(UserAnnouncementHelper.userAnnouncement);
-            } else {
-                mAdapter.setAnnouncement(MembershipAnnouncementHelper.membershipAnnouncement);
-            }
+    public void updateUI(Announcement announcement) {
+        this.announcement = announcement;
+        if (siteName.equals(getContext().getResources().getString(R.string.my_workspace))) {
+            mAdapter = new AnnouncementAdapter(announcement, null);
+        } else {
+            mAdapter = new AnnouncementAdapter(announcement, siteData.getId());
+        }
 
+        if (mRecyclerView != null) {
             if (mAdapter.getItemCount() == 0) {
                 noAnnouncements.setVisibility(View.VISIBLE);
             } else {

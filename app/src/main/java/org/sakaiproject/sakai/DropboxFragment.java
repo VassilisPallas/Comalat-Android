@@ -128,6 +128,7 @@ public class DropboxFragment extends Fragment implements SwipeRefreshLayout.OnRe
                         dropboxService.getDropboxItems();
                     } else {
                         // download roster and make call
+                        swipeRefreshLayout.setRefreshing(false);
                     }
                 } else {
                     Snackbar.make(root, getContext().getResources().getString(R.string.no_internet), Snackbar.LENGTH_SHORT)

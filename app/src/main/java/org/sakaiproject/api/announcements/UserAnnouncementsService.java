@@ -73,7 +73,7 @@ public class UserAnnouncementsService {
                             e.printStackTrace();
                         }
 
-                    delegate.updateUI();
+                    delegate.updateUI(announcement);
 
                     if (swipeRefreshLayout != null)
                         swipeRefreshLayout.setRefreshing(false);
@@ -104,8 +104,6 @@ public class UserAnnouncementsService {
                 // change value MyWorkspace with the real name of the membership
                 announcement.getAnnouncementCollection().get(index).setSiteTitle(siteName.getEntityTitle());
 
-                JsonParser.getUserAnnouncements(announcement);
-
                 // make String with the "new" json
                 announcementsJson = gson.toJson(announcement);
 
@@ -115,7 +113,7 @@ public class UserAnnouncementsService {
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-                delegate.updateUI();
+                delegate.updateUI(announcement);
 
                 if (swipeRefreshLayout != null)
                     swipeRefreshLayout.setRefreshing(false);

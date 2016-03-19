@@ -12,16 +12,13 @@ import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
-import android.os.Environment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
-import org.sakaiproject.api.assignments.UserAssignmentsHelper;
 import org.sakaiproject.api.internet.NetWork;
 import org.sakaiproject.api.logout.Logout;
-import org.sakaiproject.api.memberships.pages.assignments.MembershipAssignmentsHelper;
 import org.sakaiproject.api.session.Waiter;
 import org.sakaiproject.api.memberships.SiteData;
 import org.sakaiproject.api.user.User;
@@ -559,12 +556,6 @@ public class ActionsHelper {
         Connection.nullSessionId();
         SiteData.getSites().clear();
         SiteData.getProjects().clear();
-
-        if (UserAssignmentsHelper.userAssignment != null && UserAssignmentsHelper.userAssignment.getAssignmentsCollectionList() != null)
-            UserAssignmentsHelper.userAssignment.getAssignmentsCollectionList().clear();
-
-        if (MembershipAssignmentsHelper.membershipAssignment != null && MembershipAssignmentsHelper.membershipAssignment.getAssignmentsCollectionList() != null)
-            MembershipAssignmentsHelper.membershipAssignment.getAssignmentsCollectionList().clear();
     }
 
     /**

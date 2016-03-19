@@ -15,13 +15,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.sakaiproject.api.announcements.UserAnnouncementHelper;
-import org.sakaiproject.api.assignments.UserAssignmentsHelper;
 import org.sakaiproject.api.events.EventsCollection;
-import org.sakaiproject.api.memberships.pages.announcements.MembershipAnnouncementHelper;
-import org.sakaiproject.api.memberships.pages.assignments.MembershipAssignmentsHelper;
 import org.sakaiproject.api.pojos.SiteName;
-import org.sakaiproject.api.pojos.announcements.Announcement;
 import org.sakaiproject.api.pojos.assignments.Assignment;
 import org.sakaiproject.api.pojos.events.EventInfo;
 import org.sakaiproject.api.pojos.UserEventOwner;
@@ -490,22 +485,6 @@ public class JsonParser {
      */
     public static void getUserSitePermissions(PageUserPermissions pageUserPermissions) {
         SiteData.getSites().get(0).setUserSitePermissions(pageUserPermissions.getData());
-    }
-
-    public static void getMembershipAnnouncements(Announcement announcement) {
-        MembershipAnnouncementHelper.membershipAnnouncement = announcement;
-    }
-
-    public static void getUserAnnouncements(Announcement announcement) {
-        UserAnnouncementHelper.userAnnouncement = announcement;
-    }
-
-    public static void getMembershipAssignments(Assignment assignment) {
-        MembershipAssignmentsHelper.membershipAssignment = assignment;
-    }
-
-    public static void getUserAssignments(Assignment assignment) {
-        UserAssignmentsHelper.userAssignment = assignment;
     }
 
     /**

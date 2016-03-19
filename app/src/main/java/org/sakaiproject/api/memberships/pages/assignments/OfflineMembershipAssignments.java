@@ -33,8 +33,7 @@ public class OfflineMembershipAssignments {
             try {
                 String a = ActionsHelper.readJsonFile(context, siteId + "_assignments", User.getUserEid() + File.separator + "memberships" + File.separator + siteId + File.separator + "assignments");
                 Assignment assignment = gson.fromJson(a, Assignment.class);
-                JsonParser.getMembershipAssignments(assignment);
-                delegate.updateUI();
+                delegate.updateUI(assignment);
             } catch (IOException e) {
                 e.printStackTrace();
             }

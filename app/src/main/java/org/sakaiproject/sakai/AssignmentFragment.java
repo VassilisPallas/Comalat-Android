@@ -16,11 +16,10 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
-import org.sakaiproject.api.assignments.UserAssignmentsHelper;
+import org.sakaiproject.api.assignments.OfflineUserAssignments;
 import org.sakaiproject.api.assignments.UserAssignmentsService;
 import org.sakaiproject.api.internet.NetWork;
 import org.sakaiproject.api.memberships.SiteData;
-import org.sakaiproject.api.memberships.pages.assignments.MembershipAssignmentsHelper;
 import org.sakaiproject.api.memberships.pages.assignments.MembershipAssignmentsService;
 import org.sakaiproject.api.memberships.pages.assignments.OfflineMembershipAssignments;
 import org.sakaiproject.api.pojos.assignments.Assignment;
@@ -28,9 +27,6 @@ import org.sakaiproject.api.sync.AssignmentsRefreshUI;
 import org.sakaiproject.adapters.AssignmentAdapter;
 import org.sakaiproject.customviews.listeners.RecyclerItemClickListener;
 import org.sakaiproject.helpers.user_navigation_drawer_helpers.NavigationDrawerHelper;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by vspallas on 23/02/16.
@@ -47,6 +43,7 @@ public class AssignmentFragment extends Fragment implements SwipeRefreshLayout.O
     private AssignmentAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     private TextView noAssignments;
+    private Assignment assignment;
 
     public AssignmentFragment() {
     }
@@ -107,7 +104,6 @@ public class AssignmentFragment extends Fragment implements SwipeRefreshLayout.O
 
         OfflineMembershipAssignments offlineMembershipAssignments = new OfflineMembershipAssignments(getContext(), siteData.getId(), delegate);
         offlineMembershipAssignments.getAssignments();
-        mAdapter = new AssignmentAdapter(getActivity(), MembershipAssignmentsHelper.membershipAssignment, siteData.getId());
 
         mRecyclerView.setAdapter(mAdapter);
 
@@ -117,20 +113,14 @@ public class AssignmentFragment extends Fragment implements SwipeRefreshLayout.O
 
                 String status;
 
-                if (siteName.equals(getContext().getResources().getString(R.string.my_workspace)))
-                    status = UserAssignmentsHelper.userAssignment.getAssignmentsCollectionList().get(position).getStatus();
-                else
-                    status = MembershipAssignmentsHelper.membershipAssignment.getAssignmentsCollectionList().get(position).getStatus();
+                status = assignment.getAssignmentsCollectionList().get(position).getStatus();
 
                 if (!status.equals(getContext().getResources().getString(R.string.closed))) {
 
                     FragmentManager fm = getFragmentManager();
                     AssignmentsDescriptionFragment dialogFragment;
 
-                    if (siteName.equals(getContext().getResources().getString(R.string.my_workspace)))
-                        dialogFragment = new AssignmentsDescriptionFragment().setData(UserAssignmentsHelper.userAssignment.getAssignmentsCollectionList().get(position), null);
-                    else
-                        dialogFragment = new AssignmentsDescriptionFragment().setData(MembershipAssignmentsHelper.membershipAssignment.getAssignmentsCollectionList().get(position), siteData);
+                    dialogFragment = new AssignmentsDescriptionFragment().setData(assignment.getAssignmentsCollectionList().get(position), null);
                     dialogFragment.setStyle(DialogFragment.STYLE_NO_TITLE, R.style.InfoDialogTheme);
                     dialogFragment.show(fm, getContext().getResources().getString(R.string.event_info));
                 }
@@ -141,12 +131,6 @@ public class AssignmentFragment extends Fragment implements SwipeRefreshLayout.O
 
             }
         }));
-
-        if (mAdapter.getItemCount() == 0) {
-            noAssignments.setVisibility(View.VISIBLE);
-        } else {
-            noAssignments.setVisibility(View.GONE);
-        }
 
         swipeRefresh.Callback(this);
 
@@ -161,14 +145,7 @@ public class AssignmentFragment extends Fragment implements SwipeRefreshLayout.O
             @Override
             public void run() {
                 if (NetWork.getConnectionEstablished()) {
-
-                    String url = null;
-
-                    UserAssignmentsService userAssignmentsService = new UserAssignmentsService(getContext(), delegate);
-                    userAssignmentsService.setSwipeRefreshLayout(swipeRefreshLayout);
-                    url = getContext().getResources().getString(R.string.url) + "assignment/my.json";
-                    userAssignmentsService.getAssignments(url);
-
+                    String url;
                     MembershipAssignmentsService membershipAssignmentsService = new MembershipAssignmentsService(getContext(), siteData.getId(), delegate);
                     membershipAssignmentsService.setSwipeRefreshLayout(swipeRefreshLayout);
                     url = getContext().getResources().getString(R.string.url) + "assignment/site/" + siteData.getId() + ".json";
@@ -184,17 +161,16 @@ public class AssignmentFragment extends Fragment implements SwipeRefreshLayout.O
     }
 
     @Override
-    public void updateUI() {
-        if (mAdapter != null && mRecyclerView != null) {
-            mAdapter.setAssignment(MembershipAssignmentsHelper.membershipAssignment);
-
+    public void updateUI(Assignment assignment) {
+        this.assignment = assignment;
+        mAdapter = new AssignmentAdapter(getActivity(), assignment, siteData.getId());
+        if (mRecyclerView != null) {
             if (mAdapter.getItemCount() == 0) {
                 noAssignments.setVisibility(View.VISIBLE);
             } else {
                 noAssignments.setVisibility(View.GONE);
+                mRecyclerView.setAdapter(mAdapter);
             }
-
-            mRecyclerView.setAdapter(mAdapter);
         }
     }
 }

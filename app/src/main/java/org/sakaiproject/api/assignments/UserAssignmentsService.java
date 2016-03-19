@@ -48,12 +48,11 @@ public class UserAssignmentsService {
     }
 
     public void getAssignments(String url) {
-        JsonObjectRequest assignmentsRequest = new JsonObjectRequest(Request.Method.GET, url, (String)null, new Response.Listener<JSONObject>() {
+        JsonObjectRequest assignmentsRequest = new JsonObjectRequest(Request.Method.GET, url, (String) null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
 
                 Assignment assignment = gson.fromJson(response.toString(), Assignment.class);
-                JsonParser.getMembershipAssignments(assignment);
                 if (ActionsHelper.createDirIfNotExists(context, User.getUserEid() + File.separator + "assignments"))
                     try {
                         ActionsHelper.writeJsonFile(context, response.toString(), "assignments", User.getUserEid() + File.separator + "assignments");
@@ -63,19 +62,13 @@ public class UserAssignmentsService {
 
                 if (assignment.getAssignmentsCollectionList().size() > 0) {
                     for (int i = 0; i < assignment.getAssignmentsCollectionList().size(); i++) {
-
                         final Assignment.AssignmentsCollection collection = assignment.getAssignmentsCollectionList().get(i);
-
-                        getSiteName(collection);
+                        getSiteName(collection, assignment);
                     }
 
                 } else {
-
-                    delegate.updateUI();
-
                     if (swipeRefreshLayout != null)
                         swipeRefreshLayout.setRefreshing(false);
-
                 }
             }
         }, new Response.ErrorListener() {
@@ -91,9 +84,9 @@ public class UserAssignmentsService {
         AppController.getInstance().addToRequestQueue(assignmentsRequest, user_assignments_tag);
     }
 
-    private void getSiteName(final Assignment.AssignmentsCollection collection) {
+    private void getSiteName(final Assignment.AssignmentsCollection collection, final Assignment assignment) {
         site_name_tag = User.getUserEid() + " " + collection.getContext() + " assignment name";
-        JsonObjectRequest siteNameRequest = new JsonObjectRequest(Request.Method.GET, context.getResources().getString(R.string.url) + "site/" + collection.getContext() + ".json", (String)null, new Response.Listener<JSONObject>() {
+        JsonObjectRequest siteNameRequest = new JsonObjectRequest(Request.Method.GET, context.getResources().getString(R.string.url) + "site/" + collection.getContext() + ".json", (String) null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
 
@@ -101,7 +94,8 @@ public class UserAssignmentsService {
 
                 JsonParser.getAssignmentSiteName(context, siteName, collection);
 
-                delegate.updateUI();
+                if (delegate != null)
+                    delegate.updateUI(assignment);
 
                 if (swipeRefreshLayout != null)
                     swipeRefreshLayout.setRefreshing(false);

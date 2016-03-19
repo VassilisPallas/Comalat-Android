@@ -47,12 +47,11 @@ public class MembershipAssignmentsService {
     }
 
     public void getAssignments(String url) {
-        JsonObjectRequest assignmentsRequest = new JsonObjectRequest(Request.Method.GET, url, (String)null, new Response.Listener<JSONObject>() {
+        JsonObjectRequest assignmentsRequest = new JsonObjectRequest(Request.Method.GET, url, (String) null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
 
                 Assignment assignment = gson.fromJson(response.toString(), Assignment.class);
-                JsonParser.getMembershipAssignments(assignment);
                 if (ActionsHelper.createDirIfNotExists(context, User.getUserEid() + File.separator + "memberships" + File.separator + siteId + File.separator + "assignments"))
                     try {
                         ActionsHelper.writeJsonFile(context, response.toString(), siteId + "_assignments", User.getUserEid() + File.separator + "memberships" + File.separator + siteId + File.separator + "assignments");
@@ -60,7 +59,8 @@ public class MembershipAssignmentsService {
                         e.printStackTrace();
                     }
 
-                delegate.updateUI();
+                if (delegate != null)
+                    delegate.updateUI(assignment);
 
                 if (swipeRefreshLayout != null)
                     swipeRefreshLayout.setRefreshing(false);

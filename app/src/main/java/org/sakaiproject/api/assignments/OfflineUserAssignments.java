@@ -31,8 +31,7 @@ public class OfflineUserAssignments {
             try {
                 String a = ActionsHelper.readJsonFile(context, "assignments", User.getUserEid() + File.separator + "assignments");
                 Assignment assignment = gson.fromJson(a, Assignment.class);
-                JsonParser.getUserAssignments(assignment);
-                delegate.updateUI();
+                delegate.updateUI(assignment);
             } catch (IOException e) {
                 e.printStackTrace();
             }
