@@ -16,14 +16,22 @@ import com.android.volley.ServerError;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.ImageRequest;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.sakaiproject.api.pojos.login.Login;
 import org.sakaiproject.api.pojos.login.Profile;
 import org.sakaiproject.api.pojos.login.UserData;
+import org.sakaiproject.api.pojos.membership.MembershipData;
+import org.sakaiproject.api.pojos.membership.PagePermissions;
+import org.sakaiproject.api.pojos.membership.PageUserPermissions;
+import org.sakaiproject.api.pojos.membership.SitePage;
+import org.sakaiproject.api.user.workspace.WorkspaceService;
 import org.sakaiproject.sakai.AppController;
 import org.sakaiproject.api.cryptography.PasswordEncryption;
 import org.sakaiproject.api.json.JsonParser;
@@ -35,7 +43,9 @@ import org.sakaiproject.sakai.UserActivity;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -120,7 +130,7 @@ public class LoginService implements ILogin {
 
     @Override
     public void getLoginJson(final String... params) {
-        JsonObjectRequest loginJson = new JsonObjectRequest(Request.Method.GET, params[0] + "session/" + params[1] + ".json", (String)null, new Response.Listener<JSONObject>() {
+        JsonObjectRequest loginJson = new JsonObjectRequest(Request.Method.GET, params[0] + "session/" + params[1] + ".json", (String) null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
 
@@ -135,8 +145,12 @@ public class LoginService implements ILogin {
                         e.printStackTrace();
                     }
 
-                getUserDataJson(params[0], User.getUserEid());
+                WorkspaceService workspaceService = new WorkspaceService(context, User.getUserId());
+                workspaceService.setProgressBar(progressBar);
+                workspaceService.setLoginTextView(loginTextView);
+                workspaceService.getWorkspace();
 
+                getUserDataJson(params[0], User.getUserEid());
             }
         }, new Response.ErrorListener() {
             @Override
@@ -156,7 +170,7 @@ public class LoginService implements ILogin {
     @Override
     public void getUserDataJson(final String... params) {
 
-        JsonObjectRequest userDataJson = new JsonObjectRequest(Request.Method.GET, params[0] + "user/" + params[1] + ".json", (String)null, new Response.Listener<JSONObject>() {
+        JsonObjectRequest userDataJson = new JsonObjectRequest(Request.Method.GET, params[0] + "user/" + params[1] + ".json", (String) null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 UserData userData = gson.fromJson(response.toString(), UserData.class);
@@ -191,7 +205,7 @@ public class LoginService implements ILogin {
     @Override
     public void getUserProfileDataJson(String... params) {
 
-        JsonObjectRequest userProfileDataJson = new JsonObjectRequest(Request.Method.GET, params[0] + "profile/" + params[1] + ".json", (String)null, new Response.Listener<JSONObject>() {
+        JsonObjectRequest userProfileDataJson = new JsonObjectRequest(Request.Method.GET, params[0] + "profile/" + params[1] + ".json", (String) null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 Profile profile = gson.fromJson(response.toString(), Profile.class);
@@ -287,4 +301,5 @@ public class LoginService implements ILogin {
     public LoginType getLoginType() {
         throw new UnsupportedOperationException();
     }
+
 }

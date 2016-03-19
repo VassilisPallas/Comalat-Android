@@ -27,6 +27,8 @@ import org.sakaiproject.api.memberships.actions.IUnJoin;
 import org.sakaiproject.api.memberships.actions.SiteUnJoin;
 import org.sakaiproject.api.sync.MembershipRefreshUI;
 import org.sakaiproject.adapters.MembershipAdapter;
+import org.sakaiproject.api.user.User;
+import org.sakaiproject.api.user.workspace.WorkspaceService;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -161,6 +163,12 @@ public class MembershipFragment extends Fragment implements IUnJoin, SwipeRefres
             @Override
             public void run() {
                 if (NetWork.getConnectionEstablished()) {
+                    SiteData.getSites().clear();
+                    SiteData.getProjects().clear();
+
+                    WorkspaceService workspaceService = new WorkspaceService(getContext(), User.getUserId());
+                    workspaceService.getWorkspace();
+
                     MembershipService membershipService = new MembershipService(getContext(), delegate);
                     membershipService.setSwipeRefreshLayout(swipeRefreshLayout);
                     try {

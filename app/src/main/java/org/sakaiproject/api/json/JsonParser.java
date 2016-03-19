@@ -2,6 +2,7 @@ package org.sakaiproject.api.json;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -289,10 +290,11 @@ public class JsonParser {
      *
      * @param membershipData the object with the json data
      * @param index          the index of the site on the List
+     * @param type           membership type
      */
     public static void getSiteData(MembershipData membershipData, int index, String type) {
 
-        SiteData data = null;
+        SiteData data;
         if (type == null)
             data = SiteData.getSites().get(index);
         else
@@ -334,6 +336,48 @@ public class JsonParser {
     }
 
     /**
+     * get My Workspace data
+     * http://141.99.248.86:8089/direct/site/~site_id.json
+     *
+     * @param membershipData the object with the json data
+     */
+    public static void getSiteData(MembershipData membershipData) {
+
+        SiteData data = new SiteData();
+
+        data.setContactEmail(membershipData.getContactEmail());
+        data.setContactName(membershipData.getContactName());
+        data.setCreatedTime(membershipData.getCreatedTime());
+        data.setDescription(membershipData.getDescription());
+        data.setShortDescription(membershipData.getShortDescription());
+        data.setIconUrlFull(membershipData.getIconUrlFull());
+        data.setInfoUrlFull(membershipData.getInfoUrlFull());
+        data.setJoinerRole(membershipData.getJoinerRole());
+        data.setLastModified(membershipData.getLastModified());
+        data.setMaintainRole(membershipData.getMaintainRole());
+        data.setModifiedTime(membershipData.getModifiedTime());
+        data.setOwner(membershipData.getOwner());
+        data.setProps(membershipData.getProps());
+        data.setProviderGroupId(membershipData.getProviderGroupId());
+        data.setSiteGroups(membershipData.getSiteGroups());
+        data.setSiteOwner(membershipData.getSiteOwner());
+        data.setSkin(membershipData.getSkin());
+        data.setSoftlyDeletedDate(membershipData.getSoftlyDeletedDate());
+        data.setTitle(membershipData.getTitle());
+        data.setUserRoles(membershipData.getUserRoles());
+        data.setActiveEdit(membershipData.isActiveEdit());
+        data.setCustomPageOrdered(membershipData.isCustomPageOrdered());
+        data.setEmpty(membershipData.isEmpty());
+        data.setJoinable(membershipData.isJoinable());
+        data.setPubView(membershipData.isPubView());
+        data.setPublished(membershipData.isPublished());
+        data.setSoftlyDeleted(membershipData.isSoftlyDeleted());
+        data.setPages(membershipData.getSitePages());
+
+        SiteData.getSites().add(data);
+    }
+
+    /**
      * get the info from the tools for each site or project
      * http://141.99.248.86:8089/direct/site/site_id/pages.json
      *
@@ -342,9 +386,12 @@ public class JsonParser {
      * @param type  "project" for project type, and "site" for site type
      */
     public static void getSitePageData(List<SitePage> pages, int index, String type) {
-
+        // make index++ because the first item on pages is my workspace
+        if (index < SiteData.getSites().size() - 1 && index < SiteData.getProjects().size() - 1)
+            index++;
+//        Log.i("index", String.valueOf(index));
         for (int i = 0; i < pages.size(); i++) {
-            SitePage page = null;
+            SitePage page;
             if (type == null) {
                 page = SiteData.getSites().get(index).getPages().get(i);
             } else {
@@ -368,6 +415,29 @@ public class JsonParser {
         }
     }
 
+    /**
+     * get the info from the tools for My Workspace
+     * http://141.99.248.86:8089/direct/site/~site_id/pages.json
+     *
+     * @param pages list with the objects of the json data
+     */
+    public static void getSitePageData(List<SitePage> pages) {
+
+        for (int i = 0; i < pages.size(); i++) {
+            SitePage page = SiteData.getSites().get(0).getPages().get(i);
+
+            page.setLayout(pages.get(i).getLayout());
+            page.setToolPopupUrl(pages.get(i).getToolPopupUrl());
+            page.setToolPopup(pages.get(i).isToolPopup());
+            page.setSkin(pages.get(i).getSkin());
+            page.setId(pages.get(i).getId());
+            page.setPosition(pages.get(i).getPosition());
+            page.setTitle(pages.get(i).getTitle());
+            page.setTools(pages.get(i).getTools());
+
+            SiteData.getSites().get(0).getPages().set(i, page);
+        }
+    }
 
     /**
      * get the permissions from the site
@@ -378,6 +448,9 @@ public class JsonParser {
      * @param type            "project" for project type, and "site" for site type
      */
     public static void getSitePermissions(PagePermissions pagePermissions, int index, String type) {
+        // make index++ because the first item on pages is my workspace
+        if (index < SiteData.getSites().size() - 1 && index < SiteData.getProjects().size() - 1)
+            index++;
 
         if (type == null) {
             SiteData.getSites().get(index).setAccess(pagePermissions.getData().getAccess());
@@ -389,7 +462,18 @@ public class JsonParser {
     }
 
     /**
-     * get the permissions for the user from the site (mainten or access)
+     * get the permissions for My Workspace
+     * http://141.99.248.86:8089/direct/site/~site_id/perms.json
+     *
+     * @param pagePermissions the object with the json data
+     */
+    public static void getSitePermissions(PagePermissions pagePermissions) {
+        SiteData.getSites().get(0).setAccess(pagePermissions.getData().getAccess());
+        SiteData.getSites().get(0).setMaintain(pagePermissions.getData().getMaintain());
+    }
+
+    /**
+     * get the permissions for the user from the site (maintain or access)
      * http://141.99.248.86:8089/direct/site/site_id/userPerms.json
      *
      * @param pageUserPermissions the object with the json data
@@ -397,11 +481,25 @@ public class JsonParser {
      * @param type                "project" for project type, and "site" for site type
      */
     public static void getUserSitePermissions(PageUserPermissions pageUserPermissions, int index, String type) {
+        // make index++ because the first item on pages is my workspace
+        if (index < SiteData.getSites().size() - 1 && index < SiteData.getProjects().size() - 1)
+            index++;
+
         if (type == null) {
             SiteData.getSites().get(index).setUserSitePermissions(pageUserPermissions.getData());
         } else {
             SiteData.getProjects().get(index).setUserSitePermissions(pageUserPermissions.getData());
         }
+    }
+
+    /**
+     * get the permissions for the user for My Workspace (maintain or access)
+     * http://141.99.248.86:8089/direct/site/site_id/userPerms.json
+     *
+     * @param pageUserPermissions the object with the json data
+     */
+    public static void getUserSitePermissions(PageUserPermissions pageUserPermissions) {
+        SiteData.getSites().get(0).setUserSitePermissions(pageUserPermissions.getData());
     }
 
     public static void getMembershipAnnouncements(Announcement announcement) {

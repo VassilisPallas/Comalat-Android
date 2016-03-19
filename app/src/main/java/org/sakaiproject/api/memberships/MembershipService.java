@@ -67,9 +67,6 @@ public class MembershipService {
      */
     public void getSites(String url) throws IOException {
 
-        SiteData.getSites().clear();
-        SiteData.getProjects().clear();
-
         if (swipeRefreshLayout != null)
             swipeRefreshLayout.setRefreshing(true);
 
