@@ -56,7 +56,6 @@ public class UserActivity extends AppCompatActivity implements NavigationView.On
     int samePagesCount = 1;
     private UserMainNavigationDrawerHelper mainNavigationDrawer;
     private static SitesNavigationDrawerHelper sitesNavigationDrawer;
-    private static boolean hasFilled = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -113,10 +112,7 @@ public class UserActivity extends AppCompatActivity implements NavigationView.On
             e.printStackTrace();
         }
 
-        if (!hasFilled) {
-            hasFilled = true;
-            sitesNavigationDrawer.fillSitesDrawer(true);
-        }
+        sitesNavigationDrawer.fillSitesDrawer(true);
     }
 
     @Override
@@ -201,7 +197,6 @@ public class UserActivity extends AppCompatActivity implements NavigationView.On
         } else if (NavigationDrawerHelper.getDrawer().isDrawerOpen(GravityCompat.END)) {
             NavigationDrawerHelper.getDrawer().closeDrawer(GravityCompat.END);
         } else {
-            hasFilled = false;
             ActionsHelper.logout(this, waiter);
         }
     }

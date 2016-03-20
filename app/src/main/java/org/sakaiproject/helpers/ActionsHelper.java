@@ -29,6 +29,7 @@ import org.sakaiproject.general.Connection;
 import org.sakaiproject.helpers.user_navigation_drawer_helpers.UserMainNavigationDrawerHelper;
 import org.sakaiproject.sakai.MainActivity;
 import org.sakaiproject.sakai.R;
+import org.sakaiproject.sakai.UserActivity;
 
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
@@ -543,7 +544,6 @@ public class ActionsHelper {
 
             }
         });
-
 
         adb.setNegativeButton(((AppCompatActivity) context).getResources().getString(R.string.cancel), null);
 

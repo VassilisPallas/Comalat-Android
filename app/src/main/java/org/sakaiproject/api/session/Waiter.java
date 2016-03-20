@@ -66,7 +66,7 @@ public class Waiter extends Thread {
                the roundMultiple rounds the milliseconds on the multiplies of 60000
             */
             idle = roundMultiple(System.currentTimeMillis() - lastUsed, 60000);
-            Log.d(TAG, "Application is idle for " + idle + " ms");
+            Log.d(TAG, "Application is idle for " + idle / 60000 + " minutes");
 
             /* activityIsVisible is true if the app is on foreground
                messageIsVisible is true if the notification has already
