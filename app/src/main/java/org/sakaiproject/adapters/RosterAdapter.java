@@ -73,7 +73,7 @@ public class RosterAdapter extends RecyclerView.Adapter<RosterAdapter.ViewHolder
         } else {
 
             try {
-                holder.image.setImageBitmap(ActionsHelper.getImage(context, member.getUserId() + "_image", User.getUserEid() + File.separator + "memberships" + File.separator + siteData.getId() + File.separator + "roster" + File.separator +"user_images"));
+                holder.image.setImageBitmap(ActionsHelper.getImage(context, member.getUserId() + "_image", User.getUserEid() + File.separator + "memberships" + File.separator + siteData.getId() + File.separator + "roster" + File.separator + "user_images"));
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }

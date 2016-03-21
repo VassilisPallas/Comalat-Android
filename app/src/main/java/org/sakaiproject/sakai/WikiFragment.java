@@ -4,25 +4,25 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import org.sakaiproject.api.assignments.UserAssignmentsService;
+import com.android.volley.ServerError;
+import com.android.volley.VolleyError;
+
+import org.sakaiproject.api.callback.Callback;
 import org.sakaiproject.api.internet.NetWork;
 import org.sakaiproject.api.memberships.SiteData;
-import org.sakaiproject.api.memberships.pages.assignments.MembershipAssignmentsService;
 import org.sakaiproject.api.memberships.pages.wiki.MembershipOfflineWiki;
 import org.sakaiproject.api.memberships.pages.wiki.MembershipWikiService;
 import org.sakaiproject.api.pojos.wiki.Wiki;
-import org.sakaiproject.api.sync.WikiRefreshUI;
 import org.sakaiproject.api.user.User;
 import org.sakaiproject.customviews.rich_textview.RichTextView;
 import org.sakaiproject.customviews.scrollview.CustomScrollView;
@@ -34,7 +34,7 @@ import java.io.Serializable;
 /**
  * Created by vspallas on 28/02/16.
  */
-public class WikiFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener, WikiRefreshUI {
+public class WikiFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener, Callback {
 
     RichTextView wikiText;
     TextView openComments;
@@ -43,7 +43,7 @@ public class WikiFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     private String siteName;
     private SiteData siteData;
     private FrameLayout root;
-    private WikiRefreshUI callback = this;
+    private Callback callback = this;
     private CustomScrollView scrollView;
 
     public WikiFragment() {
@@ -120,27 +120,38 @@ public class WikiFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     }
 
     @Override
-    public void updateUI(final Wiki wiki) {
+    public void onSuccess(Object obj) {
+        if (obj instanceof Wiki) {
+            final Wiki wiki = (Wiki) obj;
 
-        String message = wiki.getHtml().trim();
-        if (!wiki.getHtml().trim().equals(""))
-            message = ActionsHelper.deleteHtmlTags(message);
+            String message = wiki.getHtml().trim();
+            if (!wiki.getHtml().trim().equals(""))
+                message = ActionsHelper.deleteHtmlTags(message);
 
-        if (!message.equals(""))
-            wikiText.setText(message);
-        else
-            wikiText.setText(getContext().getResources().getString(R.string.no_wiki));
+            if (!message.equals(""))
+                wikiText.setText(message);
+            else
+                wikiText.setText(getContext().getResources().getString(R.string.no_wiki));
 
-        if (wiki.getNumberOfComments() > 0) {
-            openComments.setText(String.format("%d %s", wiki.getNumberOfComments(), getContext().getResources().getString(R.string.comments)));
-            openComments.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    startActivity(new Intent(getActivity(), CommentsActivity.class).putExtra("comments", (Serializable) wiki.getComments()).putExtra("title", getContext().getResources().getString(R.string.Comments)));
-                }
-            });
-        } else {
-            openComments.setText(getContext().getResources().getString(R.string.no_comments));
+            if (wiki.getNumberOfComments() > 0) {
+                openComments.setText(String.format("%d %s", wiki.getNumberOfComments(), getContext().getResources().getString(R.string.comments)));
+                openComments.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        startActivity(new Intent(getActivity(), CommentsActivity.class).putExtra("comments", (Serializable) wiki.getComments()).putExtra("title", getContext().getResources().getString(R.string.Comments)));
+                    }
+                });
+            } else {
+                openComments.setText(getContext().getResources().getString(R.string.no_comments));
+            }
+            swipeRefreshLayout.setRefreshing(false);
+        }
+    }
+
+    @Override
+    public void onError(VolleyError error) {
+        if (error instanceof ServerError) {
+            Toast.makeText(getContext(), getContext().getResources().getString(R.string.server_error), Toast.LENGTH_SHORT).show();
         }
         swipeRefreshLayout.setRefreshing(false);
     }

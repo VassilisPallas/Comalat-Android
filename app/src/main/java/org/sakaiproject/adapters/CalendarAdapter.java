@@ -182,14 +182,14 @@ public class CalendarAdapter extends BaseAdapter {
         if (previousView != null) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 previousView.setBackgroundColor(context.getResources().getColor(R.color.calendar_previous_month, context.getTheme()));
-            }else{
+            } else {
                 previousView.setBackgroundColor(context.getResources().getColor(R.color.calendar_previous_month));
             }
         }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             view.setBackgroundColor(context.getResources().getColor(R.color.colorPrimaryDark, context.getTheme()));
-        }else{
+        } else {
             view.setBackgroundColor(context.getResources().getColor(R.color.colorPrimaryDark));
         }
 
@@ -198,7 +198,7 @@ public class CalendarAdapter extends BaseAdapter {
             if (day_string.get(pos).equals(curentDateString)) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     view.setBackgroundColor(context.getResources().getColor(R.color.colorAccent, context.getTheme()));
-                }else{
+                } else {
                     view.setBackgroundColor(context.getResources().getColor(R.color.colorAccent));
                 }
 

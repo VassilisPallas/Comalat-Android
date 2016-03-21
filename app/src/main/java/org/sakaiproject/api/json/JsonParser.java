@@ -188,7 +188,7 @@ public class JsonParser {
     /**
      * parse user's events json
      * http://141.99.248.86:8089/direct/calendar/my.json
-     * <p/>
+     * <p>
      * parse membership's events json
      * http://141.99.248.86:8089/direct/calendar/site/siteId.json
      *
@@ -217,7 +217,7 @@ public class JsonParser {
     /**
      * parse user's event's info json
      * http://141.99.248.86:8089/direct/calendar/event/~owner/eventId.json
-     * <p/>
+     * <p>
      * parse membership's event's info json
      * http://141.99.248.86:8089/direct/calendar/event/siteId/eventId.json
      *

@@ -1,6 +1,7 @@
 package org.sakaiproject.api.user.update;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.view.View;
 import android.widget.ProgressBar;
 
@@ -12,6 +13,8 @@ import com.android.volley.VolleyLog;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import org.sakaiproject.api.callback.Callback;
+import org.sakaiproject.api.cryptography.PasswordEncryption;
 import org.sakaiproject.api.json.JsonWriter;
 import org.sakaiproject.api.user.User;
 import org.sakaiproject.customviews.custom_volley.EmptyRequest;
@@ -26,10 +29,10 @@ public class UpdateAccountInfoService {
     private Context context;
     private String name, surname, email, pass;
     private final String update_tag = User.getUserEid() + " account update";
-    private OnDataChanged callback;
+    private Callback callback;
     private ProgressBar progressBar;
 
-    public UpdateAccountInfoService(Context context, String name, String surname, String email, String pass, OnDataChanged callback, ProgressBar progressBar) {
+    public UpdateAccountInfoService(Context context, String name, String surname, String email, String pass, Callback callback, ProgressBar progressBar) {
         this.context = context;
         this.name = name;
         this.surname = surname;
@@ -50,14 +53,17 @@ public class UpdateAccountInfoService {
                 User.setFirstName(name);
                 User.setLastName(surname);
                 User.setEmail(email);
+                SharedPreferences prefs = context.getSharedPreferences(User.getUserEid() + "_user_data", context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = prefs.edit();
+                editor.putString("password", new PasswordEncryption().encrypt(pass));
+                editor.commit();
 
-                callback.updateUI();
+                callback.onSuccess("accountUpdate");
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                VolleyLog.d(update_tag, error);
-                error.printStackTrace();
+                callback.onError(error);
             }
         });
 

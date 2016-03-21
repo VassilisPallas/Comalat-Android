@@ -32,7 +32,7 @@ public class CommentsActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
     }
 
-    private void goBack(){
+    private void goBack() {
         super.onBackPressed();
         overridePendingTransition(R.anim.trans_right_in, R.anim.trans_right_out);
     }

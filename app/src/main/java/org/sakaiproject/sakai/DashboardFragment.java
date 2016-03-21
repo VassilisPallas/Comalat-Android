@@ -1,7 +1,6 @@
 package org.sakaiproject.sakai;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -15,7 +14,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
-import android.widget.Toast;
 
 import org.sakaiproject.adapters.DashboardTabAdapter;
 import org.sakaiproject.api.assignments.UserAssignmentsService;
@@ -24,8 +22,6 @@ import org.sakaiproject.api.internet.NetWork;
 import org.sakaiproject.api.memberships.SiteData;
 import org.sakaiproject.api.memberships.pages.assignments.MembershipAssignmentsService;
 import org.sakaiproject.api.memberships.pages.events.SiteEventsService;
-import org.sakaiproject.api.sync.CalendarRefreshUI;
-import org.sakaiproject.helpers.ActionsHelper;
 import org.sakaiproject.helpers.user_navigation_drawer_helpers.NavigationDrawerHelper;
 
 /**

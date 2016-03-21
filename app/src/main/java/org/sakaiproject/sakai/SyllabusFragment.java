@@ -10,23 +10,23 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.Spannable;
-import android.text.Spanned;
-import android.text.method.LinkMovementMethod;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.volley.ServerError;
+import com.android.volley.VolleyError;
+
+import org.sakaiproject.api.callback.Callback;
 import org.sakaiproject.api.internet.NetWork;
 import org.sakaiproject.api.memberships.pages.syllabus.OfflineSyllabus;
 import org.sakaiproject.api.memberships.pages.syllabus.SyllabusService;
 import org.sakaiproject.api.memberships.pages.syllabus.UpdateSyllabus;
 import org.sakaiproject.api.pojos.syllabus.Syllabus;
 import org.sakaiproject.api.memberships.SiteData;
-import org.sakaiproject.api.sync.SyllabusRefreshUI;
 import org.sakaiproject.adapters.SyllabusAdapter;
 import org.sakaiproject.customviews.rich_textview.RichTextView;
 
@@ -35,7 +35,7 @@ import java.io.IOException;
 /**
  * Created by vasilis on 1/28/16.
  */
-public class SyllabusFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener, UpdateSyllabus, SyllabusRefreshUI {
+public class SyllabusFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener, UpdateSyllabus, Callback {
 
     private FloatingActionButton showCreations;
     private ISwipeRefresh swipeRefresh;
@@ -47,7 +47,7 @@ public class SyllabusFragment extends Fragment implements SwipeRefreshLayout.OnR
     private RecyclerView.LayoutManager mLayoutManager;
     private FrameLayout root;
     private UpdateSyllabus callback;
-    private SyllabusRefreshUI delegate = this;
+    private Callback delegate = this;
     private TextView noSyllabusItems;
     private RichTextView reLaunchUrl;
 
@@ -189,7 +189,7 @@ public class SyllabusFragment extends Fragment implements SwipeRefreshLayout.OnR
     }
 
     @Override
-    public void updateUI() {
+    public void onSuccess(Object obj) {
         OfflineSyllabus offlineSyllabus = new OfflineSyllabus(getContext(), siteData.getId());
         Syllabus syllabus = null;
         try {
@@ -208,5 +208,14 @@ public class SyllabusFragment extends Fragment implements SwipeRefreshLayout.OnR
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void onError(VolleyError error) {
+        if (error instanceof ServerError) {
+            Toast.makeText(getContext(), getContext().getResources().getString(R.string.server_error), Toast.LENGTH_SHORT).show();
+        }
+
+        swipeRefreshLayout.setRefreshing(false);
     }
 }

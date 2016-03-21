@@ -1,26 +1,21 @@
 package org.sakaiproject.api.memberships.actions;
 
 import android.content.Context;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.ServerError;
 import com.android.volley.VolleyError;
-import com.android.volley.VolleyLog;
 
 import org.json.JSONObject;
-import org.sakaiproject.api.memberships.MembershipService;
-import org.sakaiproject.api.sync.MembershipRefreshUI;
+import org.sakaiproject.api.callback.Callback;
 import org.sakaiproject.adapters.MembershipAdapter;
 import org.sakaiproject.api.user.User;
 import org.sakaiproject.api.user.workspace.WorkspaceService;
 import org.sakaiproject.customviews.custom_volley.EmptyRequest;
 import org.sakaiproject.sakai.AppController;
 import org.sakaiproject.sakai.R;
-
-import java.io.IOException;
 
 /**
  * Created by vasilis on 1/22/16.
@@ -32,16 +27,16 @@ public class SiteUnJoin {
     private MembershipAdapter mAdapter;
     private int position;
     private org.sakaiproject.customviews.CustomSwipeRefreshLayout customSwipeRefreshLayout;
-    private MembershipRefreshUI delegate;
+    private Callback callback;
     private final String unjoin_tag;
 
-    public SiteUnJoin(String siteId, Context context, MembershipAdapter mAdapter, int position, org.sakaiproject.customviews.CustomSwipeRefreshLayout customSwipeRefreshLayout, MembershipRefreshUI delegate) {
+    public SiteUnJoin(String siteId, Context context, MembershipAdapter mAdapter, int position, org.sakaiproject.customviews.CustomSwipeRefreshLayout customSwipeRefreshLayout, Callback callback) {
         this.mAdapter = mAdapter;
         this.context = context;
         this.siteId = siteId;
         this.position = position;
         this.customSwipeRefreshLayout = customSwipeRefreshLayout;
-        this.delegate = delegate;
+        this.callback = callback;
         unjoin_tag = User.getUserEid() + " " + siteId + " unjoin";
     }
 
@@ -51,7 +46,7 @@ public class SiteUnJoin {
             public void onResponse(JSONObject response) {
 
                 WorkspaceService workspaceService = new WorkspaceService(context, User.getUserId());
-                workspaceService.setDelegate(delegate);
+                workspaceService.setDelegate(callback);
                 workspaceService.getWorkspace();
 
                 mAdapter.notifyItemRemoved(position);
@@ -61,9 +56,7 @@ public class SiteUnJoin {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                if (error instanceof ServerError) {
-                    Toast.makeText(context, context.getResources().getString(R.string.server_error), Toast.LENGTH_SHORT).show();
-                }
+                callback.onError(error);
             }
         });
 

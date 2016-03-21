@@ -4,9 +4,8 @@ import android.content.Context;
 
 import com.google.gson.Gson;
 
+import org.sakaiproject.api.callback.Callback;
 import org.sakaiproject.api.pojos.web_content.WebContent;
-import org.sakaiproject.api.pojos.wiki.Wiki;
-import org.sakaiproject.api.sync.WebContentRefreshUI;
 import org.sakaiproject.api.user.User;
 import org.sakaiproject.helpers.ActionsHelper;
 
@@ -21,9 +20,9 @@ public class OfflineWebContent {
     Gson gson = new Gson();
     private String siteId;
     private WebContent webContent;
-    private WebContentRefreshUI callback;
+    private Callback callback;
 
-    public OfflineWebContent(Context context, String siteId, WebContentRefreshUI callback) {
+    public OfflineWebContent(Context context, String siteId, Callback callback) {
         this.context = context;
         this.siteId = siteId;
         this.callback = callback;
@@ -35,7 +34,7 @@ public class OfflineWebContent {
                 try {
                     String w = ActionsHelper.readJsonFile(context, siteId + "_web_content", User.getUserEid() + File.separator + "memberships" + File.separator + siteId + File.separator + "web_content");
                     webContent = gson.fromJson(w, WebContent.class);
-                    callback.updateUI(webContent);
+                    callback.onSuccess(webContent);
 
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -46,7 +45,7 @@ public class OfflineWebContent {
                 try {
                     String w = ActionsHelper.readJsonFile(context, "web_content", User.getUserEid() + File.separator + "web_content");
                     webContent = gson.fromJson(w, WebContent.class);
-                    callback.updateUI(webContent);
+                    callback.onSuccess(webContent);
 
                 } catch (IOException e) {
                     e.printStackTrace();

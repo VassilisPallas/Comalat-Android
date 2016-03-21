@@ -4,12 +4,11 @@ import android.content.Context;
 
 import com.google.gson.Gson;
 
-import org.sakaiproject.api.json.JsonParser;
+import org.sakaiproject.api.callback.Callback;
 import org.sakaiproject.api.memberships.SiteData;
 import org.sakaiproject.api.pojos.dropbox.Dropbox;
 import org.sakaiproject.api.pojos.roster.Member;
 import org.sakaiproject.api.pojos.roster.Roster;
-import org.sakaiproject.api.sync.DropboxRefreshUI;
 import org.sakaiproject.api.user.User;
 import org.sakaiproject.helpers.ActionsHelper;
 import org.sakaiproject.sakai.R;
@@ -27,10 +26,10 @@ public class OfflineDropbox {
     private SiteData siteData;
     private Gson gson = new Gson();
     private Map<String, Integer> dropboxList = new HashMap<>();
-    private DropboxRefreshUI callback;
+    private Callback callback;
     private Roster roster;
 
-    public OfflineDropbox(Context context, SiteData siteData, DropboxRefreshUI callback, Roster roster) {
+    public OfflineDropbox(Context context, SiteData siteData, Callback callback, Roster roster) {
         this.context = context;
         this.siteData = siteData;
         this.callback = callback;
@@ -70,7 +69,7 @@ public class OfflineDropbox {
             }
 
             if (i == roster.getMembersTotal() - 1) {
-                callback.updateUI(dropboxList);
+                callback.onSuccess(dropboxList);
             }
         }
     }

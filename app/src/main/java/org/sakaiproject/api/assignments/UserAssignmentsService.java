@@ -5,17 +5,15 @@ import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
-import com.android.volley.ServerError;
 import com.android.volley.VolleyError;
-import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.google.gson.Gson;
 
 import org.json.JSONObject;
+import org.sakaiproject.api.callback.Callback;
 import org.sakaiproject.api.json.JsonParser;
 import org.sakaiproject.api.pojos.SiteName;
 import org.sakaiproject.api.pojos.assignments.Assignment;
-import org.sakaiproject.api.sync.AssignmentsRefreshUI;
 import org.sakaiproject.api.user.User;
 import org.sakaiproject.customviews.CustomSwipeRefreshLayout;
 import org.sakaiproject.helpers.ActionsHelper;
@@ -34,11 +32,11 @@ public class UserAssignmentsService {
     private String site_name_tag;
     private Gson gson = new Gson();
     private org.sakaiproject.customviews.CustomSwipeRefreshLayout swipeRefreshLayout;
-    private AssignmentsRefreshUI delegate;
+    private Callback callback;
 
-    public UserAssignmentsService(Context context, AssignmentsRefreshUI delegate) {
+    public UserAssignmentsService(Context context, Callback callback) {
         this.context = context;
-        this.delegate = delegate;
+        this.callback = callback;
         user_assignments_tag = User.getUserEid() + " assignments";
     }
 
@@ -74,11 +72,7 @@ public class UserAssignmentsService {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                if (error instanceof ServerError) {
-                    Toast.makeText(context, context.getResources().getString(R.string.server_error), Toast.LENGTH_SHORT).show();
-                }
-                if (swipeRefreshLayout != null)
-                    swipeRefreshLayout.setRefreshing(false);
+               callback.onError(error);
             }
         });
         AppController.getInstance().addToRequestQueue(assignmentsRequest, user_assignments_tag);
@@ -94,8 +88,8 @@ public class UserAssignmentsService {
 
                 JsonParser.getAssignmentSiteName(context, siteName, collection);
 
-                if (delegate != null)
-                    delegate.updateUI(assignment);
+                if (callback != null)
+                    callback.onSuccess(assignment);
 
                 if (swipeRefreshLayout != null)
                     swipeRefreshLayout.setRefreshing(false);
@@ -104,11 +98,7 @@ public class UserAssignmentsService {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                if (error instanceof ServerError) {
-                    Toast.makeText(context, context.getResources().getString(R.string.server_error), Toast.LENGTH_SHORT).show();
-                }
-                if (swipeRefreshLayout != null)
-                    swipeRefreshLayout.setRefreshing(false);
+                callback.onError(error);
             }
         });
         AppController.getInstance().addToRequestQueue(siteNameRequest, site_name_tag);

@@ -21,7 +21,8 @@ public class SessionNotification {
 
     /**
      * SystemNotifications constructor
-     * @param context the context
+     *
+     * @param context  the context
      * @param activity the Class<?> type of activity (MyActivity.class)
      */
     public SessionNotification(Context context, Class<?> activity) {

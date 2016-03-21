@@ -13,7 +13,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,17 +20,18 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
+import com.android.volley.ServerError;
+import com.android.volley.VolleyError;
+
+import org.sakaiproject.api.callback.Callback;
 import org.sakaiproject.api.internet.NetWork;
-import org.sakaiproject.api.memberships.MembershipService;
 import org.sakaiproject.api.memberships.SiteData;
 import org.sakaiproject.api.memberships.actions.IUnJoin;
 import org.sakaiproject.api.memberships.actions.SiteUnJoin;
-import org.sakaiproject.api.sync.MembershipRefreshUI;
 import org.sakaiproject.adapters.MembershipAdapter;
 import org.sakaiproject.api.user.User;
 import org.sakaiproject.api.user.workspace.WorkspaceService;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,7 +39,7 @@ import java.util.List;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class MembershipFragment extends Fragment implements IUnJoin, SwipeRefreshLayout.OnRefreshListener, IMembershipDialog, MembershipRefreshUI {
+public class MembershipFragment extends Fragment implements IUnJoin, SwipeRefreshLayout.OnRefreshListener, IMembershipDialog, Callback {
 
     private RecyclerView mRecyclerView;
     private MembershipAdapter mAdapter;
@@ -51,7 +51,7 @@ public class MembershipFragment extends Fragment implements IUnJoin, SwipeRefres
 
     private ISwipeRefresh swipeRefresh;
 
-    private MembershipRefreshUI delegate = this;
+    private Callback callback = this;
 
     private org.sakaiproject.customviews.CustomSwipeRefreshLayout swipeRefreshLayout;
 
@@ -155,7 +155,7 @@ public class MembershipFragment extends Fragment implements IUnJoin, SwipeRefres
 
     @Override
     public void siteUnJoin(List<SiteData> membership, int position) {
-        new SiteUnJoin(membership.get(position).getId(), getContext(), mAdapter, position, swipeRefreshLayout, delegate).unJoin();
+        new SiteUnJoin(membership.get(position).getId(), getContext(), mAdapter, position, swipeRefreshLayout, callback).unJoin();
     }
 
     @Override
@@ -168,7 +168,7 @@ public class MembershipFragment extends Fragment implements IUnJoin, SwipeRefres
                     SiteData.getProjects().clear();
 
                     WorkspaceService workspaceService = new WorkspaceService(getContext(), User.getUserId());
-                    workspaceService.setDelegate(delegate);
+                    workspaceService.setDelegate(callback);
                     workspaceService.setSwipeRefreshLayout(swipeRefreshLayout);
                     workspaceService.getWorkspace();
 
@@ -190,7 +190,7 @@ public class MembershipFragment extends Fragment implements IUnJoin, SwipeRefres
     }
 
     @Override
-    public void updateUI() {
+    public void onSuccess(Object obj) {
         UserActivity.getSitesNavigationDrawer().fillSitesDrawer(false);
         if (mAdapter != null && mRecyclerView != null) {
             List<SiteData> temp = new ArrayList<>(SiteData.getSites());
@@ -198,5 +198,13 @@ public class MembershipFragment extends Fragment implements IUnJoin, SwipeRefres
             mAdapter.setMemberships(temp);
             mRecyclerView.setAdapter(mAdapter);
         }
+    }
+
+    @Override
+    public void onError(VolleyError error) {
+        if (error instanceof ServerError) {
+            Toast.makeText(getContext(), getContext().getResources().getString(R.string.server_error), Toast.LENGTH_SHORT).show();
+        }
+        swipeRefreshLayout.setRefreshing(false);
     }
 }

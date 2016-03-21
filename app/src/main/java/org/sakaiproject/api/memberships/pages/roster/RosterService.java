@@ -2,23 +2,20 @@ package org.sakaiproject.api.memberships.pages.roster;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.view.View;
-import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
-import com.android.volley.ServerError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.google.gson.Gson;
 
 import org.json.JSONObject;
+import org.sakaiproject.api.callback.Callback;
 import org.sakaiproject.api.memberships.SiteData;
 import org.sakaiproject.api.pojos.roster.Member;
 import org.sakaiproject.api.pojos.roster.Roster;
 import org.sakaiproject.api.pojos.roster.UserProfileImage;
-import org.sakaiproject.api.sync.RosterRefreshUI;
 import org.sakaiproject.api.user.User;
 import org.sakaiproject.helpers.ActionsHelper;
 import org.sakaiproject.sakai.AppController;
@@ -36,11 +33,11 @@ public class RosterService {
     private final String roster_tag;
     private Gson gson = new Gson();
     private org.sakaiproject.customviews.CustomSwipeRefreshLayout swipeRefreshLayout;
-    private RosterRefreshUI callback;
+    private Callback callback;
 
     private JsonObjectRequest userProfileImageUrlRequest = null;
 
-    public RosterService(Context context, SiteData siteData, org.sakaiproject.customviews.CustomSwipeRefreshLayout swipeRefreshLayout, RosterRefreshUI callback) {
+    public RosterService(Context context, SiteData siteData, org.sakaiproject.customviews.CustomSwipeRefreshLayout swipeRefreshLayout, Callback callback) {
         this.context = context;
         this.siteData = siteData;
         this.swipeRefreshLayout = swipeRefreshLayout;
@@ -72,10 +69,7 @@ public class RosterService {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                if (error instanceof ServerError) {
-                    Toast.makeText(context, R.string.server_error, Toast.LENGTH_SHORT).show();
-                }
-                swipeRefreshLayout.setEnabled(false);
+                callback.onError(error);
             }
         });
 
@@ -118,16 +112,13 @@ public class RosterService {
                         e.printStackTrace();
                     }
 
-                callback.updateUI(roster);
+                callback.onSuccess(roster);
 
             }
         }, 0, 0, null, Bitmap.Config.RGB_565, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                swipeRefreshLayout.setEnabled(false);
-                if (error instanceof ServerError) {
-                    Toast.makeText(context, context.getResources().getString(R.string.server_error), Toast.LENGTH_SHORT).show();
-                }
+                callback.onError(error);
             }
         });
         AppController.getInstance().addToRequestQueue(userImage, tag_user_image);

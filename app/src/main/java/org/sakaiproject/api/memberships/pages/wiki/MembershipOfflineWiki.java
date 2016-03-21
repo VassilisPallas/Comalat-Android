@@ -4,10 +4,8 @@ import android.content.Context;
 
 import com.google.gson.Gson;
 
-import org.sakaiproject.api.json.JsonParser;
-import org.sakaiproject.api.pojos.assignments.Assignment;
+import org.sakaiproject.api.callback.Callback;
 import org.sakaiproject.api.pojos.wiki.Wiki;
-import org.sakaiproject.api.sync.WikiRefreshUI;
 import org.sakaiproject.api.user.User;
 import org.sakaiproject.helpers.ActionsHelper;
 
@@ -18,13 +16,13 @@ import java.io.IOException;
  * Created by vspallas on 01/03/16.
  */
 public class MembershipOfflineWiki {
-    private WikiRefreshUI callback;
+    private Callback callback;
     private String siteId;
     Context context;
     Gson gson = new Gson();
     private Wiki wiki;
 
-    public MembershipOfflineWiki(WikiRefreshUI callback, Context context, String siteId) {
+    public MembershipOfflineWiki(Callback callback, Context context, String siteId) {
         this.callback = callback;
         this.context = context;
         this.siteId = siteId;
@@ -63,7 +61,7 @@ public class MembershipOfflineWiki {
                     wiki.setComments(temp.getComments());
                     wiki.setHtml(temp.getHtml());
 
-                    callback.updateUI(wiki);
+                    callback.onSuccess(wiki);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -76,7 +74,7 @@ public class MembershipOfflineWiki {
                     wiki.setComments(temp.getComments());
                     wiki.setHtml(temp.getHtml());
 
-                    callback.updateUI(wiki);
+                    callback.onSuccess(wiki);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

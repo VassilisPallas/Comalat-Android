@@ -1,21 +1,17 @@
 package org.sakaiproject.api.announcements;
 
 import android.content.Context;
-import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
-import com.android.volley.ServerError;
 import com.android.volley.VolleyError;
-import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.google.gson.Gson;
 
 import org.json.JSONObject;
-import org.sakaiproject.api.json.JsonParser;
+import org.sakaiproject.api.callback.Callback;
 import org.sakaiproject.api.pojos.announcements.Announcement;
 import org.sakaiproject.api.pojos.SiteName;
-import org.sakaiproject.api.sync.AnnouncementRefreshUI;
 import org.sakaiproject.api.user.User;
 import org.sakaiproject.customviews.CustomSwipeRefreshLayout;
 import org.sakaiproject.helpers.ActionsHelper;
@@ -35,13 +31,13 @@ public class UserAnnouncementsService {
     private String site_name_tag;
     private Gson gson = new Gson();
     private org.sakaiproject.customviews.CustomSwipeRefreshLayout swipeRefreshLayout;
-    private AnnouncementRefreshUI delegate;
+    private Callback callback;
     private Announcement announcement;
     private String announcementsJson;
 
-    public UserAnnouncementsService(Context context, AnnouncementRefreshUI delegate) {
+    public UserAnnouncementsService(Context context, Callback callback) {
         this.context = context;
-        this.delegate = delegate;
+        this.callback = callback;
     }
 
     public void setSwipeRefreshLayout(CustomSwipeRefreshLayout swipeRefreshLayout) {
@@ -52,7 +48,7 @@ public class UserAnnouncementsService {
         if (swipeRefreshLayout != null)
             swipeRefreshLayout.setRefreshing(true);
 
-        JsonObjectRequest userAnnouncementsRequest = new JsonObjectRequest(Request.Method.GET, url, (String)null, new Response.Listener<JSONObject>() {
+        JsonObjectRequest userAnnouncementsRequest = new JsonObjectRequest(Request.Method.GET, url, (String) null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 announcementsJson = response.toString();
@@ -73,7 +69,7 @@ public class UserAnnouncementsService {
                             e.printStackTrace();
                         }
 
-                    delegate.updateUI(announcement);
+                    callback.onSuccess(announcement);
 
                     if (swipeRefreshLayout != null)
                         swipeRefreshLayout.setRefreshing(false);
@@ -82,11 +78,7 @@ public class UserAnnouncementsService {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                if (error instanceof ServerError) {
-                    Toast.makeText(context, context.getResources().getString(R.string.server_error), Toast.LENGTH_SHORT).show();
-                }
-                if (swipeRefreshLayout != null)
-                    swipeRefreshLayout.setRefreshing(false);
+                callback.onError(error);
             }
         });
         AppController.getInstance().addToRequestQueue(userAnnouncementsRequest, user_announcement_tag);
@@ -95,7 +87,7 @@ public class UserAnnouncementsService {
 
     private void getSiteName(Announcement.AnnouncementItems item, final int index) {
         site_name_tag = User.getUserEid() + " " + item.getSiteId() + " name";
-        JsonObjectRequest siteNameRequest = new JsonObjectRequest(Request.Method.GET, context.getResources().getString(R.string.url) + "site/" + item.getSiteId() + ".json", (String)null, new Response.Listener<JSONObject>() {
+        JsonObjectRequest siteNameRequest = new JsonObjectRequest(Request.Method.GET, context.getResources().getString(R.string.url) + "site/" + item.getSiteId() + ".json", (String) null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
 
@@ -113,7 +105,7 @@ public class UserAnnouncementsService {
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-                delegate.updateUI(announcement);
+                callback.onSuccess(announcement);
 
                 if (swipeRefreshLayout != null)
                     swipeRefreshLayout.setRefreshing(false);
@@ -121,11 +113,7 @@ public class UserAnnouncementsService {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                if (error instanceof ServerError) {
-                    Toast.makeText(context, context.getResources().getString(R.string.server_error), Toast.LENGTH_SHORT).show();
-                }
-                if (swipeRefreshLayout != null)
-                    swipeRefreshLayout.setRefreshing(false);
+                callback.onError(error);
             }
         });
         AppController.getInstance().addToRequestQueue(siteNameRequest, site_name_tag);

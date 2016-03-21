@@ -1,9 +1,7 @@
 package org.sakaiproject.sakai;
 
 import android.app.Activity;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
@@ -17,18 +15,19 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.ServerError;
+import com.android.volley.VolleyError;
+
 import org.json.JSONException;
+import org.sakaiproject.api.callback.Callback;
 import org.sakaiproject.api.user.User;
-import org.sakaiproject.api.user.profile.Profile;
 import org.sakaiproject.api.user.update.CheckPassword;
-import org.sakaiproject.api.user.update.OnDataChanged;
 import org.sakaiproject.api.user.update.PasswordMatch;
 import org.sakaiproject.api.user.update.UpdateAccountInfoService;
-import org.sakaiproject.helpers.ActionsHelper;
 
 import java.io.IOException;
 
-public class ConfirmAccountUpdateActivity extends AppCompatActivity implements View.OnClickListener, PasswordMatch, OnDataChanged {
+public class ConfirmAccountUpdateActivity extends AppCompatActivity implements View.OnClickListener, PasswordMatch, Callback {
 
     private TextView nameTextView, surnameTextView, emailTextView;
     private EditText passEditText;
@@ -137,8 +136,9 @@ public class ConfirmAccountUpdateActivity extends AppCompatActivity implements V
         isPasswordCorrect = match;
     }
 
+
     @Override
-    public void updateUI() {
+    public void onSuccess(Object obj) {
         progressBar.setVisibility(View.GONE);
         Toast.makeText(this, getResources().getString(R.string.data_changed), Toast.LENGTH_SHORT).show();
 
@@ -156,5 +156,12 @@ public class ConfirmAccountUpdateActivity extends AppCompatActivity implements V
         UserActivity.displayNameTextView.setText(fullName);
         UserActivity.emailTextView.setText(User.getEmail());
         goBack(true);
+    }
+
+    @Override
+    public void onError(VolleyError error) {
+        if (error instanceof ServerError)
+            Toast.makeText(getApplicationContext(), getResources().getString(R.string.server_error), Toast.LENGTH_SHORT).show();
+        progressBar.setVisibility(View.GONE);
     }
 }

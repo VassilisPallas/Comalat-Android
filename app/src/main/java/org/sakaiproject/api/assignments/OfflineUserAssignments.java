@@ -4,9 +4,8 @@ import android.content.Context;
 
 import com.google.gson.Gson;
 
-import org.sakaiproject.api.json.JsonParser;
+import org.sakaiproject.api.callback.Callback;
 import org.sakaiproject.api.pojos.assignments.Assignment;
-import org.sakaiproject.api.sync.AssignmentsRefreshUI;
 import org.sakaiproject.api.user.User;
 import org.sakaiproject.helpers.ActionsHelper;
 
@@ -19,11 +18,11 @@ import java.io.IOException;
 public class OfflineUserAssignments {
     private Context context;
     private final Gson gson = new Gson();
-    private AssignmentsRefreshUI delegate;
+    private Callback callback;
 
-    public OfflineUserAssignments(Context context, AssignmentsRefreshUI delegate) {
+    public OfflineUserAssignments(Context context, Callback callback) {
         this.context = context;
-        this.delegate = delegate;
+        this.callback = callback;
     }
 
     public void getAssignments() {
@@ -31,7 +30,7 @@ public class OfflineUserAssignments {
             try {
                 String a = ActionsHelper.readJsonFile(context, "assignments", User.getUserEid() + File.separator + "assignments");
                 Assignment assignment = gson.fromJson(a, Assignment.class);
-                delegate.updateUI(assignment);
+                callback.onSuccess(assignment);
             } catch (IOException e) {
                 e.printStackTrace();
             }

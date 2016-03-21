@@ -7,11 +7,10 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.ServerError;
 import com.android.volley.VolleyError;
-import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
 
 import org.json.JSONObject;
-import org.sakaiproject.api.sync.SyllabusRefreshUI;
+import org.sakaiproject.api.callback.Callback;
 import org.sakaiproject.api.user.User;
 import org.sakaiproject.customviews.CustomSwipeRefreshLayout;
 import org.sakaiproject.helpers.ActionsHelper;
@@ -29,7 +28,7 @@ public class SyllabusService {
     private Context context;
     private String siteId;
     private final String syllabus_tag;
-    SyllabusRefreshUI delegate;
+    Callback callback;
     private org.sakaiproject.customviews.CustomSwipeRefreshLayout swipeRefreshLayout;
 
     /**
@@ -37,10 +36,10 @@ public class SyllabusService {
      *
      * @param context the context
      */
-    public SyllabusService(Context context, String siteId, SyllabusRefreshUI delegate) {
+    public SyllabusService(Context context, String siteId, Callback callback) {
         this.context = context;
         this.siteId = siteId;
-        this.delegate = delegate;
+        this.callback = callback;
         syllabus_tag = User.getUserEid() + " " + siteId + " syllabus";
     }
 
@@ -52,7 +51,7 @@ public class SyllabusService {
         if (swipeRefreshLayout != null)
             swipeRefreshLayout.setRefreshing(true);
 
-        JsonObjectRequest syllabusRequest = new JsonObjectRequest(Request.Method.GET, url, (String)null, new Response.Listener<JSONObject>() {
+        JsonObjectRequest syllabusRequest = new JsonObjectRequest(Request.Method.GET, url, (String) null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 if (ActionsHelper.createDirIfNotExists(context, User.getUserEid() + File.separator + "memberships" + File.separator + siteId + File.separator + "syllabus"))
@@ -62,7 +61,7 @@ public class SyllabusService {
                         e.printStackTrace();
                     }
 
-                delegate.updateUI();
+                callback.onSuccess(null);
 
                 if (swipeRefreshLayout != null)
                     swipeRefreshLayout.setRefreshing(false);
@@ -71,11 +70,7 @@ public class SyllabusService {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                if (error instanceof ServerError) {
-                    Toast.makeText(context, context.getResources().getString(R.string.server_error), Toast.LENGTH_SHORT).show();
-                }
-                if (swipeRefreshLayout != null)
-                    swipeRefreshLayout.setRefreshing(false);
+               callback.onError(error);
             }
         });
 

@@ -13,17 +13,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.Toast;
 
-import org.sakaiproject.adapters.dropbox.DropboxAdapter;
+import com.android.volley.ServerError;
+import com.android.volley.VolleyError;
+
 import org.sakaiproject.adapters.dropbox.FillGridView;
+import org.sakaiproject.api.callback.Callback;
 import org.sakaiproject.api.internet.NetWork;
 import org.sakaiproject.api.memberships.SiteData;
 import org.sakaiproject.api.memberships.pages.dropbox.DropboxService;
 import org.sakaiproject.api.memberships.pages.dropbox.OfflineDropbox;
 import org.sakaiproject.api.memberships.pages.roster.OfflineRoster;
 import org.sakaiproject.api.pojos.roster.Roster;
-import org.sakaiproject.api.sync.DropboxRefreshUI;
-import org.sakaiproject.api.sync.RosterRefreshUI;
 import org.sakaiproject.api.user.User;
 import org.sakaiproject.helpers.user_navigation_drawer_helpers.NavigationDrawerHelper;
 
@@ -33,7 +35,7 @@ import java.util.Map;
 /**
  * Created by vspallas on 03/03/16.
  */
-public class DropboxFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener, DropboxRefreshUI, RosterRefreshUI {
+public class DropboxFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener, Callback {
 
     private ISwipeRefresh swipeRefresh;
     private org.sakaiproject.customviews.CustomSwipeRefreshLayout swipeRefreshLayout;
@@ -41,9 +43,8 @@ public class DropboxFragment extends Fragment implements SwipeRefreshLayout.OnRe
     private FrameLayout root;
     private RecyclerView mRecyclerView;
     private RecyclerView.LayoutManager layoutManager;
-    private DropboxRefreshUI callback = this;
+    private Callback callback = this;
     private Roster roster;
-    private RosterRefreshUI rosterCallback = this;
 
     public DropboxFragment() {
     }
@@ -101,7 +102,7 @@ public class DropboxFragment extends Fragment implements SwipeRefreshLayout.OnRe
         File file = new File(externalStoragePath, User.getUserEid() + File.separator + "memberships" + File.separator + siteData.getId() + File.separator + "roster" + File.separator + siteData.getId() + "_roster.json");
 
         if (file.exists()) {
-            OfflineRoster offlineRoster = new OfflineRoster(getContext(), siteData, rosterCallback);
+            OfflineRoster offlineRoster = new OfflineRoster(getContext(), siteData, callback);
             offlineRoster.getRoster();
             new OfflineDropbox(getContext(), siteData, callback, roster).getDropboxItems();
         } else {
@@ -122,7 +123,7 @@ public class DropboxFragment extends Fragment implements SwipeRefreshLayout.OnRe
                     File file = new File(externalStoragePath, User.getUserEid() + File.separator + "memberships" + File.separator + siteData.getId() + File.separator + "roster" + File.separator + siteData.getId() + "_roster.json");
 
                     if (file.exists()) {
-                        OfflineRoster offlineRoster = new OfflineRoster(getContext(), siteData, rosterCallback);
+                        OfflineRoster offlineRoster = new OfflineRoster(getContext(), siteData, callback);
                         offlineRoster.getRoster();
                         DropboxService dropboxService = new DropboxService(getContext(), siteData, callback, roster, swipeRefreshLayout);
                         dropboxService.getDropboxItems();
@@ -140,12 +141,18 @@ public class DropboxFragment extends Fragment implements SwipeRefreshLayout.OnRe
     }
 
     @Override
-    public void updateUI(Map<String, Integer> dropboxList) {
-        new FillGridView(getContext(), siteData, dropboxList, mRecyclerView).loadFiles();
+    public void onSuccess(Object obj) {
+        if (obj instanceof Roster) {
+            this.roster = (Roster) obj;
+        } else if (obj instanceof Map<?, ?>) {
+            new FillGridView(getContext(), siteData, (Map<String, Integer>) obj, mRecyclerView).loadFiles();
+        }
     }
 
     @Override
-    public void updateUI(Roster roster) {
-        this.roster = roster;
+    public void onError(VolleyError error) {
+        if (error instanceof ServerError)
+            Toast.makeText(getContext(), getContext().getResources().getString(R.string.server_error), Toast.LENGTH_SHORT).show();
+        swipeRefreshLayout.setEnabled(false);
     }
 }

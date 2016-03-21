@@ -5,21 +5,16 @@ import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
-import com.android.volley.ServerError;
 import com.android.volley.VolleyError;
-import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.google.gson.Gson;
 
 import org.json.JSONObject;
-import org.sakaiproject.api.json.JsonParser;
-import org.sakaiproject.api.pojos.assignments.Assignment;
+import org.sakaiproject.api.callback.Callback;
 import org.sakaiproject.api.pojos.wiki.Wiki;
-import org.sakaiproject.api.sync.WikiRefreshUI;
 import org.sakaiproject.api.user.User;
 import org.sakaiproject.helpers.ActionsHelper;
 import org.sakaiproject.sakai.AppController;
-import org.sakaiproject.sakai.R;
 
 import java.io.File;
 import java.io.IOException;
@@ -34,10 +29,10 @@ public class MembershipWikiService {
     private final String wiki_tag = User.getUserEid() + " wiki";
     private final String wiki_page_data = User.getUserEid() + " wiki page data";
     private org.sakaiproject.customviews.CustomSwipeRefreshLayout swipeRefreshLayout;
-    private WikiRefreshUI callback;
+    private Callback callback;
     private String siteId;
 
-    public MembershipWikiService(Context context, org.sakaiproject.customviews.CustomSwipeRefreshLayout swipeRefreshLayout, WikiRefreshUI callback, String siteId) {
+    public MembershipWikiService(Context context, org.sakaiproject.customviews.CustomSwipeRefreshLayout swipeRefreshLayout, Callback callback, String siteId) {
         this.context = context;
         this.swipeRefreshLayout = swipeRefreshLayout;
         this.callback = callback;
@@ -73,11 +68,7 @@ public class MembershipWikiService {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                if (error instanceof ServerError) {
-                    Toast.makeText(context, context.getResources().getString(R.string.server_error), Toast.LENGTH_SHORT).show();
-                }
-                if (swipeRefreshLayout != null)
-                    swipeRefreshLayout.setRefreshing(false);
+                callback.onError(error);
             }
         });
 
@@ -107,16 +98,12 @@ public class MembershipWikiService {
                             e.printStackTrace();
                         }
                 }
-                callback.updateUI(wiki);
+                callback.onSuccess(wiki);
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                if (error instanceof ServerError) {
-                    Toast.makeText(context, context.getResources().getString(R.string.server_error), Toast.LENGTH_SHORT).show();
-                }
-                if (swipeRefreshLayout != null)
-                    swipeRefreshLayout.setRefreshing(false);
+                callback.onError(error);
             }
         });
 

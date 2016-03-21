@@ -55,9 +55,6 @@ public class OnlineMessageOfTheDay {
     public void getMessageOfTheDay(String url) {
 
 
-
-
-
         try {
             connection.openConnection(url, ConnectionType.GET, true, false, null);
 

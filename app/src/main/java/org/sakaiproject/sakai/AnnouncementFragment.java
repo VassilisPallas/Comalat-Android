@@ -15,15 +15,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.android.volley.ServerError;
+import com.android.volley.VolleyError;
 
 import org.sakaiproject.api.announcements.OfflineUserAnnouncements;
 import org.sakaiproject.api.announcements.UserAnnouncementsService;
+import org.sakaiproject.api.callback.Callback;
 import org.sakaiproject.api.internet.NetWork;
 import org.sakaiproject.api.memberships.SiteData;
 import org.sakaiproject.api.memberships.pages.announcements.OfflineMembershipAnnouncements;
 import org.sakaiproject.api.memberships.pages.announcements.MembershipAnnouncementsService;
 import org.sakaiproject.api.pojos.announcements.Announcement;
-import org.sakaiproject.api.sync.AnnouncementRefreshUI;
 import org.sakaiproject.adapters.AnnouncementAdapter;
 import org.sakaiproject.customviews.listeners.RecyclerItemClickListener;
 import org.sakaiproject.helpers.user_navigation_drawer_helpers.NavigationDrawerHelper;
@@ -31,14 +35,14 @@ import org.sakaiproject.helpers.user_navigation_drawer_helpers.NavigationDrawerH
 /**
  * Created by vspallas on 17/02/16.
  */
-public class AnnouncementFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener, AnnouncementRefreshUI {
+public class AnnouncementFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener, Callback {
 
     private ISwipeRefresh swipeRefresh;
     private org.sakaiproject.customviews.CustomSwipeRefreshLayout swipeRefreshLayout;
     private String siteName;
     private SiteData siteData;
     private FrameLayout root;
-    private AnnouncementRefreshUI delegate = this;
+    private Callback callback = this;
     private RecyclerView mRecyclerView;
     private RecyclerView.LayoutManager mLayoutManager;
     private AnnouncementAdapter mAdapter;
@@ -88,10 +92,10 @@ public class AnnouncementFragment extends Fragment implements SwipeRefreshLayout
 
 
         if (siteName.equals(getContext().getResources().getString(R.string.my_workspace))) {
-            OfflineUserAnnouncements offlineUserAnnouncements = new OfflineUserAnnouncements(getContext(), delegate);
+            OfflineUserAnnouncements offlineUserAnnouncements = new OfflineUserAnnouncements(getContext(), callback);
             offlineUserAnnouncements.getAnnouncements();
         } else {
-            OfflineMembershipAnnouncements announcements = new OfflineMembershipAnnouncements(getContext(), siteData.getId(), delegate);
+            OfflineMembershipAnnouncements announcements = new OfflineMembershipAnnouncements(getContext(), siteData.getId(), callback);
             announcements.getAnnouncements();
         }
 
@@ -154,12 +158,12 @@ public class AnnouncementFragment extends Fragment implements SwipeRefreshLayout
 
                     String url;
                     if (siteName.equals(getContext().getResources().getString(R.string.my_workspace))) {
-                        UserAnnouncementsService userAnnouncementsService = new UserAnnouncementsService(getContext(), delegate);
+                        UserAnnouncementsService userAnnouncementsService = new UserAnnouncementsService(getContext(), callback);
                         userAnnouncementsService.setSwipeRefreshLayout(swipeRefreshLayout);
                         url = getContext().getResources().getString(R.string.url) + "announcement/user.json";
                         userAnnouncementsService.getAnnouncements(url);
                     } else {
-                        MembershipAnnouncementsService membershipAnnouncementsService = new MembershipAnnouncementsService(getContext(), siteData.getId(), delegate);
+                        MembershipAnnouncementsService membershipAnnouncementsService = new MembershipAnnouncementsService(getContext(), siteData.getId(), callback);
                         membershipAnnouncementsService.setSwipeRefreshLayout(swipeRefreshLayout);
                         url = getContext().getResources().getString(R.string.url) + "announcement/site/" + siteData.getId() + ".json";
                         membershipAnnouncementsService.getAnnouncements(url);
@@ -175,22 +179,32 @@ public class AnnouncementFragment extends Fragment implements SwipeRefreshLayout
     }
 
     @Override
-    public void updateUI(Announcement announcement) {
-        this.announcement = announcement;
-        if (siteName.equals(getContext().getResources().getString(R.string.my_workspace))) {
-            mAdapter = new AnnouncementAdapter(announcement, null);
-        } else {
-            mAdapter = new AnnouncementAdapter(announcement, siteData.getId());
-        }
-
-        if (mRecyclerView != null) {
-            if (mAdapter.getItemCount() == 0) {
-                noAnnouncements.setVisibility(View.VISIBLE);
+    public void onSuccess(Object obj) {
+        if (obj instanceof Announcement) {
+            this.announcement = (Announcement) obj;
+            if (siteName.equals(getContext().getResources().getString(R.string.my_workspace))) {
+                mAdapter = new AnnouncementAdapter(announcement, null);
             } else {
-                noAnnouncements.setVisibility(View.GONE);
+                mAdapter = new AnnouncementAdapter(announcement, siteData.getId());
             }
 
-            mRecyclerView.setAdapter(mAdapter);
+            if (mRecyclerView != null) {
+                if (mAdapter.getItemCount() == 0) {
+                    noAnnouncements.setVisibility(View.VISIBLE);
+                } else {
+                    noAnnouncements.setVisibility(View.GONE);
+                }
+
+                mRecyclerView.setAdapter(mAdapter);
+            }
         }
+    }
+
+    @Override
+    public void onError(VolleyError error) {
+        if (error instanceof ServerError)
+            Toast.makeText(getContext(), getContext().getResources().getString(R.string.server_error), Toast.LENGTH_SHORT).show();
+
+        swipeRefreshLayout.setRefreshing(false);
     }
 }

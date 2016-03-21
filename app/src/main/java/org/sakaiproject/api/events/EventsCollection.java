@@ -31,6 +31,7 @@ public class EventsCollection {
 
     /**
      * get the monthly events based on the current month
+     *
      * @param cal the calendar
      * @throws ParseException
      * @throws CloneNotSupportedException
@@ -48,6 +49,7 @@ public class EventsCollection {
 
     /**
      * convert String to Date object
+     *
      * @param dateStr the String which will be converted into Date
      * @return
      * @throws ParseException
@@ -59,8 +61,9 @@ public class EventsCollection {
 
     /**
      * select the month events based on the current month
+     *
      * @param month the current month on string index
-     * @param cal the calendar
+     * @param cal   the calendar
      * @throws ParseException
      * @throws CloneNotSupportedException
      */

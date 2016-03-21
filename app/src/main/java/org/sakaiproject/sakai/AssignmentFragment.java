@@ -15,15 +15,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import org.sakaiproject.api.assignments.OfflineUserAssignments;
-import org.sakaiproject.api.assignments.UserAssignmentsService;
+import com.android.volley.ServerError;
+import com.android.volley.VolleyError;
+
+import org.sakaiproject.api.callback.Callback;
 import org.sakaiproject.api.internet.NetWork;
 import org.sakaiproject.api.memberships.SiteData;
 import org.sakaiproject.api.memberships.pages.assignments.MembershipAssignmentsService;
 import org.sakaiproject.api.memberships.pages.assignments.OfflineMembershipAssignments;
 import org.sakaiproject.api.pojos.assignments.Assignment;
-import org.sakaiproject.api.sync.AssignmentsRefreshUI;
 import org.sakaiproject.adapters.AssignmentAdapter;
 import org.sakaiproject.customviews.listeners.RecyclerItemClickListener;
 import org.sakaiproject.helpers.user_navigation_drawer_helpers.NavigationDrawerHelper;
@@ -31,14 +33,14 @@ import org.sakaiproject.helpers.user_navigation_drawer_helpers.NavigationDrawerH
 /**
  * Created by vspallas on 23/02/16.
  */
-public class AssignmentFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener, AssignmentsRefreshUI {
+public class AssignmentFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener, Callback {
 
     private ISwipeRefresh swipeRefresh;
     private org.sakaiproject.customviews.CustomSwipeRefreshLayout swipeRefreshLayout;
     private String siteName;
     private SiteData siteData;
     private FrameLayout root;
-    private AssignmentsRefreshUI delegate = this;
+    private Callback callback = this;
     private RecyclerView mRecyclerView;
     private AssignmentAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
@@ -102,7 +104,7 @@ public class AssignmentFragment extends Fragment implements SwipeRefreshLayout.O
             }
         });
 
-        OfflineMembershipAssignments offlineMembershipAssignments = new OfflineMembershipAssignments(getContext(), siteData.getId(), delegate);
+        OfflineMembershipAssignments offlineMembershipAssignments = new OfflineMembershipAssignments(getContext(), siteData.getId(), callback);
         offlineMembershipAssignments.getAssignments();
 
         mRecyclerView.setAdapter(mAdapter);
@@ -146,7 +148,7 @@ public class AssignmentFragment extends Fragment implements SwipeRefreshLayout.O
             public void run() {
                 if (NetWork.getConnectionEstablished()) {
                     String url;
-                    MembershipAssignmentsService membershipAssignmentsService = new MembershipAssignmentsService(getContext(), siteData.getId(), delegate);
+                    MembershipAssignmentsService membershipAssignmentsService = new MembershipAssignmentsService(getContext(), siteData.getId(), callback);
                     membershipAssignmentsService.setSwipeRefreshLayout(swipeRefreshLayout);
                     url = getContext().getResources().getString(R.string.url) + "assignment/site/" + siteData.getId() + ".json";
                     membershipAssignmentsService.getAssignments(url);
@@ -161,16 +163,26 @@ public class AssignmentFragment extends Fragment implements SwipeRefreshLayout.O
     }
 
     @Override
-    public void updateUI(Assignment assignment) {
-        this.assignment = assignment;
-        mAdapter = new AssignmentAdapter(getActivity(), assignment, siteData.getId());
-        if (mRecyclerView != null) {
-            if (mAdapter.getItemCount() == 0) {
-                noAssignments.setVisibility(View.VISIBLE);
-            } else {
-                noAssignments.setVisibility(View.GONE);
-                mRecyclerView.setAdapter(mAdapter);
+    public void onSuccess(Object obj) {
+        if (obj instanceof Assignment) {
+            this.assignment = (Assignment) obj;
+            mAdapter = new AssignmentAdapter(getActivity(), assignment, siteData.getId());
+            if (mRecyclerView != null) {
+                if (mAdapter.getItemCount() == 0) {
+                    noAssignments.setVisibility(View.VISIBLE);
+                } else {
+                    noAssignments.setVisibility(View.GONE);
+                    mRecyclerView.setAdapter(mAdapter);
+                }
             }
         }
+    }
+
+    @Override
+    public void onError(VolleyError error) {
+        if (error instanceof ServerError) {
+            Toast.makeText(getContext(), getContext().getResources().getString(R.string.server_error), Toast.LENGTH_SHORT).show();
+        }
+        swipeRefreshLayout.setRefreshing(false);
     }
 }

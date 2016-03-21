@@ -28,8 +28,9 @@ public class ContactInfoHelper implements IUserAbout {
 
     /**
      * ContactInfoHelper constructor
-     * @param activity the activity
-     * @param editDrawable the custom color Edit image
+     *
+     * @param activity      the activity
+     * @param editDrawable  the custom color Edit image
      * @param clickListener the onClickListener listener
      */
     public ContactInfoHelper(AppCompatActivity activity, Drawable editDrawable, View.OnClickListener clickListener) {

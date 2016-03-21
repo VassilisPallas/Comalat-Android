@@ -1,19 +1,8 @@
-package org.sakaiproject.api.sync;
+package org.sakaiproject.api.callback;
 
 import android.content.Context;
 import android.os.AsyncTask;
 import android.support.v4.widget.SwipeRefreshLayout;
-
-import org.sakaiproject.api.events.EventsCollection;
-import org.sakaiproject.api.events.UserEventsService;
-import org.sakaiproject.api.memberships.MembershipService;
-import org.sakaiproject.api.memberships.SiteData;
-import org.sakaiproject.sakai.CalendarFragment;
-import org.sakaiproject.sakai.R;
-import org.sakaiproject.sakai.UserActivity;
-
-import java.io.IOException;
-import java.text.ParseException;
 
 /**
  * Created by vasilis on 11/3/15.
@@ -25,6 +14,7 @@ public class Refresh extends AsyncTask<Void, Void, Void> {
 
     /**
      * Refresh constructor
+     *
      * @param context the context
      */
     public Refresh(Context context) {

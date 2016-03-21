@@ -17,13 +17,13 @@ import com.google.gson.reflect.TypeToken;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.sakaiproject.api.callback.Callback;
 import org.sakaiproject.api.json.JsonParser;
 import org.sakaiproject.api.memberships.MembershipService;
 import org.sakaiproject.api.pojos.membership.MembershipData;
 import org.sakaiproject.api.pojos.membership.PagePermissions;
 import org.sakaiproject.api.pojos.membership.PageUserPermissions;
 import org.sakaiproject.api.pojos.membership.SitePage;
-import org.sakaiproject.api.sync.MembershipRefreshUI;
 import org.sakaiproject.api.user.User;
 import org.sakaiproject.customviews.CustomSwipeRefreshLayout;
 import org.sakaiproject.helpers.ActionsHelper;
@@ -46,7 +46,7 @@ public class WorkspaceService {
     private ProgressBar progressBar;
     private TextView loginTextView;
 
-    private MembershipRefreshUI delegate;
+    private Callback callback;
     private org.sakaiproject.customviews.CustomSwipeRefreshLayout swipeRefreshLayout;
 
     private boolean login = false;
@@ -64,8 +64,8 @@ public class WorkspaceService {
         this.loginTextView = loginTextView;
     }
 
-    public void setDelegate(MembershipRefreshUI delegate) {
-        this.delegate = delegate;
+    public void setDelegate(Callback delegate) {
+        this.callback = delegate;
     }
 
     public void setSwipeRefreshLayout(CustomSwipeRefreshLayout swipeRefreshLayout) {
@@ -96,7 +96,7 @@ public class WorkspaceService {
                 getUserPermissions();
 
                 MembershipService membershipService = new MembershipService(context);
-                membershipService.setDelegate(delegate);
+                membershipService.setDelegate(callback);
                 membershipService.setSwipeRefreshLayout(swipeRefreshLayout);
                 membershipService.setLogin(login);
                 try {
@@ -112,12 +112,7 @@ public class WorkspaceService {
                     progressBar.setVisibility(View.GONE);
                     loginTextView.setVisibility(View.VISIBLE);
                 }
-                if (swipeRefreshLayout != null)
-                    swipeRefreshLayout.setRefreshing(false);
-
-                if (error instanceof ServerError) {
-                    Toast.makeText(context, context.getResources().getString(R.string.server_error), Toast.LENGTH_SHORT).show();
-                }
+                callback.onError(error);
             }
         });
 
@@ -148,12 +143,8 @@ public class WorkspaceService {
                     progressBar.setVisibility(View.GONE);
                     loginTextView.setVisibility(View.VISIBLE);
                 }
-                if (swipeRefreshLayout != null)
-                    swipeRefreshLayout.setRefreshing(false);
 
-                if (error instanceof ServerError) {
-                    Toast.makeText(context, context.getResources().getString(R.string.server_error), Toast.LENGTH_SHORT).show();
-                }
+                callback.onError(error);
             }
         });
         AppController.getInstance().addToRequestQueue(getWorkspacePagesRequest, id + "_workspace_pages");
@@ -181,12 +172,7 @@ public class WorkspaceService {
                     loginTextView.setVisibility(View.VISIBLE);
                 }
 
-                if (swipeRefreshLayout != null)
-                    swipeRefreshLayout.setRefreshing(false);
-
-                if (error instanceof ServerError) {
-                    Toast.makeText(context, context.getResources().getString(R.string.server_error), Toast.LENGTH_SHORT).show();
-                }
+                callback.onError(error);
             }
         });
         AppController.getInstance().addToRequestQueue(getWorkspacePermissions, id + "_workspace_perms");
@@ -215,12 +201,7 @@ public class WorkspaceService {
                     loginTextView.setVisibility(View.VISIBLE);
                 }
 
-                if (swipeRefreshLayout != null)
-                    swipeRefreshLayout.setRefreshing(false);
-
-                if (error instanceof ServerError) {
-                    Toast.makeText(context, context.getResources().getString(R.string.server_error), Toast.LENGTH_SHORT).show();
-                }
+                callback.onError(error);
             }
         });
         AppController.getInstance().addToRequestQueue(getWorkspaceUserPermissions, id + "_workspace_userPerms");

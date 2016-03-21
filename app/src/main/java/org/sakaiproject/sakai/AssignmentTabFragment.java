@@ -10,13 +10,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.android.volley.ServerError;
+import com.android.volley.VolleyError;
 
 import org.sakaiproject.api.assignments.OfflineUserAssignments;
+import org.sakaiproject.api.callback.Callback;
 import org.sakaiproject.api.memberships.SiteData;
 import org.sakaiproject.api.memberships.pages.assignments.OfflineMembershipAssignments;
 import org.sakaiproject.adapters.AssignmentAdapter;
 import org.sakaiproject.api.pojos.assignments.Assignment;
-import org.sakaiproject.api.sync.AssignmentsRefreshUI;
 import org.sakaiproject.customviews.CustomSwipeRefreshLayout;
 import org.sakaiproject.customviews.listeners.RecyclerItemClickListener;
 import org.sakaiproject.helpers.user_navigation_drawer_helpers.NavigationDrawerHelper;
@@ -26,7 +30,7 @@ import java.util.Iterator;
 /**
  * Created by vspallas on 23/02/16.
  */
-public class AssignmentTabFragment extends Fragment implements AssignmentsRefreshUI {
+public class AssignmentTabFragment extends Fragment implements Callback {
 
     private String siteName;
     private SiteData siteData;
@@ -149,19 +153,29 @@ public class AssignmentTabFragment extends Fragment implements AssignmentsRefres
     }
 
     @Override
-    public void updateUI(Assignment assignment) {
-        this.assignment = assignment;
-        if (mAdapter != null && mRecyclerView != null) {
-            fillList();
-            mAdapter.setAssignment(assignment);
+    public void onSuccess(Object obj) {
+        if (obj instanceof Assignment) {
+            this.assignment = (Assignment) obj;
+            if (mAdapter != null && mRecyclerView != null) {
+                fillList();
+                mAdapter.setAssignment(assignment);
 
-            if (mAdapter.getItemCount() == 0) {
-                noAssignments.setVisibility(View.VISIBLE);
-            } else {
-                noAssignments.setVisibility(View.GONE);
+                if (mAdapter.getItemCount() == 0) {
+                    noAssignments.setVisibility(View.VISIBLE);
+                } else {
+                    noAssignments.setVisibility(View.GONE);
+                }
+
+                mRecyclerView.setAdapter(mAdapter);
             }
-
-            mRecyclerView.setAdapter(mAdapter);
         }
+    }
+
+    @Override
+    public void onError(VolleyError error) {
+        if (error instanceof ServerError) {
+            Toast.makeText(getContext(), getContext().getResources().getString(R.string.server_error), Toast.LENGTH_SHORT).show();
+        }
+        swipeRefreshLayout.setRefreshing(false);
     }
 }

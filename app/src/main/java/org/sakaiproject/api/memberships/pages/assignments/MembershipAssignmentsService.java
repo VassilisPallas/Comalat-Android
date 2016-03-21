@@ -1,25 +1,20 @@
 package org.sakaiproject.api.memberships.pages.assignments;
 
 import android.content.Context;
-import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
-import com.android.volley.ServerError;
 import com.android.volley.VolleyError;
-import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.google.gson.Gson;
 
 import org.json.JSONObject;
-import org.sakaiproject.api.json.JsonParser;
+import org.sakaiproject.api.callback.Callback;
 import org.sakaiproject.api.pojos.assignments.Assignment;
-import org.sakaiproject.api.sync.AssignmentsRefreshUI;
 import org.sakaiproject.api.user.User;
 import org.sakaiproject.customviews.CustomSwipeRefreshLayout;
 import org.sakaiproject.helpers.ActionsHelper;
 import org.sakaiproject.sakai.AppController;
-import org.sakaiproject.sakai.R;
 
 import java.io.File;
 import java.io.IOException;
@@ -33,12 +28,12 @@ public class MembershipAssignmentsService {
     private final String membership_assignments_tag;
     private Gson gson = new Gson();
     private org.sakaiproject.customviews.CustomSwipeRefreshLayout swipeRefreshLayout;
-    private AssignmentsRefreshUI delegate;
+    private Callback callback;
 
-    public MembershipAssignmentsService(Context context, String siteId, AssignmentsRefreshUI delegate) {
+    public MembershipAssignmentsService(Context context, String siteId, Callback callback) {
         this.context = context;
         this.siteId = siteId;
-        this.delegate = delegate;
+        this.callback = callback;
         membership_assignments_tag = User.getUserEid() + " " + siteId + " announcements";
     }
 
@@ -59,8 +54,8 @@ public class MembershipAssignmentsService {
                         e.printStackTrace();
                     }
 
-                if (delegate != null)
-                    delegate.updateUI(assignment);
+                if (callback != null)
+                    callback.onSuccess(assignment);
 
                 if (swipeRefreshLayout != null)
                     swipeRefreshLayout.setRefreshing(false);
@@ -68,11 +63,7 @@ public class MembershipAssignmentsService {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                if (error instanceof ServerError) {
-                    Toast.makeText(context, context.getResources().getString(R.string.server_error), Toast.LENGTH_SHORT).show();
-                }
-                if (swipeRefreshLayout != null)
-                    swipeRefreshLayout.setRefreshing(false);
+                callback.onError(error);
             }
         });
         AppController.getInstance().addToRequestQueue(assignmentsRequest, membership_assignments_tag);

@@ -4,7 +4,6 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Build;
 import android.os.Bundle;
@@ -28,14 +27,16 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.ServerError;
+import com.android.volley.VolleyError;
+
 import org.json.JSONException;
+import org.sakaiproject.api.callback.Callback;
 import org.sakaiproject.api.internet.NetWork;
-import org.sakaiproject.api.sync.AccountRefreshUI;
 import org.sakaiproject.api.user.User;
 import org.sakaiproject.api.user.update.AccountDataService;
 import org.sakaiproject.api.user.update.CheckPassword;
 import org.sakaiproject.api.user.update.PasswordMatch;
-import org.sakaiproject.api.user.update.OnDataChanged;
 import org.sakaiproject.api.user.update.UpdateAccountInfoService;
 import org.sakaiproject.customviews.scrollview.CustomScrollView;
 import org.sakaiproject.helpers.ActionsHelper;
@@ -46,14 +47,14 @@ import java.io.IOException;
 /**
  * Created by vspallas on 27/02/16.
  */
-public class AccountFragment extends Fragment implements View.OnClickListener, OnDataChanged, PasswordMatch, SwipeRefreshLayout.OnRefreshListener, AccountRefreshUI {
+public class AccountFragment extends Fragment implements View.OnClickListener, PasswordMatch, SwipeRefreshLayout.OnRefreshListener, Callback {
     private ImageView edit;
     private TextView emailError, passwordError, verifyNewPasswordError;
     private TextView eidTextView, nameTextView, surnameTextView, emailTextView, passwordTextView, passwordText;
     private EditText nameEditText, surnameEditText, emailEditText, passwordEditText, newPasswordEditText, confirmNewPasswordEditText;
     private LinearLayout newPasswordLayout, confirmNewPasswordLayout, buttonsLayout, changePasswordHeader;
     private Button save, cancel;
-    private OnDataChanged onDataChangecallback = this;
+    private Callback callback = this;
     private PasswordMatch oldpasswordMatchcallback = this;
     private boolean isEmailValid = true, isPasswordCorrect = true, isPasswordEqual = true;
     private FrameLayout root;
@@ -61,8 +62,6 @@ public class AccountFragment extends Fragment implements View.OnClickListener, O
     private org.sakaiproject.customviews.CustomSwipeRefreshLayout swipeRefreshLayout;
     private ISwipeRefresh swipeRefresh;
     private CustomScrollView customScrollView;
-
-    private AccountRefreshUI refreshCallback = this;
 
     static public int REQUEST_CODE = 1000;
     static public int RESULT_OK = -1;
@@ -253,7 +252,7 @@ public class AccountFragment extends Fragment implements View.OnClickListener, O
                                 surnameEditText.getText().toString(),
                                 emailEditText.getText().toString(),
                                 !passwordEditText.getText().toString().equals("") ? confirmNewPasswordEditText.getText().toString() : null,
-                                onDataChangecallback,
+                                callback,
                                 progressBar);
 
                         try {
@@ -356,17 +355,6 @@ public class AccountFragment extends Fragment implements View.OnClickListener, O
         }
     }
 
-    @Override
-    public void updateUI() {
-        Toast.makeText(getContext(), getContext().getResources().getString(R.string.data_changed), Toast.LENGTH_SHORT).show();
-        fill();
-        disableEdit();
-
-        updateDrawerHeader();
-
-        progressBar.setVisibility(View.GONE);
-    }
-
     private void updateDrawerHeader() {
         String fullName = User.getUserEid();
         if (!TextUtils.isEmpty(User.getFirstName())) {
@@ -399,7 +387,7 @@ public class AccountFragment extends Fragment implements View.OnClickListener, O
             @Override
             public void run() {
                 if (NetWork.getConnectionEstablished()) {
-                    AccountDataService accountDataService = new AccountDataService(getContext(), swipeRefreshLayout, refreshCallback);
+                    AccountDataService accountDataService = new AccountDataService(getContext(), swipeRefreshLayout, callback);
                     accountDataService.accountInfo(getContext().getResources().getString(R.string.url) + "user/" + User.getUserEid() + ".json");
                 } else {
                     Snackbar.make(root, getResources().getString(R.string.no_internet), Snackbar.LENGTH_LONG)
@@ -411,10 +399,29 @@ public class AccountFragment extends Fragment implements View.OnClickListener, O
     }
 
     @Override
-    public void onRefreshUI() {
-        fill();
-        updateDrawerHeader();
-        swipeRefreshLayout.setRefreshing(false);
+    public void onSuccess(Object obj) {
+        if (obj instanceof String) {
+            if (obj.equals("updateData")) {
+                fill();
+                updateDrawerHeader();
+                swipeRefreshLayout.setRefreshing(false);
+            } else {
+                Toast.makeText(getContext(), getContext().getResources().getString(R.string.data_changed), Toast.LENGTH_SHORT).show();
+                fill();
+                disableEdit();
+
+                updateDrawerHeader();
+
+                progressBar.setVisibility(View.GONE);
+            }
+        }
+
+    }
+
+    @Override
+    public void onError(VolleyError error) {
+        if (error instanceof ServerError)
+            Toast.makeText(getContext(), getContext().getResources().getString(R.string.server_error), Toast.LENGTH_SHORT).show();
     }
 
     private class Watcher implements TextWatcher {

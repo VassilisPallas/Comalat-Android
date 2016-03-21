@@ -66,7 +66,7 @@ public class OfflineLogin implements ILogin {
                     OfflineWorkspace offlineWorkspace = new OfflineWorkspace(context, User.getUserId());
                     offlineWorkspace.setLogin(true);
                     offlineWorkspace.getWorkspace();
-                    
+
                     return;
                 }
             } else {

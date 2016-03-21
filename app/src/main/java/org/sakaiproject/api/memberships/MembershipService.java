@@ -16,12 +16,12 @@ import com.google.gson.reflect.TypeToken;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.sakaiproject.api.callback.Callback;
 import org.sakaiproject.api.pojos.membership.MembershipData;
 import org.sakaiproject.api.pojos.membership.Membership;
 import org.sakaiproject.api.pojos.membership.PagePermissions;
 import org.sakaiproject.api.pojos.membership.PageUserPermissions;
 import org.sakaiproject.api.pojos.membership.SitePage;
-import org.sakaiproject.api.sync.MembershipRefreshUI;
 import org.sakaiproject.api.user.User;
 import org.sakaiproject.customviews.CustomSwipeRefreshLayout;
 import org.sakaiproject.helpers.ActionsHelper;
@@ -44,7 +44,7 @@ public class MembershipService {
     private final String membership_tag = User.getUserEid() + " memberships";
     private String membership_id_tag, membership_page_tag, membership_perms_tag, membership_user_perms_tag;
     private Gson gson = new Gson();
-    private MembershipRefreshUI delegate;
+    private Callback callback;
     private org.sakaiproject.customviews.CustomSwipeRefreshLayout swipeRefreshLayout;
     private boolean login = false;
 
@@ -61,8 +61,8 @@ public class MembershipService {
         this.swipeRefreshLayout = swipeRefreshLayout;
     }
 
-    public void setDelegate(MembershipRefreshUI delegate) {
-        this.delegate = delegate;
+    public void setDelegate(Callback callback) {
+        this.callback = callback;
     }
 
     public void setLogin(boolean login) {
@@ -109,11 +109,7 @@ public class MembershipService {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                if (error instanceof ServerError) {
-                    Toast.makeText(context, context.getResources().getString(R.string.server_error), Toast.LENGTH_SHORT).show();
-                }
-                if (swipeRefreshLayout != null)
-                    swipeRefreshLayout.setRefreshing(false);
+                callback.onError(error);
             }
         });
         AppController.getInstance().addToRequestQueue(membershipRequest, membership_tag);
@@ -143,11 +139,7 @@ public class MembershipService {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                if (error instanceof ServerError) {
-                    Toast.makeText(context, context.getResources().getString(R.string.server_error), Toast.LENGTH_SHORT).show();
-                }
-                if (swipeRefreshLayout != null)
-                    swipeRefreshLayout.setRefreshing(false);
+                callback.onError(error);
             }
         });
         AppController.getInstance().addToRequestQueue(membershipDataRequest, membership_id_tag);
@@ -175,11 +167,7 @@ public class MembershipService {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                if (error instanceof ServerError) {
-                    Toast.makeText(context, context.getResources().getString(R.string.server_error), Toast.LENGTH_SHORT).show();
-                }
-                if (swipeRefreshLayout != null)
-                    swipeRefreshLayout.setRefreshing(false);
+                callback.onError(error);
             }
         });
 
@@ -207,11 +195,7 @@ public class MembershipService {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                if (error instanceof ServerError) {
-                    Toast.makeText(context, context.getResources().getString(R.string.server_error), Toast.LENGTH_SHORT).show();
-                }
-                if (swipeRefreshLayout != null)
-                    swipeRefreshLayout.setRefreshing(false);
+                callback.onError(error);
             }
         });
         AppController.getInstance().addToRequestQueue(pagePermissionsRequest, membership_perms_tag);
@@ -239,8 +223,8 @@ public class MembershipService {
                         context.startActivity(i);
                         ((AppCompatActivity) context).finish();
                     } else {
-                        if (delegate != null)
-                            delegate.updateUI();
+                        if (callback != null)
+                            callback.onSuccess(null);
 
                         if (swipeRefreshLayout != null)
                             swipeRefreshLayout.setRefreshing(false);
@@ -251,11 +235,7 @@ public class MembershipService {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                if (error instanceof ServerError) {
-                    Toast.makeText(context, context.getResources().getString(R.string.server_error), Toast.LENGTH_SHORT).show();
-                }
-                if (swipeRefreshLayout != null)
-                    swipeRefreshLayout.setRefreshing(false);
+                callback.onError(error);
             }
         });
         AppController.getInstance().addToRequestQueue(pageUserPermissionsRequest, membership_user_perms_tag);

@@ -7,14 +7,12 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.ServerError;
 import com.android.volley.VolleyError;
-import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.google.gson.Gson;
 
 import org.json.JSONObject;
-import org.sakaiproject.api.memberships.SiteData;
+import org.sakaiproject.api.callback.Callback;
 import org.sakaiproject.api.pojos.web_content.WebContent;
-import org.sakaiproject.api.sync.WebContentRefreshUI;
 import org.sakaiproject.api.user.User;
 import org.sakaiproject.customviews.CustomSwipeRefreshLayout;
 import org.sakaiproject.helpers.ActionsHelper;
@@ -33,10 +31,10 @@ public class WebContentService {
     private org.sakaiproject.customviews.CustomSwipeRefreshLayout swipeRefreshLayout;
     private String siteId;
     private WebContent webContent;
-    private WebContentRefreshUI callback;
+    private Callback callback;
     private final String web_content_tag;
 
-    public WebContentService(Context context, CustomSwipeRefreshLayout swipeRefreshLayout, String siteId, WebContentRefreshUI callback) {
+    public WebContentService(Context context, CustomSwipeRefreshLayout swipeRefreshLayout, String siteId, Callback callback) {
         this.context = context;
         this.swipeRefreshLayout = swipeRefreshLayout;
         this.siteId = siteId;
@@ -66,17 +64,13 @@ public class WebContentService {
                             e.printStackTrace();
                         }
                 }
-                callback.updateUI(webContent);
+                callback.onSuccess(webContent);
 
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                if (error instanceof ServerError) {
-                    Toast.makeText(context, context.getResources().getString(R.string.server_error), Toast.LENGTH_SHORT).show();
-                }
-                if (swipeRefreshLayout != null)
-                    swipeRefreshLayout.setRefreshing(false);
+                callback.onError(error);
             }
         });
         AppController.getInstance().addToRequestQueue(webContentRequest, web_content_tag);

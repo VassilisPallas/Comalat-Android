@@ -18,7 +18,7 @@ import java.io.UnsupportedEncodingException;
 /**
  * Created by vspallas on 26/02/16.
  */
-public class BooleanRequest  extends Request<Boolean> {
+public class BooleanRequest extends Request<Boolean> {
 
     private final Response.Listener<Boolean> mListener;
     private final Response.ErrorListener mErrorListener;

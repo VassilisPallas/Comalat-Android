@@ -12,8 +12,9 @@ public class MembershipOwner implements Serializable {
 
     /**
      * Owner constructor
+     *
      * @param userDisplayName the display name from the user
-     * @param userId the userId
+     * @param userId          the userId
      */
     public MembershipOwner(String userDisplayName, String userId) {
         this.userDisplayName = userDisplayName;

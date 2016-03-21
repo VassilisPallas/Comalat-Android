@@ -4,9 +4,8 @@ import android.content.Context;
 
 import com.google.gson.Gson;
 
-import org.sakaiproject.api.json.JsonParser;
+import org.sakaiproject.api.callback.Callback;
 import org.sakaiproject.api.pojos.announcements.Announcement;
-import org.sakaiproject.api.sync.AnnouncementRefreshUI;
 import org.sakaiproject.api.user.User;
 import org.sakaiproject.helpers.ActionsHelper;
 
@@ -20,12 +19,12 @@ public class OfflineMembershipAnnouncements {
     private Context context;
     private final Gson gson = new Gson();
     private String siteId;
-    private AnnouncementRefreshUI delegate;
+    private Callback callback;
 
-    public OfflineMembershipAnnouncements(Context context, String siteId, AnnouncementRefreshUI delegate) {
+    public OfflineMembershipAnnouncements(Context context, String siteId, Callback callback) {
         this.context = context;
         this.siteId = siteId;
-        this.delegate = delegate;
+        this.callback = callback;
     }
 
     public void getAnnouncements() {
@@ -33,7 +32,7 @@ public class OfflineMembershipAnnouncements {
             try {
                 String announce = ActionsHelper.readJsonFile(context, siteId + "_announcements", User.getUserEid() + File.separator + "memberships" + File.separator + siteId + File.separator + "announcements");
                 Announcement announcement = gson.fromJson(announce, Announcement.class);
-                delegate.updateUI(announcement);
+                callback.onSuccess(announcement);
             } catch (IOException e) {
                 e.printStackTrace();
             }

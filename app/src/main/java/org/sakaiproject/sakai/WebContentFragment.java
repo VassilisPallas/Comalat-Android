@@ -11,13 +11,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.Toast;
 
+import com.android.volley.ServerError;
+import com.android.volley.VolleyError;
+
+import org.sakaiproject.api.callback.Callback;
 import org.sakaiproject.api.internet.NetWork;
 import org.sakaiproject.api.memberships.SiteData;
 import org.sakaiproject.api.memberships.pages.web_content.OfflineWebContent;
 import org.sakaiproject.api.memberships.pages.web_content.WebContentService;
 import org.sakaiproject.api.pojos.web_content.WebContent;
-import org.sakaiproject.api.sync.WebContentRefreshUI;
 import org.sakaiproject.api.user.User;
 import org.sakaiproject.customviews.rich_textview.RichTextView;
 import org.sakaiproject.helpers.user_navigation_drawer_helpers.NavigationDrawerHelper;
@@ -25,7 +29,7 @@ import org.sakaiproject.helpers.user_navigation_drawer_helpers.NavigationDrawerH
 /**
  * Created by vspallas on 01/03/16.
  */
-public class WebContentFragment extends Fragment implements WebContentRefreshUI, SwipeRefreshLayout.OnRefreshListener {
+public class WebContentFragment extends Fragment implements Callback, SwipeRefreshLayout.OnRefreshListener {
     private RichTextView urlTextView;
     private int index;
     private String siteName;
@@ -33,7 +37,7 @@ public class WebContentFragment extends Fragment implements WebContentRefreshUI,
     private org.sakaiproject.customviews.CustomSwipeRefreshLayout swipeRefreshLayout;
     private ISwipeRefresh swipeRefresh;
     private FrameLayout root;
-    private WebContentRefreshUI callback = this;
+    private Callback callback = this;
 
     public WebContentFragment() {
     }
@@ -89,14 +93,6 @@ public class WebContentFragment extends Fragment implements WebContentRefreshUI,
         return v;
     }
 
-
-    @Override
-    public void updateUI(WebContent webContent) {
-        urlTextView.setText(String.format("<a href=\"%s\">%s</a>", webContent.getCollection().get(index - 1).getUrl(), webContent.getCollection().get(index - 1).getUrl()));
-        swipeRefreshLayout.setRefreshing(false);
-        startActivity(new Intent(getActivity(), WebViewActivity.class).putExtra("url", webContent.getCollection().get(index - 1).getUrl()));
-    }
-
     @Override
     public void onRefresh() {
         new Handler().post(new Runnable() {
@@ -117,5 +113,23 @@ public class WebContentFragment extends Fragment implements WebContentRefreshUI,
                 }
             }
         });
+    }
+
+    @Override
+    public void onSuccess(Object obj) {
+        if (obj instanceof WebContent) {
+            WebContent webContent = (WebContent) obj;
+            urlTextView.setText(String.format("<a href=\"%s\">%s</a>", webContent.getCollection().get(index - 1).getUrl(), webContent.getCollection().get(index - 1).getUrl()));
+            swipeRefreshLayout.setRefreshing(false);
+            startActivity(new Intent(getActivity(), WebViewActivity.class).putExtra("url", webContent.getCollection().get(index - 1).getUrl()));
+        }
+    }
+
+    @Override
+    public void onError(VolleyError error) {
+        if (error instanceof ServerError) {
+            Toast.makeText(getContext(), getContext().getResources().getString(R.string.server_error), Toast.LENGTH_SHORT).show();
+        }
+        swipeRefreshLayout.setRefreshing(false);
     }
 }

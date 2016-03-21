@@ -1,7 +1,6 @@
 package org.sakaiproject.sakai;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -17,20 +16,23 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
+import com.android.volley.ServerError;
+import com.android.volley.VolleyError;
+
 import org.sakaiproject.adapters.RosterAdapter;
+import org.sakaiproject.api.callback.Callback;
 import org.sakaiproject.api.internet.NetWork;
 import org.sakaiproject.api.memberships.SiteData;
 import org.sakaiproject.api.memberships.pages.roster.DownloadExcelService;
 import org.sakaiproject.api.memberships.pages.roster.OfflineRoster;
 import org.sakaiproject.api.memberships.pages.roster.RosterService;
 import org.sakaiproject.api.pojos.roster.Roster;
-import org.sakaiproject.api.sync.RosterRefreshUI;
 import org.sakaiproject.helpers.user_navigation_drawer_helpers.NavigationDrawerHelper;
 
 /**
  * Created by vspallas on 02/03/16.
  */
-public class RosterFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener, RosterRefreshUI, View.OnClickListener, View.OnLongClickListener {
+public class RosterFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener, Callback, View.OnClickListener, View.OnLongClickListener {
     private ISwipeRefresh swipeRefresh;
     private org.sakaiproject.customviews.CustomSwipeRefreshLayout swipeRefreshLayout;
     private SiteData siteData;
@@ -38,7 +40,7 @@ public class RosterFragment extends Fragment implements SwipeRefreshLayout.OnRef
     private RecyclerView mRecyclerView;
     private RecyclerView.LayoutManager mLayoutManager;
     private RosterAdapter mAdapter;
-    private RosterRefreshUI callback = this;
+    private Callback callback = this;
     private FloatingActionButton downloadButton;
 
     public RosterFragment() {
@@ -125,15 +127,6 @@ public class RosterFragment extends Fragment implements SwipeRefreshLayout.OnRef
     }
 
     @Override
-    public void updateUI(Roster roster) {
-        if (roster != null) {
-            mAdapter = new RosterAdapter(getContext(), roster.getMembers(), siteData);
-            mRecyclerView.setAdapter(mAdapter);
-        }
-        swipeRefreshLayout.setRefreshing(false);
-    }
-
-    @Override
     public void onClick(View v) {
         DownloadExcelService download = new DownloadExcelService(getContext(), siteData);
         download.download(getContext().getResources().getString(R.string.url) + "roster-export/" + siteData.getId() + "/export-to-excel");
@@ -143,5 +136,22 @@ public class RosterFragment extends Fragment implements SwipeRefreshLayout.OnRef
     public boolean onLongClick(View v) {
         Toast.makeText(getContext(), getContext().getResources().getString(R.string.download_roster_to_excel), Toast.LENGTH_SHORT).show();
         return true;
+    }
+
+    @Override
+    public void onSuccess(Object obj) {
+        if (obj != null && obj instanceof Roster) {
+            Roster roster = (Roster) obj;
+            mAdapter = new RosterAdapter(getContext(), roster.getMembers(), siteData);
+            mRecyclerView.setAdapter(mAdapter);
+        }
+        swipeRefreshLayout.setRefreshing(false);
+    }
+
+    @Override
+    public void onError(VolleyError error) {
+        if (error instanceof ServerError)
+            Toast.makeText(getContext(), getContext().getResources().getString(R.string.server_error), Toast.LENGTH_SHORT).show();
+        swipeRefreshLayout.setEnabled(false);
     }
 }

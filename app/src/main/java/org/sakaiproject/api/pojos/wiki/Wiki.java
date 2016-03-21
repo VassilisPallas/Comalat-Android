@@ -6,7 +6,7 @@ import java.util.List;
 /**
  * Created by vspallas on 28/02/16.
  */
-public class Wiki implements Serializable{
+public class Wiki implements Serializable {
     private List<Object> childPages;
     private String name;
     private int numberOfComments;

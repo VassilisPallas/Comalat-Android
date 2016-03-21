@@ -1,22 +1,19 @@
 package org.sakaiproject.api.memberships.pages.dropbox;
 
 import android.content.Context;
-import android.util.Log;
-import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
-import com.android.volley.ServerError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.google.gson.Gson;
 
 import org.json.JSONObject;
+import org.sakaiproject.api.callback.Callback;
 import org.sakaiproject.api.memberships.SiteData;
 import org.sakaiproject.api.pojos.dropbox.Dropbox;
 import org.sakaiproject.api.pojos.roster.Member;
 import org.sakaiproject.api.pojos.roster.Roster;
-import org.sakaiproject.api.sync.DropboxRefreshUI;
 import org.sakaiproject.api.user.User;
 import org.sakaiproject.helpers.ActionsHelper;
 import org.sakaiproject.sakai.AppController;
@@ -35,11 +32,11 @@ public class DropboxService {
     private SiteData siteData;
     private Gson gson = new Gson();
     private Map<String, Integer> dropboxList = new HashMap<>();
-    private DropboxRefreshUI callback;
+    private Callback callback;
     private Roster roster;
     private org.sakaiproject.customviews.CustomSwipeRefreshLayout swipeRefreshLayout;
 
-    public DropboxService(Context context, SiteData siteData, DropboxRefreshUI callback, Roster roster, org.sakaiproject.customviews.CustomSwipeRefreshLayout swipeRefreshLayout) {
+    public DropboxService(Context context, SiteData siteData, Callback callback, Roster roster, org.sakaiproject.customviews.CustomSwipeRefreshLayout swipeRefreshLayout) {
         this.context = context;
         this.siteData = siteData;
         this.callback = callback;
@@ -91,7 +88,7 @@ public class DropboxService {
                         dropboxList.put(f.getAbsolutePath(), dropbox.getCollection().get(i).getSize());
                     }
                 }
-                callback.updateUI(dropboxList);
+                callback.onSuccess(dropboxList);
                 if (index == roster.getMembersTotal() - 1) {
                     swipeRefreshLayout.setRefreshing(false);
                 }
@@ -99,10 +96,9 @@ public class DropboxService {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                if (error instanceof ServerError)
-                    Toast.makeText(context, context.getResources().getString(R.string.server_error), Toast.LENGTH_SHORT).show();
+                callback.onError(error);
                 if (index == roster.getMembersTotal() - 1) {
-                    callback.updateUI(dropboxList);
+                    callback.onSuccess(dropboxList);
                     swipeRefreshLayout.setRefreshing(false);
                 }
             }

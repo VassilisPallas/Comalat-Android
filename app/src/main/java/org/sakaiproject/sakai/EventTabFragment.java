@@ -1,7 +1,6 @@
 package org.sakaiproject.sakai;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -11,14 +10,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.android.volley.ServerError;
+import com.android.volley.VolleyError;
 
 import org.sakaiproject.adapters.SelectedDayEventsAdapter;
+import org.sakaiproject.api.callback.Callback;
 import org.sakaiproject.api.events.EventsCollection;
 import org.sakaiproject.api.events.OfflineEvents;
 import org.sakaiproject.api.events.UserEvents;
 import org.sakaiproject.api.memberships.SiteData;
 import org.sakaiproject.api.memberships.pages.events.SiteOfflineEvents;
-import org.sakaiproject.api.sync.CalendarRefreshUI;
 import org.sakaiproject.customviews.CustomSwipeRefreshLayout;
 import org.sakaiproject.customviews.listeners.RecyclerItemClickListener;
 import org.sakaiproject.helpers.user_navigation_drawer_helpers.NavigationDrawerHelper;
@@ -31,7 +34,7 @@ import java.util.List;
 /**
  * Created by vspallas on 23/02/16.
  */
-public class EventTabFragment extends Fragment implements CalendarRefreshUI {
+public class EventTabFragment extends Fragment implements Callback {
 
     private RecyclerView mRecyclerView;
     private SelectedDayEventsAdapter mAdapter;
@@ -159,8 +162,7 @@ public class EventTabFragment extends Fragment implements CalendarRefreshUI {
     }
 
     @Override
-    public void updateUI() {
-
+    public void onSuccess(Object obj) {
         EventsCollection.getEventsList().clear();
         EventsCollection.getMonthEvents().clear();
 
@@ -187,5 +189,13 @@ public class EventTabFragment extends Fragment implements CalendarRefreshUI {
         } else {
             noEvents.setVisibility(View.GONE);
         }
+    }
+
+    @Override
+    public void onError(VolleyError error) {
+        if (error instanceof ServerError) {
+            Toast.makeText(getContext(), getContext().getResources().getString(R.string.server_error), Toast.LENGTH_SHORT).show();
+        }
+        swipeRefreshLayout.setRefreshing(false);
     }
 }

@@ -21,12 +21,13 @@ public class DateOfBirth {
 
     /**
      * DateOfBirth constructor
-     * @param date the user date birth (eg 10)
-     * @param day the user day birth (eg Tuesday)
-     * @param month the user month birth
-     * @param time the user birth on milliseconds
+     *
+     * @param date           the user date birth (eg 10)
+     * @param day            the user day birth (eg Tuesday)
+     * @param month          the user month birth
+     * @param time           the user birth on milliseconds
      * @param timezoneOffset the user birth timezone offset
-     * @param year the user year birth
+     * @param year           the user year birth
      */
     public DateOfBirth(int date, int day, int month, long time, int timezoneOffset, int year) {
         this.date = date;

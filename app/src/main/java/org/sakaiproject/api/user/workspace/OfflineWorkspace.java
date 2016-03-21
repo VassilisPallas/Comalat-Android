@@ -7,13 +7,13 @@ import android.widget.TextView;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import org.sakaiproject.api.callback.Callback;
 import org.sakaiproject.api.json.JsonParser;
 import org.sakaiproject.api.memberships.OfflineMemberships;
 import org.sakaiproject.api.pojos.membership.MembershipData;
 import org.sakaiproject.api.pojos.membership.PagePermissions;
 import org.sakaiproject.api.pojos.membership.PageUserPermissions;
 import org.sakaiproject.api.pojos.membership.SitePage;
-import org.sakaiproject.api.sync.MembershipRefreshUI;
 import org.sakaiproject.api.user.User;
 import org.sakaiproject.customviews.CustomSwipeRefreshLayout;
 import org.sakaiproject.helpers.ActionsHelper;
@@ -34,7 +34,7 @@ public class OfflineWorkspace {
     private ProgressBar progressBar;
     private TextView loginTextView;
 
-    private MembershipRefreshUI delegate;
+    private Callback callback;
     private org.sakaiproject.customviews.CustomSwipeRefreshLayout swipeRefreshLayout;
 
     private boolean login = false;
@@ -52,8 +52,8 @@ public class OfflineWorkspace {
         this.loginTextView = loginTextView;
     }
 
-    public void setDelegate(MembershipRefreshUI delegate) {
-        this.delegate = delegate;
+    public void setDelegate(Callback delegate) {
+        this.callback = delegate;
     }
 
     public void setSwipeRefreshLayout(CustomSwipeRefreshLayout swipeRefreshLayout) {

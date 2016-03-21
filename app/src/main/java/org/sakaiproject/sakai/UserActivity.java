@@ -2,7 +2,6 @@ package org.sakaiproject.sakai;
 
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.Snackbar;
@@ -14,17 +13,12 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import org.sakaiproject.api.memberships.OfflineMemberships;
 import org.sakaiproject.api.memberships.SiteData;
-import org.sakaiproject.api.session.IdleModeCheckService;
-import org.sakaiproject.api.sync.Refresh;
-import org.sakaiproject.api.user.workspace.OfflineWorkspace;
+import org.sakaiproject.api.callback.Refresh;
 import org.sakaiproject.customviews.ImageViewRounded;
 import org.sakaiproject.helpers.ActionsHelper;
 import org.sakaiproject.general.Connection;
@@ -39,9 +33,7 @@ import org.sakaiproject.helpers.user_navigation_drawer_helpers.UserMainNavigatio
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 public class UserActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, ISwipeRefresh {

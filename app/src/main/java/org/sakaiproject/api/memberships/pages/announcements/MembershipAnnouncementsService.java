@@ -1,25 +1,20 @@
 package org.sakaiproject.api.memberships.pages.announcements;
 
 import android.content.Context;
-import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
-import com.android.volley.ServerError;
 import com.android.volley.VolleyError;
-import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.google.gson.Gson;
 
 import org.json.JSONObject;
-import org.sakaiproject.api.json.JsonParser;
+import org.sakaiproject.api.callback.Callback;
 import org.sakaiproject.api.pojos.announcements.Announcement;
-import org.sakaiproject.api.sync.AnnouncementRefreshUI;
 import org.sakaiproject.api.user.User;
 import org.sakaiproject.customviews.CustomSwipeRefreshLayout;
 import org.sakaiproject.helpers.ActionsHelper;
 import org.sakaiproject.sakai.AppController;
-import org.sakaiproject.sakai.R;
 
 import java.io.File;
 import java.io.IOException;
@@ -34,12 +29,12 @@ public class MembershipAnnouncementsService {
     private final String membership_announcement_tag;
     private Gson gson = new Gson();
     private org.sakaiproject.customviews.CustomSwipeRefreshLayout swipeRefreshLayout;
-    private AnnouncementRefreshUI delegate;
+    private Callback callback;
 
-    public MembershipAnnouncementsService(Context context, String id, AnnouncementRefreshUI delegate) {
+    public MembershipAnnouncementsService(Context context, String id, Callback callback) {
         this.context = context;
         siteId = id;
-        this.delegate = delegate;
+        this.callback = callback;
         membership_announcement_tag = User.getUserEid() + " " + id + " announcements";
     }
 
@@ -63,7 +58,7 @@ public class MembershipAnnouncementsService {
                         e.printStackTrace();
                     }
 
-                delegate.updateUI(announcement);
+                callback.onSuccess(announcement);
 
                 if (swipeRefreshLayout != null)
                     swipeRefreshLayout.setRefreshing(false);
@@ -71,11 +66,7 @@ public class MembershipAnnouncementsService {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                if (error instanceof ServerError) {
-                    Toast.makeText(context, context.getResources().getString(R.string.server_error), Toast.LENGTH_SHORT).show();
-                }
-                if (swipeRefreshLayout != null)
-                    swipeRefreshLayout.setRefreshing(false);
+                callback.onError(error);
             }
         });
         AppController.getInstance().addToRequestQueue(announcementsRequest, membership_announcement_tag);

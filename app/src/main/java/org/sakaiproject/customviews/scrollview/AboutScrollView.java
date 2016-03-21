@@ -40,7 +40,9 @@ public class AboutScrollView extends ScrollView {
         switch (motionEvent.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 // if we can scroll pass the event to the superclass
-                if (isScrollable() && datePickerIsVisible) { return super.onTouchEvent(motionEvent); }
+                if (isScrollable() && datePickerIsVisible) {
+                    return super.onTouchEvent(motionEvent);
+                }
                 // only continue to handle the touch event if scrolling enabled
                 return scrollable; // mScrollable is always false at this point
             default:

@@ -7,16 +7,15 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.ServerError;
 import com.android.volley.VolleyError;
-import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.google.gson.Gson;
 
 import org.json.JSONObject;
+import org.sakaiproject.api.callback.Callback;
 import org.sakaiproject.api.pojos.UserEventOwner;
 import org.sakaiproject.api.pojos.events.EventInfo;
 import org.sakaiproject.api.pojos.events.Event;
 import org.sakaiproject.api.json.JsonParser;
-import org.sakaiproject.api.sync.CalendarRefreshUI;
 import org.sakaiproject.customviews.CustomSwipeRefreshLayout;
 import org.sakaiproject.helpers.ActionsHelper;
 import org.sakaiproject.api.user.User;
@@ -36,7 +35,7 @@ public class UserEventsService {
     private Context context;
     private final Gson gson = new Gson();
     private JsonObjectRequest ownerDataRequest;
-    private CalendarRefreshUI calendarRefreshUI;
+    private Callback callback;
     private org.sakaiproject.customviews.CustomSwipeRefreshLayout swipeRefreshLayout;
 
     /**
@@ -44,9 +43,9 @@ public class UserEventsService {
      *
      * @param context the context
      */
-    public UserEventsService(Context context, CalendarRefreshUI calendarRefreshUI) {
+    public UserEventsService(Context context, Callback callback) {
         this.context = context;
-        this.calendarRefreshUI = calendarRefreshUI;
+        this.callback = callback;
     }
 
     public void setSwipeRefreshLayout(CustomSwipeRefreshLayout swipeRefreshLayout) {
@@ -97,11 +96,7 @@ public class UserEventsService {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                if (error instanceof ServerError) {
-                    Toast.makeText(context, context.getResources().getString(R.string.server_error), Toast.LENGTH_SHORT).show();
-                }
-                if (swipeRefreshLayout != null)
-                    swipeRefreshLayout.setRefreshing(false);
+                callback.onError(error);
             }
         });
 
@@ -141,8 +136,8 @@ public class UserEventsService {
                     }
 
                 if (index == EventsCollection.getEventsList().size() - 1) {
-                    if (calendarRefreshUI != null)
-                        calendarRefreshUI.updateUI();
+                    if (callback != null)
+                        callback.onSuccess(null);
 
                     if (swipeRefreshLayout != null)
                         swipeRefreshLayout.setRefreshing(false);
@@ -151,11 +146,7 @@ public class UserEventsService {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                if (error instanceof ServerError) {
-                    Toast.makeText(context, context.getResources().getString(R.string.server_error), Toast.LENGTH_SHORT).show();
-                }
-                if (swipeRefreshLayout != null)
-                    swipeRefreshLayout.setRefreshing(false);
+               callback.onError(error);
             }
         });
 

@@ -23,7 +23,12 @@ import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.volley.ServerError;
+import com.android.volley.VolleyError;
+
+import org.sakaiproject.api.callback.Callback;
 import org.sakaiproject.api.events.EventsCollection;
 import org.sakaiproject.api.events.OfflineEvents;
 import org.sakaiproject.api.events.UserEventsService;
@@ -31,7 +36,6 @@ import org.sakaiproject.api.internet.NetWork;
 import org.sakaiproject.api.memberships.pages.events.SiteEventsService;
 import org.sakaiproject.api.memberships.pages.events.SiteOfflineEvents;
 import org.sakaiproject.api.memberships.SiteData;
-import org.sakaiproject.api.sync.CalendarRefreshUI;
 import org.sakaiproject.customviews.listeners.RecyclerItemClickListener;
 import org.sakaiproject.adapters.SelectedDayEventsAdapter;
 import org.sakaiproject.adapters.CalendarAdapter;
@@ -47,7 +51,7 @@ import java.util.List;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class CalendarFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener, CalendarRefreshUI {
+public class CalendarFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener, Callback {
 
     public static GregorianCalendar cal_month, cal_month_copy;
     private CalendarAdapter cal_adapter;
@@ -67,7 +71,7 @@ public class CalendarFragment extends Fragment implements SwipeRefreshLayout.OnR
     private SiteData siteData;
     private String siteName;
     private SiteOfflineEvents siteSiteOfflineEvents;
-    private CalendarRefreshUI calendarRefreshUI = this;
+    private Callback callback = this;
 
     public CalendarFragment() {
     }
@@ -321,12 +325,12 @@ public class CalendarFragment extends Fragment implements SwipeRefreshLayout.OnR
 
                     String url = null;
                     if (siteName.equals(getContext().getResources().getString(R.string.my_workspace))) {
-                        UserEventsService userEventsService = new UserEventsService(getContext(), calendarRefreshUI);
+                        UserEventsService userEventsService = new UserEventsService(getContext(), callback);
                         userEventsService.setSwipeRefreshLayout(swipeRefreshLayout);
                         url = getContext().getResources().getString(R.string.url) + "calendar/my.json";
                         userEventsService.getEvents(url);
                     } else {
-                        SiteEventsService siteSiteEventsService = new SiteEventsService(getContext(), siteData.getId(), calendarRefreshUI);
+                        SiteEventsService siteSiteEventsService = new SiteEventsService(getContext(), siteData.getId(), callback);
                         siteSiteEventsService.setSwipeRefreshLayout(swipeRefreshLayout);
                         url = getContext().getResources().getString(R.string.url) + "calendar/site/" + siteData.getId() + ".json";
                         siteSiteEventsService.getEvents(url);
@@ -342,7 +346,7 @@ public class CalendarFragment extends Fragment implements SwipeRefreshLayout.OnR
     }
 
     @Override
-    public void updateUI() {
+    public void onSuccess(Object obj) {
         try {
             EventsCollection.selectedMonthEvents(String.valueOf(cal_month.get(cal_month.MONTH) + 1), cal_month_copy);
         } catch (ParseException | CloneNotSupportedException e) {
@@ -352,6 +356,14 @@ public class CalendarFragment extends Fragment implements SwipeRefreshLayout.OnR
         cal_adapter.setEvents(EventsCollection.getMonthEvents());
 
         gridview.setAdapter(cal_adapter);
+    }
+
+    @Override
+    public void onError(VolleyError error) {
+        if (error instanceof ServerError) {
+            Toast.makeText(getContext(), getContext().getResources().getString(R.string.server_error), Toast.LENGTH_SHORT).show();
+        }
+        swipeRefreshLayout.setRefreshing(false);
     }
 
     private class EventsAsync extends AsyncTask<Void, Void, Void> {

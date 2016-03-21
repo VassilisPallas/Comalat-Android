@@ -27,8 +27,9 @@ public class StaffInfoHelper implements IUserAbout {
 
     /**
      * StaffInfoHelper constructor
-     * @param activity the activity
-     * @param editDrawable the custom color Edit image
+     *
+     * @param activity      the activity
+     * @param editDrawable  the custom color Edit image
      * @param clickListener the onClickListener listener
      */
     public StaffInfoHelper(AppCompatActivity activity, Drawable editDrawable, View.OnClickListener clickListener) {

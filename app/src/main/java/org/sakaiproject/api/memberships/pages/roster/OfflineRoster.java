@@ -4,10 +4,9 @@ import android.content.Context;
 
 import com.google.gson.Gson;
 
-import org.sakaiproject.api.json.JsonParser;
+import org.sakaiproject.api.callback.Callback;
 import org.sakaiproject.api.memberships.SiteData;
 import org.sakaiproject.api.pojos.roster.Roster;
-import org.sakaiproject.api.sync.RosterRefreshUI;
 import org.sakaiproject.api.user.User;
 import org.sakaiproject.helpers.ActionsHelper;
 
@@ -21,9 +20,9 @@ public class OfflineRoster {
     private Context context;
     private SiteData siteData;
     private Gson gson = new Gson();
-    private RosterRefreshUI callback;
+    private Callback callback;
 
-    public OfflineRoster(Context context, SiteData siteData, RosterRefreshUI callback) {
+    public OfflineRoster(Context context, SiteData siteData, Callback callback) {
         this.context = context;
         this.siteData = siteData;
         this.callback = callback;
@@ -38,7 +37,7 @@ public class OfflineRoster {
                 e.printStackTrace();
             }
             Roster roster = gson.fromJson(json, Roster.class);
-            callback.updateUI(roster);
+            callback.onSuccess(roster);
         }
     }
 }
