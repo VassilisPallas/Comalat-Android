@@ -41,24 +41,31 @@ public class WebContentService {
         this.swipeRefreshLayout = swipeRefreshLayout;
         this.siteId = siteId;
         this.callback = callback;
-
         web_content_tag = User.getUserEid() + " " + siteId + " web content";
-
     }
 
     public void getWebContent(String url) {
         swipeRefreshLayout.setRefreshing(true);
-        final JsonObjectRequest webContentRequest = new JsonObjectRequest(Request.Method.GET, url, (String)null, new Response.Listener<JSONObject>() {
+        final JsonObjectRequest webContentRequest = new JsonObjectRequest(Request.Method.GET, url, (String) null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 webContent = gson.fromJson(response.toString(), WebContent.class);
 
-                if (ActionsHelper.createDirIfNotExists(context, User.getUserEid() + File.separator + "memberships" + File.separator + siteId + File.separator + "web_content"))
-                    try {
-                        ActionsHelper.writeJsonFile(context, response.toString(), siteId + "_web_content", User.getUserEid() + File.separator + "memberships" + File.separator + siteId + File.separator + "web_content");
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+                if (siteId != null) {
+                    if (ActionsHelper.createDirIfNotExists(context, User.getUserEid() + File.separator + "memberships" + File.separator + siteId + File.separator + "web_content"))
+                        try {
+                            ActionsHelper.writeJsonFile(context, response.toString(), siteId + "_web_content", User.getUserEid() + File.separator + "memberships" + File.separator + siteId + File.separator + "web_content");
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                } else {
+                    if (ActionsHelper.createDirIfNotExists(context, User.getUserEid() + File.separator + "web_content"))
+                        try {
+                            ActionsHelper.writeJsonFile(context, response.toString(), "web_content", User.getUserEid() + File.separator + "web_content");
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                }
                 callback.updateUI(webContent);
 
             }

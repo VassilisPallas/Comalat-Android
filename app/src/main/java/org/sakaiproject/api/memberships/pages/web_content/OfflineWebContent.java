@@ -30,14 +30,27 @@ public class OfflineWebContent {
     }
 
     public void getWebContent() {
-        if (ActionsHelper.createDirIfNotExists(context, User.getUserEid() + File.separator + "memberships" + File.separator + siteId + File.separator + "web_content")) {
-            try {
-                String w = ActionsHelper.readJsonFile(context, siteId + "_web_content", User.getUserEid() + File.separator + "memberships" + File.separator + siteId + File.separator + "web_content");
-                webContent = gson.fromJson(w, WebContent.class);
-                callback.updateUI(webContent);
+        if (siteId != null) {
+            if (ActionsHelper.createDirIfNotExists(context, User.getUserEid() + File.separator + "memberships" + File.separator + siteId + File.separator + "web_content")) {
+                try {
+                    String w = ActionsHelper.readJsonFile(context, siteId + "_web_content", User.getUserEid() + File.separator + "memberships" + File.separator + siteId + File.separator + "web_content");
+                    webContent = gson.fromJson(w, WebContent.class);
+                    callback.updateUI(webContent);
 
-            } catch (IOException e) {
-                e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        } else {
+            if (ActionsHelper.createDirIfNotExists(context, User.getUserEid() + File.separator + "web_content")) {
+                try {
+                    String w = ActionsHelper.readJsonFile(context, "web_content", User.getUserEid() + File.separator + "web_content");
+                    webContent = gson.fromJson(w, WebContent.class);
+                    callback.updateUI(webContent);
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         }
     }

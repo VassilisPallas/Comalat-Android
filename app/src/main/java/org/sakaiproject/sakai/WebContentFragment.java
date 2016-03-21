@@ -18,6 +18,7 @@ import org.sakaiproject.api.memberships.pages.web_content.OfflineWebContent;
 import org.sakaiproject.api.memberships.pages.web_content.WebContentService;
 import org.sakaiproject.api.pojos.web_content.WebContent;
 import org.sakaiproject.api.sync.WebContentRefreshUI;
+import org.sakaiproject.api.user.User;
 import org.sakaiproject.customviews.rich_textview.RichTextView;
 import org.sakaiproject.helpers.user_navigation_drawer_helpers.NavigationDrawerHelper;
 
@@ -78,8 +79,13 @@ public class WebContentFragment extends Fragment implements WebContentRefreshUI,
 
         swipeRefresh.Callback(this);
 
-        OfflineWebContent offlineWebContent = new OfflineWebContent(getContext(), siteData.getId(), callback);
-        offlineWebContent.getWebContent();
+        if (siteName.equals(getContext().getResources().getString(R.string.my_workspace))) {
+            OfflineWebContent offlineWebContent = new OfflineWebContent(getContext(), null, callback);
+            offlineWebContent.getWebContent();
+        } else {
+            OfflineWebContent offlineWebContent = new OfflineWebContent(getContext(), siteData.getId(), callback);
+            offlineWebContent.getWebContent();
+        }
         return v;
     }
 
@@ -97,8 +103,13 @@ public class WebContentFragment extends Fragment implements WebContentRefreshUI,
             @Override
             public void run() {
                 if (NetWork.getConnectionEstablished()) {
-                    WebContentService webContentService = new WebContentService(getContext(), swipeRefreshLayout, siteData.getId(), callback);
-                    webContentService.getWebContent(getContext().getResources().getString(R.string.url) + "webcontent/site/" + siteData.getId() + ".json");
+                    if (siteName.equals(getContext().getResources().getString(R.string.my_workspace))) {
+                        WebContentService webContentService = new WebContentService(getContext(), swipeRefreshLayout, null, callback);
+                        webContentService.getWebContent(getContext().getResources().getString(R.string.url) + "webcontent/site/~" + User.getUserId() + ".json");
+                    } else {
+                        WebContentService webContentService = new WebContentService(getContext(), swipeRefreshLayout, siteData.getId(), callback);
+                        webContentService.getWebContent(getContext().getResources().getString(R.string.url) + "webcontent/site/" + siteData.getId() + ".json");
+                    }
                 } else {
                     Snackbar.make(root, getResources().getString(R.string.no_internet), Snackbar.LENGTH_LONG)
                             .setAction(getResources().getText(R.string.can_not_sync), null).show();

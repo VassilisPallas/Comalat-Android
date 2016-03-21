@@ -23,6 +23,7 @@ import org.sakaiproject.api.memberships.pages.wiki.MembershipOfflineWiki;
 import org.sakaiproject.api.memberships.pages.wiki.MembershipWikiService;
 import org.sakaiproject.api.pojos.wiki.Wiki;
 import org.sakaiproject.api.sync.WikiRefreshUI;
+import org.sakaiproject.api.user.User;
 import org.sakaiproject.customviews.rich_textview.RichTextView;
 import org.sakaiproject.customviews.scrollview.CustomScrollView;
 import org.sakaiproject.helpers.ActionsHelper;
@@ -85,8 +86,13 @@ public class WikiFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         scrollView = (CustomScrollView) v.findViewById(R.id.scrollView);
         scrollView.setSwipeRefreshLayout(swipeRefreshLayout);
 
-        MembershipOfflineWiki membershipOfflineWiki = new MembershipOfflineWiki(callback, getContext(), siteData.getId());
-        membershipOfflineWiki.getWiki();
+        if (siteName.equals(getContext().getResources().getString(R.string.my_workspace))) {
+            MembershipOfflineWiki membershipOfflineWiki = new MembershipOfflineWiki(callback, getContext(), null);
+            membershipOfflineWiki.getWiki();
+        } else {
+            MembershipOfflineWiki membershipOfflineWiki = new MembershipOfflineWiki(callback, getContext(), siteData.getId());
+            membershipOfflineWiki.getWiki();
+        }
 
         return v;
     }
@@ -97,10 +103,13 @@ public class WikiFragment extends Fragment implements SwipeRefreshLayout.OnRefre
             @Override
             public void run() {
                 if (NetWork.getConnectionEstablished()) {
-                    String url = null;
-                    MembershipWikiService membershipWikiService = new MembershipWikiService(getContext(), swipeRefreshLayout, callback, siteData.getId());
-                    membershipWikiService.getWiki(getContext().getResources().getString(R.string.url) + "wiki/site/" + siteData.getId() + ".json");
-
+                    if (siteName.equals(getContext().getResources().getString(R.string.my_workspace))) {
+                        MembershipWikiService membershipWikiService = new MembershipWikiService(getContext(), swipeRefreshLayout, callback, null);
+                        membershipWikiService.getWiki(getContext().getResources().getString(R.string.url) + "wiki/site/~" + User.getUserId() + ".json");
+                    } else {
+                        MembershipWikiService membershipWikiService = new MembershipWikiService(getContext(), swipeRefreshLayout, callback, siteData.getId());
+                        membershipWikiService.getWiki(getContext().getResources().getString(R.string.url) + "wiki/site/" + siteData.getId() + ".json");
+                    }
                 } else {
                     Snackbar.make(root, getResources().getString(R.string.no_internet), Snackbar.LENGTH_LONG)
                             .setAction(getResources().getText(R.string.can_not_sync), null).show();

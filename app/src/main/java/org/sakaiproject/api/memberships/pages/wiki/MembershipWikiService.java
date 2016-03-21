@@ -47,18 +47,26 @@ public class MembershipWikiService {
     public void getWiki(final String url) {
         swipeRefreshLayout.setRefreshing(true);
 
-        JsonObjectRequest wikiRequest = new JsonObjectRequest(Request.Method.GET, url, (String)null, new Response.Listener<JSONObject>() {
+        JsonObjectRequest wikiRequest = new JsonObjectRequest(Request.Method.GET, url, (String) null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 wiki = gson.fromJson(response.toString(), Wiki.class);
 
-                if (ActionsHelper.createDirIfNotExists(context, User.getUserEid() + File.separator + "memberships" + File.separator + siteId + File.separator + "wiki"))
-                    try {
-                        ActionsHelper.writeJsonFile(context, response.toString(), siteId + "_wiki", User.getUserEid() + File.separator + "memberships" + File.separator + siteId + File.separator + "wiki");
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-
+                if (siteId != null) {
+                    if (ActionsHelper.createDirIfNotExists(context, User.getUserEid() + File.separator + "memberships" + File.separator + siteId + File.separator + "wiki"))
+                        try {
+                            ActionsHelper.writeJsonFile(context, response.toString(), siteId + "_wiki", User.getUserEid() + File.separator + "memberships" + File.separator + siteId + File.separator + "wiki");
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                } else {
+                    if (ActionsHelper.createDirIfNotExists(context, User.getUserEid() + File.separator + "wiki"))
+                        try {
+                            ActionsHelper.writeJsonFile(context, response.toString(), "wiki", User.getUserEid() + File.separator + "wiki");
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                }
                 getPageData(url.replaceFirst(".json", "") + "/page/" + wiki.getName() + ".json");
 
             }
@@ -77,20 +85,28 @@ public class MembershipWikiService {
     }
 
     private void getPageData(String url) {
-        JsonObjectRequest wikiPageRequest = new JsonObjectRequest(Request.Method.GET, url, (String)null, new Response.Listener<JSONObject>() {
+        JsonObjectRequest wikiPageRequest = new JsonObjectRequest(Request.Method.GET, url, (String) null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 Wiki temp = gson.fromJson(response.toString(), Wiki.class);
                 wiki.setComments(temp.getComments());
                 wiki.setHtml(temp.getHtml());
 
-                if (ActionsHelper.createDirIfNotExists(context, User.getUserEid() + File.separator + "memberships" + File.separator + siteId + File.separator + "wiki"))
-                    try {
-                        ActionsHelper.writeJsonFile(context, response.toString(), siteId + "_wiki_data", User.getUserEid() + File.separator + "memberships" + File.separator + siteId + File.separator + "wiki");
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-
+                if (siteId != null) {
+                    if (ActionsHelper.createDirIfNotExists(context, User.getUserEid() + File.separator + "memberships" + File.separator + siteId + File.separator + "wiki"))
+                        try {
+                            ActionsHelper.writeJsonFile(context, response.toString(), siteId + "_wiki_data", User.getUserEid() + File.separator + "memberships" + File.separator + siteId + File.separator + "wiki");
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                } else {
+                    if (ActionsHelper.createDirIfNotExists(context, User.getUserEid() + File.separator + "wiki"))
+                        try {
+                            ActionsHelper.writeJsonFile(context, response.toString(), "wiki_data", User.getUserEid() + File.separator + "wiki");
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                }
                 callback.updateUI(wiki);
             }
         }, new Response.ErrorListener() {

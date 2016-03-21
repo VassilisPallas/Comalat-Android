@@ -31,28 +31,55 @@ public class MembershipOfflineWiki {
     }
 
     public void getWiki() {
-        if (ActionsHelper.createDirIfNotExists(context, User.getUserEid() + File.separator + "memberships" + File.separator + siteId + File.separator + "wiki")) {
-            try {
-                String w = ActionsHelper.readJsonFile(context, siteId + "_wiki", User.getUserEid() + File.separator + "memberships" + File.separator + siteId + File.separator + "wiki");
-                wiki = gson.fromJson(w, Wiki.class);
-                getPageData();
-            } catch (IOException e) {
-                e.printStackTrace();
+        if (siteId != null) {
+            if (ActionsHelper.createDirIfNotExists(context, User.getUserEid() + File.separator + "memberships" + File.separator + siteId + File.separator + "wiki")) {
+                try {
+                    String w = ActionsHelper.readJsonFile(context, siteId + "_wiki", User.getUserEid() + File.separator + "memberships" + File.separator + siteId + File.separator + "wiki");
+                    wiki = gson.fromJson(w, Wiki.class);
+                    getPageData();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        } else {
+            if (ActionsHelper.createDirIfNotExists(context, User.getUserEid() + File.separator + "wiki")) {
+                try {
+                    String w = ActionsHelper.readJsonFile(context, "wiki", User.getUserEid() + File.separator + "wiki");
+                    wiki = gson.fromJson(w, Wiki.class);
+                    getPageData();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         }
     }
 
     private void getPageData() {
-        if (ActionsHelper.createDirIfNotExists(context, User.getUserEid() + File.separator + "memberships" + File.separator + siteId + File.separator + "wiki")) {
-            try {
-                String w = ActionsHelper.readJsonFile(context, siteId + "_wiki_data", User.getUserEid() + File.separator + "memberships" + File.separator + siteId + File.separator + "wiki");
-                Wiki temp = gson.fromJson(w, Wiki.class);
-                wiki.setComments(temp.getComments());
-                wiki.setHtml(temp.getHtml());
+        if (siteId != null) {
+            if (ActionsHelper.createDirIfNotExists(context, User.getUserEid() + File.separator + "memberships" + File.separator + siteId + File.separator + "wiki")) {
+                try {
+                    String w = ActionsHelper.readJsonFile(context, siteId + "_wiki_data", User.getUserEid() + File.separator + "memberships" + File.separator + siteId + File.separator + "wiki");
+                    Wiki temp = gson.fromJson(w, Wiki.class);
+                    wiki.setComments(temp.getComments());
+                    wiki.setHtml(temp.getHtml());
 
-                callback.updateUI(wiki);
-            } catch (IOException e) {
-                e.printStackTrace();
+                    callback.updateUI(wiki);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        } else {
+            if (ActionsHelper.createDirIfNotExists(context, User.getUserEid() + File.separator + "wiki")) {
+                try {
+                    String w = ActionsHelper.readJsonFile(context, "wiki_data", User.getUserEid() + File.separator + "wiki");
+                    Wiki temp = gson.fromJson(w, Wiki.class);
+                    wiki.setComments(temp.getComments());
+                    wiki.setHtml(temp.getHtml());
+
+                    callback.updateUI(wiki);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         }
     }
