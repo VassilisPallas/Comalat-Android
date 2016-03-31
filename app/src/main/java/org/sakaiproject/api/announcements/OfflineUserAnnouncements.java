@@ -25,10 +25,10 @@ public class OfflineUserAnnouncements {
         this.callback = callback;
     }
 
-    public void getAnnouncements() {
+    public void getAnnouncements(String fileName) {
         if (ActionsHelper.createDirIfNotExists(context, User.getUserEid() + File.separator + "announcements")) {
             try {
-                String announce = ActionsHelper.readJsonFile(context, "announcements", User.getUserEid() + File.separator + "announcements");
+                String announce = ActionsHelper.readJsonFile(context, fileName, User.getUserEid() + File.separator + "announcements");
                 Announcement announcement = gson.fromJson(announce, Announcement.class);
                 callback.onSuccess(announcement);
             } catch (IOException e) {

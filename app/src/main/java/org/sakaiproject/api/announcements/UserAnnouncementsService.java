@@ -44,7 +44,7 @@ public class UserAnnouncementsService {
         this.swipeRefreshLayout = swipeRefreshLayout;
     }
 
-    public void getAnnouncements(String url) {
+    public void getAnnouncements(String url,final String fileName) {
         if (swipeRefreshLayout != null)
             swipeRefreshLayout.setRefreshing(true);
 
@@ -64,7 +64,7 @@ public class UserAnnouncementsService {
                 } else {
                     if (ActionsHelper.createDirIfNotExists(context, User.getUserEid() + File.separator + "announcements"))
                         try {
-                            ActionsHelper.writeJsonFile(context, announcementsJson, "announcements", User.getUserEid() + File.separator + "announcements");
+                            ActionsHelper.writeJsonFile(context, announcementsJson, fileName, User.getUserEid() + File.separator + "announcements");
                         } catch (IOException e) {
                             e.printStackTrace();
                         }

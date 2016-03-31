@@ -93,7 +93,7 @@ public class AnnouncementFragment extends Fragment implements SwipeRefreshLayout
 
         if (siteName.equals(getContext().getResources().getString(R.string.my_workspace))) {
             OfflineUserAnnouncements offlineUserAnnouncements = new OfflineUserAnnouncements(getContext(), callback);
-            offlineUserAnnouncements.getAnnouncements();
+            offlineUserAnnouncements.getAnnouncements("announcements");
         } else {
             OfflineMembershipAnnouncements announcements = new OfflineMembershipAnnouncements(getContext(), siteData.getId(), callback);
             announcements.getAnnouncements();
@@ -161,7 +161,7 @@ public class AnnouncementFragment extends Fragment implements SwipeRefreshLayout
                         UserAnnouncementsService userAnnouncementsService = new UserAnnouncementsService(getContext(), callback);
                         userAnnouncementsService.setSwipeRefreshLayout(swipeRefreshLayout);
                         url = getContext().getResources().getString(R.string.url) + "announcement/user.json";
-                        userAnnouncementsService.getAnnouncements(url);
+                        userAnnouncementsService.getAnnouncements(url, "announcements");
                     } else {
                         MembershipAnnouncementsService membershipAnnouncementsService = new MembershipAnnouncementsService(getContext(), siteData.getId(), callback);
                         membershipAnnouncementsService.setSwipeRefreshLayout(swipeRefreshLayout);

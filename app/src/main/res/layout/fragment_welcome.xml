@@ -51,6 +51,18 @@
                         android:layout_marginTop="10dp"
                         android:text="@string/motd"/>
 
+                    <LinearLayout
+                        android:id="@+id/attachments_linear"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/event_description"
+                        android:layout_marginTop="10dp"
+                        android:orientation="vertical"
+                        android:visibility="gone">
+
+
+                    </LinearLayout>
+
                     <ImageView
                         android:id="@+id/message_of_the_day_image"
                         android:layout_width="match_parent"
