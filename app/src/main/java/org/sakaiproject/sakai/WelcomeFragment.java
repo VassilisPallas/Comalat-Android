@@ -64,23 +64,17 @@ public class WelcomeFragment extends Fragment implements Callback {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                new Handler().post(new Runnable() {
-                    @Override
-                    public void run() {
-                        Message message = Message.obtain();
+                Message message = Message.obtain();
+                if (NetWork.getConnectionEstablished()) {
+                    UserAnnouncementsService motd = new UserAnnouncementsService(getContext(), callback);
+                    motd.getAnnouncements(getContext().getResources().getString(R.string.url) + "announcement/motd.json", "motd");
+                } else {
+                    OfflineUserAnnouncements motd = new OfflineUserAnnouncements(getContext(), callback);
+                    motd.getAnnouncements("motd");
+                }
 
-                        if (NetWork.getConnectionEstablished()) {
-                            UserAnnouncementsService motd = new UserAnnouncementsService(getContext(), callback);
-                            motd.getAnnouncements(getContext().getResources().getString(R.string.url) + "announcement/motd.json", "motd");
-                        } else {
-                            OfflineUserAnnouncements motd = new OfflineUserAnnouncements(getContext(), callback);
-                            motd.getAnnouncements("motd");
-                        }
-
-                        message.what = TASK_COMPLETE;
-                        mHandler.sendMessage(message);
-                    }
-                });
+                message.what = TASK_COMPLETE;
+                mHandler.sendMessage(message);
             }
         }).start();
 

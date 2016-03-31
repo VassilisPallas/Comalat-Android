@@ -30,7 +30,6 @@ import org.sakaiproject.api.pojos.membership.PagePermissions;
 import org.sakaiproject.api.pojos.membership.PageUserPermissions;
 import org.sakaiproject.api.pojos.membership.SitePage;
 import org.sakaiproject.general.Connection;
-import org.sakaiproject.api.motd.OnlineMessageOfTheDay;
 import org.sakaiproject.api.memberships.SiteData;
 import org.sakaiproject.api.user.User;
 import org.sakaiproject.api.events.UserEvents;
@@ -149,40 +148,6 @@ public class JsonParser {
         org.sakaiproject.api.user.profile.Profile.setStatus(profile.getStatus());
         org.sakaiproject.api.user.profile.Profile.setCompanyProfiles(profile.getCompanyProfiles());
         org.sakaiproject.api.user.profile.Profile.setProps(profile.getProps());
-    }
-
-    /**
-     * parse the message of the day json
-     * http://141.99.248.86:8089/direct/announcement/motd.json
-     *
-     * @param result the response json
-     * @return the motd object
-     */
-    public OnlineMessageOfTheDay parseMotdJson(String result) {
-
-
-        OnlineMessageOfTheDay onlineMessageOfTheDay = new OnlineMessageOfTheDay(context);
-        List<String> messagesList = new ArrayList<>();
-        List<String> siteUrlsList = new ArrayList<>();
-
-        try {
-            JSONObject jsonObject = new JSONObject(result);
-
-            JSONArray messages = jsonObject.getJSONArray("announcement_collection");
-            for (int i = 0; i < messages.length(); i++) {
-                JSONObject obj = messages.getJSONObject(i);
-                messagesList.add(obj.getString("motdBody"));
-                siteUrlsList.add(obj.getString("motdUrl"));
-            }
-
-            onlineMessageOfTheDay.setMessage(messagesList);
-            onlineMessageOfTheDay.setSiteUrl(siteUrlsList);
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        return onlineMessageOfTheDay;
     }
 
     /**

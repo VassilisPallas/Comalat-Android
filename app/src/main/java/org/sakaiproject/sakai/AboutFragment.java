@@ -7,8 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import org.sakaiproject.api.motd.OnlineMessageOfTheDay;
-
 /**
  * Created by vspallas on 20/02/16.
  */
