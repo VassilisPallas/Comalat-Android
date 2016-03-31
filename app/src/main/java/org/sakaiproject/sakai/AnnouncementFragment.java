@@ -140,7 +140,7 @@ public class AnnouncementFragment extends Fragment implements SwipeRefreshLayout
 
         root = (FrameLayout) v.findViewById(R.id.root);
 
-        if (mAdapter.getItemCount() == 0) {
+        if (mAdapter == null || mAdapter.getItemCount() == 0) {
             noAnnouncements.setVisibility(View.VISIBLE);
         } else {
             noAnnouncements.setVisibility(View.GONE);
