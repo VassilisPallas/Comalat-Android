@@ -126,7 +126,7 @@ public class UserActivity extends AppCompatActivity implements NavigationView.On
                 NavigationDrawerHelper.drawer.openDrawer(GravityCompat.END);
                 return true;
             case R.id.action_open_inbox:
-                startActivity(new Intent(this, ChatActivity.class));
+                startActivity(new Intent(this, FriendsActivity.class));
         }
 
         return super.onOptionsItemSelected(item);
