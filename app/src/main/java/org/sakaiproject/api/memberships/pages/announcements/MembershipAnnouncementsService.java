@@ -46,7 +46,7 @@ public class MembershipAnnouncementsService {
         if (swipeRefreshLayout != null)
             swipeRefreshLayout.setRefreshing(true);
 
-        JsonObjectRequest announcementsRequest = new JsonObjectRequest(Request.Method.GET, url, (String) null, new Response.Listener<JSONObject>() {
+        JsonObjectRequest announcementsRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
 

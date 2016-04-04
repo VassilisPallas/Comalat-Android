@@ -46,7 +46,7 @@ public class UserAssignmentsService {
     }
 
     public void getAssignments(String url) {
-        JsonObjectRequest assignmentsRequest = new JsonObjectRequest(Request.Method.GET, url, (String) null, new Response.Listener<JSONObject>() {
+        JsonObjectRequest assignmentsRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
 
@@ -72,7 +72,7 @@ public class UserAssignmentsService {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-               callback.onError(error);
+                callback.onError(error);
             }
         });
         AppController.getInstance().addToRequestQueue(assignmentsRequest, user_assignments_tag);
@@ -80,7 +80,7 @@ public class UserAssignmentsService {
 
     private void getSiteName(final Assignment.AssignmentsCollection collection, final Assignment assignment) {
         site_name_tag = User.getUserEid() + " " + collection.getContext() + " assignment name";
-        JsonObjectRequest siteNameRequest = new JsonObjectRequest(Request.Method.GET, context.getResources().getString(R.string.url) + "site/" + collection.getContext() + ".json", (String) null, new Response.Listener<JSONObject>() {
+        JsonObjectRequest siteNameRequest = new JsonObjectRequest(Request.Method.GET, context.getResources().getString(R.string.url) + "site/" + collection.getContext() + ".json", null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
 

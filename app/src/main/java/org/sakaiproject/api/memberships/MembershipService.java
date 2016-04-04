@@ -81,7 +81,7 @@ public class MembershipService {
         if (swipeRefreshLayout != null)
             swipeRefreshLayout.setRefreshing(true);
 
-        JsonObjectRequest membershipRequest = new JsonObjectRequest(Request.Method.GET, url, (String) null, new Response.Listener<JSONObject>() {
+        JsonObjectRequest membershipRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
 
             @Override
             public void onResponse(JSONObject response) {
@@ -118,7 +118,7 @@ public class MembershipService {
     private void getData(final SiteData siteData, final String type, final int index) {
         membership_id_tag = User.getUserEid() + " membership " + siteData.getId() + " data";
 
-        final JsonObjectRequest membershipDataRequest = new JsonObjectRequest(Request.Method.GET, context.getResources().getString(R.string.url) + "site/" + siteData.getId() + ".json", (String) null, new Response.Listener<JSONObject>() {
+        final JsonObjectRequest membershipDataRequest = new JsonObjectRequest(Request.Method.GET, context.getResources().getString(R.string.url) + "site/" + siteData.getId() + ".json", null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
 
@@ -148,7 +148,7 @@ public class MembershipService {
     private void getPages(final SiteData siteData, final String type, final int index) {
         membership_page_tag = User.getUserEid() + " membership " + siteData.getId() + " pages";
 
-        JsonArrayRequest pagesRequest = new JsonArrayRequest(Request.Method.GET, context.getResources().getString(R.string.url) + "site/" + siteData.getId() + "/pages.json", (String) null, new Response.Listener<JSONArray>() {
+        JsonArrayRequest pagesRequest = new JsonArrayRequest(Request.Method.GET, context.getResources().getString(R.string.url) + "site/" + siteData.getId() + "/pages.json", null, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
                 Type collectionType = new TypeToken<List<SitePage>>() {
@@ -178,7 +178,7 @@ public class MembershipService {
 
         membership_perms_tag = User.getUserEid() + " membership " + siteData.getId() + " perms";
 
-        JsonObjectRequest pagePermissionsRequest = new JsonObjectRequest(Request.Method.GET, context.getResources().getString(R.string.url) + "site/" + siteData.getId() + "/perms.json", (String) null, new Response.Listener<JSONObject>() {
+        JsonObjectRequest pagePermissionsRequest = new JsonObjectRequest(Request.Method.GET, context.getResources().getString(R.string.url) + "site/" + siteData.getId() + "/perms.json", null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 PagePermissions pagePermissions = gson.fromJson(response.toString(), PagePermissions.class);
@@ -203,7 +203,7 @@ public class MembershipService {
 
     private void getUserPermissions(final SiteData siteData, final String type, final int index) {
         membership_user_perms_tag = User.getUserEid() + " membership " + siteData.getId() + " user perms";
-        JsonObjectRequest pageUserPermissionsRequest = new JsonObjectRequest(Request.Method.GET, context.getResources().getString(R.string.url) + "site/" + siteData.getId() + "/userPerms.json", (String) null, new Response.Listener<JSONObject>() {
+        JsonObjectRequest pageUserPermissionsRequest = new JsonObjectRequest(Request.Method.GET, context.getResources().getString(R.string.url) + "site/" + siteData.getId() + "/userPerms.json", null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 PageUserPermissions pageUserPermissions = gson.fromJson(response.toString(), PageUserPermissions.class);

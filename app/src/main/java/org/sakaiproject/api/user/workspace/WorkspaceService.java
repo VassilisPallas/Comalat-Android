@@ -77,7 +77,7 @@ public class WorkspaceService {
     }
 
     public void getWorkspace() {
-        JsonObjectRequest getWorkSpaceRequest = new JsonObjectRequest(Request.Method.GET, context.getResources().getString(R.string.url) + "site/~" + id + ".json", (String) null, new Response.Listener<JSONObject>() {
+        JsonObjectRequest getWorkSpaceRequest = new JsonObjectRequest(Request.Method.GET, context.getResources().getString(R.string.url) + "site/~" + id + ".json", null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 MembershipData membershipData = gson.fromJson(response.toString(), MembershipData.class);
@@ -120,7 +120,7 @@ public class WorkspaceService {
     }
 
     private void getPages() {
-        JsonArrayRequest getWorkspacePagesRequest = new JsonArrayRequest(Request.Method.GET, context.getResources().getString(R.string.url) + "site/~" + id + "/pages.json", (String) null, new Response.Listener<JSONArray>() {
+        JsonArrayRequest getWorkspacePagesRequest = new JsonArrayRequest(Request.Method.GET, context.getResources().getString(R.string.url) + "site/~" + id + "/pages.json", null, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
                 Type collectionType = new TypeToken<List<SitePage>>() {
@@ -151,7 +151,7 @@ public class WorkspaceService {
     }
 
     private void getPermissions() {
-        JsonObjectRequest getWorkspacePermissions = new JsonObjectRequest(Request.Method.GET, context.getResources().getString(R.string.url) + "site/~" + id + "/perms.json", (String) null, new Response.Listener<JSONObject>() {
+        JsonObjectRequest getWorkspacePermissions = new JsonObjectRequest(Request.Method.GET, context.getResources().getString(R.string.url) + "site/~" + id + "/perms.json", null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 PagePermissions pagePermissions = gson.fromJson(response.toString(), PagePermissions.class);
@@ -179,7 +179,7 @@ public class WorkspaceService {
     }
 
     private void getUserPermissions() {
-        JsonObjectRequest getWorkspaceUserPermissions = new JsonObjectRequest(Request.Method.GET, context.getResources().getString(R.string.url) + "site/~" + id + "/userPerms.json", (String) null, new Response.Listener<JSONObject>() {
+        JsonObjectRequest getWorkspaceUserPermissions = new JsonObjectRequest(Request.Method.GET, context.getResources().getString(R.string.url) + "site/~" + id + "/userPerms.json", null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
 

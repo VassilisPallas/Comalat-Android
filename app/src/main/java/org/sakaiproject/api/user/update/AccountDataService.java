@@ -37,7 +37,7 @@ public class AccountDataService {
     }
 
     public void accountInfo(String url) {
-        JsonObjectRequest accountInfoRequest = new JsonObjectRequest(Request.Method.GET, url, (String) null, new Response.Listener<JSONObject>() {
+        JsonObjectRequest accountInfoRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 UserData userData = gson.fromJson(response.toString(), UserData.class);

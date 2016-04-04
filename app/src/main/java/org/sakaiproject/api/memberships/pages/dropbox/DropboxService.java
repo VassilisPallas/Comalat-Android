@@ -55,7 +55,7 @@ public class DropboxService {
     }
 
     private void getItem(String url, String tag, final int index, final Member member) {
-        JsonObjectRequest dropboxRequest = new JsonObjectRequest(Request.Method.GET, url, (String) null, new Response.Listener<JSONObject>() {
+        JsonObjectRequest dropboxRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 Dropbox dropbox = gson.fromJson(response.toString(), Dropbox.class);

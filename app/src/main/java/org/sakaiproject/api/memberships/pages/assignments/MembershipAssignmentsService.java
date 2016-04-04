@@ -42,7 +42,7 @@ public class MembershipAssignmentsService {
     }
 
     public void getAssignments(String url) {
-        JsonObjectRequest assignmentsRequest = new JsonObjectRequest(Request.Method.GET, url, (String) null, new Response.Listener<JSONObject>() {
+        JsonObjectRequest assignmentsRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
 

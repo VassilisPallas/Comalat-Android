@@ -42,7 +42,7 @@ public class MembershipWikiService {
     public void getWiki(final String url) {
         swipeRefreshLayout.setRefreshing(true);
 
-        JsonObjectRequest wikiRequest = new JsonObjectRequest(Request.Method.GET, url, (String) null, new Response.Listener<JSONObject>() {
+        JsonObjectRequest wikiRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 wiki = gson.fromJson(response.toString(), Wiki.class);
@@ -76,7 +76,7 @@ public class MembershipWikiService {
     }
 
     private void getPageData(String url) {
-        JsonObjectRequest wikiPageRequest = new JsonObjectRequest(Request.Method.GET, url, (String) null, new Response.Listener<JSONObject>() {
+        JsonObjectRequest wikiPageRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 Wiki temp = gson.fromJson(response.toString(), Wiki.class);
