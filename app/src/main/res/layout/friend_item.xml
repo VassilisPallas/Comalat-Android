@@ -17,8 +17,9 @@
         android:id="@+id/name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
         android:layout_marginLeft="5dp"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:layout_marginTop="5dp"
         android:layout_toRightOf="@+id/user_image"
         android:text="Pallas Vasilis"
         android:textStyle="bold" />
@@ -27,10 +28,21 @@
         android:id="@+id/status"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
         android:layout_marginLeft="5dp"
+        android:layout_marginTop="7dp"
         android:layout_toRightOf="@+id/name"
         android:scaleType="centerInside"
         android:src="@mipmap/ic_online" />
+
+    <TextView
+        android:id="@+id/last_unread_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/name"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="5dp"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:layout_toRightOf="@+id/user_image"
+        android:text="Hello there!" />
 
 </RelativeLayout>

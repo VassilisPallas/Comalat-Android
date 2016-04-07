@@ -18,6 +18,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.google.gson.Gson;
 
 import org.json.JSONObject;
+import org.sakaiproject.api.callback.Callback;
 import org.sakaiproject.api.pojos.login.Login;
 import org.sakaiproject.api.pojos.login.Profile;
 import org.sakaiproject.api.pojos.login.UserData;
@@ -135,6 +136,18 @@ public class LoginService implements ILogin {
                 WorkspaceService workspaceService = new WorkspaceService(context, User.getUserId());
                 workspaceService.setProgressBar(progressBar);
                 workspaceService.setLoginTextView(loginTextView);
+                workspaceService.setDelegate(new Callback() {
+                    @Override
+                    public void onSuccess(Object obj) {
+
+                    }
+
+                    @Override
+                    public void onError(VolleyError error) {
+                        if (error instanceof ServerError)
+                            Toast.makeText(context, context.getString(R.string.server_error), Toast.LENGTH_SHORT).show();
+                    }
+                });
                 workspaceService.setLogin(true);
                 workspaceService.getWorkspace();
 
