@@ -70,7 +70,7 @@ public class ChatFriendsFragment extends Fragment implements RecyclerItemClickLi
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        onRefresh();
     }
 
     @Override

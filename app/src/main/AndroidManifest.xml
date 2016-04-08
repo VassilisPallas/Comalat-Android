@@ -96,6 +96,14 @@
             android:name=".FriendsActivity"
             android:label="@string/title_activity_friends"
             android:theme="@style/AppTheme.NoActionBar" />
+
+        <PreferenceScreen>
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:data="http://developer.android.com" />
+
+        </PreferenceScreen>
+
     </application>
 
 </manifest>

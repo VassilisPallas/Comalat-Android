@@ -393,6 +393,13 @@
     <string name="internal_error">An Error has occurred.\nPlease Try Again Later</string>
     <string name="title_activity_friends">FriendsActivity</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <!-- Chat Preferences -->
+    <string name="general">General</string>
+    <string name="notification_sounds">Notification &amp; sounds</string>
+    <string name="active">Active</string>
+    <string name="vibrate">Vibrate</string>
+    <string name="light">Light</string>
+    <string name="sound">Sound</string>
+    <string name="notification_sound">Notification Sound</string>
+
 </resources>

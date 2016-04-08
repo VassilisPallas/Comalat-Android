@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.util.Log;
 
 import org.sakaiproject.sakai.ChatFriendsFragment;
+import org.sakaiproject.sakai.ChatSettingsFragment;
 import org.sakaiproject.sakai.EventTabFragment;
 
 /**
@@ -31,9 +32,9 @@ public class FriendsTabAdapter extends FragmentStatePagerAdapter {
             case 0:
                 return new ChatFriendsFragment().getSwipeRefreshLayout(mSwipeRefreshLayout);
             case 1:
-                //return new EventTabFragment();
+                return new ChatSettingsFragment();
             default:
-                return new ChatFriendsFragment().getSwipeRefreshLayout(mSwipeRefreshLayout);
+                return null;
         }
     }
 

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory android:title="@string/general">
+
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="chat_active"
+            android:title="@string/active" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/notification_sounds">
+
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="chat_vibrate"
+            android:title="@string/vibrate" />
+
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="notification_light"
+            android:title="@string/light" />
+
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="chat_sound"
+            android:title="@string/sound" />
+
+        <RingtonePreference
+            android:defaultValue="content://settings/system/notification_sound"
+            android:key="notification_sound"
+            android:ringtoneType="notification"
+            android:title="@string/notification_sound" />
+    </PreferenceCategory>
+
+</PreferenceScreen>
