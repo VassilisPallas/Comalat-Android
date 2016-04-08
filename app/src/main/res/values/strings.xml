@@ -392,4 +392,7 @@
     <string name="no_intent_app">No app can perform this action.</string>
     <string name="internal_error">An Error has occurred.\nPlease Try Again Later</string>
     <string name="title_activity_friends">FriendsActivity</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

@@ -8,18 +8,31 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.MotionEvent;
 import android.view.View;
 
+import org.sakaiproject.adapters.FriendsTabAdapter;
+import org.sakaiproject.customviews.CustomSwipeRefreshLayout;
 import org.sakaiproject.helpers.ActionsHelper;
 
-public class FriendsActivity extends AppCompatActivity {
+public class FriendsActivity extends AppCompatActivity implements ISwipeRefresh {
+
+    private FriendsTabAdapter adapter;
+    private org.sakaiproject.customviews.CustomSwipeRefreshLayout mSwipeRefreshLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_friends);
+
+        mSwipeRefreshLayout = (CustomSwipeRefreshLayout) findViewById(R.id.swipe_refresh_layout);
+
+        mSwipeRefreshLayout.setColorSchemeResources(R.color.green, R.color.red, R.color.blue, R.color.orange);
+
+        mSwipeRefreshLayout.setRefreshing(false);
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
 
@@ -40,7 +53,9 @@ public class FriendsActivity extends AppCompatActivity {
 
         final ViewPager viewPager = (ViewPager) findViewById(R.id.pager);
 
-        //viewPager.setAdapter(adapter);
+        adapter = new FriendsTabAdapter(getSupportFragmentManager(), tabLayout.getTabCount(), mSwipeRefreshLayout);
+
+        viewPager.setAdapter(adapter);
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
@@ -57,6 +72,23 @@ public class FriendsActivity extends AppCompatActivity {
             }
         });
 
+        viewPager.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                mSwipeRefreshLayout.setEnabled(false);
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_UP:
+                        mSwipeRefreshLayout.setEnabled(true);
+                        break;
+                }
+                return false;
+            }
+        });
+
     }
 
+    @Override
+    public void Callback(SwipeRefreshLayout.OnRefreshListener listener) {
+        mSwipeRefreshLayout.setOnRefreshListener(listener);
+    }
 }

@@ -18,10 +18,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="5dp"
-        android:textAppearance="?android:attr/textAppearanceMedium"
         android:layout_marginTop="5dp"
         android:layout_toRightOf="@+id/user_image"
         android:text="Pallas Vasilis"
+        android:textAppearance="?android:attr/textAppearanceMedium"
         android:textStyle="bold" />
 
     <ImageView
@@ -41,8 +41,9 @@
         android:layout_below="@+id/name"
         android:layout_marginLeft="10dp"
         android:layout_marginTop="5dp"
-        android:textAppearance="?android:attr/textAppearanceSmall"
         android:layout_toRightOf="@+id/user_image"
-        android:text="Hello there!" />
+        android:text="Hello there!"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textStyle="bold" />
 
 </RelativeLayout>

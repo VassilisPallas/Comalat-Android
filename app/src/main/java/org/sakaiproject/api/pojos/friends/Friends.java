@@ -10,54 +10,41 @@ import java.util.List;
  */
 public class Friends {
 
-    public List<FriendsItem> friendsList = new ArrayList<>();
+    private String displayName;
+    private int onlineStatus;
+    private String type;
+    @SerializedName("uuid")
+    private String friendId;
 
-    public class FriendsItem {
-        private String userImageUrl;
-        private String displayName;
-        private int onlineStatus;
-        private String type;
-        @SerializedName("uuid")
-        private String friendId;
+    public String getDisplayName() {
+        return displayName;
+    }
 
-        public String getUserImageUrl() {
-            return userImageUrl;
-        }
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
+    }
 
-        public void setUserImageUrl(String userImageUrl) {
-            this.userImageUrl = userImageUrl;
-        }
+    public int getOnlineStatus() {
+        return onlineStatus;
+    }
 
-        public String getDisplayName() {
-            return displayName;
-        }
+    public void setOnlineStatus(int onlineStatus) {
+        this.onlineStatus = onlineStatus;
+    }
 
-        public void setDisplayName(String displayName) {
-            this.displayName = displayName;
-        }
+    public String getType() {
+        return type;
+    }
 
-        public int getOnlineStatus() {
-            return onlineStatus;
-        }
+    public void setType(String type) {
+        this.type = type;
+    }
 
-        public void setOnlineStatus(int onlineStatus) {
-            this.onlineStatus = onlineStatus;
-        }
+    public String getFriendId() {
+        return friendId;
+    }
 
-        public String getType() {
-            return type;
-        }
-
-        public void setType(String type) {
-            this.type = type;
-        }
-
-        public String getFriendId() {
-            return friendId;
-        }
-
-        public void setFriendId(String friendId) {
-            this.friendId = friendId;
-        }
+    public void setFriendId(String friendId) {
+        this.friendId = friendId;
     }
 }
