@@ -25,10 +25,12 @@ import java.util.List;
  */
 public class ChatFriendsAdapter extends RecyclerView.Adapter<ChatFriendsAdapter.ViewHolder> {
 
-    List<Friends> friends;
+    private List<Friends> friends;
+    private String action;
 
-    public ChatFriendsAdapter(List<Friends> friends) {
+    public ChatFriendsAdapter(List<Friends> friends, String action) {
         this.friends = friends;
+        this.action = action;
     }
 
     @Override
@@ -49,20 +51,21 @@ public class ChatFriendsAdapter extends RecyclerView.Adapter<ChatFriendsAdapter.
                 e.printStackTrace();
             }
             holder.name.setText(friend.getDisplayName());
-            //holder.lastUnread.setText();
-            if (friend.getOnlineStatus() == 0) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    holder.status.setImageDrawable(context.getResources().getDrawable(R.mipmap.ic_offline, context.getTheme()));
+
+            if (action.equals("chat"))
+                if (friend.getOnlineStatus() == 0) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        holder.status.setImageDrawable(context.getResources().getDrawable(R.mipmap.ic_offline, context.getTheme()));
+                    } else {
+                        holder.status.setImageDrawable(context.getResources().getDrawable(R.mipmap.ic_offline));
+                    }
                 } else {
-                    holder.status.setImageDrawable(context.getResources().getDrawable(R.mipmap.ic_offline));
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        holder.status.setImageDrawable(context.getResources().getDrawable(R.mipmap.ic_online, context.getTheme()));
+                    } else {
+                        holder.status.setImageDrawable(context.getResources().getDrawable(R.mipmap.ic_online));
+                    }
                 }
-            } else {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    holder.status.setImageDrawable(context.getResources().getDrawable(R.mipmap.ic_online, context.getTheme()));
-                } else {
-                    holder.status.setImageDrawable(context.getResources().getDrawable(R.mipmap.ic_online));
-                }
-            }
         }
     }
 

@@ -42,7 +42,6 @@
         android:layout_marginLeft="10dp"
         android:layout_marginTop="5dp"
         android:layout_toRightOf="@+id/user_image"
-        android:text="Hello there!"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:textStyle="bold" />
 

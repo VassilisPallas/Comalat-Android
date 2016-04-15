@@ -102,7 +102,7 @@
         </receiver>
 
         <activity
-            android:name=".FriendsActivity"
+            android:name=".ChatFriendsActivity"
             android:label="@string/title_activity_friends"
             android:theme="@style/AppTheme.NoActionBar" />
 

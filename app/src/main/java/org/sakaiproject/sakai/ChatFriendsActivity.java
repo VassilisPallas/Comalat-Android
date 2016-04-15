@@ -1,24 +1,19 @@
 package org.sakaiproject.sakai;
 
-import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.MotionEvent;
 import android.view.View;
 
 import org.sakaiproject.adapters.FriendsTabAdapter;
 import org.sakaiproject.customviews.CustomSwipeRefreshLayout;
-import org.sakaiproject.helpers.ActionsHelper;
 
-public class FriendsActivity extends AppCompatActivity implements ISwipeRefresh {
+public class ChatFriendsActivity extends AppCompatActivity implements ISwipeRefresh {
 
     private FriendsTabAdapter adapter;
     private org.sakaiproject.customviews.CustomSwipeRefreshLayout mSwipeRefreshLayout;
@@ -26,7 +21,7 @@ public class FriendsActivity extends AppCompatActivity implements ISwipeRefresh 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_friends);
+        setContentView(R.layout.activity_chat_friends);
 
         mSwipeRefreshLayout = (CustomSwipeRefreshLayout) findViewById(R.id.swipe_refresh_layout);
 
