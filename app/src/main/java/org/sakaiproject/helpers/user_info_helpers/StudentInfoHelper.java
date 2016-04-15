@@ -23,16 +23,16 @@ public class StudentInfoHelper implements IUserAbout {
     /**
      * StudentInfoHelper constructor
      *
-     * @param v fragment view
+     * @param v activity
      */
-    public StudentInfoHelper(View v) {
+    public StudentInfoHelper(AppCompatActivity v) {
         initialize(v);
         fillValues();
         checkVisibilities(v);
     }
 
     @Override
-    public void initialize(View v) {
+    public void initialize(AppCompatActivity v) {
         degreeLayout = (LinearLayout) v.findViewById(R.id.degree_layout);
         subjectsLayout = (LinearLayout) v.findViewById(R.id.subjects_layout);
 
@@ -56,7 +56,7 @@ public class StudentInfoHelper implements IUserAbout {
     }
 
     @Override
-    public void checkVisibilities(View v) {
+    public void checkVisibilities(AppCompatActivity v) {
         if (degreeLayout.getVisibility() == View.GONE && subjectsLayout.getVisibility() == View.GONE) {
             v.findViewById(R.id.no_student_information).setVisibility(View.VISIBLE);
         }

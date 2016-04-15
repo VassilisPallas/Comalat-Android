@@ -21,14 +21,19 @@ public class SocialNetworkInfoHelper implements IUserAbout {
     private LinearLayout fbLayout, linkedInLayout, mySpaceLayout, skypeLayout, twitterLayout;
     private TextView fbTextView, linkedInTextView, mySpaceTextView, skypeTextView, twitterTextView;
 
-    public SocialNetworkInfoHelper(View v) {
+    /**
+     * SocialNetworkInfoHelper constructor
+     *
+     * @param v activity
+     */
+    public SocialNetworkInfoHelper(AppCompatActivity v) {
         initialize(v);
         fillValues();
         checkVisibilities(v);
     }
 
     @Override
-    public void initialize(View v) {
+    public void initialize(AppCompatActivity v) {
         fbLayout = (LinearLayout) v.findViewById(R.id.fb_layout);
         linkedInLayout = (LinearLayout) v.findViewById(R.id.linked_in_layout);
         mySpaceLayout = (LinearLayout) v.findViewById(R.id.my_space_layout);
@@ -76,7 +81,7 @@ public class SocialNetworkInfoHelper implements IUserAbout {
     }
 
     @Override
-    public void checkVisibilities(View v) {
+    public void checkVisibilities(AppCompatActivity v) {
         if (fbLayout.getVisibility() == View.GONE && linkedInLayout.getVisibility() == View.GONE && mySpaceLayout.getVisibility() == View.GONE
                 && skypeLayout.getVisibility() == View.GONE && twitterLayout.getVisibility() == View.GONE) {
             v.findViewById(R.id.no_social_information).setVisibility(View.VISIBLE);

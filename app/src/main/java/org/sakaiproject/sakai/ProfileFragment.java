@@ -96,7 +96,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.about_btn:
-                //startActivity(new Intent(getActivity(), ));
+                startActivity(new Intent(getActivity(), UserAboutActivity.class));
                 break;
             case R.id.friends_btn:
                 break;

@@ -6,6 +6,7 @@ import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
@@ -14,10 +15,12 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.GridView;
 import android.widget.LinearLayout;
@@ -157,12 +160,7 @@ public class CalendarFragment extends Fragment implements SwipeRefreshLayout.OnR
 
 
         gridview = (GridView) v.findViewById(R.id.gv_calendar);
-        //gridview.setExpanded(true);
         gridview.setAdapter(cal_adapter);
-
-        int todayPosition = cal_adapter.getTodayPosition();
-
-        Log.i("position", String.valueOf(todayPosition));
 
         gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 

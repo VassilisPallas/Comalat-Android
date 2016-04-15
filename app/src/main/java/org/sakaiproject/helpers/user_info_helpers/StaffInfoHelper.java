@@ -23,16 +23,16 @@ public class StaffInfoHelper implements IUserAbout {
     /**
      * StaffInfoHelper constructor
      *
-     * @param v fragment view
+     * @param v activity
      */
-    public StaffInfoHelper(View v) {
+    public StaffInfoHelper(AppCompatActivity v) {
         initialize(v);
         fillValues();
         checkVisibilities(v);
     }
 
     @Override
-    public void initialize(View v) {
+    public void initialize(AppCompatActivity v) {
         positionLayout = (LinearLayout) v.findViewById(R.id.position_layout);
         departmentLayout = (LinearLayout) v.findViewById(R.id.department_layout);
         schoolLayout = (LinearLayout) v.findViewById(R.id.school_layout);
@@ -104,7 +104,7 @@ public class StaffInfoHelper implements IUserAbout {
     }
 
     @Override
-    public void checkVisibilities(View v) {
+    public void checkVisibilities(AppCompatActivity v) {
         if (positionLayout.getVisibility() == View.GONE && departmentLayout.getVisibility() == View.GONE && schoolLayout.getVisibility() == View.GONE
                 && roomLayout.getVisibility() == View.GONE && staffProfileLayout.getVisibility() == View.GONE && universityUrlLayout.getVisibility() == View.GONE
                 && academicUrlLayout.getVisibility() == View.GONE && publicationsLayout.getVisibility() == View.GONE) {

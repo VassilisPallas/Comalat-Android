@@ -22,16 +22,16 @@ public class PersonalInfoHelper implements IUserAbout {
     /**
      * PersonalInfoHelper constructor
      *
-     * @param v fragment view
+     * @param v activity
      */
-    public PersonalInfoHelper(View v) {
+    public PersonalInfoHelper(AppCompatActivity v) {
         initialize(v);
         fillValues();
         checkVisibilities(v);
     }
 
     @Override
-    public void initialize(View v) {
+    public void initialize(AppCompatActivity v) {
         booksLayout = (LinearLayout) v.findViewById(R.id.books_layout);
         tvShowsLayout = (LinearLayout) v.findViewById(R.id.tv_shows_layout);
         moviesLayout = (LinearLayout) v.findViewById(R.id.movies_layout);
@@ -71,7 +71,7 @@ public class PersonalInfoHelper implements IUserAbout {
     }
 
     @Override
-    public void checkVisibilities(View v) {
+    public void checkVisibilities(AppCompatActivity v) {
         if (booksLayout.getVisibility() == View.GONE && tvShowsLayout.getVisibility() == View.GONE && moviesLayout.getVisibility() == View.GONE
                 && quotesLayout.getVisibility() == View.GONE) {
             v.findViewById(R.id.no_personal_information).setVisibility(View.VISIBLE);

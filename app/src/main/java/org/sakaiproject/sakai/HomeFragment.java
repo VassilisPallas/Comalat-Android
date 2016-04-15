@@ -62,6 +62,7 @@ public class HomeFragment extends Fragment {
 
         swipeRefreshLayout = (org.sakaiproject.customviews.CustomSwipeRefreshLayout) getArguments().getSerializable("swipeRefresh");
         swipeRefreshLayout.setEnabled(false);
+        swipeRefreshLayout.setRefreshing(false);
 
         siteData = NavigationDrawerHelper.getSelectedSiteData();
         siteName = NavigationDrawerHelper.getSelectedSite();

@@ -90,6 +90,12 @@
 
                 </com.balysv.materialripple.MaterialRippleLayout>
 
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="?attr/actionBarSize"
+                    android:layout_weight="0"
+                    android:background="@color/sign_up_text_gray" />
+
                 <com.balysv.materialripple.MaterialRippleLayout
                     android:layout_width="0dp"
                     android:layout_height="match_parent"

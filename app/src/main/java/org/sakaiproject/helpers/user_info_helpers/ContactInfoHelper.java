@@ -23,16 +23,16 @@ public class ContactInfoHelper implements IUserAbout {
     /**
      * ContactInfoHelper constructor
      *
-     * @param v      fragment view
+     * @param v      activity
      */
-    public ContactInfoHelper(View v) {
+    public ContactInfoHelper(AppCompatActivity v) {
         initialize(v);
         fillValues();
         checkVisibilities(v);
     }
 
     @Override
-    public void initialize(View v) {
+    public void initialize(AppCompatActivity v) {
         emailLayout = (LinearLayout) v.findViewById(R.id.email_layout);
         homePageLayout = (LinearLayout) v.findViewById(R.id.home_page_layout);
         workPhoneLayout = (LinearLayout) v.findViewById(R.id.work_phone_layout);
@@ -88,7 +88,7 @@ public class ContactInfoHelper implements IUserAbout {
     }
 
     @Override
-    public void checkVisibilities(View v) {
+    public void checkVisibilities(AppCompatActivity v) {
         if (emailLayout.getVisibility() == View.GONE && homePageLayout.getVisibility() == View.GONE && workPhoneLayout.getVisibility() == View.GONE
                 && homePhoneLayout.getVisibility() == View.GONE && mobilePhoneLayout.getVisibility() == View.GONE && facsimileLayout.getVisibility() == View.GONE) {
             v.findViewById(R.id.no_contact_information).setVisibility(View.VISIBLE);

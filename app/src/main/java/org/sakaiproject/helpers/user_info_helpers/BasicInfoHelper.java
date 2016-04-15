@@ -43,16 +43,16 @@ public class BasicInfoHelper implements IUserAbout {
     /**
      * BasicInfoHelper constructor
      *
-     * @param v fragment view
+     * @param v activity
      */
-    public BasicInfoHelper(View v) {
+    public BasicInfoHelper(AppCompatActivity v) {
         initialize(v);
         fillValues();
         checkVisibilities(v);
     }
 
     @Override
-    public void initialize(View v) {
+    public void initialize(AppCompatActivity v) {
         nicknameLayout = (LinearLayout) v.findViewById(R.id.nickname_layout);
         birthdayLayout = (LinearLayout) v.findViewById(R.id.birthday_layout);
         personalSummaryLayout = (LinearLayout) v.findViewById(R.id.personal_summary_layout);
@@ -92,7 +92,7 @@ public class BasicInfoHelper implements IUserAbout {
     }
 
     @Override
-    public void checkVisibilities(View v) {
+    public void checkVisibilities(AppCompatActivity v) {
         if (nicknameLayout.getVisibility() == View.GONE && birthdayLayout.getVisibility() == View.GONE && personalSummaryLayout.getVisibility() == View.GONE) {
             v.findViewById(R.id.no_basic_information).setVisibility(View.VISIBLE);
         }

@@ -8,9 +8,9 @@ import android.view.View;
  */
 public interface IUserAbout {
 
-    void initialize(View v);
+    void initialize(AppCompatActivity v);
 
     void fillValues();
 
-    void checkVisibilities(View v);
+    void checkVisibilities(AppCompatActivity v);
 }

@@ -400,6 +400,7 @@
     <string name="workspace_info"><![CDATA[<h3> Welcome to your personal workspace.</h3><p>In Sakai each user has his or her own individual worksite called My Workspace. My
 			Workspace is a place where you can keep personal documents, create new sites, maintain a
 			schedule, store resources, and much more.</p>]]></string>
+    <string name="show_calendar">Show calendar</string>
 
     <!-- Chat Preferences -->
     <string name="general">General</string>
