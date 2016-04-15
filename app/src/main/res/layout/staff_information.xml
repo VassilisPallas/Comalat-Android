@@ -32,34 +32,6 @@
                     android:textSize="17sp"
                     android:textStyle="bold" />
 
-                <com.balysv.materialripple.MaterialRippleLayout
-                    android:id="@+id/edit_staff_ripple"
-                    android:layout_width="50dp"
-                    android:layout_height="40dp"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    app:mrl_rippleAlpha="0.2"
-                    app:mrl_rippleColor="@android:color/white"
-                    app:mrl_rippleDelayClick="false"
-                    app:mrl_rippleHover="true"
-                    app:mrl_rippleOverlay="true"
-                    app:mrl_rippleRoundedCorners="@dimen/fab_margin">
-
-                    <FrameLayout
-                        android:id="@+id/edit_staff_button"
-                        android:layout_width="50dp"
-                        android:layout_height="40dp"
-                        android:clickable="true">
-
-                        <ImageView
-                            android:id="@+id/edit_staff_info"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_horizontal|center_vertical" />
-                    </FrameLayout>
-
-                </com.balysv.materialripple.MaterialRippleLayout>
-
             </RelativeLayout>
 
             <View
@@ -111,17 +83,6 @@
                     android:gravity="right"
                     android:padding="8dp" />
 
-                <EditText
-                    android:id="@+id/position_change"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_toRightOf="@+id/position_value"
-                    android:gravity="center"
-                    android:padding="8dp"
-                    android:textColor="@color/gray_text"
-                    android:visibility="gone" />
             </RelativeLayout>
 
             <View
@@ -161,17 +122,6 @@
                     android:gravity="right"
                     android:padding="8dp" />
 
-                <EditText
-                    android:id="@+id/department_change"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_toRightOf="@+id/department_value"
-                    android:gravity="center"
-                    android:padding="8dp"
-                    android:textColor="@color/gray_text"
-                    android:visibility="gone" />
             </RelativeLayout>
 
             <View
@@ -211,17 +161,6 @@
                     android:gravity="right"
                     android:padding="8dp" />
 
-                <EditText
-                    android:id="@+id/school_change"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_toRightOf="@+id/school_value"
-                    android:gravity="center"
-                    android:padding="8dp"
-                    android:textColor="@color/gray_text"
-                    android:visibility="gone" />
             </RelativeLayout>
 
             <View
@@ -261,17 +200,6 @@
                     android:gravity="right"
                     android:padding="8dp" />
 
-                <EditText
-                    android:id="@+id/room_change"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_toRightOf="@+id/room_value"
-                    android:gravity="center"
-                    android:padding="8dp"
-                    android:textColor="@color/gray_text"
-                    android:visibility="gone" />
             </RelativeLayout>
 
             <View
@@ -311,17 +239,6 @@
                     android:gravity="right"
                     android:padding="8dp" />
 
-                <EditText
-                    android:id="@+id/staff_profile_change"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_toRightOf="@+id/staff_profile_value"
-                    android:gravity="center"
-                    android:padding="8dp"
-                    android:textColor="@color/gray_text"
-                    android:visibility="gone" />
             </RelativeLayout>
 
             <View
@@ -362,19 +279,6 @@
                     android:gravity="right"
                     android:padding="8dp"
                     android:singleLine="true" />
-
-                <EditText
-                    android:id="@+id/university_url_change"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_toRightOf="@+id/university_url_value"
-                    android:gravity="center"
-                    android:padding="8dp"
-                    android:singleLine="true"
-                    android:textColor="@color/gray_text"
-                    android:visibility="gone" />
             </RelativeLayout>
 
             <View
@@ -415,19 +319,6 @@
                     android:gravity="right"
                     android:padding="8dp"
                     android:singleLine="true" />
-
-                <EditText
-                    android:id="@+id/academic_url_change"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_toRightOf="@+id/academic_url_value"
-                    android:gravity="center"
-                    android:padding="8dp"
-                    android:singleLine="true"
-                    android:textColor="@color/gray_text"
-                    android:visibility="gone" />
             </RelativeLayout>
 
             <View
@@ -466,80 +357,12 @@
                     android:layout_toRightOf="@+id/publication_textview"
                     android:gravity="right"
                     android:padding="8dp" />
-
-                <EditText
-                    android:id="@+id/publication_change"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_toRightOf="@+id/publication_value"
-                    android:gravity="center"
-                    android:padding="8dp"
-                    android:textColor="@color/gray_text"
-                    android:visibility="gone" />
             </RelativeLayout>
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="@color/separator_light" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/staff_information_buttons"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:layout_marginTop="10dp"
-            android:orientation="horizontal"
-            android:visibility="gone">
-
-            <com.balysv.materialripple.MaterialRippleLayout
-                android:id="@+id/staff_info_save_changes_button_ripple"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:layout_marginTop="5dp"
-                app:mrl_rippleAlpha="0.2"
-                app:mrl_rippleColor="@color/ripple_light"
-                app:mrl_rippleDelayClick="false"
-                app:mrl_rippleHover="true"
-                app:mrl_rippleOverlay="true">
-
-                <Button
-                    android:id="@+id/staff_info_save_changes_button"
-                    android:layout_width="130dp"
-                    android:layout_height="40dp"
-                    android:background="@color/colorAccent"
-                    android:text="@string/save_changes"
-                    android:textColor="@android:color/white" />
-
-            </com.balysv.materialripple.MaterialRippleLayout>
-
-
-            <com.balysv.materialripple.MaterialRippleLayout
-                android:id="@+id/staff_info_cancel_button_ripple"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="15dp"
-                android:layout_marginTop="5dp"
-                app:mrl_rippleAlpha="0.2"
-                app:mrl_rippleColor="@color/ripple_light"
-                app:mrl_rippleDelayClick="false"
-                app:mrl_rippleHover="true"
-                app:mrl_rippleOverlay="true">
-
-                <Button
-                    android:id="@+id/staff_info_cancel_button"
-                    android:layout_width="110dp"
-                    android:layout_height="40dp"
-                    android:background="@color/colorAccent"
-                    android:text="@string/cancel"
-                    android:textColor="@android:color/white" />
-
-            </com.balysv.materialripple.MaterialRippleLayout>
 
         </LinearLayout>
 

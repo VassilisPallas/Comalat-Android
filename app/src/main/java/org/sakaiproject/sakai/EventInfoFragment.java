@@ -26,7 +26,6 @@ public class EventInfoFragment extends DialogFragment {
     private UserEvents selectedEvent;
     private TextView title, date, time, attachment, frequency, eventType, owner, site, fromSite, location;
     private RichTextView description;
-    private Button editEvent, removeEvent;
     private LinearLayout attachmentLinear;
 
     public EventInfoFragment() {
@@ -142,12 +141,6 @@ public class EventInfoFragment extends DialogFragment {
             fromSite.append("\" (~");
             fromSite.append(User.getUserId());
             fromSite.append(")");
-
-            editEvent = (Button) v.findViewById(R.id.edit_event);
-            editEvent.setVisibility(View.VISIBLE);
-
-            removeEvent = (Button) v.findViewById(R.id.remove_event);
-            removeEvent.setVisibility(View.VISIBLE);
         } else {
             owner.setText(selectedEvent.getCreatorUserId());
             fromSite.setText("\"");

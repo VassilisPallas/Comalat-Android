@@ -47,7 +47,7 @@ public class CustomLinkMovementMethod extends LinkMovementMethod {
                     movementContext.startActivity(intent);
                 } else if (url.startsWith("mailto")) {
                     Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.parse(url));
-                    //movementContext.startActivity(Intent.createChooser(emailIntent, "Chooser Title"));
+                    //movementContext.startActivity(Intent.createChooser(emailIntent, "Choose email client"));
                     movementContext.startActivity(emailIntent);
                 }
                 return true;

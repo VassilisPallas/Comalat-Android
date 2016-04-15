@@ -17,63 +17,40 @@ import org.sakaiproject.sakai.R;
  */
 public class ContactInfoHelper implements IUserAbout {
 
-    private View.OnClickListener clickListener;
-
     private LinearLayout emailLayout, homePageLayout, workPhoneLayout, homePhoneLayout, mobilePhoneLayout, facsimileLayout;
     private TextView emailTextView, homePageTextView, workPhoneTextView, homePhoneTextView, mobilePhoneTextView, facsimileTextView;
-    private ImageView editContactInformationImageView;
-    private EditText emailEdiText, homePageEditText, workPhoneEditText, homePhoneEditText, mobilePhoneEditText, facsimileEditText;
-
-    private Drawable editDrawable;
 
     /**
      * ContactInfoHelper constructor
      *
-     * @param activity      the activity
-     * @param editDrawable  the custom color Edit image
-     * @param clickListener the onClickListener listener
+     * @param v      fragment view
      */
-    public ContactInfoHelper(AppCompatActivity activity, Drawable editDrawable, View.OnClickListener clickListener) {
-        this.editDrawable = editDrawable;
-        this.clickListener = clickListener;
-        initialize(activity);
+    public ContactInfoHelper(View v) {
+        initialize(v);
         fillValues();
-        checkVisibilities(activity);
+        checkVisibilities(v);
     }
 
     @Override
-    public void initialize(AppCompatActivity activity) {
-        emailLayout = (LinearLayout) activity.findViewById(R.id.email_layout);
-        homePageLayout = (LinearLayout) activity.findViewById(R.id.home_page_layout);
-        workPhoneLayout = (LinearLayout) activity.findViewById(R.id.work_phone_layout);
-        homePhoneLayout = (LinearLayout) activity.findViewById(R.id.home_phone_layout);
-        mobilePhoneLayout = (LinearLayout) activity.findViewById(R.id.mobile_phone_layout);
-        facsimileLayout = (LinearLayout) activity.findViewById(R.id.facsimile_layout);
+    public void initialize(View v) {
+        emailLayout = (LinearLayout) v.findViewById(R.id.email_layout);
+        homePageLayout = (LinearLayout) v.findViewById(R.id.home_page_layout);
+        workPhoneLayout = (LinearLayout) v.findViewById(R.id.work_phone_layout);
+        homePhoneLayout = (LinearLayout) v.findViewById(R.id.home_phone_layout);
+        mobilePhoneLayout = (LinearLayout) v.findViewById(R.id.mobile_phone_layout);
+        facsimileLayout = (LinearLayout) v.findViewById(R.id.facsimile_layout);
 
-        emailTextView = (TextView) activity.findViewById(R.id.email_value);
-        homePageTextView = (TextView) activity.findViewById(R.id.home_page_value);
-        workPhoneTextView = (TextView) activity.findViewById(R.id.work_phone_value);
-        homePhoneTextView = (TextView) activity.findViewById(R.id.home_phone_value);
-        mobilePhoneTextView = (TextView) activity.findViewById(R.id.mobile_phone_value);
-        facsimileTextView = (TextView) activity.findViewById(R.id.facsimile_value);
-
-        editContactInformationImageView = (ImageView) activity.findViewById(R.id.edit_contact_info);
-        editContactInformationImageView.setImageDrawable(editDrawable);
-
-        emailEdiText = (EditText) activity.findViewById(R.id.email_change);
-        homePageEditText = (EditText) activity.findViewById(R.id.home_page_change);
-        workPhoneEditText = (EditText) activity.findViewById(R.id.work_phone_change);
-        homePhoneEditText = (EditText) activity.findViewById(R.id.home_phone_change);
-        mobilePhoneEditText = (EditText) activity.findViewById(R.id.mobile_phone_change);
-        facsimileEditText = (EditText) activity.findViewById(R.id.facsimile_change);
-
-        // FrameLayout
-        activity.findViewById(R.id.edit_contact_button).setOnClickListener(clickListener);
+        emailTextView = (TextView) v.findViewById(R.id.email_value);
+        homePageTextView = (TextView) v.findViewById(R.id.home_page_value);
+        workPhoneTextView = (TextView) v.findViewById(R.id.work_phone_value);
+        homePhoneTextView = (TextView) v.findViewById(R.id.home_phone_value);
+        mobilePhoneTextView = (TextView) v.findViewById(R.id.mobile_phone_value);
+        facsimileTextView = (TextView) v.findViewById(R.id.facsimile_value);
     }
 
     @Override
     public void fillValues() {
-        if (User.getEmail() != null) {
+        if (User.getEmail() != null && !User.getEmail().equals("")) {
             emailTextView.setText(User.getEmail());
         } else {
             emailLayout.setVisibility(View.GONE);
@@ -111,54 +88,10 @@ public class ContactInfoHelper implements IUserAbout {
     }
 
     @Override
-    public void checkVisibilities(AppCompatActivity activity) {
+    public void checkVisibilities(View v) {
         if (emailLayout.getVisibility() == View.GONE && homePageLayout.getVisibility() == View.GONE && workPhoneLayout.getVisibility() == View.GONE
                 && homePhoneLayout.getVisibility() == View.GONE && mobilePhoneLayout.getVisibility() == View.GONE && facsimileLayout.getVisibility() == View.GONE) {
-            activity.findViewById(R.id.no_contact_information).setVisibility(View.VISIBLE);
+            v.findViewById(R.id.no_contact_information).setVisibility(View.VISIBLE);
         }
-    }
-
-    @Override
-    public void enableEdit() {
-        emailLayout.setVisibility(View.VISIBLE);
-        homePageLayout.setVisibility(View.VISIBLE);
-        workPhoneLayout.setVisibility(View.VISIBLE);
-        homePhoneLayout.setVisibility(View.VISIBLE);
-        mobilePhoneLayout.setVisibility(View.VISIBLE);
-        facsimileLayout.setVisibility(View.VISIBLE);
-
-        emailTextView.setVisibility(View.GONE);
-        emailEdiText.setVisibility(View.VISIBLE);
-        emailEdiText.setText(User.getEmail());
-
-        homePageTextView.setVisibility(View.GONE);
-        homePageEditText.setVisibility(View.VISIBLE);
-        homePageEditText.setText(Profile.getHomepage());
-
-        workPhoneTextView.setVisibility(View.GONE);
-        workPhoneEditText.setVisibility(View.VISIBLE);
-        workPhoneEditText.setText(Profile.getWorkphone());
-
-        homePhoneTextView.setVisibility(View.GONE);
-        homePhoneEditText.setVisibility(View.VISIBLE);
-        homePhoneEditText.setText(Profile.getHomephone());
-
-        mobilePhoneTextView.setVisibility(View.GONE);
-        mobilePhoneEditText.setVisibility(View.VISIBLE);
-        mobilePhoneEditText.setText(Profile.getMobilephone());
-
-        facsimileTextView.setVisibility(View.GONE);
-        facsimileEditText.setVisibility(View.VISIBLE);
-        facsimileEditText.setText(Profile.getFacsimile());
-    }
-
-    @Override
-    public void saveEdit() {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public void cancelEdit() {
-        throw new UnsupportedOperationException();
     }
 }

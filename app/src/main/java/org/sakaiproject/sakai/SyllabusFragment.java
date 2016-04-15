@@ -37,7 +37,6 @@ import java.io.IOException;
  */
 public class SyllabusFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener, UpdateSyllabus, Callback {
 
-    private FloatingActionButton showCreations;
     private ISwipeRefresh swipeRefresh;
     private org.sakaiproject.customviews.CustomSwipeRefreshLayout swipeRefreshLayout;
     private SiteData siteData;
@@ -139,20 +138,6 @@ public class SyllabusFragment extends Fragment implements SwipeRefreshLayout.OnR
             }
         });
 
-//        showCreations = (FloatingActionButton) v.findViewById(R.id.show_creations);
-//        showCreations.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-////                AnimatorSet s = new AnimatorSet();
-////                s.play(R.anim.button_rotation_move).before(anim3);
-////                s.play(anim4).after(anim3);
-////
-////                Animation rotation = AnimationUtils.loadAnimation(getContext(), R.anim.button_rotation_move);
-////                Animation rightRotation = AnimationUtils.loadAnimation(getContext(), R.anim.button_rotation_back);
-////                showCreations.startAnimation(rotation);
-////                showCreations.startAnimation(rightRotation);
-//            }
-//        });
         swipeRefresh.Callback(this);
         callback = this;
 

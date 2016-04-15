@@ -16,52 +16,31 @@ import org.sakaiproject.sakai.R;
  */
 public class PersonalInfoHelper implements IUserAbout {
 
-    private View.OnClickListener clickListener;
-
-    private Drawable editDrawable;
-
     private LinearLayout booksLayout, tvShowsLayout, moviesLayout, quotesLayout;
     private TextView booksTextView, tvShowsTextView, moviesTextView, quotesTextView;
-    private ImageView editPersonalInformationImageView;
-    private EditText booksEditText, tvShowsEditText, moviesEditText, quotesEditText;
 
     /**
      * PersonalInfoHelper constructor
      *
-     * @param activity      the activity
-     * @param editDrawable  the custom color Edit image
-     * @param clickListener the onClickListener listener
+     * @param v fragment view
      */
-    public PersonalInfoHelper(AppCompatActivity activity, Drawable editDrawable, View.OnClickListener clickListener) {
-        this.clickListener = clickListener;
-        this.editDrawable = editDrawable;
-
-        initialize(activity);
+    public PersonalInfoHelper(View v) {
+        initialize(v);
         fillValues();
-        checkVisibilities(activity);
+        checkVisibilities(v);
     }
 
     @Override
-    public void initialize(AppCompatActivity activity) {
-        booksLayout = (LinearLayout) activity.findViewById(R.id.books_layout);
-        tvShowsLayout = (LinearLayout) activity.findViewById(R.id.tv_shows_layout);
-        moviesLayout = (LinearLayout) activity.findViewById(R.id.movies_layout);
-        quotesLayout = (LinearLayout) activity.findViewById(R.id.quotes_layout);
+    public void initialize(View v) {
+        booksLayout = (LinearLayout) v.findViewById(R.id.books_layout);
+        tvShowsLayout = (LinearLayout) v.findViewById(R.id.tv_shows_layout);
+        moviesLayout = (LinearLayout) v.findViewById(R.id.movies_layout);
+        quotesLayout = (LinearLayout) v.findViewById(R.id.quotes_layout);
 
-        booksTextView = (TextView) activity.findViewById(R.id.books_value);
-        tvShowsTextView = (TextView) activity.findViewById(R.id.tv_shows_value);
-        moviesTextView = (TextView) activity.findViewById(R.id.movies_value);
-        quotesTextView = (TextView) activity.findViewById(R.id.quotes_value);
-
-        editPersonalInformationImageView = (ImageView) activity.findViewById(R.id.edit_personal_info);
-        editPersonalInformationImageView.setImageDrawable(editDrawable);
-
-        booksEditText = (EditText) activity.findViewById(R.id.books_change);
-        tvShowsEditText = (EditText) activity.findViewById(R.id.tv_shows_change);
-        moviesEditText = (EditText) activity.findViewById(R.id.movies_change);
-        quotesEditText = (EditText) activity.findViewById(R.id.quotes_change);
-
-        activity.findViewById(R.id.edit_personal_button).setOnClickListener(clickListener);
+        booksTextView = (TextView) v.findViewById(R.id.books_value);
+        tvShowsTextView = (TextView) v.findViewById(R.id.tv_shows_value);
+        moviesTextView = (TextView) v.findViewById(R.id.movies_value);
+        quotesTextView = (TextView) v.findViewById(R.id.quotes_value);
     }
 
     @Override
@@ -92,44 +71,10 @@ public class PersonalInfoHelper implements IUserAbout {
     }
 
     @Override
-    public void checkVisibilities(AppCompatActivity activity) {
+    public void checkVisibilities(View v) {
         if (booksLayout.getVisibility() == View.GONE && tvShowsLayout.getVisibility() == View.GONE && moviesLayout.getVisibility() == View.GONE
                 && quotesLayout.getVisibility() == View.GONE) {
-            activity.findViewById(R.id.personal_information_buttons).setVisibility(View.VISIBLE);
+            v.findViewById(R.id.no_personal_information).setVisibility(View.VISIBLE);
         }
-    }
-
-    @Override
-    public void enableEdit() {
-        booksLayout.setVisibility(View.VISIBLE);
-        tvShowsLayout.setVisibility(View.VISIBLE);
-        moviesLayout.setVisibility(View.VISIBLE);
-        quotesLayout.setVisibility(View.VISIBLE);
-
-        booksTextView.setVisibility(View.GONE);
-        booksEditText.setVisibility(View.VISIBLE);
-        booksEditText.setText(Profile.getFavouriteBooks());
-
-        tvShowsTextView.setVisibility(View.GONE);
-        tvShowsEditText.setVisibility(View.VISIBLE);
-        tvShowsEditText.setText(Profile.getFavouriteTvShows());
-
-        moviesTextView.setVisibility(View.GONE);
-        moviesEditText.setVisibility(View.VISIBLE);
-        moviesEditText.setText(Profile.getFavouriteMovies());
-
-        quotesTextView.setVisibility(View.GONE);
-        quotesEditText.setVisibility(View.VISIBLE);
-        quotesEditText.setText(Profile.getFavouriteQuotes());
-    }
-
-    @Override
-    public void saveEdit() {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public void cancelEdit() {
-        throw new UnsupportedOperationException();
     }
 }

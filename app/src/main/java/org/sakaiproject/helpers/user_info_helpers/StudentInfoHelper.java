@@ -16,46 +16,28 @@ import org.sakaiproject.sakai.R;
  */
 public class StudentInfoHelper implements IUserAbout {
 
-    private View.OnClickListener clickListener;
-
-    private Drawable editDrawable;
 
     private LinearLayout degreeLayout, subjectsLayout;
     private TextView degreeTextView, subjectTextView;
-    private ImageView editStudentInformationImageView;
-    private EditText degreeEditText, subjectsEditText;
 
     /**
      * StudentInfoHelper constructor
      *
-     * @param activity      the activity
-     * @param editDrawable  the custom color Edit image
-     * @param clickListener the onClickListener listener
+     * @param v fragment view
      */
-    public StudentInfoHelper(AppCompatActivity activity, Drawable editDrawable, View.OnClickListener clickListener) {
-        this.clickListener = clickListener;
-        this.editDrawable = editDrawable;
-
-        initialize(activity);
+    public StudentInfoHelper(View v) {
+        initialize(v);
         fillValues();
-        checkVisibilities(activity);
+        checkVisibilities(v);
     }
 
     @Override
-    public void initialize(AppCompatActivity activity) {
-        degreeLayout = (LinearLayout) activity.findViewById(R.id.degree_layout);
-        subjectsLayout = (LinearLayout) activity.findViewById(R.id.subjects_layout);
+    public void initialize(View v) {
+        degreeLayout = (LinearLayout) v.findViewById(R.id.degree_layout);
+        subjectsLayout = (LinearLayout) v.findViewById(R.id.subjects_layout);
 
-        degreeTextView = (TextView) activity.findViewById(R.id.degree_value);
-        subjectTextView = (TextView) activity.findViewById(R.id.subjects_value);
-
-        editStudentInformationImageView = (ImageView) activity.findViewById(R.id.edit_student_info);
-        editStudentInformationImageView.setImageDrawable(editDrawable);
-
-        degreeEditText = (EditText) activity.findViewById(R.id.degree_change);
-        subjectsEditText = (EditText) activity.findViewById(R.id.subjects_change);
-
-        activity.findViewById(R.id.edit_student_button).setOnClickListener(clickListener);
+        degreeTextView = (TextView) v.findViewById(R.id.degree_value);
+        subjectTextView = (TextView) v.findViewById(R.id.subjects_value);
     }
 
     @Override
@@ -74,33 +56,10 @@ public class StudentInfoHelper implements IUserAbout {
     }
 
     @Override
-    public void checkVisibilities(AppCompatActivity activity) {
+    public void checkVisibilities(View v) {
         if (degreeLayout.getVisibility() == View.GONE && subjectsLayout.getVisibility() == View.GONE) {
-            activity.findViewById(R.id.no_student_information).setVisibility(View.VISIBLE);
+            v.findViewById(R.id.no_student_information).setVisibility(View.VISIBLE);
         }
     }
 
-    @Override
-    public void enableEdit() {
-        degreeLayout.setVisibility(View.VISIBLE);
-        subjectsLayout.setVisibility(View.VISIBLE);
-
-        degreeTextView.setVisibility(View.GONE);
-        degreeEditText.setVisibility(View.VISIBLE);
-        degreeEditText.setText(Profile.getCourse());
-
-        subjectTextView.setVisibility(View.GONE);
-        subjectsEditText.setVisibility(View.VISIBLE);
-        subjectsEditText.setText(Profile.getSubjects());
-    }
-
-    @Override
-    public void saveEdit() {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public void cancelEdit() {
-        throw new UnsupportedOperationException();
-    }
 }

@@ -18,6 +18,7 @@ import org.sakaiproject.sakai.AssignmentFragment;
 import org.sakaiproject.sakai.CalendarFragment;
 import org.sakaiproject.sakai.DashboardFragment;
 import org.sakaiproject.sakai.DropboxFragment;
+import org.sakaiproject.sakai.HomeFragment;
 import org.sakaiproject.sakai.MembershipFragment;
 import org.sakaiproject.sakai.ProfileFragment;
 import org.sakaiproject.sakai.R;
@@ -272,7 +273,8 @@ public abstract class NavigationDrawerHelper {
         } else if (pageName.equals(DELEGATED_ACCESS)) {
 
         } else if (pageName.equals(HOME)) {
-
+            HomeFragment homeFragment = new HomeFragment().getSwipeRefreshLayout(mSwipeRefreshLayout);
+            ActionsHelper.selectFragment(homeFragment, R.id.user_frame, context);
         } else if (pageName.equals(PROFILE)) {
             ProfileFragment profileFragment = new ProfileFragment().getSwipeRefreshLayout(mSwipeRefreshLayout);
             ActionsHelper.selectFragment(profileFragment, R.id.user_frame, context);

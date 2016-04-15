@@ -39,4 +39,5 @@
     <color name="gradient_green">#3de64b</color>
     <color name="file_descr_background">#8C000000</color>
     <color name="gridview_background">#717171</color>
+    <color name="profile_tabs">#e2e2e2</color>
 </resources>

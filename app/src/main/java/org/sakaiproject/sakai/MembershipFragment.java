@@ -45,7 +45,6 @@ public class MembershipFragment extends Fragment implements IUnJoin, SwipeRefres
     private MembershipAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
 
-    private FloatingActionButton createSite;
     private EditText membershipSearch;
     private FrameLayout root;
 
@@ -56,7 +55,7 @@ public class MembershipFragment extends Fragment implements IUnJoin, SwipeRefres
     private org.sakaiproject.customviews.CustomSwipeRefreshLayout swipeRefreshLayout;
 
     public MembershipFragment() {
-        // Required empty public constructor
+
     }
 
 
@@ -119,14 +118,6 @@ public class MembershipFragment extends Fragment implements IUnJoin, SwipeRefres
 
         mAdapter = new MembershipAdapter(membership, v.getContext(), this, this);
         mRecyclerView.setAdapter(mAdapter);
-
-        createSite = (FloatingActionButton) v.findViewById(R.id.create_site);
-        createSite.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(getContext(), getContext().getResources().getString(R.string.ok), Toast.LENGTH_SHORT).show();
-            }
-        });
 
         membershipSearch = (EditText) v.findViewById(R.id.membership_search);
         membershipSearch.addTextChangedListener(searchWatcher);

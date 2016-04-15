@@ -11,14 +11,12 @@ import org.sakaiproject.sakai.EventTabFragment;
  * Created by vspallas on 23/02/16.
  */
 public class DashboardTabAdapter extends FragmentStatePagerAdapter {
-    private org.sakaiproject.customviews.CustomSwipeRefreshLayout swipeRefreshLayout;
     private int tabsCount;
     private int pos = 0;
 
-    public DashboardTabAdapter(FragmentManager fm, int tabsCount, org.sakaiproject.customviews.CustomSwipeRefreshLayout swipeRefreshLayout) {
+    public DashboardTabAdapter(FragmentManager fm, int tabsCount) {
         super(fm);
         this.tabsCount = tabsCount;
-        this.swipeRefreshLayout = swipeRefreshLayout;
     }
 
     @Override
@@ -26,9 +24,9 @@ public class DashboardTabAdapter extends FragmentStatePagerAdapter {
         pos = position;
         switch (position) {
             case 0:
-                return new AssignmentTabFragment().getSwipeRefreshLayout(swipeRefreshLayout);
+                return new AssignmentTabFragment();
             case 1:
-                return new EventTabFragment().getSwipeRefreshLayout(swipeRefreshLayout);
+                return new EventTabFragment();
             default:
                 return null;
         }

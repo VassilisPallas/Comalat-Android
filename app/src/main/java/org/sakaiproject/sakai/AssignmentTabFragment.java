@@ -16,8 +16,11 @@ import com.android.volley.ServerError;
 import com.android.volley.VolleyError;
 
 import org.sakaiproject.api.assignments.OfflineUserAssignments;
+import org.sakaiproject.api.assignments.UserAssignmentsService;
 import org.sakaiproject.api.callback.Callback;
+import org.sakaiproject.api.internet.NetWork;
 import org.sakaiproject.api.memberships.SiteData;
+import org.sakaiproject.api.memberships.pages.assignments.MembershipAssignmentsService;
 import org.sakaiproject.api.memberships.pages.assignments.OfflineMembershipAssignments;
 import org.sakaiproject.adapters.AssignmentAdapter;
 import org.sakaiproject.api.pojos.assignments.Assignment;
@@ -38,7 +41,6 @@ public class AssignmentTabFragment extends Fragment implements Callback {
     private AssignmentAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     private TextView noAssignments;
-    private org.sakaiproject.customviews.CustomSwipeRefreshLayout swipeRefreshLayout;
 
     public AssignmentTabFragment() {
     }
@@ -63,8 +65,6 @@ public class AssignmentTabFragment extends Fragment implements Callback {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.tab_fragment_assignment, container, false);
 
-        swipeRefreshLayout = (CustomSwipeRefreshLayout) getArguments().getSerializable("swipeRefresh");
-
         siteData = NavigationDrawerHelper.getSelectedSiteData();
         siteName = NavigationDrawerHelper.getSelectedSite();
 
@@ -81,22 +81,6 @@ public class AssignmentTabFragment extends Fragment implements Callback {
         mAdapter = new AssignmentAdapter(getActivity(), assignment, null);
 
         mRecyclerView.setAdapter(mAdapter);
-
-        // if the memberships recycle view is not on the top then the swipe refresh can not be done
-        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                int topRowVerticalPosition =
-                        (recyclerView == null || recyclerView.getChildCount() == 0 || recyclerView.getChildCount() == 1) ? 0 : recyclerView.getChildAt(0).getTop();
-                swipeRefreshLayout.setEnabled(topRowVerticalPosition >= 0);
-            }
-
-            @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-            }
-        });
-
 
         mRecyclerView.addOnItemTouchListener(new RecyclerItemClickListener(getContext(), mRecyclerView, new RecyclerItemClickListener.OnItemClickListener() {
             @Override
@@ -133,13 +117,25 @@ public class AssignmentTabFragment extends Fragment implements Callback {
     }
 
     private void fillList() {
-
-        if (siteName.equals(getContext().getResources().getString(R.string.my_workspace))) {
-            OfflineUserAssignments offlineUserAnnouncements = new OfflineUserAssignments(getContext(), this);
-            offlineUserAnnouncements.getAssignments();
+        if (NetWork.getConnectionEstablished()) {
+            String url;
+            if (siteName.equals(getContext().getResources().getString(R.string.my_workspace))) {
+                UserAssignmentsService userAssignmentsService = new UserAssignmentsService(getContext(), this);
+                url = getContext().getResources().getString(R.string.url) + "assignment/my.json";
+                userAssignmentsService.getAssignments(url);
+            } else {
+                MembershipAssignmentsService membershipAssignmentsService = new MembershipAssignmentsService(getContext(), siteData.getId(), this);
+                url = getContext().getResources().getString(R.string.url) + "assignment/site/" + siteData.getId() + ".json";
+                membershipAssignmentsService.getAssignments(url);
+            }
         } else {
-            OfflineMembershipAssignments offlineMembershipAssignments = new OfflineMembershipAssignments(getContext(), siteData.getId(), this);
-            offlineMembershipAssignments.getAssignments();
+            if (siteName.equals(getContext().getResources().getString(R.string.my_workspace))) {
+                OfflineUserAssignments offlineUserAnnouncements = new OfflineUserAssignments(getContext(), this);
+                offlineUserAnnouncements.getAssignments();
+            } else {
+                OfflineMembershipAssignments offlineMembershipAssignments = new OfflineMembershipAssignments(getContext(), siteData.getId(), this);
+                offlineMembershipAssignments.getAssignments();
+            }
         }
 
         if (assignment != null && assignment.getAssignmentsCollectionList() != null) {
@@ -176,6 +172,5 @@ public class AssignmentTabFragment extends Fragment implements Callback {
         if (error instanceof ServerError) {
             Toast.makeText(getContext(), getContext().getResources().getString(R.string.server_error), Toast.LENGTH_SHORT).show();
         }
-        swipeRefreshLayout.setRefreshing(false);
     }
 }

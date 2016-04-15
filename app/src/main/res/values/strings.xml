@@ -392,6 +392,14 @@
     <string name="no_intent_app">No app can perform this action.</string>
     <string name="internal_error">An Error has occurred.\nPlease Try Again Later</string>
     <string name="title_activity_friends">FriendsActivity</string>
+    <string name="site_info_display">Site Information Display</string>
+    <string name="no_today_events">No event today</string>
+    <string name="no_messages">No messages</string>
+    <string name="at">at</string>
+    <string name="workspace_info_title">My Workspace Information Display</string>
+    <string name="workspace_info"><![CDATA[<h3> Welcome to your personal workspace.</h3><p>In Sakai each user has his or her own individual worksite called My Workspace. My
+			Workspace is a place where you can keep personal documents, create new sites, maintain a
+			schedule, store resources, and much more.</p>]]></string>
 
     <!-- Chat Preferences -->
     <string name="general">General</string>
@@ -402,4 +410,6 @@
     <string name="sound">Sound</string>
     <string name="notification_sound">Notification Sound</string>
 
+    <!-- Home tabs -->
+    <string name="information">Information</string>
 </resources>

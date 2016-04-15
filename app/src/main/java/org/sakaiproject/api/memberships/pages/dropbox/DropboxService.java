@@ -88,8 +88,8 @@ public class DropboxService {
                         dropboxList.put(f.getAbsolutePath(), dropbox.getCollection().get(i).getSize());
                     }
                 }
-                callback.onSuccess(dropboxList);
                 if (index == roster.getMembersTotal() - 1) {
+                    callback.onSuccess(dropboxList);
                     swipeRefreshLayout.setRefreshing(false);
                 }
             }

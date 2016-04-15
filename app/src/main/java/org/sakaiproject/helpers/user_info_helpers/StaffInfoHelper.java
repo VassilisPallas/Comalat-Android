@@ -17,87 +17,62 @@ import org.sakaiproject.sakai.R;
  */
 public class StaffInfoHelper implements IUserAbout {
 
-    private View.OnClickListener clickListener;
-    private Drawable editDrawable;
-
     private LinearLayout positionLayout, departmentLayout, schoolLayout, roomLayout, staffProfileLayout, universityUrlLayout, academicUrlLayout, publicationsLayout;
     private TextView positionTextView, departmentTextView, schoolTextView, roomTextView, staffProfileTextView, universityUrlTextView, academicUrlTextView, publicationsTextView;
-    private ImageView editStaffInformationImageView;
-    private EditText positionEditText, departmentEditText, schoolEditText, roomEditText, staffProfileEditText, universityUrlEditText, academicUrlEditText, publicationsEditText;
 
     /**
      * StaffInfoHelper constructor
      *
-     * @param activity      the activity
-     * @param editDrawable  the custom color Edit image
-     * @param clickListener the onClickListener listener
+     * @param v fragment view
      */
-    public StaffInfoHelper(AppCompatActivity activity, Drawable editDrawable, View.OnClickListener clickListener) {
-        this.editDrawable = editDrawable;
-        this.clickListener = clickListener;
-
-        initialize(activity);
+    public StaffInfoHelper(View v) {
+        initialize(v);
         fillValues();
-        checkVisibilities(activity);
+        checkVisibilities(v);
     }
 
     @Override
-    public void initialize(AppCompatActivity activity) {
-        positionLayout = (LinearLayout) activity.findViewById(R.id.position_layout);
-        departmentLayout = (LinearLayout) activity.findViewById(R.id.department_layout);
-        schoolLayout = (LinearLayout) activity.findViewById(R.id.school_layout);
-        roomLayout = (LinearLayout) activity.findViewById(R.id.room_layout);
-        staffProfileLayout = (LinearLayout) activity.findViewById(R.id.staff_profile_layout);
-        universityUrlLayout = (LinearLayout) activity.findViewById(R.id.university_url_layout);
-        academicUrlLayout = (LinearLayout) activity.findViewById(R.id.academic_url_layout);
-        publicationsLayout = (LinearLayout) activity.findViewById(R.id.publication_layout);
+    public void initialize(View v) {
+        positionLayout = (LinearLayout) v.findViewById(R.id.position_layout);
+        departmentLayout = (LinearLayout) v.findViewById(R.id.department_layout);
+        schoolLayout = (LinearLayout) v.findViewById(R.id.school_layout);
+        roomLayout = (LinearLayout) v.findViewById(R.id.room_layout);
+        staffProfileLayout = (LinearLayout) v.findViewById(R.id.staff_profile_layout);
+        universityUrlLayout = (LinearLayout) v.findViewById(R.id.university_url_layout);
+        academicUrlLayout = (LinearLayout) v.findViewById(R.id.academic_url_layout);
+        publicationsLayout = (LinearLayout) v.findViewById(R.id.publication_layout);
 
-        positionTextView = (TextView) activity.findViewById(R.id.position_value);
-        departmentTextView = (TextView) activity.findViewById(R.id.department_value);
-        schoolTextView = (TextView) activity.findViewById(R.id.school_value);
-        roomTextView = (TextView) activity.findViewById(R.id.room_value);
-        staffProfileTextView = (TextView) activity.findViewById(R.id.staff_profile_value);
-        universityUrlTextView = (TextView) activity.findViewById(R.id.university_url_value);
-        academicUrlTextView = (TextView) activity.findViewById(R.id.academic_url_value);
-        publicationsTextView = (TextView) activity.findViewById(R.id.publication_value);
-
-        editStaffInformationImageView = (ImageView) activity.findViewById(R.id.edit_staff_info);
-        editStaffInformationImageView.setImageDrawable(editDrawable);
-
-        positionEditText = (EditText) activity.findViewById(R.id.position_change);
-        departmentEditText = (EditText) activity.findViewById(R.id.department_change);
-        schoolEditText = (EditText) activity.findViewById(R.id.school_change);
-        roomEditText = (EditText) activity.findViewById(R.id.room_change);
-        staffProfileEditText = (EditText) activity.findViewById(R.id.staff_profile_change);
-        universityUrlEditText = (EditText) activity.findViewById(R.id.university_url_change);
-        academicUrlEditText = (EditText) activity.findViewById(R.id.academic_url_change);
-        publicationsEditText = (EditText) activity.findViewById(R.id.publication_change);
-
-        // FrameLayout
-        activity.findViewById(R.id.edit_staff_button).setOnClickListener(clickListener);
+        positionTextView = (TextView) v.findViewById(R.id.position_value);
+        departmentTextView = (TextView) v.findViewById(R.id.department_value);
+        schoolTextView = (TextView) v.findViewById(R.id.school_value);
+        roomTextView = (TextView) v.findViewById(R.id.room_value);
+        staffProfileTextView = (TextView) v.findViewById(R.id.staff_profile_value);
+        universityUrlTextView = (TextView) v.findViewById(R.id.university_url_value);
+        academicUrlTextView = (TextView) v.findViewById(R.id.academic_url_value);
+        publicationsTextView = (TextView) v.findViewById(R.id.publication_value);
     }
 
     @Override
     public void fillValues() {
-        if (Profile.getPosition() != null) {
+        if (Profile.getPosition() != null && !Profile.getPosition().equals("")) {
             positionTextView.setText(Profile.getPosition());
         } else {
             positionLayout.setVisibility(View.GONE);
         }
 
-        if (Profile.getDepartment() != null) {
+        if (Profile.getDepartment() != null && !Profile.getDepartment().equals("")) {
             departmentTextView.setText(Profile.getDepartment());
         } else {
             departmentLayout.setVisibility(View.GONE);
         }
 
-        if (Profile.getSchool() != null) {
+        if (Profile.getSchool() != null && !Profile.getSchool().equals("")) {
             schoolTextView.setText(Profile.getSchool());
         } else {
             schoolLayout.setVisibility(View.GONE);
         }
 
-        if (Profile.getRoom() != null) {
+        if (Profile.getRoom() != null && !Profile.getRoom().equals("")) {
             roomTextView.setText(Profile.getRoom().trim());
         } else {
             roomLayout.setVisibility(View.GONE);
@@ -129,65 +104,11 @@ public class StaffInfoHelper implements IUserAbout {
     }
 
     @Override
-    public void checkVisibilities(AppCompatActivity activity) {
+    public void checkVisibilities(View v) {
         if (positionLayout.getVisibility() == View.GONE && departmentLayout.getVisibility() == View.GONE && schoolLayout.getVisibility() == View.GONE
                 && roomLayout.getVisibility() == View.GONE && staffProfileLayout.getVisibility() == View.GONE && universityUrlLayout.getVisibility() == View.GONE
                 && academicUrlLayout.getVisibility() == View.GONE && publicationsLayout.getVisibility() == View.GONE) {
-            activity.findViewById(R.id.no_staff_information).setVisibility(View.VISIBLE);
+            v.findViewById(R.id.no_staff_information).setVisibility(View.VISIBLE);
         }
-    }
-
-    @Override
-    public void enableEdit() {
-        positionLayout.setVisibility(View.VISIBLE);
-        departmentLayout.setVisibility(View.VISIBLE);
-        schoolLayout.setVisibility(View.VISIBLE);
-        roomLayout.setVisibility(View.VISIBLE);
-        staffProfileLayout.setVisibility(View.VISIBLE);
-        universityUrlLayout.setVisibility(View.VISIBLE);
-        academicUrlLayout.setVisibility(View.VISIBLE);
-        publicationsLayout.setVisibility(View.VISIBLE);
-
-        positionTextView.setVisibility(View.GONE);
-        positionEditText.setVisibility(View.VISIBLE);
-        positionEditText.setText(Profile.getPosition());
-
-        departmentTextView.setVisibility(View.GONE);
-        departmentEditText.setVisibility(View.VISIBLE);
-        departmentEditText.setText(Profile.getDepartment());
-
-        schoolTextView.setVisibility(View.GONE);
-        schoolEditText.setVisibility(View.VISIBLE);
-        schoolEditText.setText(Profile.getSchool());
-
-        roomTextView.setVisibility(View.GONE);
-        roomEditText.setVisibility(View.VISIBLE);
-        roomEditText.setText(Profile.getRoom());
-
-        staffProfileTextView.setVisibility(View.GONE);
-        staffProfileEditText.setVisibility(View.VISIBLE);
-        staffProfileEditText.setText(Profile.getStaffProfile());
-
-        universityUrlTextView.setVisibility(View.GONE);
-        universityUrlEditText.setVisibility(View.VISIBLE);
-        universityUrlEditText.setText(Profile.getUniversityProfileUrl());
-
-        academicUrlTextView.setVisibility(View.GONE);
-        academicUrlEditText.setVisibility(View.VISIBLE);
-        academicUrlEditText.setText(Profile.getAcademicProfileUrl());
-
-        publicationsTextView.setVisibility(View.GONE);
-        publicationsEditText.setVisibility(View.VISIBLE);
-        publicationsEditText.setText(Profile.getPublications());
-    }
-
-    @Override
-    public void saveEdit() {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public void cancelEdit() {
-        throw new UnsupportedOperationException();
     }
 }

@@ -32,34 +32,6 @@
                     android:textSize="17sp"
                     android:textStyle="bold" />
 
-                <com.balysv.materialripple.MaterialRippleLayout
-                    android:id="@+id/edit_contact_ripple"
-                    android:layout_width="50dp"
-                    android:layout_height="40dp"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    app:mrl_rippleAlpha="0.2"
-                    app:mrl_rippleColor="@android:color/white"
-                    app:mrl_rippleDelayClick="false"
-                    app:mrl_rippleHover="true"
-                    app:mrl_rippleOverlay="true"
-                    app:mrl_rippleRoundedCorners="@dimen/fab_margin">
-
-                    <FrameLayout
-                        android:id="@+id/edit_contact_button"
-                        android:layout_width="50dp"
-                        android:layout_height="40dp"
-                        android:clickable="true">
-
-                        <ImageView
-                            android:id="@+id/edit_contact_info"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_horizontal|center_vertical" />
-                    </FrameLayout>
-
-                </com.balysv.materialripple.MaterialRippleLayout>
-
             </RelativeLayout>
 
             <View
@@ -112,18 +84,6 @@
                     android:gravity="right"
                     android:padding="8dp" />
 
-                <EditText
-                    android:id="@+id/email_change"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_toRightOf="@+id/email_value"
-                    android:gravity="center"
-                    android:inputType="textEmailAddress"
-                    android:padding="8dp"
-                    android:textColor="@color/gray_text"
-                    android:visibility="gone" />
             </RelativeLayout>
 
             <View
@@ -164,17 +124,6 @@
                     android:gravity="right"
                     android:padding="8dp" />
 
-                <EditText
-                    android:id="@+id/home_page_change"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_toRightOf="@+id/home_page_value"
-                    android:gravity="center"
-                    android:padding="8dp"
-                    android:textColor="@color/gray_text"
-                    android:visibility="gone" />
             </RelativeLayout>
 
             <View
@@ -214,18 +163,6 @@
                     android:autoLink="phone"
                     android:gravity="right"
                     android:padding="8dp" />
-
-                <EditText
-                    android:id="@+id/work_phone_change"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_toRightOf="@+id/work_phone_value"
-                    android:gravity="center"
-                    android:padding="8dp"
-                    android:textColor="@color/gray_text"
-                    android:visibility="gone" />
             </RelativeLayout>
 
             <View
@@ -265,18 +202,6 @@
                     android:autoLink="phone"
                     android:gravity="right"
                     android:padding="8dp" />
-
-                <EditText
-                    android:id="@+id/home_phone_change"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_toRightOf="@+id/home_phone_value"
-                    android:gravity="center"
-                    android:padding="8dp"
-                    android:textColor="@color/gray_text"
-                    android:visibility="gone" />
             </RelativeLayout>
 
             <View
@@ -316,18 +241,6 @@
                     android:autoLink="phone"
                     android:gravity="right"
                     android:padding="8dp" />
-
-                <EditText
-                    android:id="@+id/mobile_phone_change"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_toRightOf="@+id/mobile_phone_value"
-                    android:gravity="center"
-                    android:padding="8dp"
-                    android:textColor="@color/gray_text"
-                    android:visibility="gone" />
             </RelativeLayout>
 
             <View
@@ -367,80 +280,12 @@
                     android:autoLink="phone"
                     android:gravity="right"
                     android:padding="8dp" />
-
-                <EditText
-                    android:id="@+id/facsimile_change"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_toRightOf="@+id/facsimile_value"
-                    android:gravity="center"
-                    android:padding="8dp"
-                    android:textColor="@color/gray_text"
-                    android:visibility="gone" />
             </RelativeLayout>
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="@color/separator_light" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/contact_information_buttons"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:layout_marginTop="10dp"
-            android:orientation="horizontal"
-            android:visibility="gone">
-
-            <com.balysv.materialripple.MaterialRippleLayout
-                android:id="@+id/contact_info_save_changes_button_ripple"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:layout_marginTop="5dp"
-                app:mrl_rippleAlpha="0.2"
-                app:mrl_rippleColor="@color/ripple_light"
-                app:mrl_rippleDelayClick="false"
-                app:mrl_rippleHover="true"
-                app:mrl_rippleOverlay="true">
-
-                <Button
-                    android:id="@+id/contact_info_save_changes_button"
-                    android:layout_width="130dp"
-                    android:layout_height="40dp"
-                    android:background="@color/colorAccent"
-                    android:text="@string/save_changes"
-                    android:textColor="@android:color/white" />
-
-            </com.balysv.materialripple.MaterialRippleLayout>
-
-
-            <com.balysv.materialripple.MaterialRippleLayout
-                android:id="@+id/contact_info_cancel_button_ripple"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="15dp"
-                android:layout_marginTop="5dp"
-                app:mrl_rippleAlpha="0.2"
-                app:mrl_rippleColor="@color/ripple_light"
-                app:mrl_rippleDelayClick="false"
-                app:mrl_rippleHover="true"
-                app:mrl_rippleOverlay="true">
-
-                <Button
-                    android:id="@+id/contact_info_cancel_button"
-                    android:layout_width="110dp"
-                    android:layout_height="40dp"
-                    android:background="@color/colorAccent"
-                    android:text="@string/cancel"
-                    android:textColor="@android:color/white" />
-
-            </com.balysv.materialripple.MaterialRippleLayout>
 
         </LinearLayout>
 

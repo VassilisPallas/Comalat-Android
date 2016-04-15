@@ -26,45 +26,6 @@
             android:layout_height="match_parent"
             android:scrollbars="vertical" />
 
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_alignParentRight="true">
-
-            <android.support.design.widget.FloatingActionButton
-                android:id="@+id/create_syllabus_item"
-                android:layout_width="45dp"
-                android:layout_height="45dp"
-                android:layout_above="@+id/create_sullabus_bulk"
-                android:layout_centerHorizontal="true"
-                android:layout_marginBottom="10dp"
-                android:layout_marginRight="@dimen/fab_margin"
-                android:src="@mipmap/ic_add_bulk"
-                android:visibility="gone" />
-
-            <android.support.design.widget.FloatingActionButton
-                android:id="@+id/create_sullabus_bulk"
-                android:layout_width="45dp"
-                android:layout_height="45dp"
-                android:layout_above="@+id/show_creations"
-                android:layout_centerHorizontal="true"
-                android:layout_marginBottom="@dimen/fab_margin"
-                android:layout_marginRight="@dimen/fab_margin"
-                android:src="@mipmap/ic_add_item"
-                android:visibility="gone" />
-
-            <android.support.design.widget.FloatingActionButton
-                android:id="@+id/show_creations"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_centerHorizontal="true"
-                android:layout_marginBottom="@dimen/fab_margin"
-                android:layout_marginRight="@dimen/fab_margin"
-                android:src="@mipmap/ic_add" />
-
-        </RelativeLayout>
-
         <org.sakaiproject.customviews.rich_textview.RichTextView
             android:id="@+id/relaunch_url"
             android:layout_width="match_parent"

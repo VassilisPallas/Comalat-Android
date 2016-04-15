@@ -17,6 +17,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
+import org.sakaiproject.api.events.EventsCollection;
 import org.sakaiproject.api.internet.NetWork;
 import org.sakaiproject.api.logout.Logout;
 import org.sakaiproject.api.session.Waiter;
@@ -556,6 +557,8 @@ public class ActionsHelper {
         Connection.nullSessionId();
         SiteData.getSites().clear();
         SiteData.getProjects().clear();
+        EventsCollection.getEventsList().clear();
+        EventsCollection.getMonthEvents().clear();
     }
 
     /**

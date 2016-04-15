@@ -36,8 +36,20 @@ public class FriendsActivity extends AppCompatActivity implements ISwipeRefresh 
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
 
-        Drawable person = ActionsHelper.setCustomDrawableColor(this, R.mipmap.ic_group, Color.WHITE);
-        Drawable settings = ActionsHelper.setCustomDrawableColor(this, R.mipmap.ic_settings, Color.WHITE);
+        Drawable person = null;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+            person = getResources().getDrawable(R.mipmap.ic_group_white, getTheme());
+        } else {
+            person = getResources().getDrawable(R.mipmap.ic_group_white);
+        }
+
+
+        Drawable settings = null;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+            settings = getResources().getDrawable(R.mipmap.ic_settings_white, getTheme());
+        } else {
+            settings = getResources().getDrawable(R.mipmap.ic_settings_white);
+        }
 
         tabLayout.addTab(tabLayout.newTab().setIcon(person));
 

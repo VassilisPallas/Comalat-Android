@@ -1,11 +1,13 @@
 package org.sakaiproject.sakai;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,7 +22,10 @@ import org.sakaiproject.api.callback.Callback;
 import org.sakaiproject.api.events.EventsCollection;
 import org.sakaiproject.api.events.OfflineEvents;
 import org.sakaiproject.api.events.UserEvents;
+import org.sakaiproject.api.events.UserEventsService;
+import org.sakaiproject.api.internet.NetWork;
 import org.sakaiproject.api.memberships.SiteData;
+import org.sakaiproject.api.memberships.pages.events.SiteEventsService;
 import org.sakaiproject.api.memberships.pages.events.SiteOfflineEvents;
 import org.sakaiproject.customviews.CustomSwipeRefreshLayout;
 import org.sakaiproject.customviews.listeners.RecyclerItemClickListener;
@@ -44,31 +49,13 @@ public class EventTabFragment extends Fragment implements Callback {
     private String siteName;
     private SiteData siteData;
     private List<UserEvents> monthlyEvents;
-    private org.sakaiproject.customviews.CustomSwipeRefreshLayout swipeRefreshLayout;
 
     public EventTabFragment() {
     }
 
-    /**
-     * get the swipe refresh layout from activity
-     *
-     * @param swipeRefreshLayout the layout
-     * @return the fragment with the data
-     */
-    public EventTabFragment getSwipeRefreshLayout(org.sakaiproject.customviews.CustomSwipeRefreshLayout swipeRefreshLayout) {
-        EventTabFragment eventTabFragment = new EventTabFragment();
-        Bundle b = new Bundle();
-        b.putSerializable("swipeRefresh", swipeRefreshLayout);
-        eventTabFragment.setArguments(b);
-        return eventTabFragment;
-    }
-
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.tab_fragment_events, container, false);
-
-        swipeRefreshLayout = (CustomSwipeRefreshLayout) getArguments().getSerializable("swipeRefresh");
 
         siteData = NavigationDrawerHelper.getSelectedSiteData();
         siteName = NavigationDrawerHelper.getSelectedSite();
@@ -90,55 +77,13 @@ public class EventTabFragment extends Fragment implements Callback {
         EventsCollection.getEventsList().clear();
         EventsCollection.getMonthEvents().clear();
 
-        if (siteName.equals(getContext().getResources().getString(R.string.my_workspace))) {
-            OfflineEvents offlineEvents = new OfflineEvents(getContext());
-            offlineEvents.getEvents();
-        } else {
-            SiteOfflineEvents siteOfflineEvents = new SiteOfflineEvents(getContext(), siteData.getId());
-            siteOfflineEvents.getEvents();
-        }
-
-        try {
-            EventsCollection.selectedMonthEvents(String.valueOf(cal_month.get(cal_month.MONTH) + 1), cal_month);
-        } catch (ParseException | CloneNotSupportedException e) {
-            e.printStackTrace();
-        }
-
-        monthlyEvents = EventsCollection.getMonthEvents();
-
-        mAdapter = new SelectedDayEventsAdapter(getContext(), monthlyEvents);
-
-        mRecyclerView.setAdapter(mAdapter);
-
-        // if the events recycle view is not on the top then the swipe refresh can not be done
-        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                int topRowVerticalPosition =
-                        (recyclerView == null || recyclerView.getChildCount() == 0 || recyclerView.getChildCount() == 1) ? 0 : recyclerView.getChildAt(0).getTop();
-                swipeRefreshLayout.setEnabled(topRowVerticalPosition >= 0);
-            }
-
-            @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-            }
-        });
+        fillList();
 
         mRecyclerView.addOnItemTouchListener(new RecyclerItemClickListener(getContext(), mRecyclerView, new RecyclerItemClickListener.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
 
-
-                List<UserEvents> todayEvents = new ArrayList<>();
-
-                for (UserEvents ue : EventsCollection.getMonthEvents()) {
-                    if (ue.getEventWholeDate().equals(monthlyEvents.get(position).getEventWholeDate())) {
-                        todayEvents.add(ue);
-                    }
-                }
-
-                UserEvents selectedEvent = todayEvents.get(position);
+                UserEvents selectedEvent = EventsCollection.getMonthEvents().get(position);
 
                 FragmentManager fm = getFragmentManager();
                 EventInfoFragment dialogFragment = new EventInfoFragment().setSelectedEvent(selectedEvent);
@@ -152,27 +97,37 @@ public class EventTabFragment extends Fragment implements Callback {
             }
         }));
 
-        if (mAdapter.getItemCount() == 0) {
-            noEvents.setVisibility(View.VISIBLE);
-        } else {
-            noEvents.setVisibility(View.GONE);
-        }
-
         return v;
+    }
+
+    private void fillList() {
+        if (NetWork.getConnectionEstablished()) {
+            String url;
+            if (siteName.equals(getString(R.string.my_workspace))) {
+                UserEventsService userEventsService = new UserEventsService(getContext(), this);
+                url = getString(R.string.url) + "calendar/my.json";
+                userEventsService.getEvents(url);
+            } else {
+                SiteEventsService siteSiteEventsService = new SiteEventsService(getContext(), siteData.getId(), this);
+                url = getString(R.string.url) + "calendar/site/" + siteData.getId() + ".json";
+                siteSiteEventsService.getEvents(url);
+            }
+        } else {
+            if (siteName.equals(getContext().getResources().getString(R.string.my_workspace))) {
+                OfflineEvents offlineEvents = new OfflineEvents(getContext());
+                offlineEvents.getEvents();
+            } else {
+                SiteOfflineEvents siteOfflineEvents = new SiteOfflineEvents(getContext(), siteData.getId());
+                siteOfflineEvents.getEvents();
+            }
+            onSuccess(null);
+        }
     }
 
     @Override
     public void onSuccess(Object obj) {
-        EventsCollection.getEventsList().clear();
-        EventsCollection.getMonthEvents().clear();
 
-        if (siteName.equals(getContext().getResources().getString(R.string.my_workspace))) {
-            OfflineEvents offlineEvents = new OfflineEvents(getContext());
-            offlineEvents.getEvents();
-        } else {
-            SiteOfflineEvents siteOfflineEvents = new SiteOfflineEvents(getContext(), siteData.getId());
-            siteOfflineEvents.getEvents();
-        }
+        EventsCollection.getMonthEvents().clear();
 
         try {
             EventsCollection.selectedMonthEvents(String.valueOf(cal_month.get(cal_month.MONTH) + 1), cal_month);
@@ -182,12 +137,13 @@ public class EventTabFragment extends Fragment implements Callback {
 
         monthlyEvents = EventsCollection.getMonthEvents();
 
-        mAdapter.setUserEventsList(monthlyEvents);
+        mAdapter = new SelectedDayEventsAdapter(getContext(), monthlyEvents);
 
         if (mAdapter.getItemCount() == 0) {
             noEvents.setVisibility(View.VISIBLE);
         } else {
             noEvents.setVisibility(View.GONE);
+            mRecyclerView.setAdapter(mAdapter);
         }
     }
 
@@ -196,6 +152,5 @@ public class EventTabFragment extends Fragment implements Callback {
         if (error instanceof ServerError) {
             Toast.makeText(getContext(), getContext().getResources().getString(R.string.server_error), Toast.LENGTH_SHORT).show();
         }
-        swipeRefreshLayout.setRefreshing(false);
     }
 }

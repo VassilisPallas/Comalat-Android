@@ -27,24 +27,12 @@ import org.sakaiproject.helpers.user_navigation_drawer_helpers.NavigationDrawerH
 /**
  * Created by vspallas on 23/02/16.
  */
-public class DashboardFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
+public class DashboardFragment extends Fragment {
 
-    private ISwipeRefresh swipeRefresh;
-    private org.sakaiproject.customviews.CustomSwipeRefreshLayout swipeRefreshLayout;
     private SiteData siteData;
     private String siteName;
     private DashboardTabAdapter adapter;
-
-    private FrameLayout root;
-
-    public DashboardFragment() {
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        swipeRefresh = (ISwipeRefresh) context;
-    }
+    private org.sakaiproject.customviews.CustomSwipeRefreshLayout swipeRefreshLayout;
 
     /**
      * get the swipe refresh layout from activity
@@ -60,17 +48,26 @@ public class DashboardFragment extends Fragment implements SwipeRefreshLayout.On
         return dashboardFragment;
     }
 
+
+    public DashboardFragment() {
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_dashboard, container, false);
 
         getActivity().setTitle(getResources().getString(R.string.dashboard));
 
+        swipeRefreshLayout = (org.sakaiproject.customviews.CustomSwipeRefreshLayout) getArguments().getSerializable("swipeRefresh");
+        swipeRefreshLayout.setEnabled(false);
+
         siteData = NavigationDrawerHelper.getSelectedSiteData();
         siteName = NavigationDrawerHelper.getSelectedSite();
-
-        swipeRefreshLayout = (org.sakaiproject.customviews.CustomSwipeRefreshLayout) getArguments().getSerializable("swipeRefresh");
-        root = (FrameLayout) v.findViewById(R.id.root);
 
         TabLayout tabLayout = (TabLayout) v.findViewById(R.id.tab_layout);
         tabLayout.addTab(tabLayout.newTab().setText(getContext().getResources().getString(R.string.assignments)));
@@ -85,7 +82,7 @@ public class DashboardFragment extends Fragment implements SwipeRefreshLayout.On
 
         final ViewPager viewPager = (ViewPager) v.findViewById(R.id.pager);
 
-        adapter = new DashboardTabAdapter(getActivity().getSupportFragmentManager(), tabLayout.getTabCount(), swipeRefreshLayout);
+        adapter = new DashboardTabAdapter(getActivity().getSupportFragmentManager(), tabLayout.getTabCount());
         viewPager.setAdapter(adapter);
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
@@ -100,6 +97,7 @@ public class DashboardFragment extends Fragment implements SwipeRefreshLayout.On
 
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
+                adapter.notifyDataSetChanged();
             }
         });
 
@@ -109,56 +107,19 @@ public class DashboardFragment extends Fragment implements SwipeRefreshLayout.On
                 swipeRefreshLayout.setEnabled(false);
                 switch (event.getAction()) {
                     case MotionEvent.ACTION_UP:
-                        swipeRefreshLayout.setEnabled(true);
+                        swipeRefreshLayout.setEnabled(false);
                         break;
                 }
                 return false;
             }
         });
 
-        swipeRefresh.Callback(this);
-
         return v;
     }
 
     @Override
-    public void onRefresh() {
-        new Handler().post(new Runnable() {
-            @Override
-            public void run() {
-
-                if (NetWork.getConnectionEstablished()) {
-                    String url;
-                    if (siteName.equals(getContext().getResources().getString(R.string.my_workspace))) {
-                        UserAssignmentsService userAssignmentsService = new UserAssignmentsService(getContext(), null/*delegate*/);
-                        userAssignmentsService.setSwipeRefreshLayout(swipeRefreshLayout);
-                        url = getContext().getResources().getString(R.string.url) + "assignment/my.json";
-                        userAssignmentsService.getAssignments(url);
-
-                        UserEventsService userEventsService = new UserEventsService(getContext(), null /*calendarRefreshUI*/);
-                        userEventsService.setSwipeRefreshLayout(swipeRefreshLayout);
-                        url = getContext().getResources().getString(R.string.url) + "calendar/my.json";
-                        userEventsService.getEvents(url);
-
-                    } else {
-                        MembershipAssignmentsService membershipAssignmentsService = new MembershipAssignmentsService(getContext(), siteData.getId(), null/*delegate*/);
-                        membershipAssignmentsService.setSwipeRefreshLayout(swipeRefreshLayout);
-                        url = getContext().getResources().getString(R.string.url) + "assignment/site/" + siteData.getId() + ".json";
-                        membershipAssignmentsService.getAssignments(url);
-
-                        SiteEventsService siteSiteEventsService = new SiteEventsService(getContext(), siteData.getId(), null /*calendarRefreshUI*/);
-                        siteSiteEventsService.setSwipeRefreshLayout(swipeRefreshLayout);
-                        url = getContext().getResources().getString(R.string.url) + "calendar/site/" + siteData.getId() + ".json";
-                        siteSiteEventsService.getEvents(url);
-                    }
-
-                } else {
-                    Snackbar.make(root, getResources().getString(R.string.no_internet), Snackbar.LENGTH_LONG)
-                            .setAction(getResources().getText(R.string.can_not_sync), null).show();
-
-                    swipeRefreshLayout.setRefreshing(false);
-                }
-            }
-        });
+    public void onStop() {
+        super.onStop();
+        swipeRefreshLayout.setEnabled(true);
     }
 }

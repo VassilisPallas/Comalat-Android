@@ -31,7 +31,7 @@ public class CustomScrollView extends ScrollView {
 
     @Override
     protected void onScrollChanged(int l, int t, int oldl, int oldt) {
-        View view = (View) getChildAt(getChildCount() - 1);
+        View view = getChildAt(getChildCount() - 1);
         int d = view.getBottom();
         d -= (getHeight() + getScrollY());
         if (d <= 0) {

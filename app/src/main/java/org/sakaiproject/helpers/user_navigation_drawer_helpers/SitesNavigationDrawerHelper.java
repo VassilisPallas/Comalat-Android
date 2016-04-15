@@ -169,20 +169,18 @@ public class SitesNavigationDrawerHelper extends NavigationDrawerHelper {
             sitesSubMenu.add(R.id.sites, ++id, Menu.NONE, SiteData.getSites().get(i).getTitle()).setCheckable(true);
             sitesIds.put(id, SiteData.getSites().get(i));
 
-            if (i == 0) {
-                sitesSubMenu.performIdentifierAction(id, 0);
-                sitesSubMenu.getItem(0).setChecked(true);
-
-                if (login)
+            if (i == 0)
+                if (login) {
+                    sitesSubMenu.performIdentifierAction(id, 0);
+                    sitesSubMenu.getItem(0).setChecked(true);
                     NavigationDrawerHelper.doAction(SiteData.getSites().get(i).getPages().get(0).getTitle());
-            }
+                }
         }
 
         for (int i = 0; i < SiteData.getProjects().size(); i++) {
             projectsSubMenu.add(R.id.projects, ++id, Menu.NONE, SiteData.getProjects().get(i).getTitle()).setCheckable(true);
             sitesIds.put(id, SiteData.getProjects().get(i));
         }
-
     }
 
 }

@@ -27,9 +27,9 @@
                     android:id="@+id/wiki_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/no_wiki"
                     android:gravity="center"
-                    android:padding="10dp" />
+                    android:padding="10dp"
+                    android:text="@string/no_wiki" />
 
                 <View
                     android:layout_width="match_parent"

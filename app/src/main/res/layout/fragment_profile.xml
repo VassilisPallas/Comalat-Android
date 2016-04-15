@@ -6,7 +6,7 @@
     android:background="@color/frameLayout"
     tools:context="org.sakaiproject.sakai.ProfileFragment">
 
-    <org.sakaiproject.customviews.scrollview.CustomScrollView
+    <ScrollView
         android:id="@+id/profile_scrollview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -18,273 +18,60 @@
             android:orientation="vertical">
 
             <!-- User main info -->
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@android:color/white"
-                android:orientation="horizontal"
-                android:padding="10dp">
+                android:layout_height="280dp">
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="150dp"
+                    android:background="@drawable/side_nav_bar" />
 
                 <ImageView
                     android:id="@+id/profile_image"
                     android:layout_width="120dp"
                     android:layout_height="115dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/profile" />
+                    android:src="@drawable/image" />
 
-                <!-- Say something -->
-                <LinearLayout
+                <TextView
+                    android:id="@+id/username"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:paddingBottom="10dp"
-                    android:paddingLeft="10dp"
-                    android:paddingTop="10dp">
+                    android:layout_below="@+id/profile_image"
+                    android:gravity="center"
+                    android:paddingTop="5dp"
+                    android:text="user full name"
+                    android:textAppearance="?android:attr/textAppearanceLarge" />
 
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-
-                        <EditText
-                            android:id="@+id/say_something_EditText"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:hint="@string/say_something"
-                            android:singleLine="true" />
-
-                        <TextView
-                            android:id="@+id/say_something_count"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
-                            android:layout_below="@+id/say_something_EditText"
-                            android:text="140"
-                            android:textColor="@color/hint"
-                            android:textSize="16sp"
-                            android:textStyle="bold|italic" />
-
-                    </RelativeLayout>
-
-
-                    <com.balysv.materialripple.MaterialRippleLayout
-                        android:id="@+id/say_it_button_ripple"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
-                        app:mrl_rippleAlpha="0.2"
-                        app:mrl_rippleColor="@color/ripple_light"
-                        app:mrl_rippleDelayClick="false"
-                        app:mrl_rippleHover="true"
-                        app:mrl_rippleOverlay="true">
-
-                        <Button
-                            android:id="@+id/say_something_button"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:background="@drawable/button_normal"
-                            android:minHeight="36dp"
-                            android:text="@string/say_it"
-                            android:textColor="@android:color/white" />
-
-                    </com.balysv.materialripple.MaterialRippleLayout>
-
-                </LinearLayout>
-
-            </LinearLayout>
-
-            <!-- info -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <!-- first row info -->
-                <RelativeLayout
+                <TextView
+                    android:id="@+id/position"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="15dp"
-                    android:orientation="horizontal"
-                    android:paddingLeft="10dp"
-                    android:paddingRight="10dp">
+                    android:layout_below="@+id/username"
+                    android:gravity="center"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
+                    android:paddingTop="5dp"
+                    android:text="student at Department of Computer Science and Telecommunications of Thessaly"
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
 
-                    <!-- about -->
-                    <com.balysv.materialripple.MaterialRippleLayout
-                        android:id="@+id/about_ripple"
-                        android:layout_width="95dp"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentLeft="true"
-                        app:mrl_rippleAlpha="0.2"
-                        app:mrl_rippleColor="@color/ripple_light"
-                        app:mrl_rippleDelayClick="false"
-                        app:mrl_rippleHover="true"
-                        app:mrl_rippleOverlay="true">
+            </RelativeLayout>
 
-                        <LinearLayout
-                            android:id="@+id/about_button"
-                            android:layout_width="95dp"
-                            android:layout_height="wrap_content"
-                            android:background="@drawable/info_layout"
-                            android:clickable="true"
-                            android:orientation="vertical">
-
-                            <ImageView
-                                android:layout_width="match_parent"
-                                android:layout_height="60dp"
-                                android:layout_marginLeft="1dp"
-                                android:layout_marginRight="1dp"
-                                android:layout_marginTop="1dp"
-                                android:drawingCacheQuality="high"
-                                android:scaleType="centerCrop"
-                                android:src="@drawable/about" />
-
-                            <View
-                                android:layout_width="match_parent"
-                                android:layout_height="1dp"
-                                android:background="@color/separator_light" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center_horizontal"
-                                android:layout_marginBottom="10dp"
-                                android:layout_marginTop="5dp"
-                                android:text="@string/about"
-                                android:textSize="15sp"
-                                android:textStyle="bold" />
-
-                        </LinearLayout>
-
-                    </com.balysv.materialripple.MaterialRippleLayout>
-
-                    <!-- photos -->
-                    <com.balysv.materialripple.MaterialRippleLayout
-                        android:id="@+id/photos_ripple"
-                        android:layout_width="95dp"
-                        android:layout_height="wrap_content"
-                        android:layout_centerHorizontal="true"
-                        app:mrl_rippleAlpha="0.2"
-                        app:mrl_rippleColor="@color/ripple_light"
-                        app:mrl_rippleDelayClick="false"
-                        app:mrl_rippleHover="true"
-                        app:mrl_rippleOverlay="true">
-
-                        <LinearLayout
-                            android:id="@+id/photos_button"
-                            android:layout_width="95dp"
-                            android:layout_height="wrap_content"
-                            android:background="@drawable/info_layout"
-                            android:clickable="true"
-                            android:orientation="vertical">
-
-                            <ImageView
-                                android:layout_width="match_parent"
-                                android:layout_height="60dp"
-                                android:layout_marginLeft="1dp"
-                                android:layout_marginRight="1dp"
-                                android:layout_marginTop="1dp"
-                                android:drawingCacheQuality="high"
-                                android:scaleType="centerCrop"
-                                android:src="@drawable/noimage" />
-
-                            <View
-                                android:layout_width="match_parent"
-                                android:layout_height="1dp"
-                                android:background="@color/separator_light" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center_horizontal"
-                                android:layout_marginBottom="10dp"
-                                android:layout_marginTop="5dp"
-                                android:text="@string/photos"
-                                android:textSize="15sp"
-                                android:textStyle="bold" />
-
-                        </LinearLayout>
-
-                    </com.balysv.materialripple.MaterialRippleLayout>
-
-                    <!-- friends -->
-
-                    <com.balysv.materialripple.MaterialRippleLayout
-                        android:id="@+id/friends_ripple"
-                        android:layout_width="95dp"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        app:mrl_rippleAlpha="0.2"
-                        app:mrl_rippleColor="@color/ripple_light"
-                        app:mrl_rippleDelayClick="false"
-                        app:mrl_rippleHover="true"
-                        app:mrl_rippleOverlay="true">
-
-                        <LinearLayout
-                            android:id="@+id/friends_button"
-                            android:layout_width="95dp"
-                            android:layout_height="wrap_content"
-                            android:background="@drawable/info_layout"
-                            android:clickable="true"
-                            android:orientation="vertical">
-
-                            <ImageView
-                                android:layout_width="match_parent"
-                                android:layout_height="60dp"
-                                android:layout_marginLeft="1dp"
-                                android:layout_marginRight="1dp"
-                                android:layout_marginTop="1dp"
-                                android:drawingCacheQuality="high"
-                                android:scaleType="centerCrop"
-                                android:src="@drawable/no_friends" />
-
-                            <View
-                                android:layout_width="match_parent"
-                                android:layout_height="1dp"
-                                android:background="@color/separator_light" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center_horizontal"
-                                android:layout_marginBottom="10dp"
-                                android:layout_marginTop="5dp"
-                                android:text="@string/friends"
-                                android:textSize="15sp"
-                                android:textStyle="bold" />
-
-                        </LinearLayout>
-
-                    </com.balysv.materialripple.MaterialRippleLayout>
-
-                </RelativeLayout>
-
-            </LinearLayout>
-
-
-            <!-- Post on Wall -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:orientation="vertical"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp">
-
-                <EditText
-                    android:id="@+id/new_post_EditText"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/info_layout"
-                    android:gravity="top"
-                    android:lines="2"
-                    android:padding="8dp"
-                    android:singleLine="false" />
+                android:minHeight="?attr/actionBarSize"
+                android:orientation="horizontal"
+                android:weightSum="1">
 
                 <com.balysv.materialripple.MaterialRippleLayout
-                    android:id="@+id/post_on_wall_button_ripple"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginTop="5dp"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.5"
                     app:mrl_rippleAlpha="0.2"
                     app:mrl_rippleColor="@color/ripple_light"
                     app:mrl_rippleDelayClick="false"
@@ -292,299 +79,43 @@
                     app:mrl_rippleOverlay="true">
 
                     <Button
-                        android:id="@+id/new_post_button"
-                        android:layout_width="130dp"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/button_normal"
-                        android:minHeight="36dp"
-                        android:text="@string/post_on_wall"
-                        android:textColor="@android:color/white" />
+                        android:id="@+id/about_btn"
+                        android:layout_width="match_parent"
+                        android:layout_height="?attr/actionBarSize"
+                        android:layout_gravity="center"
+                        android:background="@color/profile_tabs"
+                        android:gravity="center_vertical|center_horizontal"
+                        android:text="@string/about"
+                        android:textColor="@color/ripple_webview_actionbar" />
+
+                </com.balysv.materialripple.MaterialRippleLayout>
+
+                <com.balysv.materialripple.MaterialRippleLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.5"
+                    app:mrl_rippleAlpha="0.2"
+                    app:mrl_rippleColor="@color/ripple_light"
+                    app:mrl_rippleDelayClick="false"
+                    app:mrl_rippleHover="true"
+                    app:mrl_rippleOverlay="true">
+
+                    <Button
+                        android:id="@+id/friends_btn"
+                        android:layout_width="match_parent"
+                        android:layout_height="?attr/actionBarSize"
+                        android:layout_gravity="center"
+                        android:background="@color/profile_tabs"
+                        android:gravity="center_vertical|center_horizontal"
+                        android:text="@string/friends"
+                        android:textColor="@color/ripple_webview_actionbar" />
 
                 </com.balysv.materialripple.MaterialRippleLayout>
 
             </LinearLayout>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="15dp"
-                android:text="@string/posts"
-                android:textSize="15sp"
-                android:textStyle="bold" />
-
-            <!-- Status -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <!-- comment example -->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
-                    android:background="@android:color/white"
-                    android:orientation="vertical">
-
-                    <!-- main comment -->
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:padding="10dp">
-
-                        <com.balysv.materialripple.MaterialRippleLayout
-                            android:id="@+id/delete_current_post_ripple"
-                            android:layout_width="35dp"
-                            android:layout_height="35dp"
-                            android:layout_alignParentRight="true"
-                            app:mrl_rippleAlpha="0.2"
-                            app:mrl_rippleColor="@color/ripple_light"
-                            app:mrl_rippleDelayClick="false"
-                            app:mrl_rippleHover="true"
-                            app:mrl_rippleOverlay="true"
-                            app:mrl_rippleRoundedCorners="@dimen/fab_margin">
-
-                            <FrameLayout
-                                android:id="@+id/delete_current_post"
-                                android:layout_width="35dp"
-                                android:layout_height="35dp"
-                                android:clickable="true">
-
-                                <ImageView
-                                    android:layout_width="25dp"
-                                    android:layout_height="25dp"
-                                    android:layout_gravity="center"
-                                    android:scaleType="centerInside"
-                                    android:src="@mipmap/ic_delete" />
-                            </FrameLayout>
-
-                        </com.balysv.materialripple.MaterialRippleLayout>
-
-
-                        <com.balysv.materialripple.MaterialRippleLayout
-                            android:id="@+id/comment_current_post_ripple"
-                            android:layout_width="35dp"
-                            android:layout_height="35dp"
-                            android:layout_alignParentRight="true"
-                            android:layout_below="@id/delete_current_post_ripple"
-                            android:layout_marginTop="15dp"
-                            app:mrl_rippleAlpha="0.2"
-                            app:mrl_rippleColor="@color/ripple_light"
-                            app:mrl_rippleDelayClick="false"
-                            app:mrl_rippleHover="true"
-                            app:mrl_rippleOverlay="true"
-                            app:mrl_rippleRoundedCorners="@dimen/fab_margin">
-
-                            <FrameLayout
-                                android:id="@+id/comment_current_post"
-                                android:layout_width="35dp"
-                                android:layout_height="35dp"
-                                android:layout_alignParentRight="true"
-                                android:clickable="true">
-
-                                <ImageView
-                                    android:layout_width="25dp"
-                                    android:layout_height="25dp"
-                                    android:layout_gravity="center"
-                                    android:scaleType="centerInside"
-                                    android:src="@mipmap/ic_comment" />
-                            </FrameLayout>
-
-                        </com.balysv.materialripple.MaterialRippleLayout>
-
-                        <ImageView
-                            android:id="@+id/current_status_user_image"
-                            android:layout_width="50dp"
-                            android:layout_height="50dp"
-                            android:scaleType="centerCrop"
-                            android:src="@drawable/profile" />
-
-
-                        <TextView
-                            android:id="@+id/current_status_user_name"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="5dp"
-                            android:layout_marginTop="5dp"
-                            android:layout_toRightOf="@+id/current_status_user_image"
-                            android:text="Vasilis Pallas"
-                            android:textSize="17sp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:id="@+id/current_status_user_date"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@+id/current_status_user_name"
-                            android:layout_marginLeft="5dp"
-                            android:layout_marginTop="5dp"
-                            android:layout_toRightOf="@+id/current_status_user_image"
-                            android:text="04 December, 13:17"
-                            android:textSize="12sp" />
-
-                        <TextView
-                            android:id="@+id/current_status_post"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@+id/current_status_user_image"
-                            android:layout_marginBottom="15dp"
-                            android:layout_marginRight="2dp"
-                            android:layout_marginTop="15dp"
-                            android:layout_toLeftOf="@+id/comment_current_post_ripple"
-                            android:text="Updated student information in profile"
-                            android:textSize="17sp" />
-
-                    </RelativeLayout>
-
-                    <!-- new subcomment -->
-                    <LinearLayout
-                        android:id="@+id/new_subcomment"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
-                        android:orientation="vertical"
-                        android:paddingLeft="10dp"
-                        android:paddingRight="10dp"
-                        android:visibility="gone">
-
-                        <EditText
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:background="@drawable/info_layout"
-                            android:gravity="top"
-                            android:lines="2"
-                            android:padding="8dp"
-                            android:singleLine="false" />
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal">
-
-                            <com.balysv.materialripple.MaterialRippleLayout
-                                android:id="@+id/add_comment_button_ripple"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginBottom="5dp"
-                                android:layout_marginLeft="5dp"
-                                android:layout_marginTop="10dp"
-                                app:mrl_rippleAlpha="0.2"
-                                app:mrl_rippleColor="@color/ripple_light"
-                                app:mrl_rippleDelayClick="false"
-                                app:mrl_rippleHover="true"
-                                app:mrl_rippleOverlay="true">
-
-                                <Button
-                                    android:id="@+id/add_comment_button"
-                                    android:layout_width="150dp"
-                                    android:layout_height="wrap_content"
-                                    android:background="@drawable/button_normal"
-                                    android:minHeight="36dp"
-                                    android:text="@string/add_comment"
-                                    android:textColor="@android:color/white" />
-
-                            </com.balysv.materialripple.MaterialRippleLayout>
-
-                            <com.balysv.materialripple.MaterialRippleLayout
-                                android:id="@+id/cancel_button_ripple"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginBottom="5dp"
-                                android:layout_marginLeft="15dp"
-                                android:layout_marginTop="10dp"
-                                app:mrl_rippleAlpha="0.2"
-                                app:mrl_rippleColor="@color/ripple_light"
-                                app:mrl_rippleDelayClick="false"
-                                app:mrl_rippleHover="true"
-                                app:mrl_rippleOverlay="true">
-
-                                <Button
-                                    android:id="@+id/cancel_add_comment_button"
-                                    android:layout_width="150dp"
-                                    android:layout_height="wrap_content"
-                                    android:background="@drawable/button_normal"
-                                    android:minHeight="36dp"
-                                    android:text="@string/cancel"
-                                    android:textColor="@android:color/white" />
-
-                            </com.balysv.materialripple.MaterialRippleLayout>
-                        </LinearLayout>
-
-                    </LinearLayout>
-
-                    <!-- subcomment -->
-                    <LinearLayout
-                        android:id="@+id/subcomment"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="15dp"
-                        android:orientation="vertical"
-                        android:paddingLeft="10dp"
-                        android:visibility="gone">
-
-                        <View
-                            android:id="@+id/subcomment_line"
-                            android:layout_width="match_parent"
-                            android:layout_height="1dp"
-                            android:background="@color/separator_dark" />
-
-
-                        <RelativeLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="5dp"
-                            android:paddingRight="10dp"
-                            android:visibility="gone">
-
-                            <ImageView
-                                android:id="@+id/current_status_subcomment_image"
-                                android:layout_width="50dp"
-                                android:layout_height="50dp"
-                                android:scaleType="centerCrop"
-                                android:src="@drawable/profile" />
-
-
-                            <TextView
-                                android:id="@+id/current_status_subcomment_user_name"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginLeft="5dp"
-                                android:layout_marginTop="5dp"
-                                android:layout_toRightOf="@+id/current_status_subcomment_image"
-                                android:text="Vasilis Pallas"
-                                android:textSize="17sp"
-                                android:textStyle="bold" />
-
-                            <TextView
-                                android:id="@+id/current_status_subcomment"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_below="@+id/current_status_subcomment_user_name"
-                                android:layout_marginLeft="5dp"
-                                android:layout_marginRight="2dp"
-                                android:layout_toRightOf="@+id/current_status_subcomment_image"
-                                android:text="@string/ok"
-                                android:textSize="15sp" />
-
-                            <TextView
-                                android:id="@+id/current_status_subcomment_date"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_below="@+id/current_status_subcomment"
-                                android:layout_marginLeft="5dp"
-                                android:layout_marginTop="10dp"
-                                android:text="05 December, 23:55"
-                                android:textSize="12sp" />
-
-                        </RelativeLayout>
-
-                    </LinearLayout>
-
-                </LinearLayout>
-
-            </LinearLayout>
-
         </LinearLayout>
 
-    </org.sakaiproject.customviews.scrollview.CustomScrollView>
+    </ScrollView>
 
 </FrameLayout>

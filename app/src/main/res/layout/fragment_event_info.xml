@@ -246,66 +246,6 @@
 
             </TableLayout>
 
-            <RelativeLayout
-                android:id="@+id/button_relative"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/event_info_table"
-                android:layout_marginTop="5dp">
-
-                <com.balysv.materialripple.MaterialRippleLayout
-                    android:id="@+id/edit_ripple"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
-                    android:layout_marginTop="10dp"
-                    app:mrl_rippleAlpha="0.2"
-                    app:mrl_rippleColor="@color/ripple_light"
-                    app:mrl_rippleDelayClick="false"
-                    app:mrl_rippleHover="true"
-                    app:mrl_rippleOverlay="true">
-
-                    <Button
-                        android:id="@+id/edit_event"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="@color/colorAccent"
-                        android:padding="8dp"
-                        android:text="@string/edit_event"
-                        android:textColor="@android:color/white"
-                        android:visibility="gone" />
-
-                </com.balysv.materialripple.MaterialRippleLayout>
-
-
-                <com.balysv.materialripple.MaterialRippleLayout
-                    android:id="@+id/remove_ripple"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_toRightOf="@+id/edit_ripple"
-                    app:mrl_rippleAlpha="0.2"
-                    app:mrl_rippleColor="@color/ripple_light"
-                    app:mrl_rippleDelayClick="false"
-                    app:mrl_rippleHover="true"
-                    app:mrl_rippleOverlay="true">
-
-                    <Button
-                        android:id="@+id/remove_event"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="@color/colorAccent"
-                        android:padding="8dp"
-                        android:text="@string/remove_event"
-                        android:textColor="@android:color/white"
-                        android:visibility="gone" />
-
-                </com.balysv.materialripple.MaterialRippleLayout>
-
-            </RelativeLayout>
-
         </RelativeLayout>
 
     </ScrollView>

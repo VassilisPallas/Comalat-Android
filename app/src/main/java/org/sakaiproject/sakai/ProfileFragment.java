@@ -1,48 +1,31 @@
 package org.sakaiproject.sakai;
 
-
 import android.content.Intent;
-import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import org.sakaiproject.api.user.User;
+import org.sakaiproject.customviews.CustomSwipeRefreshLayout;
 import org.sakaiproject.helpers.ActionsHelper;
 import org.sakaiproject.api.user.profile.Profile;
-import org.sakaiproject.customviews.scrollview.CustomScrollView;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 
 public class ProfileFragment extends Fragment implements View.OnClickListener {
 
+    private CustomSwipeRefreshLayout swipeRefreshLayout;
     private ImageView profileImage;
-    private CustomScrollView customScrollview;
-    private EditText saySomethingEditText, newPostEditText;
-    private Button saySomethingButton, newPostButton;
-    private TextView saySomethingCount;
-    private LinearLayout about, photos, friends;
-    /////////////////////////////////////////////////////////////////////
-    private LinearLayout newSubcomment;
-    private FrameLayout comment, deletePost;
-    private LinearLayout subcomment;
-    ///////////////////////////////////////////////////////////////////
+    private TextView username, position;
+    private Button about, friends;
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public ProfileFragment() {
     }
 
     /**
@@ -51,7 +34,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
      * @param swipeRefreshLayout the layout
      * @return the fragment with the data
      */
-    public ProfileFragment getSwipeRefreshLayout(org.sakaiproject.customviews.CustomSwipeRefreshLayout swipeRefreshLayout) {
+    public ProfileFragment getSwipeRefreshLayout(CustomSwipeRefreshLayout swipeRefreshLayout) {
         ProfileFragment profileFragment = new ProfileFragment();
         Bundle b = new Bundle();
         b.putSerializable("swipeRefresh", swipeRefreshLayout);
@@ -64,12 +47,17 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_profile, container, false);
-        getActivity().setTitle(Profile.getDisplayName());
-        findViewsById(v);
+        initialize(v);
+
         return v;
     }
 
-    private void findViewsById(View v) {
+    private void initialize(View v) {
+        getActivity().setTitle(Profile.getDisplayName());
+
+        swipeRefreshLayout = (org.sakaiproject.customviews.CustomSwipeRefreshLayout) getArguments().getSerializable("swipeRefresh");
+        swipeRefreshLayout.setEnabled(false);
+
         profileImage = (ImageView) v.findViewById(R.id.profile_image);
 
         try {
@@ -79,107 +67,38 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
             e.printStackTrace();
         }
 
-        customScrollview = (CustomScrollView) v.findViewById(R.id.profile_scrollview);
-        customScrollview.setSwipeRefreshLayout((org.sakaiproject.customviews.CustomSwipeRefreshLayout) getArguments().getSerializable("swipeRefresh"));
+        username = (TextView) v.findViewById(R.id.username);
+        username.setText(Profile.getDisplayName());
 
-        saySomethingCount = (TextView) v.findViewById(R.id.say_something_count);
+        position = (TextView) v.findViewById(R.id.position);
 
-        saySomethingEditText = (EditText) v.findViewById(R.id.say_something_EditText);
-        saySomethingEditText.addTextChangedListener(saySomethingWatcher);
+        if ((Profile.getPosition() != null && !Profile.getPosition().equals("")) && (Profile.getDepartment() != null && !Profile.getDepartment().equals(""))) {
+            String pos = Profile.getPosition() + " " + getString(R.string.at) + " " + Profile.getDepartment();
+            if (pos.length() > 65) {
+                pos = pos.substring(0, 63) + "...";
+            }
+            position.setText(pos);
+        }
 
-        saySomethingButton = (Button) v.findViewById(R.id.say_something_button);
-        saySomethingButton.setOnClickListener(this);
-
-        about = (LinearLayout) v.findViewById(R.id.about_button);
+        about = (Button) v.findViewById(R.id.about_btn);
         about.setOnClickListener(this);
-
-        photos = (LinearLayout) v.findViewById(R.id.photos_button);
-        photos.setOnClickListener(this);
-
-        friends = (LinearLayout) v.findViewById(R.id.friends_button);
+        friends = (Button) v.findViewById(R.id.friends_btn);
         friends.setOnClickListener(this);
-
-        newPostEditText = (EditText) v.findViewById(R.id.new_post_EditText);
-
-        newPostButton = (Button) v.findViewById(R.id.new_post_button);
-        newPostButton.setOnClickListener(this);
-        /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        newSubcomment = (LinearLayout) v.findViewById(R.id.new_subcomment);
-
-        comment = (FrameLayout) v.findViewById(R.id.comment_current_post);
-        comment.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (newSubcomment.getVisibility() == View.VISIBLE)
-                    newSubcomment.setVisibility(View.GONE);
-                else
-                    newSubcomment.setVisibility(View.VISIBLE);
-            }
-        });
-
-        deletePost = (FrameLayout) v.findViewById(R.id.delete_current_post);
-        deletePost.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // TODO: delete post
-            }
-        });
-
-        subcomment = (LinearLayout) v.findViewById(R.id.subcomment);
-        if (subcomment.getVisibility() == View.VISIBLE) {
-            comment.setVisibility(View.GONE);
-        } else
-            comment.setVisibility(View.VISIBLE);
-        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     }
 
-    TextWatcher saySomethingWatcher = new TextWatcher() {
-        @Override
-        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-        }
-
-        @Override
-        public void onTextChanged(CharSequence s, int start, int before, int count) {
-            int c = 140 - saySomethingEditText.getText().length();
-            if (c <= 10) {
-                saySomethingCount.setTextColor(Color.RED);
-            } else {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    saySomethingCount.setTextColor(getContext().getResources().getColor(R.color.say_something_gray, getContext().getTheme()));
-                } else {
-                    saySomethingCount.setTextColor(getContext().getResources().getColor(R.color.say_something_gray));
-                }
-            }
-
-            if (c < 0) {
-                saySomethingEditText.setText(saySomethingEditText.getText().toString().substring(0, saySomethingEditText.getText().length() - 1));
-                saySomethingEditText.setSelection(saySomethingEditText.getText().length());
-            } else
-                saySomethingCount.setText("" + c);
-        }
-
-        @Override
-        public void afterTextChanged(Editable s) {
-
-        }
-    };
+    @Override
+    public void onStop() {
+        super.onStop();
+        swipeRefreshLayout.setEnabled(true);
+    }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.say_something_button:
-                // TODO: upload the "say something"
+            case R.id.about_btn:
+                //startActivity(new Intent(getActivity(), ));
                 break;
-            case R.id.new_post_button:
-                // TODO: upload the new post
-                break;
-            case R.id.about_button:
-                startActivity(new Intent(getActivity(), UserAboutActivity.class));
-                break;
-            case R.id.photos_button:
-                break;
-            case R.id.friends_button:
+            case R.id.friends_btn:
                 break;
         }
     }
