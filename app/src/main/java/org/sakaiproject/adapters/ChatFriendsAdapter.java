@@ -26,11 +26,9 @@ import java.util.List;
 public class ChatFriendsAdapter extends RecyclerView.Adapter<ChatFriendsAdapter.ViewHolder> {
 
     private List<Friends> friends;
-    private String action;
 
-    public ChatFriendsAdapter(List<Friends> friends, String action) {
+    public ChatFriendsAdapter(List<Friends> friends) {
         this.friends = friends;
-        this.action = action;
     }
 
     @Override
@@ -52,20 +50,20 @@ public class ChatFriendsAdapter extends RecyclerView.Adapter<ChatFriendsAdapter.
             }
             holder.name.setText(friend.getDisplayName());
 
-            if (action.equals("chat"))
-                if (friend.getOnlineStatus() == 0) {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                        holder.status.setImageDrawable(context.getResources().getDrawable(R.mipmap.ic_offline, context.getTheme()));
-                    } else {
-                        holder.status.setImageDrawable(context.getResources().getDrawable(R.mipmap.ic_offline));
-                    }
+            if (friend.getOnlineStatus() == 0) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    holder.status.setImageDrawable(context.getResources().getDrawable(R.mipmap.ic_offline, context.getTheme()));
                 } else {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                        holder.status.setImageDrawable(context.getResources().getDrawable(R.mipmap.ic_online, context.getTheme()));
-                    } else {
-                        holder.status.setImageDrawable(context.getResources().getDrawable(R.mipmap.ic_online));
-                    }
+                    holder.status.setImageDrawable(context.getResources().getDrawable(R.mipmap.ic_offline));
                 }
+            } else {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    holder.status.setImageDrawable(context.getResources().getDrawable(R.mipmap.ic_online, context.getTheme()));
+                } else {
+                    holder.status.setImageDrawable(context.getResources().getDrawable(R.mipmap.ic_online));
+                }
+            }
+
         }
     }
 

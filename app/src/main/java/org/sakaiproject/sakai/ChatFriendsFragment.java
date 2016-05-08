@@ -109,7 +109,7 @@ public class ChatFriendsFragment extends Fragment implements RecyclerItemClickLi
     public void onSuccess(Object obj) {
         if (obj instanceof List<?>) {
             friends = (List<Friends>) obj;
-            adapter = new ChatFriendsAdapter(friends, "chat");
+            adapter = new ChatFriendsAdapter(friends);
             mRecyclerView.setAdapter(adapter);
         }
         swipeRefreshLayout.setRefreshing(false);

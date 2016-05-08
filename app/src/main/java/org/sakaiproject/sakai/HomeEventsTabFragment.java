@@ -31,6 +31,7 @@ import org.sakaiproject.helpers.user_navigation_drawer_helpers.NavigationDrawerH
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -48,7 +49,7 @@ public class HomeEventsTabFragment extends Fragment implements Callback {
     public static GregorianCalendar cal_month;
     private String siteName;
     private SiteData siteData;
-    private List<UserEvents> todayEvents, monthlyEvents;
+    private List<UserEvents> monthlyEvents;
 
     public HomeEventsTabFragment() {
     }
@@ -147,6 +148,7 @@ public class HomeEventsTabFragment extends Fragment implements Callback {
     @Override
     public void onSuccess(Object obj) {
         EventsCollection.getMonthEvents().clear();
+        List<UserEvents> todayEvents = new ArrayList<>();
 
         try {
             EventsCollection.selectedMonthEvents(String.valueOf(cal_month.get(cal_month.MONTH) + 1), cal_month);

@@ -139,7 +139,7 @@ public class WelcomeFragment extends Fragment implements Callback {
                     }
                 }
             } else {
-                motd.setText(getContext().getResources().getString(R.string.motd));
+                motd.setText(getString(R.string.motd));
                 motdImage.setVisibility(View.VISIBLE);
             }
         }
