@@ -3,6 +3,7 @@ package org.sakaiproject.api.memberships.pages.syllabus;
 import android.content.Context;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.ServerError;
@@ -13,12 +14,15 @@ import org.json.JSONObject;
 import org.sakaiproject.api.callback.Callback;
 import org.sakaiproject.api.user.User;
 import org.sakaiproject.customviews.CustomSwipeRefreshLayout;
+import org.sakaiproject.general.Connection;
 import org.sakaiproject.helpers.ActionsHelper;
 import org.sakaiproject.sakai.AppController;
 import org.sakaiproject.sakai.R;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by vasilis on 1/28/16.
@@ -72,7 +76,14 @@ public class SyllabusService {
             public void onErrorResponse(VolleyError error) {
                callback.onError(error);
             }
-        });
+        }){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> headers = new HashMap<>();
+                headers.put("_validateSession", Connection.getSessionId());
+                return headers;
+            }
+        };
 
         AppController.getInstance().addToRequestQueue(syllabusRequest, syllabus_tag);
     }

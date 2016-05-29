@@ -6,6 +6,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.ServerError;
@@ -26,6 +27,7 @@ import org.sakaiproject.api.pojos.membership.PageUserPermissions;
 import org.sakaiproject.api.pojos.membership.SitePage;
 import org.sakaiproject.api.user.User;
 import org.sakaiproject.customviews.CustomSwipeRefreshLayout;
+import org.sakaiproject.general.Connection;
 import org.sakaiproject.helpers.ActionsHelper;
 import org.sakaiproject.sakai.AppController;
 import org.sakaiproject.sakai.R;
@@ -33,7 +35,9 @@ import org.sakaiproject.sakai.R;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Type;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by vspallas on 18/03/16.
@@ -114,7 +118,14 @@ public class WorkspaceService {
                 }
                 callback.onError(error);
             }
-        });
+        }){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> headers = new HashMap<>();
+                headers.put("_validateSession", Connection.getSessionId());
+                return headers;
+            }
+        };
 
         AppController.getInstance().addToRequestQueue(getWorkSpaceRequest, id + "_workspace");
     }
@@ -146,7 +157,14 @@ public class WorkspaceService {
 
                 callback.onError(error);
             }
-        });
+        }){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> headers = new HashMap<>();
+                headers.put("_validateSession", Connection.getSessionId());
+                return headers;
+            }
+        };
         AppController.getInstance().addToRequestQueue(getWorkspacePagesRequest, id + "_workspace_pages");
     }
 
@@ -174,7 +192,14 @@ public class WorkspaceService {
 
                 callback.onError(error);
             }
-        });
+        }){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> headers = new HashMap<>();
+                headers.put("_validateSession", Connection.getSessionId());
+                return headers;
+            }
+        };
         AppController.getInstance().addToRequestQueue(getWorkspacePermissions, id + "_workspace_perms");
     }
 
@@ -203,7 +228,14 @@ public class WorkspaceService {
 
                 callback.onError(error);
             }
-        });
+        }){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> headers = new HashMap<>();
+                headers.put("_validateSession", Connection.getSessionId());
+                return headers;
+            }
+        };
         AppController.getInstance().addToRequestQueue(getWorkspaceUserPermissions, id + "_workspace_userPerms");
     }
 }

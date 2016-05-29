@@ -2,6 +2,7 @@ package org.sakaiproject.api.memberships.pages.announcements;
 
 import android.content.Context;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -13,11 +14,14 @@ import org.sakaiproject.api.callback.Callback;
 import org.sakaiproject.api.pojos.announcements.Announcement;
 import org.sakaiproject.api.user.User;
 import org.sakaiproject.customviews.CustomSwipeRefreshLayout;
+import org.sakaiproject.general.Connection;
 import org.sakaiproject.helpers.ActionsHelper;
 import org.sakaiproject.sakai.AppController;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by vspallas on 09/02/16.
@@ -68,7 +72,14 @@ public class MembershipAnnouncementsService {
             public void onErrorResponse(VolleyError error) {
                 callback.onError(error);
             }
-        });
+        }){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> headers = new HashMap<>();
+                headers.put("_validateSession", Connection.getSessionId());
+                return headers;
+            }
+        };
         AppController.getInstance().addToRequestQueue(announcementsRequest, membership_announcement_tag);
     }
 }

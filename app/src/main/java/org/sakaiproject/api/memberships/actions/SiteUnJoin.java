@@ -3,6 +3,7 @@ package org.sakaiproject.api.memberships.actions;
 import android.content.Context;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.ServerError;
@@ -14,8 +15,12 @@ import org.sakaiproject.adapters.MembershipAdapter;
 import org.sakaiproject.api.user.User;
 import org.sakaiproject.api.user.workspace.WorkspaceService;
 import org.sakaiproject.customviews.custom_volley.EmptyRequest;
+import org.sakaiproject.general.Connection;
 import org.sakaiproject.sakai.AppController;
 import org.sakaiproject.sakai.R;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by vasilis on 1/22/16.
@@ -58,7 +63,14 @@ public class SiteUnJoin {
             public void onErrorResponse(VolleyError error) {
                 callback.onError(error);
             }
-        });
+        }){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> headers = new HashMap<>();
+                headers.put("_validateSession", Connection.getSessionId());
+                return headers;
+            }
+        };
 
         AppController.getInstance().addToRequestQueue(membershipUnJoinRequest, unjoin_tag);
     }

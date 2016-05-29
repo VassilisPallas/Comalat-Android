@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.util.Log;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -21,6 +22,7 @@ import org.sakaiproject.api.callback.Callback;
 import org.sakaiproject.api.pojos.friends.Friends;
 import org.sakaiproject.api.pojos.login.Profile;
 import org.sakaiproject.api.user.User;
+import org.sakaiproject.general.Connection;
 import org.sakaiproject.helpers.ActionsHelper;
 import org.sakaiproject.sakai.AppController;
 import org.sakaiproject.sakai.R;
@@ -28,7 +30,9 @@ import org.sakaiproject.sakai.R;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Type;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by vspallas on 07/04/16.
@@ -69,7 +73,14 @@ public class FriendsService {
                 if (error instanceof ServerError)
                     getFriends(url);
             }
-        });
+        }) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> headers = new HashMap<>();
+                headers.put("_validateSession", Connection.getSessionId());
+                return headers;
+            }
+        };
         AppController.getInstance().addToRequestQueue(friendsRequest, tag);
     }
 
@@ -102,7 +113,14 @@ public class FriendsService {
                 public void onErrorResponse(VolleyError error) {
                     getFriendData(friends);
                 }
-            });
+            }) {
+                @Override
+                public Map<String, String> getHeaders() throws AuthFailureError {
+                    Map<String, String> headers = new HashMap<>();
+                    headers.put("_validateSession", Connection.getSessionId());
+                    return headers;
+                }
+            };
             AppController.getInstance().addToRequestQueue(friendDataRequest, tag);
         }
     }
@@ -127,7 +145,14 @@ public class FriendsService {
             public void onErrorResponse(VolleyError error) {
                 callback.onError(error);
             }
-        });
+        }){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> headers = new HashMap<>();
+                headers.put("_validateSession", Connection.getSessionId());
+                return headers;
+            }
+        };
         AppController.getInstance().addToRequestQueue(friendImageRequest, tag);
     }
 }

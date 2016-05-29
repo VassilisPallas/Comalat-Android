@@ -3,6 +3,7 @@ package org.sakaiproject.api.memberships.pages.roster;
 import android.content.Context;
 import android.graphics.Bitmap;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -17,12 +18,15 @@ import org.sakaiproject.api.pojos.roster.Member;
 import org.sakaiproject.api.pojos.roster.Roster;
 import org.sakaiproject.api.pojos.roster.UserProfileImage;
 import org.sakaiproject.api.user.User;
+import org.sakaiproject.general.Connection;
 import org.sakaiproject.helpers.ActionsHelper;
 import org.sakaiproject.sakai.AppController;
 import org.sakaiproject.sakai.R;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by vspallas on 02/03/16.
@@ -71,7 +75,14 @@ public class RosterService {
             public void onErrorResponse(VolleyError error) {
                 callback.onError(error);
             }
-        });
+        }){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> headers = new HashMap<>();
+                headers.put("_validateSession", Connection.getSessionId());
+                return headers;
+            }
+        };
 
         AppController.getInstance().addToRequestQueue(rosterRequest, roster_tag);
     }
@@ -93,7 +104,14 @@ public class RosterService {
                 String tempUserId = userId;
                 getUserProfile(tempUserId, tempRoster, tempIndex);
             }
-        });
+        }){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> headers = new HashMap<>();
+                headers.put("_validateSession", Connection.getSessionId());
+                return headers;
+            }
+        };
 
         AppController.getInstance().addToRequestQueue(userProfileImageUrlRequest, tag_user_image_url);
     }
@@ -120,7 +138,14 @@ public class RosterService {
             public void onErrorResponse(VolleyError error) {
                 callback.onError(error);
             }
-        });
+        }){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> headers = new HashMap<>();
+                headers.put("_validateSession", Connection.getSessionId());
+                return headers;
+            }
+        };
         AppController.getInstance().addToRequestQueue(userImage, tag_user_image);
     }
 }

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.ServerError;
@@ -20,12 +21,15 @@ import org.sakaiproject.api.pojos.events.Event;
 import org.sakaiproject.api.json.JsonParser;
 import org.sakaiproject.api.user.User;
 import org.sakaiproject.customviews.CustomSwipeRefreshLayout;
+import org.sakaiproject.general.Connection;
 import org.sakaiproject.helpers.ActionsHelper;
 import org.sakaiproject.sakai.AppController;
 import org.sakaiproject.sakai.R;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by vspallas on 02/02/16.
@@ -104,7 +108,14 @@ public class SiteEventsService {
             public void onErrorResponse(VolleyError error) {
                 callback.onError(error);
             }
-        });
+        }){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> headers = new HashMap<>();
+                headers.put("_validateSession", Connection.getSessionId());
+                return headers;
+            }
+        };
 
         AppController.getInstance().addToRequestQueue(eventsRequest, tag_user_events);
         if (swipeRefreshLayout != null)
@@ -124,7 +135,14 @@ public class SiteEventsService {
             public void onErrorResponse(VolleyError error) {
                 AppController.getInstance().addToRequestQueue(ownerDataRequest, tag);
             }
-        });
+        }){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> headers = new HashMap<>();
+                headers.put("_validateSession", Connection.getSessionId());
+                return headers;
+            }
+        };
 
         AppController.getInstance().addToRequestQueue(ownerDataRequest, tag);
     }
@@ -155,7 +173,14 @@ public class SiteEventsService {
             public void onErrorResponse(VolleyError error) {
                 callback.onError(error);
             }
-        });
+        }){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> headers = new HashMap<>();
+                headers.put("_validateSession", Connection.getSessionId());
+                return headers;
+            }
+        };
 
         AppController.getInstance().addToRequestQueue(eventInfoRequest, tag);
     }

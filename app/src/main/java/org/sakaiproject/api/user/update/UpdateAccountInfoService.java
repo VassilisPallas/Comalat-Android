@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.view.View;
 import android.widget.ProgressBar;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -18,9 +19,12 @@ import org.sakaiproject.api.cryptography.PasswordEncryption;
 import org.sakaiproject.api.json.JsonWriter;
 import org.sakaiproject.api.user.User;
 import org.sakaiproject.customviews.custom_volley.EmptyRequest;
+import org.sakaiproject.general.Connection;
 import org.sakaiproject.sakai.AppController;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by vspallas on 27/02/16.
@@ -65,7 +69,14 @@ public class UpdateAccountInfoService {
             public void onErrorResponse(VolleyError error) {
                 callback.onError(error);
             }
-        });
+        }){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> headers = new HashMap<>();
+                headers.put("_validateSession", Connection.getSessionId());
+                return headers;
+            }
+        };
 
         AppController.getInstance().addToRequestQueue(updateRequest, update_tag);
     }

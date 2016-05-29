@@ -3,6 +3,7 @@ package org.sakaiproject.api.memberships.pages.wiki;
 import android.content.Context;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -13,11 +14,14 @@ import org.json.JSONObject;
 import org.sakaiproject.api.callback.Callback;
 import org.sakaiproject.api.pojos.wiki.Wiki;
 import org.sakaiproject.api.user.User;
+import org.sakaiproject.general.Connection;
 import org.sakaiproject.helpers.ActionsHelper;
 import org.sakaiproject.sakai.AppController;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by vspallas on 28/02/16.
@@ -70,7 +74,14 @@ public class MembershipWikiService {
             public void onErrorResponse(VolleyError error) {
                 callback.onError(error);
             }
-        });
+        }){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> headers = new HashMap<>();
+                headers.put("_validateSession", Connection.getSessionId());
+                return headers;
+            }
+        };
 
         AppController.getInstance().addToRequestQueue(wikiRequest, wiki_tag);
     }
@@ -105,7 +116,14 @@ public class MembershipWikiService {
             public void onErrorResponse(VolleyError error) {
                 callback.onError(error);
             }
-        });
+        }){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> headers = new HashMap<>();
+                headers.put("_validateSession", Connection.getSessionId());
+                return headers;
+            }
+        };
 
         AppController.getInstance().addToRequestQueue(wikiPageRequest, wiki_page_data);
     }

@@ -14,6 +14,7 @@ import com.android.volley.VolleyLog;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.sakaiproject.api.user.User;
+import org.sakaiproject.general.Connection;
 import org.sakaiproject.helpers.ActionsHelper;
 import org.sakaiproject.customviews.custom_volley.EmptyRequest;
 import org.sakaiproject.sakai.AppController;
@@ -77,6 +78,7 @@ public class RefreshSession {
             public Map<String, String> getHeaders() throws AuthFailureError {
                 HashMap<String, String> headers = new HashMap<>();
                 headers.put("Content-Type", "application/x-www-form-urlencoded");
+                headers.put("_validateSession", Connection.getSessionId());
                 return headers;
             }
 
@@ -90,5 +92,4 @@ public class RefreshSession {
         refreshSessionRequest.setShouldCache(false);
         AppController.getInstance().addToRequestQueue(refreshSessionRequest, refresh_session_tag);
     }
-
 }

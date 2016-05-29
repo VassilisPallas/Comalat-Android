@@ -2,6 +2,7 @@ package org.sakaiproject.api.memberships.pages.dropbox;
 
 import android.content.Context;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -15,6 +16,7 @@ import org.sakaiproject.api.pojos.dropbox.Dropbox;
 import org.sakaiproject.api.pojos.roster.Member;
 import org.sakaiproject.api.pojos.roster.Roster;
 import org.sakaiproject.api.user.User;
+import org.sakaiproject.general.Connection;
 import org.sakaiproject.helpers.ActionsHelper;
 import org.sakaiproject.sakai.AppController;
 import org.sakaiproject.sakai.R;
@@ -102,7 +104,14 @@ public class DropboxService {
                     swipeRefreshLayout.setRefreshing(false);
                 }
             }
-        });
+        }){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> headers = new HashMap<>();
+                headers.put("_validateSession", Connection.getSessionId());
+                return headers;
+            }
+        };
         AppController.getInstance().addToRequestQueue(dropboxRequest, tag);
     }
 
