@@ -36,7 +36,8 @@ import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.Map;
 
-public class UserActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, ISwipeRefresh {
+public class UserActivity extends AppCompatActivity
+        implements NavigationView.OnNavigationItemSelectedListener, ISwipeRefresh {
 
     static TextView displayNameTextView, emailTextView;
     private ImageViewRounded userImage;

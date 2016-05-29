@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -25,6 +24,7 @@ import java.util.Map;
  * Created by vspallas on 09/03/16.
  */
 public class FillGridView {
+
     private Context context;
     private SiteData siteData;
     private File rootPath;
@@ -119,8 +119,7 @@ public class FillGridView {
                 } // Checks if '..' was clicked
                 else if (chosenFile.equalsIgnoreCase("..")) {
                     backButtonPressed();
-                } // Do something with the selected file here
-                else {
+                } else {
                     // open file
                 }
             }

@@ -2,11 +2,8 @@ package org.sakaiproject.helpers.user_navigation_drawer_helpers;
 
 
 import android.content.Context;
-import android.content.Intent;
-import android.graphics.Color;
 import android.os.Build;
 import android.support.design.widget.NavigationView;
-import android.support.v4.view.GravityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
@@ -24,8 +21,6 @@ import android.widget.TextView;
 
 import org.sakaiproject.api.memberships.SiteData;
 import org.sakaiproject.customviews.CustomSwipeRefreshLayout;
-import org.sakaiproject.helpers.ActionsHelper;
-import org.sakaiproject.sakai.ChatActivity;
 import org.sakaiproject.sakai.R;
 
 import java.lang.reflect.Field;

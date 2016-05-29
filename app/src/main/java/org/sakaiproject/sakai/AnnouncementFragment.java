@@ -20,6 +20,7 @@ import android.widget.Toast;
 import com.android.volley.ServerError;
 import com.android.volley.VolleyError;
 
+import org.sakaiproject.adapters.EmptyAdapter;
 import org.sakaiproject.api.announcements.OfflineUserAnnouncements;
 import org.sakaiproject.api.announcements.UserAnnouncementsService;
 import org.sakaiproject.api.callback.Callback;
@@ -46,6 +47,7 @@ public class AnnouncementFragment extends Fragment implements SwipeRefreshLayout
     private RecyclerView mRecyclerView;
     private RecyclerView.LayoutManager mLayoutManager;
     private AnnouncementAdapter mAdapter;
+    private EmptyAdapter emptyAdapter;
     private TextView noAnnouncements;
     private Announcement announcement;
 
@@ -99,8 +101,6 @@ public class AnnouncementFragment extends Fragment implements SwipeRefreshLayout
             announcements.getAnnouncements();
         }
 
-        mRecyclerView.setAdapter(mAdapter);
-
         // if the memberships recycle view is not on the top then the swipe refresh can not be done
         mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -141,12 +141,19 @@ public class AnnouncementFragment extends Fragment implements SwipeRefreshLayout
         root = (FrameLayout) v.findViewById(R.id.root);
 
         if (mAdapter == null || mAdapter.getItemCount() == 0) {
+            setEmptyAdapter();
             noAnnouncements.setVisibility(View.VISIBLE);
         } else {
+            mRecyclerView.setAdapter(mAdapter);
             noAnnouncements.setVisibility(View.GONE);
         }
 
         return v;
+    }
+
+    private void setEmptyAdapter(){
+        emptyAdapter = new EmptyAdapter();
+        mRecyclerView.setAdapter(emptyAdapter);
     }
 
     @Override
@@ -191,11 +198,11 @@ public class AnnouncementFragment extends Fragment implements SwipeRefreshLayout
             if (mRecyclerView != null) {
                 if (mAdapter.getItemCount() == 0) {
                     noAnnouncements.setVisibility(View.VISIBLE);
+                    setEmptyAdapter();
                 } else {
                     noAnnouncements.setVisibility(View.GONE);
+                    mRecyclerView.setAdapter(mAdapter);
                 }
-
-                mRecyclerView.setAdapter(mAdapter);
             }
         }
     }

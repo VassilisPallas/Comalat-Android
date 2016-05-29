@@ -20,6 +20,7 @@ import android.widget.Toast;
 import com.android.volley.ServerError;
 import com.android.volley.VolleyError;
 
+import org.sakaiproject.adapters.EmptyAdapter;
 import org.sakaiproject.api.callback.Callback;
 import org.sakaiproject.api.internet.NetWork;
 import org.sakaiproject.api.memberships.pages.syllabus.OfflineSyllabus;
@@ -43,6 +44,7 @@ public class SyllabusFragment extends Fragment implements SwipeRefreshLayout.OnR
     private Syllabus syllabus;
     private RecyclerView mRecyclerView;
     private SyllabusAdapter mAdapter;
+    private EmptyAdapter emptyAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     private FrameLayout root;
     private UpdateSyllabus callback;
@@ -120,6 +122,7 @@ public class SyllabusFragment extends Fragment implements SwipeRefreshLayout.OnR
             update(mRecyclerView, mAdapter, syllabus, siteData.getId());
             noSyllabusItems.setVisibility(View.GONE);
         } else {
+            setEmptyAdapter();
             noSyllabusItems.setVisibility(View.VISIBLE);
         }
 
@@ -184,15 +187,22 @@ public class SyllabusFragment extends Fragment implements SwipeRefreshLayout.OnR
                 noSyllabusItems.setVisibility(View.GONE);
                 reLaunchUrl.setVisibility(View.GONE);
             } else if (syllabus.getRedirectUrl() != null) {
+                setEmptyAdapter();
                 noSyllabusItems.setVisibility(View.GONE);
                 reLaunchUrl.setVisibility(View.VISIBLE);
             } else {
+                setEmptyAdapter();
                 noSyllabusItems.setVisibility(View.VISIBLE);
                 reLaunchUrl.setVisibility(View.GONE);
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private void setEmptyAdapter() {
+        emptyAdapter = new EmptyAdapter();
+        mRecyclerView.setAdapter(emptyAdapter);
     }
 
     @Override

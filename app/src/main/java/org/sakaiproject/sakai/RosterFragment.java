@@ -19,6 +19,7 @@ import android.widget.Toast;
 import com.android.volley.ServerError;
 import com.android.volley.VolleyError;
 
+import org.sakaiproject.adapters.EmptyAdapter;
 import org.sakaiproject.adapters.RosterAdapter;
 import org.sakaiproject.api.callback.Callback;
 import org.sakaiproject.api.internet.NetWork;
@@ -40,10 +41,17 @@ public class RosterFragment extends Fragment implements SwipeRefreshLayout.OnRef
     private RecyclerView mRecyclerView;
     private RecyclerView.LayoutManager mLayoutManager;
     private RosterAdapter mAdapter;
+    private EmptyAdapter emptyAdapter;
     private Callback callback = this;
     private FloatingActionButton downloadButton;
+    private Roster roster;
 
     public RosterFragment() {
+    }
+
+    private void setEmptyAdapter() {
+        emptyAdapter = new EmptyAdapter();
+        mRecyclerView.setAdapter(emptyAdapter);
     }
 
     @Override
@@ -105,6 +113,13 @@ public class RosterFragment extends Fragment implements SwipeRefreshLayout.OnRef
 
         swipeRefresh.Callback(this);
 
+        if (roster != null) {
+            mAdapter = new RosterAdapter(getContext(), roster.getMembers(), siteData);
+            if (mAdapter.getItemCount() == 0)
+                setEmptyAdapter();
+            else mRecyclerView.setAdapter(mAdapter);
+        } else setEmptyAdapter();
+
         return v;
     }
 
@@ -141,9 +156,11 @@ public class RosterFragment extends Fragment implements SwipeRefreshLayout.OnRef
     @Override
     public void onSuccess(Object obj) {
         if (obj != null && obj instanceof Roster) {
-            Roster roster = (Roster) obj;
+            roster = (Roster) obj;
             mAdapter = new RosterAdapter(getContext(), roster.getMembers(), siteData);
-            mRecyclerView.setAdapter(mAdapter);
+            if (mAdapter.getItemCount() == 0)
+                setEmptyAdapter();
+            else mRecyclerView.setAdapter(mAdapter);
         }
         swipeRefreshLayout.setRefreshing(false);
     }

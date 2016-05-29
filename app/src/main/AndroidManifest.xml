@@ -106,7 +106,7 @@
                 android:data="http://developer.android.com" />
         </PreferenceScreen>
 
-        <activity android:name=".FriendsActivity"></activity>
+        <activity android:name=".FriendsActivity" />
     </application>
 
 </manifest>

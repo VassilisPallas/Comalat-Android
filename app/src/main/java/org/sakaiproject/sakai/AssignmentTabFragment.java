@@ -15,6 +15,7 @@ import android.widget.Toast;
 import com.android.volley.ServerError;
 import com.android.volley.VolleyError;
 
+import org.sakaiproject.adapters.EmptyAdapter;
 import org.sakaiproject.api.assignments.OfflineUserAssignments;
 import org.sakaiproject.api.assignments.UserAssignmentsService;
 import org.sakaiproject.api.callback.Callback;
@@ -39,6 +40,7 @@ public class AssignmentTabFragment extends Fragment implements Callback {
     private SiteData siteData;
     private RecyclerView mRecyclerView;
     private AssignmentAdapter mAdapter;
+    private EmptyAdapter emptyAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     private TextView noAssignments;
 
@@ -46,6 +48,11 @@ public class AssignmentTabFragment extends Fragment implements Callback {
     }
 
     Assignment assignment;
+
+    private void setEmptyAdapter(){
+        emptyAdapter = new EmptyAdapter();
+        mRecyclerView.setAdapter(emptyAdapter);
+    }
 
     /**
      * get the swipe refresh layout from activity
@@ -78,9 +85,6 @@ public class AssignmentTabFragment extends Fragment implements Callback {
 
 
         fillList();
-        mAdapter = new AssignmentAdapter(getActivity(), assignment, null);
-
-        mRecyclerView.setAdapter(mAdapter);
 
         mRecyclerView.addOnItemTouchListener(new RecyclerItemClickListener(getContext(), mRecyclerView, new RecyclerItemClickListener.OnItemClickListener() {
             @Override
@@ -107,9 +111,13 @@ public class AssignmentTabFragment extends Fragment implements Callback {
             }
         }));
 
+        mAdapter = new AssignmentAdapter(getActivity(), assignment, null);
+
         if (mAdapter.getItemCount() == 0) {
             noAssignments.setVisibility(View.VISIBLE);
+            setEmptyAdapter();
         } else {
+            mRecyclerView.setAdapter(mAdapter);
             noAssignments.setVisibility(View.GONE);
         }
 
@@ -157,12 +165,12 @@ public class AssignmentTabFragment extends Fragment implements Callback {
                 mAdapter.setAssignment(assignment);
 
                 if (mAdapter.getItemCount() == 0) {
+                    setEmptyAdapter();
                     noAssignments.setVisibility(View.VISIBLE);
                 } else {
                     noAssignments.setVisibility(View.GONE);
+                    mRecyclerView.setAdapter(mAdapter);
                 }
-
-                mRecyclerView.setAdapter(mAdapter);
             }
         }
     }
