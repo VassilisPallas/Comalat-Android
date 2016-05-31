@@ -4,6 +4,7 @@ import android.app.NotificationManager;
 import android.content.Context;
 import android.os.Environment;
 import android.support.v7.app.NotificationCompat;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.android.volley.Request;

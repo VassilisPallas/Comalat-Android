@@ -20,6 +20,7 @@ import android.widget.Toast;
 import com.android.volley.ServerError;
 import com.android.volley.VolleyError;
 
+import org.sakaiproject.adapters.EmptyAdapter;
 import org.sakaiproject.api.callback.Callback;
 import org.sakaiproject.api.internet.NetWork;
 import org.sakaiproject.api.memberships.SiteData;
@@ -43,6 +44,7 @@ public class AssignmentFragment extends Fragment implements SwipeRefreshLayout.O
     private Callback callback = this;
     private RecyclerView mRecyclerView;
     private AssignmentAdapter mAdapter;
+    private EmptyAdapter emptyAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     private TextView noAssignments;
     private Assignment assignment;
@@ -107,7 +109,15 @@ public class AssignmentFragment extends Fragment implements SwipeRefreshLayout.O
         OfflineMembershipAssignments offlineMembershipAssignments = new OfflineMembershipAssignments(getContext(), siteData.getId(), callback);
         offlineMembershipAssignments.getAssignments();
 
-        mRecyclerView.setAdapter(mAdapter);
+        mAdapter = new AssignmentAdapter(getActivity(), assignment, siteData.getId());
+
+        if (mAdapter.getItemCount() == 0) {
+            setEmptyAdapter();
+            noAssignments.setVisibility(View.VISIBLE);
+        } else {
+            noAssignments.setVisibility(View.GONE);
+            mRecyclerView.setAdapter(mAdapter);
+        }
 
         mRecyclerView.addOnItemTouchListener(new RecyclerItemClickListener(getContext(), mRecyclerView, new RecyclerItemClickListener.OnItemClickListener() {
             @Override
@@ -139,6 +149,11 @@ public class AssignmentFragment extends Fragment implements SwipeRefreshLayout.O
         root = (FrameLayout) v.findViewById(R.id.root);
 
         return v;
+    }
+
+    private void setEmptyAdapter() {
+        emptyAdapter = new EmptyAdapter();
+        mRecyclerView.setAdapter(emptyAdapter);
     }
 
     @Override

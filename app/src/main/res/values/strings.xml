@@ -413,4 +413,6 @@
 
     <!-- Home tabs -->
     <string name="information">Information</string>
+
+    <string name="permissions_message">You have to accept the permission first.</string>
 </resources>

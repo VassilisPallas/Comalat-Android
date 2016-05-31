@@ -1,15 +1,24 @@
 package org.sakaiproject.sakai;
 
+import android.*;
+import android.Manifest;
+import android.app.Activity;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 
 import org.sakaiproject.adapters.HomeTabAdapter;
 import org.sakaiproject.api.memberships.SiteData;
@@ -30,6 +39,11 @@ public class HomeFragment extends Fragment {
     private HomeTabAdapter adapter;
     private org.sakaiproject.customviews.CustomSwipeRefreshLayout swipeRefreshLayout;
     private Map<Integer, String> positions = new HashMap<>();
+    private FrameLayout root;
+
+    private static final int WRITE_REQUEST_CODE = 42;
+    private static final int MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE = 1;
+    private boolean permissionsAccepted = false;
 
     public HomeFragment() {
     }
@@ -48,6 +62,35 @@ public class HomeFragment extends Fragment {
         return homeFragment;
     }
 
+    private void getReadPermissions() {
+        if (ContextCompat.checkSelfPermission(getActivity(),
+                Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                    MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE);
+        } else permissionsAccepted = true;
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE:
+                permissionsAccepted = grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED;
+                break;
+        }
+
+        if (!permissionsAccepted)
+            Snackbar.make(root,
+                    R.string.permissions_message,
+                    Snackbar.LENGTH_INDEFINITE)
+                    .setAction(android.R.string.ok, new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            getReadPermissions();
+                        }
+                    }).show();
+    }
 
     @Nullable
     @Override
@@ -55,6 +98,7 @@ public class HomeFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_home, container, false);
         getActivity().setTitle(getContext().getResources().getString(R.string.home));
         initialize(v);
+
         return v;
     }
 
@@ -136,6 +180,8 @@ public class HomeFragment extends Fragment {
                 return false;
             }
         });
+
+        root = (FrameLayout) v.findViewById(R.id.root);
     }
 
     private void addPos(int pos, String title) {
@@ -146,5 +192,11 @@ public class HomeFragment extends Fragment {
     public void onStop() {
         super.onStop();
         swipeRefreshLayout.setEnabled(true);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        getReadPermissions();
     }
 }

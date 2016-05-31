@@ -157,8 +157,10 @@ public class ActionsHelper {
 
                 //covert response to input stream
                 InputStream input = new ByteArrayInputStream(response);
-                if (ActionsHelper.createExternalDirIfNotExists(path))
+                if (ActionsHelper.createExternalDirIfNotExists(path)) {
                     file = new File(path, filename);
+                    file.createNewFile();
+                }
                 map.put("resume_path", file.toString());
                 BufferedOutputStream output = new BufferedOutputStream(new FileOutputStream(file));
                 byte data[] = new byte[1024];
