@@ -1,9 +1,6 @@
 package org.sakaiproject.sakai;
 
-import android.*;
 import android.Manifest;
-import android.app.Activity;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -62,7 +59,7 @@ public class HomeFragment extends Fragment {
         return homeFragment;
     }
 
-    private void getReadPermissions() {
+    private void getWritePermissions() {
         if (ContextCompat.checkSelfPermission(getActivity(),
                 Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED) {
@@ -87,7 +84,7 @@ public class HomeFragment extends Fragment {
                     .setAction(android.R.string.ok, new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            getReadPermissions();
+                            getWritePermissions();
                         }
                     }).show();
     }
@@ -197,6 +194,6 @@ public class HomeFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        getReadPermissions();
+        getWritePermissions();
     }
 }
