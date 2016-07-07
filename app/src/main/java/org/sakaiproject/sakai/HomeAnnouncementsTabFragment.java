@@ -113,7 +113,7 @@ public class HomeAnnouncementsTabFragment extends Fragment implements Callback {
     public void onSuccess(Object obj) {
         if (obj instanceof Announcement) {
             this.announcement = (Announcement) obj;
-            if (siteName.equals(getContext().getResources().getString(R.string.my_workspace))) {
+            if (siteName.equals(getActivity().getResources().getString(R.string.my_workspace))) {
                 mAdapter = new AnnouncementAdapter(announcement, null);
             } else {
                 mAdapter = new AnnouncementAdapter(announcement, siteData.getId());

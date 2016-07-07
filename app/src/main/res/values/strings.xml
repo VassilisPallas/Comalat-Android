@@ -167,7 +167,7 @@
 
     <!-- user navigation drawer's data -->
     <string name="dashboard">Dashboard</string>
-    <string name="home">Home</string>
+    <string name="home">Overview</string>
     <string name="profile">Profile</string>
     <string name="membership">Membership</string>
     <string name="calendar">Calendar</string>
