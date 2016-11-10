@@ -3,6 +3,7 @@ package org.sakaiproject.api.memberships;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -101,13 +102,31 @@ public class MembershipService {
                         e.printStackTrace();
                     }
 
-                // starting from 1 because 0 is My Workspace
-                for (int i = 1; i < SiteData.getSites().size(); i++) {
-                    getData(SiteData.getSites().get(i), null, i);
-                }
+                Log.i("sites", String.valueOf(SiteData.getSites().size()));
+                Log.i("projects", String.valueOf(SiteData.getProjects().size()));
 
-                for (int i = 0; i < SiteData.getProjects().size(); i++) {
-                    getData(SiteData.getProjects().get(i), "project", i);
+                if (SiteData.getSites().size() == 1 && SiteData.getProjects().size() == 0) {
+                    if (login) {
+                        Intent i = new Intent(context, UserActivity.class);
+                        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        context.startActivity(i);
+                        ((AppCompatActivity) context).finish();
+                    } else {
+                        if (callback != null)
+                            callback.onSuccess(null);
+
+                        if (swipeRefreshLayout != null)
+                            swipeRefreshLayout.setRefreshing(false);
+                    }
+                } else {
+                    // starting from 1 because 0 is My Workspace
+                    for (int i = 1; i < SiteData.getSites().size(); i++) {
+                        getData(SiteData.getSites().get(i), null, i);
+                    }
+
+                    for (int i = 0; i < SiteData.getProjects().size(); i++) {
+                        getData(SiteData.getProjects().get(i), "project", i);
+                    }
                 }
             }
         }, new Response.ErrorListener() {
@@ -115,7 +134,7 @@ public class MembershipService {
             public void onErrorResponse(VolleyError error) {
                 callback.onError(error);
             }
-        }){
+        }) {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> headers = new HashMap<>();
@@ -152,7 +171,7 @@ public class MembershipService {
             public void onErrorResponse(VolleyError error) {
                 callback.onError(error);
             }
-        }){
+        }) {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> headers = new HashMap<>();
@@ -187,7 +206,7 @@ public class MembershipService {
             public void onErrorResponse(VolleyError error) {
                 callback.onError(error);
             }
-        }){
+        }) {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> headers = new HashMap<>();
@@ -222,7 +241,7 @@ public class MembershipService {
             public void onErrorResponse(VolleyError error) {
                 callback.onError(error);
             }
-        }){
+        }) {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> headers = new HashMap<>();
@@ -269,7 +288,7 @@ public class MembershipService {
             public void onErrorResponse(VolleyError error) {
                 callback.onError(error);
             }
-        }){
+        }) {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> headers = new HashMap<>();

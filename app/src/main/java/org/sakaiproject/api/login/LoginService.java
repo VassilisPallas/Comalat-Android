@@ -3,6 +3,7 @@ package org.sakaiproject.api.login;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -76,7 +77,6 @@ public class LoginService implements ILogin {
             @Override
             public void onResponse(String response) {
                 Connection.setSessionId(response);
-
                 PasswordEncryption passwordEncryption = new PasswordEncryption();
 
                 SharedPreferences.Editor editor = context.getSharedPreferences(name + "_user_data", context.MODE_PRIVATE).edit();
@@ -118,6 +118,7 @@ public class LoginService implements ILogin {
 
     @Override
     public void getLoginJson(final String... params) {
+        Log.i("param", params[1]);
         JsonObjectRequest loginJson = new JsonObjectRequest(Request.Method.GET, params[0] + "session/" + params[1] + ".json", null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
