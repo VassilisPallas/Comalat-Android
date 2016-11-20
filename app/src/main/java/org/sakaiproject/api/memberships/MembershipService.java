@@ -105,7 +105,16 @@ public class MembershipService {
                 Log.i("sites", String.valueOf(SiteData.getSites().size()));
                 Log.i("projects", String.valueOf(SiteData.getProjects().size()));
 
-                if (SiteData.getSites().size() == 1 && SiteData.getProjects().size() == 0) {
+                // starting from 1 because 0 is My Workspace
+                for (int i = 1; i < SiteData.getSites().size(); i++) {
+                    getData(SiteData.getSites().get(i), null, i);
+                }
+
+                if (SiteData.getProjects().size() > 0) {
+                    for (int i = 0; i < SiteData.getProjects().size(); i++) {
+                        getData(SiteData.getProjects().get(i), "project", i);
+                    }
+                }else{
                     if (login) {
                         Intent i = new Intent(context, UserActivity.class);
                         i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -117,15 +126,6 @@ public class MembershipService {
 
                         if (swipeRefreshLayout != null)
                             swipeRefreshLayout.setRefreshing(false);
-                    }
-                } else {
-                    // starting from 1 because 0 is My Workspace
-                    for (int i = 1; i < SiteData.getSites().size(); i++) {
-                        getData(SiteData.getSites().get(i), null, i);
-                    }
-
-                    for (int i = 0; i < SiteData.getProjects().size(); i++) {
-                        getData(SiteData.getProjects().get(i), "project", i);
                     }
                 }
             }
