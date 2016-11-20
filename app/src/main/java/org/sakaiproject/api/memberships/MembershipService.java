@@ -114,7 +114,7 @@ public class MembershipService {
                     for (int i = 0; i < SiteData.getProjects().size(); i++) {
                         getData(SiteData.getProjects().get(i), "project", i);
                     }
-                }else{
+                } else {
                     if (login) {
                         Intent i = new Intent(context, UserActivity.class);
                         i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
