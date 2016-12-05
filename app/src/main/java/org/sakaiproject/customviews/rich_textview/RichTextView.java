@@ -191,7 +191,7 @@ public class RichTextView extends TextView implements Html.ImageGetter {
     }
 
     private Editable addMoreTag(Spannable s) {
-        Editable editable = new SpannableStringBuilder((Html.fromHtml(s.toString(), this, new HtmlHandler(context))).subSequence(0, 60));
+        Editable editable = new SpannableStringBuilder((Html.fromHtml(s.toString(), this, new HtmlHandler(context))).subSequence(0, 56));
 
         editable = editable.insert(editable.toString().length(), "...");
         int from = editable.length();

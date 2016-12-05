@@ -49,7 +49,7 @@ public class AssignmentTabFragment extends Fragment implements Callback {
 
     Assignment assignment;
 
-    private void setEmptyAdapter(){
+    private void setEmptyAdapter() {
         emptyAdapter = new EmptyAdapter();
         mRecyclerView.setAdapter(emptyAdapter);
     }
@@ -86,7 +86,7 @@ public class AssignmentTabFragment extends Fragment implements Callback {
 
         fillList();
 
-        mRecyclerView.addOnItemTouchListener(new RecyclerItemClickListener(getContext(), mRecyclerView, new RecyclerItemClickListener.OnItemClickListener() {
+        mRecyclerView.addOnItemTouchListener(new RecyclerItemClickListener(getActivity(), mRecyclerView, new RecyclerItemClickListener.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
 
@@ -94,14 +94,14 @@ public class AssignmentTabFragment extends Fragment implements Callback {
 
                 status = assignment.getAssignmentsCollectionList().get(position).getStatus();
 
-                if (!status.equals(getContext().getResources().getString(R.string.closed))) {
+                if (!status.equals(getActivity().getResources().getString(R.string.closed))) {
 
                     FragmentManager fm = getFragmentManager();
                     AssignmentsDescriptionFragment dialogFragment;
 
                     dialogFragment = new AssignmentsDescriptionFragment().setData(assignment.getAssignmentsCollectionList().get(position), null);
                     dialogFragment.setStyle(DialogFragment.STYLE_NO_TITLE, R.style.InfoDialogTheme);
-                    dialogFragment.show(fm, getContext().getResources().getString(R.string.event_info));
+                    dialogFragment.show(fm, getActivity().getResources().getString(R.string.event_info));
                 }
             }
 
@@ -125,33 +125,35 @@ public class AssignmentTabFragment extends Fragment implements Callback {
     }
 
     private void fillList() {
-        if (NetWork.getConnectionEstablished()) {
-            String url;
-            if (siteName.equals(getContext().getResources().getString(R.string.my_workspace))) {
-                UserAssignmentsService userAssignmentsService = new UserAssignmentsService(getContext(), this);
-                url = getContext().getResources().getString(R.string.url) + "assignment/my.json";
-                userAssignmentsService.getAssignments(url);
+        if(getActivity() != null){
+            if (NetWork.getConnectionEstablished()) {
+                String url;
+                if (siteName.equals(getActivity().getResources().getString(R.string.my_workspace))) {
+                    UserAssignmentsService userAssignmentsService = new UserAssignmentsService(getActivity(), this);
+                    url = getActivity().getResources().getString(R.string.url) + "assignment/my.json";
+                    userAssignmentsService.getAssignments(url);
+                } else {
+                    MembershipAssignmentsService membershipAssignmentsService = new MembershipAssignmentsService(getActivity(), siteData.getId(), this);
+                    url = getActivity().getResources().getString(R.string.url) + "assignment/site/" + siteData.getId() + ".json";
+                    membershipAssignmentsService.getAssignments(url);
+                }
             } else {
-                MembershipAssignmentsService membershipAssignmentsService = new MembershipAssignmentsService(getContext(), siteData.getId(), this);
-                url = getContext().getResources().getString(R.string.url) + "assignment/site/" + siteData.getId() + ".json";
-                membershipAssignmentsService.getAssignments(url);
+                if (siteName.equals(getActivity().getResources().getString(R.string.my_workspace))) {
+                    OfflineUserAssignments offlineUserAnnouncements = new OfflineUserAssignments(getActivity(), this);
+                    offlineUserAnnouncements.getAssignments();
+                } else {
+                    OfflineMembershipAssignments offlineMembershipAssignments = new OfflineMembershipAssignments(getActivity(), siteData.getId(), this);
+                    offlineMembershipAssignments.getAssignments();
+                }
             }
-        } else {
-            if (siteName.equals(getContext().getResources().getString(R.string.my_workspace))) {
-                OfflineUserAssignments offlineUserAnnouncements = new OfflineUserAssignments(getContext(), this);
-                offlineUserAnnouncements.getAssignments();
-            } else {
-                OfflineMembershipAssignments offlineMembershipAssignments = new OfflineMembershipAssignments(getContext(), siteData.getId(), this);
-                offlineMembershipAssignments.getAssignments();
-            }
-        }
 
-        if (assignment != null && assignment.getAssignmentsCollectionList() != null) {
-            Iterator<Assignment.AssignmentsCollection> it = assignment.getAssignmentsCollectionList().iterator();
-            while (it.hasNext()) {
-                Assignment.AssignmentsCollection collection = it.next();
-                if (collection.getStatus().equals(getContext().getResources().getString(R.string.closed)))
-                    it.remove();
+            if (assignment != null && assignment.getAssignmentsCollectionList() != null) {
+                Iterator<Assignment.AssignmentsCollection> it = assignment.getAssignmentsCollectionList().iterator();
+                while (it.hasNext()) {
+                    Assignment.AssignmentsCollection collection = it.next();
+                    if (collection.getStatus().equals(getActivity().getResources().getString(R.string.closed)))
+                        it.remove();
+                }
             }
         }
     }
@@ -178,7 +180,7 @@ public class AssignmentTabFragment extends Fragment implements Callback {
     @Override
     public void onError(VolleyError error) {
         if (error instanceof ServerError) {
-            Toast.makeText(getContext(), getContext().getResources().getString(R.string.server_error), Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), getActivity().getResources().getString(R.string.server_error), Toast.LENGTH_SHORT).show();
         }
     }
 }

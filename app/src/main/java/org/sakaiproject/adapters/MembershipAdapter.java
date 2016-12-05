@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -95,6 +96,8 @@ public class MembershipAdapter extends RecyclerView.Adapter<MembershipAdapter.Vi
         if (description == null) {
             holder.description.setText(context.getString(R.string.no_description));
         } else {
+
+            Log.i("description", description);
 
             List<String> sounds = ActionsHelper.findAudios(memberships.get(position).getDescription());
 

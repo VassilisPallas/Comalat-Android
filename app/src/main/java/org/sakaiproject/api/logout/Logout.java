@@ -33,18 +33,20 @@ public class Logout {
         StringRequest logoutrequest = new StringRequest(Request.Method.DELETE, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                return;
+                AppController.getInstance().clearQueue();
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-
+                AppController.getInstance().clearQueue();
             }
         }){
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> headers = new HashMap<>();
-                headers.put("_validateSession", Connection.getSessionId());
+                if(Connection.getSessionId() != null){
+                    headers.put("_validateSession", Connection.getSessionId());
+                }
                 return headers;
             }
         };

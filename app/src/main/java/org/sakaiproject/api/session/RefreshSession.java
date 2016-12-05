@@ -76,9 +76,10 @@ public class RefreshSession {
              * */
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
-                HashMap<String, String> headers = new HashMap<>();
-                headers.put("Content-Type", "application/x-www-form-urlencoded");
-                headers.put("_validateSession", Connection.getSessionId());
+                Map<String, String> headers = new HashMap<>();
+                if(Connection.getSessionId() != null){
+                    headers.put("_validateSession", Connection.getSessionId());
+                }
                 return headers;
             }
 

@@ -138,7 +138,9 @@ public class MembershipService {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> headers = new HashMap<>();
-                headers.put("_validateSession", Connection.getSessionId());
+                if(Connection.getSessionId() != null){
+                    headers.put("_validateSession", Connection.getSessionId());
+                }
                 return headers;
             }
         };
@@ -175,7 +177,9 @@ public class MembershipService {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> headers = new HashMap<>();
-                headers.put("_validateSession", Connection.getSessionId());
+                if(Connection.getSessionId() != null){
+                    headers.put("_validateSession", Connection.getSessionId());
+                }
                 return headers;
             }
         };
@@ -210,7 +214,9 @@ public class MembershipService {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> headers = new HashMap<>();
-                headers.put("_validateSession", Connection.getSessionId());
+                if(Connection.getSessionId() != null){
+                    headers.put("_validateSession", Connection.getSessionId());
+                }
                 return headers;
             }
         };
@@ -245,7 +251,9 @@ public class MembershipService {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> headers = new HashMap<>();
-                headers.put("_validateSession", Connection.getSessionId());
+                if(Connection.getSessionId() != null){
+                    headers.put("_validateSession", Connection.getSessionId());
+                }
                 return headers;
             }
         };
@@ -292,7 +300,9 @@ public class MembershipService {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> headers = new HashMap<>();
-                headers.put("_validateSession", Connection.getSessionId());
+                if(Connection.getSessionId() != null){
+                    headers.put("_validateSession", Connection.getSessionId());
+                }
                 return headers;
             }
         };

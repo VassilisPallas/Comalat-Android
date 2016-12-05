@@ -149,7 +149,7 @@ public class EventTabFragment extends Fragment implements Callback {
 
     @Override
     public void onError(VolleyError error) {
-        if (error instanceof ServerError) {
+        if (error instanceof ServerError && getContext() != null) {
             Toast.makeText(getContext(), getContext().getResources().getString(R.string.server_error), Toast.LENGTH_SHORT).show();
         }
     }

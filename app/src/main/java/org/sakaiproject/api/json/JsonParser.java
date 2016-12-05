@@ -191,15 +191,17 @@ public class JsonParser {
      */
     public static void parseEventInfoJson(EventInfo userEventOwnerPojo, int index) {
 
-        EventsCollection.getEventsList().get(index).setDescription(userEventOwnerPojo.getDescription());
-        EventsCollection.getEventsList().get(index).setLastTime(userEventOwnerPojo.getLastTime());
-        EventsCollection.getEventsList().get(index).setLocation(userEventOwnerPojo.getLocation());
-        EventsCollection.getEventsList().get(index).setRecurrenceRule(userEventOwnerPojo.getRecurrenceRule());
-        if (EventsCollection.getEventsList().get(index).getRecurrenceRule() != null)
-            EventsCollection.getEventsList().get(index).getRecurrenceRule().setEndDate();
-        EventsCollection.getEventsList().get(index).setAttachments(userEventOwnerPojo.getAttachments());
+        if (EventsCollection.getEventsList().size() > 0) {
+            EventsCollection.getEventsList().get(index).setDescription(userEventOwnerPojo.getDescription());
+            EventsCollection.getEventsList().get(index).setLastTime(userEventOwnerPojo.getLastTime());
+            EventsCollection.getEventsList().get(index).setLocation(userEventOwnerPojo.getLocation());
+            EventsCollection.getEventsList().get(index).setRecurrenceRule(userEventOwnerPojo.getRecurrenceRule());
+            if (EventsCollection.getEventsList().get(index).getRecurrenceRule() != null)
+                EventsCollection.getEventsList().get(index).getRecurrenceRule().setEndDate();
+            EventsCollection.getEventsList().get(index).setAttachments(userEventOwnerPojo.getAttachments());
 
-        EventsCollection.getEventsList().get(index).setTimeDuration();
+            EventsCollection.getEventsList().get(index).setTimeDuration();
+        }
     }
 
     /**
@@ -212,11 +214,13 @@ public class JsonParser {
      */
     public static void getEventCreatorDisplayName(Context context, UserEventOwner userEventOwner, int index) {
 
-        EventsCollection.getEventsList().get(index).setCreatorUserId(userEventOwner.getDisplayName());
-        SharedPreferences preferences = context.getSharedPreferences("event_owners", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = preferences.edit();
-        editor.putString(EventsCollection.getEventsList().get(index).getEventId(), userEventOwner.getDisplayName());
-        editor.apply();
+        if (EventsCollection.getEventsList().size() > 0) {
+            EventsCollection.getEventsList().get(index).setCreatorUserId(userEventOwner.getDisplayName());
+            SharedPreferences preferences = context.getSharedPreferences("event_owners", Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putString(EventsCollection.getEventsList().get(index).getEventId(), userEventOwner.getDisplayName());
+            editor.apply();
+        }
     }
 
     /**

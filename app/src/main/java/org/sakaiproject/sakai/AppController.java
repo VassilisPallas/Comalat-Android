@@ -2,6 +2,7 @@ package org.sakaiproject.sakai;
 
 import android.app.Application;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -44,6 +45,16 @@ public class AppController extends Application {
         }
 
         return mRequestQueue;
+    }
+
+    public void clearQueue() {
+        mRequestQueue.cancelAll(new RequestQueue.RequestFilter() {
+            @Override
+            public boolean apply(Request<?> request) {
+                Log.d("DEBUG", "request running: " + request.getTag().toString());
+                return true;
+            }
+        });
     }
 
     public ImageLoader getImageLoader() {

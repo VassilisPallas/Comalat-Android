@@ -22,6 +22,7 @@ import org.sakaiproject.sakai.R;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.HttpURLConnection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -88,7 +89,9 @@ public class UserAnnouncementsService {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> headers = new HashMap<>();
-                headers.put("_validateSession", Connection.getSessionId());
+                if(Connection.getSessionId() != null){
+                    headers.put("_validateSession", Connection.getSessionId());
+                }
                 return headers;
             }
         };
@@ -130,7 +133,9 @@ public class UserAnnouncementsService {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> headers = new HashMap<>();
-                headers.put("_validateSession", Connection.getSessionId());
+                if(Connection.getSessionId() != null){
+                    headers.put("_validateSession", Connection.getSessionId());
+                }
                 return headers;
             }
         };
