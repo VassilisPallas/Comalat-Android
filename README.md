@@ -1,5 +1,5 @@
 # Android application for remote and offline usage of the SAKAI Learning Management System
-My bachelor thesis project
+Bachelor thesis project
 
 Sakai is a free, community source, educational software platform designed to support teaching, research and collaboration. It is used by many Organizations, to implement Virtual Learning Environments.
 
